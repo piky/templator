@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/zbx_template_new/" targetNamespace="http://www.example.org/zbx_template_new/">
+    <element name="root" type="tns:rootType"/>
+    <complexType name="templateType">
+    	 <all>
+    		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+    		<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+    		<element name="sysObjectID" type="string"/>
+    		<element name="discoveryRules" minOccurs="0" maxOccurs="1">
+				<complexType>
+	    			 <sequence>
+	    				<element name="discoveryRule" maxOccurs="unbounded" minOccurs="0">
+							<complexType>
+				    			 <all>
+				    				<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+				    				<element name="key" type="string" maxOccurs="1" minOccurs="1"/>
+				    				<element name="snmp_oid" type="string" maxOccurs="1" minOccurs="1"/>
+				    				<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+				    				<element name="filter" minOccurs="0" maxOccurs="1">
+				    					<complexType>
+				    						<sequence>
+				    							<element name="evaltype" type="byte"/>
+												<element name="formula" type="string"/>				    							
+												<element name="conditions">
+													<complexType>
+														<sequence>
+															<element name="condition" maxOccurs="unbounded" minOccurs="0">
+																<complexType>
+																	<sequence>
+																		<element name="macro" type="string"/>
+																		<element name="value" type="string"/>
+																		<element name="operator" type="int"/>
+																		<element name="formulaid" type="string"/>
+																	</sequence>
+																</complexType>
+															</element>
+														</sequence>
+													</complexType>
+												</element>
+				    						</sequence>
+				    					</complexType>
+				    				</element>
+				    			</all>
+			    			</complexType>	    				
+	    				</element>
+	    			</sequence>
+    			</complexType>    		
+    		</element>
+    		<element name="metrics">
+    			<complexType>
+	    			 	<sequence>
+			    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+			    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+			    			<choice>
+			    				<sequence>
+			    					<element name="memoryUsed" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+							    	<element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+							    	<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+			    				</sequence>
+			    				<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+			    			</choice>
+	    				</sequence>
+    			</complexType>
+    		</element>
+    	</all>
+    </complexType>
+    
+	<complexType name="rootType">
+    	 <choice>
+    		<element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
+    	 </choice>
+    </complexType>
+    
+    <complexType name="metricType">
+		<sequence>
+			<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+	 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/>
+			<choice>
+				<sequence>
+					<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
+				    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+				    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
+				</sequence>
+				<sequence>
+					<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+					<element name="expressionFormula" type="string" maxOccurs="1" minOccurs="1"/>
+				</sequence>
+			</choice>
+			<choice maxOccurs="unbounded" minOccurs="0">
+				<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="vendorDescription" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="history" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="trends" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="units" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="update" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="triggers" minOccurs="0" maxOccurs="1">
+		    	<complexType>
+		    		<sequence>
+		    			<element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
+		    		</sequence>
+		    	</complexType>
+		    </element>
+			</choice>
+	 	</sequence>
+    </complexType>
+
+    <complexType name="trigger">
+		<all>
+			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
+	 		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
+		    <element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+		  	<element name="priority" type="byte" maxOccurs="1" minOccurs="1"/>
+	 	</all>
+    </complexType>    
+
+                    
+    
+<simpleType name="groupList">
+    <restriction base="string">
+        <enumeration value="Cpu"/>
+        <enumeration value="Memory"/>
+    </restriction>
+</simpleType>
+</schema>

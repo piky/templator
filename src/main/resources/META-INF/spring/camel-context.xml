@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camelContext-79db4526-fcd2-4451-a278-4a7b12a84d9d" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="file:src/data/zabbix?noop=true"/>
+            <to id="to_xslt" uri="xslt:templates/zbx_template_add_names.xsl?saxon=true"/>
+            <to id="_to11" uri="file:src/data/result_step1"/>
+            <to id="_to2" uri="validator:templates/zbx_template_new.xsd"/>
+            <to id="_to3" uri="log:result"/>
+            <to id="to_xslt" uri="xslt:templates/to_zabbix_export.xsl?saxon=true"/>
+            <to id="_to4" uri="log:result"/>
+            <to id="_to1" uri="file:src/data/result"/>
+            <to id="_to2" uri="validator:templates/zabbix_template.xsd"/>
+            <!-- 
+            <split id="_split1">
+                <tokenize token="template" xml="true"/>
+                <to id="_to4" uri="log:result"/>
+                
+                <unmarshal id="_unmarshal1">
+                    <jaxb contextPath="org.example.monitoring.canonical"
+                        fragment="true"
+                        partClass="org.example.monitoring.canonical.TemplateType" prettyPrint="true"/>
+                </unmarshal>
+                <to id="_to5" uri="ref:zabbix_export"/>
+                <marshal id="_marshal1">
+                    <jaxb contextPath="org.example.monitoring.zabbix_template"/>
+                </marshal>
+                 
+                <to id="_to1" uri="log:result"/>
+            </split>
+            -->
+        </route>
+    </camelContext>
+</beans>

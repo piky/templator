@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
+  <template>
+	  <name>Cisco IOS Software releases 12.2(3.5) or later</name>
+	  <description>Cisco IOS Software releases 12.2(3.5) or later</description>
+	  <sysObjectID>{sysobjectid}</sysObjectID>
+	  <metrics>
+	    <cpuLoad>
+<name>Cpu Load XSLT</name>
+<group>cpu</group>
+<oid>.1.3.6.1.4.1.9.9.109.1.1.1.1.8</oid>
+<snmpObject>cpmCPUTotal5minRev</snmpObject>
+<mib>CISCO-PROCESS-MIB</mib>
+<ref>http://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/15215-collect-cpu-util-snmp.html</ref>
+<vendorDescription>The cpmCPUTotal5minRev MIB object provides a more accurate view of the performance of the router over time than the MIB objects cpmCPUTotal1minRev and cpmCPUTotal5secRev . These MIB objects are not accurate because they look at CPU at one minute and five second intervals, respectively. These MIBs enable you to monitor the trends and plan the capacity of your network. The recommended baseline rising threshold for cpmCPUTotal5minRev is 90 percent. Depending on the platform, some routers that run at 90 percent, for example, 2500s, can exhibit performance degradation versus a high-end router, for example, the 7500 series, which can operate fine.</vendorDescription>
+<description>Cpu load in %</description>
+</cpuLoad>
+	    <cpuUtil>
+<name>Cpu Util</name>
+<group>cpu</group>
+<oid>{oid}</oid>
+</cpuUtil>
+	    <memoryUsed>
+<name>Used memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+<description>Used memory in bytes</description>
+</memoryUsed>
+	    <memoryFree>
+<name>Free memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+</memoryFree>
+	  </metrics>
+  </template>
+  
+    <template>
+	  <name>Cisco IOS Software releases later to 12.0(3)T and prior to 12.2(3.5)</name>
+	  <description>Cisco IOS Software releases later to 12.0(3)T and prior to 12.2(3.5)</description>
+	  <sysObjectID>{sysobjectid}</sysObjectID>
+	  <metrics>
+	    <cpuLoad>
+<name>Cpu Load XSLT</name>
+<group>cpu</group>
+<oid>.1.3.6.1.4.1.9.9.109.1.1.1.1.5</oid>
+<snmpObject>cpmCPUTotal5min</snmpObject>
+<mib>CISCO-PROCESS-MIB</mib>
+<ref>http://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/15215-collect-cpu-util-snmp.html</ref>
+<vendorDescription>The overall CPU busy percentage in the last 5 minute
+period. This object deprecates the avgBusy5 object from 
+the OLD-CISCO-SYSTEM-MIB. This object is deprecated
+by cpmCPUTotal5minRev which has the changed range 
+of value (0..100)</vendorDescription>
+<description>Cpu load in %</description>
+</cpuLoad>
+	    <cpuUtil>
+<name>Cpu Util</name>
+<group>cpu</group>
+<oid>{oid}</oid>
+</cpuUtil>
+	    <memoryUsed>
+<name>Used memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+<description>Used memory in bytes</description>
+</memoryUsed>
+	    <memoryFree>
+<name>Free memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+</memoryFree>
+	  </metrics>
+  </template>
+  
+  
+      <template>
+	  <name>Cisco IOS Software releases prior to 12.0(3)T</name>
+	  <description>Cisco IOS Software releases prior to 12.0(3)T</description>
+	  <sysObjectID>{sysobjectid}</sysObjectID>
+	  <metrics>
+	    <cpuLoad>
+<name>Cpu Load XSLT</name>
+<group>cpu</group>
+<oid>.1.3.6.1.4.1.9.2.1.58</oid>
+<snmpObject>avgBusy5</snmpObject>
+<mib>OLD-CISCO-CPU-MIB</mib>
+<ref>http://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/15215-collect-cpu-util-snmp.html</ref>
+<vendorDescription>5 minute exponentially-decayed moving 
+average of the CPU busy percentage.</vendorDescription>
+<description>Cpu load in %</description>
+</cpuLoad>
+	    <cpuUtil>
+<name>Cpu Util</name>
+<group>cpu</group>
+<oid>{oid}</oid>
+</cpuUtil>
+	    <memoryUsed>
+<name>Used memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+<description>Used memory in bytes</description>
+</memoryUsed>
+	    <memoryFree>
+<name>Free memory</name>
+<group>memory</group>
+<oid>{oid}</oid>
+</memoryFree>
+	  </metrics>
+  </template>
+  
+  <!-- multiple CPU:
+  	Procedure for Devices with Multiple CPUs
+If your IOS device has several CPUs, you must use CISCO-PROCESS-MIB
+and its object cpmCPUTotal5minRev from the table called cpmCPUTotalTable , indexed with cpmCPUTotalIndex . This table allows CISCO-PROCESS-MIB to keep CPU statistics for different physical entities in the router, like different CPU chips, group of CPUs, or CPUs in different modules/cards. In case of a single CPU, cpmCPUTotalTable has only one entry.
+Information about different physical entities in the router is stored in the entPhysicalTable of RFC 2737 standard-based ENTITY-MIB. You can link between two tables ( cpmCPUTotalTable and entPhysicalTable ) easily: each row of cpmCPUTotalTable has an object cpmCPUTotalPhysicalIndex that keeps the value of the entPhysicalIndex (index of entPhysicalTable ), and points to the entry in entPhysicalTable , correspondent to the physical entity for which these CPU statistics are maintained.
+This implies that the IOS device must support both CISCO-PROCESS-MIB and ENTITY-MIB for you to be able to retrieve relevant information about CPU utilization. The only case where you do not need to have or use ENTITY-MIB is when you only have a single CPU.
+  
+http://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/15215-collect-cpu-util-snmp.html
+   -->
+  
+  
+</tns:root>
