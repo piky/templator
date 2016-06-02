@@ -114,11 +114,17 @@
 
     <complexType name="trigger">
 		<all>
+			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
 	 		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
 		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
 		    <element name="description" type="string" maxOccurs="1" minOccurs="0"/>
 		  	<element name="priority" type="byte" maxOccurs="1" minOccurs="1"/>
+		  	<element name="dependsOn" maxOccurs="1" minOccurs="0">
+		  		<complexType>
+		  			<sequence><element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/></sequence>
+		  		</complexType>
+		  	</element>
 	 	</all>
     </complexType>    
 

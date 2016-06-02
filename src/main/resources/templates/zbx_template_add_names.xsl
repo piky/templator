@@ -191,14 +191,19 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>40</expression>
+			    <id>tempWarn</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="metricLocation"/>"}</expression>
                 <name><xsl:value-of select="metricLocation"/> temperature is above warning threshold</name>
                 <url/>
                 <priority>2</priority>
                 <description/>
+                <dependsOn>
+                	<dependency>tempCrit</dependency>
+               	</dependsOn>
 			</trigger>
 			<trigger>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>60</expression>
+				<id>tempCrit</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="metricLocation"/>"}</expression>
                 <name><xsl:value-of select="metricLocation"/> temperature is above critical threshold</name>
                 <url/>
                 <priority>4</priority>

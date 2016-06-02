@@ -114,6 +114,8 @@
 </xsl:template>
 
 <xsl:template match="metrics/*/triggers/trigger">
+		<xsl:variable name="template_name" select="../../../../name"/>
+
 		<xsl:choose>
         	<xsl:when test="../../.[not (discoveryRule)]">
 							<trigger>
@@ -124,7 +126,15 @@
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
-	                            <dependencies/>
+	                            <dependencies>
+	               					<xsl:for-each select="./dependsOn/dependency">
+										<xsl:variable name="trigger_id" select="."/>
+    									<dependency>			
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/expression"/></expression>
+										</dependency>
+									</xsl:for-each>                      	                
+	                            </dependencies>
 							</trigger>
 			</xsl:when>
         <xsl:otherwise>
@@ -136,7 +146,14 @@
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
-	                            <dependencies/>
+	                            <dependencies>
+	               					<xsl:for-each select="./dependsOn/dependency">
+										<xsl:variable name="trigger_id" select="."/>
+    									<dependency>			
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/expression"/></expression>										</dependency>
+									</xsl:for-each>                      	                
+	                            </dependencies>
 							</trigger_prototype>
         </xsl:otherwise>
         </xsl:choose>
