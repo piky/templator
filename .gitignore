@@ -1,1 +1,5 @@
 target/
+src/data/result/template_cisco.xml
+src/data/result/template_juniper.xml
+src/data/result_step1/template_cisco.xml
+src/data/result_step1/template_juniper.xml

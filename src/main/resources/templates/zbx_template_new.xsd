@@ -59,6 +59,8 @@
 			    				</sequence>
 			    				<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 			    			</choice>
+			    			<element name="temperatureValue" type="tns:metricType" maxOccurs="1" minOccurs="1"></element>
+							<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"></element>
 	    				</sequence>
     			</complexType>
     		</element>
@@ -96,6 +98,7 @@
 			    <element name="update" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="metricLocation" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="triggers" minOccurs="0" maxOccurs="1">
 		    	<complexType>
 		    		<sequence>
@@ -123,6 +126,7 @@
     <restriction base="string">
         <enumeration value="Cpu"/>
         <enumeration value="Memory"/>
+        <enumeration value="Temperature"/>
     </restriction>
 </simpleType>
 </schema>

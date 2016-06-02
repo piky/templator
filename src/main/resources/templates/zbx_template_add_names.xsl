@@ -7,7 +7,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:variable name="historyDefault">30</xsl:variable>
 <xsl:variable name="trendsDefault">365</xsl:variable>
 <xsl:variable name="updateDefault">30</xsl:variable>
+
 <xsl:variable name="valueType">3</xsl:variable>
+<xsl:variable name="valueTypeFloat">0</xsl:variable>
+<xsl:variable name="valueTypeChar">1</xsl:variable>
+<xsl:variable name="valueTypeLog">2</xsl:variable>
+<xsl:variable name="valueTypeInt">3</xsl:variable>
+<xsl:variable name="valueTypeText">4</xsl:variable>
 	<!-- Type of information of the item. 
 	Possible values: 
 	0 - numeric float; 
@@ -145,6 +151,74 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                 <description/>
 			</trigger>
 		</triggers>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/temperatureValue">
+	<xsl:copy>
+		<name>Temperature[<xsl:value-of select="metricLocation"/>]</name>
+		<group>Temperature</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Temperature readings of testpoint: <xsl:value-of select="metricLocation"/></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>C</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<triggers>
+			<trigger>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>40</expression>
+                <name><xsl:value-of select="metricLocation"/> temperature is above warning threshold</name>
+                <url/>
+                <priority>2</priority>
+                <description/>
+			</trigger>
+			<trigger>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>60</expression>
+                <name><xsl:value-of select="metricLocation"/> temperature is above critical threshold</name>
+                <url/>
+                <priority>4</priority>
+                <description/>
+			</trigger>
+		</triggers>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/temperatureStatus">
+	<xsl:copy>
+		<name>Temperature[<xsl:value-of select="metricLocation"/>]</name>
+		<group>Temperature</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Temperature status of testpoint: <xsl:value-of select="metricLocation"/></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
 </xsl:stylesheet>
