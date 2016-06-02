@@ -75,7 +75,8 @@
 		      <mib>CISCO-ENVMON-MIB</mib>
 		      <vendorDescription>The current state of the testpoint being instrumented.</vendorDescription>
 		      <discoveryRule>Temperature Discovery</discoveryRule>
-		      <metricLocation>{#SNMPVALUE}</metricLocation>	    
+		      <metricLocation>{#SNMPVALUE}</metricLocation>
+		      <valueMap>CISCO-ENVMON-MIB::CiscoEnvMonState</valueMap>	    
 	    </temperatureStatus>
 	  </metrics>
   </template>
@@ -151,7 +152,8 @@ of value (0..100)</vendorDescription>
 		      <mib>CISCO-ENVMON-MIB</mib>
 		      <vendorDescription>The current state of the testpoint being instrumented.</vendorDescription>
 		      <discoveryRule>Temperature Discovery</discoveryRule>
-		      <metricLocation>{#SNMPVALUE}</metricLocation>	    
+		      <metricLocation>{#SNMPVALUE}</metricLocation>
+		      <valueMap>CISCO-ENVMON-MIB::CiscoEnvMonState</valueMap>	    
 	    </temperatureStatus>
 	  </metrics>
   </template>
@@ -214,7 +216,8 @@ average of the CPU busy percentage.</vendorDescription>
 		      <mib>CISCO-ENVMON-MIB</mib>
 		      <vendorDescription>The current state of the testpoint being instrumented.</vendorDescription>
 		      <discoveryRule>Temperature Discovery</discoveryRule>
-		      <metricLocation>{#SNMPVALUE}</metricLocation>	    
+		      <metricLocation>{#SNMPVALUE}</metricLocation>
+		      <valueMap>CISCO-ENVMON-MIB::CiscoEnvMonState</valueMap>	    
 	    </temperatureStatus>
 	  </metrics>
   </template>
@@ -228,6 +231,36 @@ This implies that the IOS device must support both CISCO-PROCESS-MIB and ENTITY-
   
 http://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/15215-collect-cpu-util-snmp.html
    -->
-  
+    <value_maps>
+        <value_map>
+            <name>CISCO-ENVMON-MIB::CiscoEnvMonState</name>
+            <mappings>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>normal</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>warning</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>critical</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>shutdown</newvalue>
+                </mapping>
+                <mapping>
+                    <value>5</value>
+                    <newvalue>notPresent</newvalue>
+                </mapping>
+                <mapping>
+                    <value>6</value>
+                    <newvalue>notFunctioning</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
   
 </tns:root>

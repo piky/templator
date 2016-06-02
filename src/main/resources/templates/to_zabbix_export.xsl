@@ -24,7 +24,9 @@
 		<triggers>
 				<xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
 		</triggers>
-		<value_maps/>
+		<value_maps>
+				<xsl:copy-of copy-namespaces="no" select="child::*/value_maps/*"/>
+		</value_maps>
 	</zabbix_export>
 </xsl:template>
 
@@ -197,7 +199,15 @@
                                     <name><xsl:value-of select="./group"></xsl:value-of></name>
                                 </application>
                         </applications>
-	                    <valuemap/>
+	                    <valuemap>
+							<xsl:choose>
+							  <xsl:when test="./valueMap != ''">
+							    <name>
+							    	<xsl:value-of select="./valueMap"/>
+							    </name>
+							  </xsl:when>
+							</xsl:choose>
+	                    </valuemap>
 	                    <logtimefmt/>
   				</item>        
 		</xsl:when>
@@ -255,7 +265,15 @@
                                     <name><xsl:value-of select="./group"></xsl:value-of></name>
                                 </application>
                         </applications>
-	                    <valuemap/>
+	                    <valuemap>
+						<xsl:choose>
+							  <xsl:when test="./valueMap != ''">
+							    <name>
+							    	<xsl:value-of select="./valueMap"/>
+							    </name>
+							  </xsl:when>
+						</xsl:choose>
+	                    </valuemap>
 	                    <logtimefmt/>
 					<application_prototypes/>
 				</item_prototype>

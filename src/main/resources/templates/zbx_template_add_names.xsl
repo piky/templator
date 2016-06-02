@@ -29,6 +29,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
    </xsl:copy>
 </xsl:template>
 
+<xsl:template match="value_maps">
+	<value_maps>
+		<xsl:copy-of copy-namespaces="no" select="node()|@*"></xsl:copy-of>
+	</value_maps>
+</xsl:template>
+
 
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
@@ -46,6 +52,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units>%</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -75,6 +82,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units></units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -94,6 +102,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units>B</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -115,6 +124,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units>B</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -141,6 +151,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units>%</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -176,6 +187,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units>C</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -199,7 +211,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/temperatureStatus">
 	<xsl:copy>
-		<name>Temperature[<xsl:value-of select="metricLocation"/>]</name>
+		<name>Temperature status[<xsl:value-of select="metricLocation"/>]</name>
 		<group>Temperature</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -218,6 +230,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units></units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>

@@ -68,9 +68,10 @@
     </complexType>
     
 	<complexType name="rootType">
-    	 <choice>
+    	 <sequence>
     		<element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
-    	 </choice>
+    		<element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
+    	 </sequence>
     </complexType>
     
     <complexType name="metricType">
@@ -99,6 +100,7 @@
 			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="metricLocation" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="triggers" minOccurs="0" maxOccurs="1">
 		    	<complexType>
 		    		<sequence>
@@ -129,4 +131,31 @@
         <enumeration value="Temperature"/>
     </restriction>
 </simpleType>
+
+<complexType name="valueMapsType">
+	<sequence>
+		<element name="value_map" maxOccurs="unbounded">
+			<complexType>
+				<sequence>
+					<element name="name"></element>
+					<element name="mappings">
+						<complexType>
+							<sequence>
+								<element name="mapping" maxOccurs="unbounded">
+									<complexType>
+									<sequence>
+										<element name="value" type="string"/>
+										<element name="newvalue" type="string"/>
+									</sequence>
+									</complexType>		
+								</element>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>	
+			</complexType>
+		</element>
+	</sequence>
+</complexType>
+
 </schema>
