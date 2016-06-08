@@ -22,11 +22,22 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	3 - numeric unsigned; 
 	4 - text. -->
 
+<!--  define macros with default values to add into template-->
+    <xsl:variable name="MACROS" as="element()*">
+        <TEMP_CRIT>60</TEMP_CRIT>
+        <TEMP_WARN>50</TEMP_WARN>
+    </xsl:variable>
+
+
+
 
 <xsl:template match="node()|@*">
    <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
    </xsl:copy>
+   <xsl:for-each select="$MACROS/*">
+		<xsl:value-of select="."></xsl:value-of>
+   </xsl:for-each>
 </xsl:template>
 
 <xsl:template match="value_maps">
