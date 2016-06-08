@@ -29,15 +29,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:variable>
 
 
-
-
 <xsl:template match="node()|@*">
    <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
    </xsl:copy>
-   <xsl:for-each select="$MACROS/*">
-		<xsl:value-of select="."></xsl:value-of>
-   </xsl:for-each>
 </xsl:template>
 
 <xsl:template match="value_maps">
@@ -46,7 +41,19 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</value_maps>
 </xsl:template>
 
-
+<xsl:template match="template">
+     <xsl:copy>
+		<xsl:apply-templates select="node()|@*"/>
+		<macros>
+		<xsl:for-each select="$MACROS">
+			<macro>
+        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
+                <value><xsl:value-of select="."/></value>
+			</macro>
+         </xsl:for-each>
+    	</macros>
+      </xsl:copy>
+</xsl:template>  
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
 		<name>Cpu Load</name>

@@ -53,7 +53,9 @@
 				<discovery_rules>
 					<xsl:apply-templates select="discoveryRules"></xsl:apply-templates>
 				</discovery_rules>
-	            <macros/>
+	            <macros>
+	            	<xsl:copy-of copy-namespaces="no" select="macros/*"></xsl:copy-of>
+	            </macros>
 	            <templates/>
 	            <screens/>
 			</template>

@@ -64,6 +64,20 @@
 	    				</sequence>
     			</complexType>
     		</element>
+    		<element name="macros" minOccurs="0">
+    			<complexType>
+	    			<sequence>
+	    				<element name="macro" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="macro" type="string"/>
+	    							<element name="value" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+    			</complexType>
+    		</element>
     	</all>
     </complexType>
     
