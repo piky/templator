@@ -117,6 +117,7 @@
 
 <xsl:template match="metrics/*/triggers/trigger">
 		<xsl:variable name="template_name" select="../../../../name"/>
+		<xsl:variable name="metric_name" select="../../name"/>
 
 		<xsl:choose>
         	<xsl:when test="../../.[not (discoveryRule)]">
@@ -132,8 +133,8 @@
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
-      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/name"/></name>
-      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
 										</dependency>
 									</xsl:for-each>                      	                
 	                            </dependencies>
@@ -152,9 +153,8 @@
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
-      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/name"/></name>
-      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*/triggers/trigger[id=$trigger_id]/expression"/></expression>										</dependency>
-									</xsl:for-each>                      	                
+											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>									</xsl:for-each>                      	                
 	                            </dependencies>
 							</trigger_prototype>
         </xsl:otherwise>
