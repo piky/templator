@@ -51,17 +51,20 @@
 	    			 	<sequence>
 			    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 			    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-			    			<choice>
-			    				<sequence>
-			    					<element name="memoryUsed" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								<choice minOccurs="0">
+								  <sequence>
+								    <element name="memoryUsed" type="tns:metricType"/>
+								    <element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-							        <element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-							    	<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-			    				</sequence>
-			    				<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-			    			</choice>
-			    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
-							<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								  </sequence>
+								  <sequence>
+								    <element name="memoryFree" type="tns:metricType"/>
+							        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								  </sequence>
+								</choice>
+				    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
+								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 	    				</sequence>
     			</complexType>
     		</element>

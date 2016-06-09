@@ -185,10 +185,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<xsl:when test="./calculated = 'true'">
 					<xsl:choose>
 						<xsl:when test="../memoryTotal and  ../memoryUsed">
-							<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryTotal/snmpObject"/>))</expressionFormula>
+							<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
+						</xsl:when>
+						<xsl:when test="../memoryTotal and  ../memoryFree">
+							<expressionFormula>((last(<xsl:value-of select="../memoryTotal/snmpObject"/>)-last(<xsl:value-of select="../memoryFree/snmpObject"/>))/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
 						</xsl:when>
 						<xsl:otherwise>
-							<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+							<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>)))*100</expressionFormula>
 						</xsl:otherwise>
 					</xsl:choose>				
 			</xsl:when>
@@ -200,7 +203,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>%</units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
