@@ -153,8 +153,10 @@
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
-											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
-      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>									</xsl:for-each>                      	                
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+										</dependency>
+									</xsl:for-each>                        	                
 	                            </dependencies>
 							</trigger_prototype>
         </xsl:otherwise>
@@ -178,7 +180,14 @@
 						</xsl:choose>
 	                    </type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-	                    <multiplier>0</multiplier>
+	                    <xsl:choose>
+						  <xsl:when test="./multiplier != ''">
+						    <multiplier>1</multiplier>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<multiplier>0</multiplier>
+						  </xsl:otherwise>
+						</xsl:choose>
 						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
 	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
@@ -196,7 +205,14 @@
 	                    <snmpv3_authpassphrase/>
 	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
 	                    <snmpv3_privpassphrase/>
-	                    <formula>0</formula>
+	                    <xsl:choose>
+						  <xsl:when test="./multiplier != ''">
+						    <formula><xsl:value-of select="./multiplier"/></formula>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<formula>0</formula>
+						  </xsl:otherwise>
+						</xsl:choose>
 	                    <delay_flex/>
 	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
 	                    <ipmi_sensor/>
@@ -244,7 +260,14 @@
 						</xsl:choose>
 	                    </type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-	                    <multiplier>0</multiplier>
+	                    <xsl:choose>
+						  <xsl:when test="./multiplier != ''">
+						    <multiplier>1</multiplier>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<multiplier>0</multiplier>
+						  </xsl:otherwise>
+						</xsl:choose>
 						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
 	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
@@ -262,7 +285,14 @@
 	                    <snmpv3_authpassphrase/>
 	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
 	                    <snmpv3_privpassphrase/>
-	                    <formula>0</formula>
+                		<xsl:choose>
+						  <xsl:when test="./multiplier != ''">
+						    <formula><xsl:value-of select="./multiplier"/></formula>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<formula>0</formula>
+						  </xsl:otherwise>
+						</xsl:choose>
 	                    <delay_flex/>
 	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
 	                    <ipmi_sensor/>

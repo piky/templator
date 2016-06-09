@@ -411,7 +411,7 @@
                                 <xs:element type="xs:string" name="snmpv3_authpassphrase"/>
                                 <xs:element type="xs:string" name="snmpv3_privprotocol"/>
                                 <xs:element type="xs:string" name="snmpv3_privpassphrase"/>
-                                <xs:element type="xs:byte" name="formula"/>
+                                <xs:element type="xs:float" name="formula"/>
                                 <xs:element type="xs:string" name="delay_flex"/>
                                 <xs:element type="xs:string" name="params"/>
                                 <xs:element type="xs:string" name="ipmi_sensor"/>

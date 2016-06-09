@@ -71,6 +71,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -101,6 +102,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -121,6 +123,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -143,6 +146,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
@@ -170,6 +174,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -206,6 +211,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
@@ -254,6 +260,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>

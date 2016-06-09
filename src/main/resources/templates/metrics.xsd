@@ -115,6 +115,7 @@
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="metricLocation" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
 			    <element name="triggers" minOccurs="0" maxOccurs="1">
 		    	<complexType>
 		    		<sequence>
