@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
+  <template>
+	  <name>Template Ubiquiti AirOS</name>
+	  <description>Template Ubiquiti AirOS</description>
+	  <sysObjectID>.1.3.6.1.4.1.10002.1</sysObjectID>
+	  <metrics>
+	    <cpuLoad>
+	      <oid>.1.3.6.1.4.1.10002.1.1.1.4.2.1.3.2</oid>
+	      <snmpObject>loadValue.2</snmpObject>
+	      <mib>FROGFOOT-RESOURCES-MIB</mib>
+	      <vendorDescription>5 minute load average of processor load.</vendorDescription>
+	    </cpuLoad>
+	    <memoryFree>
+	      <oid>1.3.6.1.4.1.10002.1.1.1.1.2.0</oid>
+	      <snmpObject>memFree</snmpObject>
+	      <mib>FROGFOOT-RESOURCES-MIB</mib>
+	      <multiplier>1024</multiplier>
+	    </memoryFree>
+	    <memoryTotal>
+	      <oid>1.3.6.1.4.1.10002.1.1.1.1.1.0</oid>
+	      <snmpObject>memTotal</snmpObject>
+	      <mib>FROGFOOT-RESOURCES-MIB</mib>
+	      <multiplier>1024</multiplier>
+	    </memoryTotal>
+	    <memoryUsedPercentage>
+			 <snmpObject>memoryUsedPercentage</snmpObject>
+			 <calculated>true</calculated>   	  
+	    </memoryUsedPercentage>
+	    <temperatureValue> <!--  not possible to gather it -->
+	    	  <oid>1</oid>
+		      <snmpObject>none</snmpObject>
+	    </temperatureValue>
+	   </metrics>
+  </template>
+  </tns:root>
