@@ -4,7 +4,8 @@
 <xsl:output method="xml" indent="yes"/>
 
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
-<xsl:variable name="snmp_item_type">4</xsl:variable>
+<!-- <xsl:variable name="snmp_item_type">4</xsl:variable>  defined outside in camel route-->
+<xsl:param name="snmp_item_type" select="4"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
 
@@ -65,7 +66,7 @@
 					<xsl:variable name="disc_name" select="./name"></xsl:variable>
 					<discovery_rule>
 						<name><xsl:value-of select="./name"></xsl:value-of></name>
-	                    <type>4</type>
+	                    <type><xsl:copy-of select="$snmp_item_type"/></type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
 	                    <snmp_oid><xsl:value-of select="./snmp_oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./key"></xsl:value-of></key>
