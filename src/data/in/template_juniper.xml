@@ -40,7 +40,7 @@
 	      <snmpObject>jnxOperatingBuffer[{#SNMPVALUE}]</snmpObject>
 	      <mib>JUNIPER-MIB</mib>
 	      <ref>http://kb.juniper.net/library/CUSTOMERSERVICE/GLOBAL_JTAC/BK26199/SRX%20SNMP%20Monitoring%20Guide_v1.1.pdf</ref>
-	      <vendorDescription>The buffer pool utilization in percentageof this subject.  Zero if unavailable or inapplicable.</vendorDescription>
+	      <vendorDescription>The buffer pool utilization in percentage of this subject.  Zero if unavailable or inapplicable.</vendorDescription>
 	      <discoveryRule>CPU and Memory Discovery</discoveryRule>
 	    </memoryUsedPercentage>
   	    <temperatureValue>

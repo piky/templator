@@ -106,6 +106,27 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
+<xsl:template match="template/metrics/memoryUsed">
+	<xsl:copy>
+		<name>Used memory</name>
+		<group>Memory</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Used memory in bytes</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>B</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
 
 <xsl:template match="template/metrics/memoryFree">
 	<xsl:copy>
@@ -129,9 +150,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
-<xsl:template match="template/metrics/memoryUsed">
+
+<xsl:template match="template/metrics/memoryTotal">
 	<xsl:copy>
-		<name>Used memory</name>
+		<name>Total memory</name>
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -139,7 +161,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Used memory in bytes</description>
+		<description>Total memory in bytes</description>
 		<history><xsl:copy-of select="$historyDefault"/></history>
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>B</units>
@@ -161,9 +183,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="mib"></xsl:copy-of>
 		<xsl:choose>
 			<xsl:when test="./calculated = 'true'">
-				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+					<xsl:choose>
+						<xsl:when test="../memoryTotal and  ../memoryUsed">
+							<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryTotal/snmpObject"/>))</expressionFormula>
+						</xsl:when>
+						<xsl:otherwise>
+							<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+						</xsl:otherwise>
+					</xsl:choose>				
 			</xsl:when>
-			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
