@@ -94,7 +94,7 @@
     
     <complexType name="metricType">
 		<sequence>
-			<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 	 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/>
 			<choice>
 				<sequence>
@@ -182,5 +182,21 @@
 		</element>
 	</sequence>
 </complexType>
+
+<!-- lang proto -->
+  <complexType name="langString">
+    <simpleContent>
+      <extension base="string">
+       	 <attribute name="lang" default="EN">
+       	 	<simpleType>
+       	 		<restriction base="string">
+		        <enumeration value="EN"/>
+		        <enumeration value="RU"/>
+    		</restriction>
+       	 	</simpleType>
+       	 </attribute>
+      </extension>
+    </simpleContent>
+  </complexType>
 
 </schema>

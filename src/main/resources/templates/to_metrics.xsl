@@ -56,7 +56,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>  
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
-		<name>Cpu Load</name>
+		<name lang="EN">Cpu Load</name>
+		<name lang="RU">Загрузка процессора</name>
 		<group>Cpu</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>

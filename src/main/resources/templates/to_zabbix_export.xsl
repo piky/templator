@@ -6,8 +6,11 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <!-- <xsl:variable name="snmp_item_type">4</xsl:variable>  defined outside in camel route-->
 <xsl:param name="snmp_item_type" select="4"/>
+<xsl:param name="lang" select="EN"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
+
+
 
 
 <xsl:template match="/">
@@ -168,8 +171,17 @@
 <xsl:template match="metrics/*">
       <xsl:choose>
         <xsl:when test="./not (discoveryRule)">
-				<item>
-  					<name><xsl:value-of select="./name"></xsl:value-of></name>
+					<item>
+						<name>
+  							<xsl:choose>
+						  		<xsl:when test="./name[@lang=$lang]">
+				    				<xsl:value-of select="./name[@lang=$lang]"></xsl:value-of>
+						  		</xsl:when>
+					    	<xsl:otherwise>
+				    				<xsl:value-of select="./name[not (@lang) or @lang='EN']"></xsl:value-of>
+					    	</xsl:otherwise>
+					    	</xsl:choose>
+						</name>
 	                    <type>
 	                    <xsl:choose>
 						  <xsl:when test="./expressionFormula != ''">
@@ -249,7 +261,16 @@
 		</xsl:when>
         <xsl:otherwise>
         		<item_prototype>
-        			<name><xsl:value-of select="./name"></xsl:value-of></name>
+						<name>
+  							<xsl:choose>
+						  		<xsl:when test="./name[@lang=$lang]">
+				    				<xsl:value-of select="./name[@lang=$lang]"></xsl:value-of>
+						  		</xsl:when>
+					    	<xsl:otherwise>
+				    				<xsl:value-of select="./name[not (@lang) or @lang='EN']"></xsl:value-of>
+					    	</xsl:otherwise>
+					    	</xsl:choose>
+						</name>
 	                    <type>
 	                    <xsl:choose>
 						  <xsl:when test="./expressionFormula != ''">
