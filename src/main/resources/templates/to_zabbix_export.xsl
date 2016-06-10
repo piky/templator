@@ -241,7 +241,14 @@
 							<xsl:value-of select="./ref"></xsl:value-of><xsl:text> </xsl:text>
 							<xsl:value-of select="./vendorDescription"></xsl:value-of>
 						</description>
-	                    <inventory_link>0</inventory_link>
+						<xsl:choose>
+						  <xsl:when test="./inventory_link != ''">
+						    <inventory_link><xsl:value-of select="./inventory_link"/></inventory_link>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<inventory_link>0</inventory_link>
+						  </xsl:otherwise>
+						</xsl:choose>
 		                <applications>
                                 <application>
                                     <name><xsl:value-of select="./group"></xsl:value-of></name>
@@ -330,7 +337,14 @@
 							<xsl:value-of select="./ref"></xsl:value-of><xsl:text> </xsl:text>
 							<xsl:value-of select="./vendorDescription"></xsl:value-of>
 						</description>
-	                    <inventory_link>0</inventory_link>
+	                    <xsl:choose>
+						  <xsl:when test="./inventory_link != ''">
+						    <inventory_link><xsl:value-of select="./inventory_link"/></inventory_link>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<inventory_link>0</inventory_link>
+						  </xsl:otherwise>
+						</xsl:choose>
 		                <applications>
                                 <application>
                                     <name><xsl:value-of select="./group"></xsl:value-of></name>

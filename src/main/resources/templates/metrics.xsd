@@ -48,24 +48,34 @@
     		</element>
     		<element name="metrics">
     			<complexType>
-	    			 	<sequence>
-			    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-			    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<choice minOccurs="0">
-								  <sequence>
-								    <element name="memoryUsed" type="tns:metricType"/>
-								    <element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-							        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								  </sequence>
-								  <sequence>
-								    <element name="memoryFree" type="tns:metricType"/>
-							        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								  </sequence>
-								</choice>
-				    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
-								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-	    				</sequence>
+	    			 	<choice>
+	    			 		<sequence><!-- Template Performance + ENV -->
+				    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+				    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<choice minOccurs="0">
+									  <sequence>
+									    <element name="memoryUsed" type="tns:metricType"/>
+									    <element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									  <sequence>
+									    <element name="memoryFree" type="tns:metricType"/>
+								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									</choice>
+					    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+					    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
+									<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+		    				</sequence>
+		    				<sequence> <!-- Template Availability and System Info -->
+		    					<element name="sysUptime" type="tns:metricType"/>
+		    					<element name="sysLocation" type="tns:metricType"/>
+		    					<element name="sysContact" type="tns:metricType"/>
+		    					<element name="sysObjectID" type="tns:metricType"/>
+		    					<element name="sysName" type="tns:metricType"/>
+		    					<element name="sysDescr" type="tns:metricType"/>
+		    				</sequence>
+	    				</choice>
     			</complexType>
     		</element>
     		<element name="macros" minOccurs="0">
@@ -119,6 +129,7 @@
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="metricLocation" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/>
 			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
 			    <element name="triggers" minOccurs="0" maxOccurs="1">
 		    	<complexType>
@@ -154,6 +165,7 @@
         <enumeration value="Cpu"/>
         <enumeration value="Memory"/>
         <enumeration value="Temperature"/>
+        <enumeration value="General"/>
     </restriction>
 </simpleType>
 
@@ -198,5 +210,92 @@
       </extension>
     </simpleContent>
   </complexType>
+
+  <simpleType name="inventory_link">
+	
+    	<restriction base="int">
+    		<minInclusive value="1"></minInclusive>
+    		<maxInclusive value="70"></maxInclusive>
+    		
+    	</restriction>
+
+  </simpleType>
+
+
+<!-- host inventory (for inventory link) 
+ID	Property	Type	Description
+4	alias	string	Alias.
+11	asset_tag	string	Asset tag.
+28	chassis	string	Chassis.
+23	contact	string	Contact person.
+32	contract_number	string	Contract number.
+47	date_hw_decomm	string	HW decommissioning date.
+46	date_hw_expiry	string	HW maintenance expiry date.
+45	date_hw_install	string	HW installation date.
+44	date_hw_purchase	string	HW purchase date.
+34	deployment_status	string	Deployment status.
+14	hardware	string	Hardware.
+15	hardware_full	string	Detailed hardware.
+39	host_netmask	string	Host subnet mask.
+38	host_networks	string	Host networks.
+40	host_router	string	Host router.
+30	hw_arch	string	HW architecture.
+33	installer_name	string	Installer name.
+24	location	string	Location.
+25	location_lat	string	Location latitude.
+26	location_lon	string	Location longitude.
+12	macaddress_a	string	MAC address A.
+13	macaddress_b	string	MAC address B.
+29	model	string	Model.
+3	name	string	Name.
+27	notes	string	Notes.
+41	oob_ip	string	OOB IP address.
+42	oob_netmask	string	OOB host subnet mask.
+43	oob_router	string	OOB router.
+5	os	string	OS name.
+6	os_full	string	Detailed OS name.
+7	os_short	string	Short OS name.
+61	poc_1_cell	string	Primary POC mobile number.
+58	poc_1_email	string	Primary email.
+57	poc_1_name	string	Primary POC name.
+63	poc_1_notes	string	Primary POC notes.
+59	poc_1_phone_a	string	Primary POC phone A.
+60	poc_1_phone_b	string	Primary POC phone B.
+62	poc_1_screen	string	Primary POC screen name.
+68	poc_2_cell	string	Secondary POC mobile number.
+65	poc_2_email	string	Secondary POC email.
+64	poc_2_name	string	Secondary POC name.
+70	poc_2_notes	string	Secondary POC notes.
+66	poc_2_phone_a	string	Secondary POC phone A.
+67	poc_2_phone_b	string	Secondary POC phone B.
+69	poc_2_screen	string	Secondary POC screen name.
+8	serialno_a	string	Serial number A.
+9	serialno_b	string	Serial number B.
+48	site_address_a	string	Site address A.
+49	site_address_b	string	Site address B.
+50	site_address_c	string	Site address C.
+51	site_city	string	Site city.
+53	site_country	string	Site country.
+56	site_notes	string	Site notes.
+55	site_rack	string	Site rack location.
+52	site_state	string	Site state.
+54	site_zip	string	Site ZIP/postal code.
+16	software	string	Software.
+18	software_app_a	string	Software application A.
+19	software_app_b	string	Software application B.
+20	software_app_c	string	Software application C.
+21	software_app_d	string	Software application D.
+22	software_app_e	string	Software application E.
+17	software_full	string	Software details.
+10	tag	string	Tag.
+1	type	string	Type.
+2	type_full	string	Type details.
+35	url_a	string	URL A.
+36	url_b	string	URL B.
+37	url_c	string	URL C.
+31	vendor	string	Vendor.
+-->
+
+
 
 </schema>

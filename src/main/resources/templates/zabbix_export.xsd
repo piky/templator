@@ -423,7 +423,7 @@
                                 <xs:element type="xs:string" name="privatekey"/>
                                 <xs:element type="xs:string" name="port"/>
                                 <xs:element type="xs:string" name="description"/>
-                                <xs:element type="xs:byte" name="inventory_link"/>
+                                <xs:element type="xs:int" name="inventory_link"/>
                                 <xs:element type="applicationsType" name="applications"/>
                                 <xs:element name="valuemap">
                                 	<xs:complexType>
