@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
   <template>
-	  <name>Template Mikrotik</name>
-	  <description>Template Mikrotik</description>
+	  <class>Performance</class>
+	  <name>Template Mikrotik Performance</name>
+	  <description>Template Mikrotik Performance</description>
 	  <sysObjectID>.1.3.6.1.4.1.14988.1</sysObjectID>
   	  <discoveryRules>
 	  	<discoveryRule>
@@ -47,6 +48,16 @@
 			 <snmpObject>memoryUsedPercentage[Memory]</snmpObject>
 			 <calculated>true</calculated>	    	  
 	    </memoryUsedPercentage>
+	   </metrics>
+  </template>
+  
+  
+  <template>
+	  <class>Fault</class>
+	  <name>Template Mikrotik Fault</name>
+	  <description>Template Mikrotik Fault</description>
+	  <sysObjectID>.1.3.6.1.4.1.14988.1</sysObjectID>
+	  <metrics>
   	    <temperatureValue>
 	    	  <oid>1.3.6.1.4.1.14988.1.1.3.11.0</oid>
 		      <snmpObject>mtxrHlProcessorTemperature</snmpObject>
@@ -65,5 +76,17 @@
 		      <multiplier>0.1</multiplier>
 	    </temperatureValue>
 	   </metrics>
+	   
+	   <macros>
+	   	<macro>
+	   		<macro>{$TEMP_CRIT:"Processor"}</macro>
+	   		<value>75</value>
+	   	</macro>
+	   	<macro>
+	   		<macro>{$TEMP_WARN:"Processor"}</macro>
+	   		<value>70</value>
+	   	</macro>
+	   	
+	   </macros>
   </template>
   </tns:root>
