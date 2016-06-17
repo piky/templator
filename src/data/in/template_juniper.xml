@@ -33,7 +33,7 @@
 	      <snmpObject>jnxOperating5MinLoadAvg[{#SNMPVALUE}]</snmpObject>
 	      <mib>JUNIPER-MIB</mib>
 	      <ref>http://kb.juniper.net/library/CUSTOMERSERVICE/GLOBAL_JTAC/BK26199/SRX%20SNMP%20Monitoring%20Guide_v1.1.pdf</ref>
-	      <vendorDescription>The CPU Load Average over the last 5 minutesHere it will be shown as percentage valueZero if unavailable or inapplicable.</vendorDescription>
+	      <vendorDescription>The CPU Load Average over the last 5 minutes Here it will be shown as percentage valueZero if unavailable or inapplicable.</vendorDescription>
 	      <discoveryRule>CPU and Memory Discovery</discoveryRule>
 	    </cpuLoad>
 	    <memoryUsedPercentage>
