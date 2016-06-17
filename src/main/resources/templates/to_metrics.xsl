@@ -56,6 +56,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
      <xsl:copy>
 		<xsl:apply-templates select="node()|@*"/>
 		<macros>
+
+         <!-- add extra contextual no checks. should be before default $MACROS!-->
+		<xsl:copy-of copy-namespaces="no" select="./macros/macro"/>
 		<xsl:for-each select="$MACROS">
 			<xsl:choose>
 				<xsl:when test="name(.) = $template_class">
@@ -68,8 +71,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</xsl:when>
 			</xsl:choose>
          </xsl:for-each>
-         <!-- add extra contextual no checks!-->
-			<xsl:copy-of copy-namespaces="no" select="./macros/macro"/>
+
     	</macros>
       </xsl:copy>
 </xsl:template>

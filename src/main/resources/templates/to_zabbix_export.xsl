@@ -58,7 +58,12 @@
 					<xsl:apply-templates select="discoveryRules"></xsl:apply-templates>
 				</discovery_rules>
 	            <macros>
-	            	<xsl:copy-of copy-namespaces="no" select="macros/*"></xsl:copy-of>
+	            	<xsl:for-each-group select="macros/macro" group-by="macro">
+  						<macro>
+  							<macro><xsl:value-of select="./macro"/></macro>
+  							<value><xsl:value-of select="./value"/></value>
+						</macro>
+					</xsl:for-each-group>
 	            </macros>
 	            <templates/>
 	            <screens/>
