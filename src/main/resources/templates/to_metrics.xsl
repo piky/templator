@@ -68,9 +68,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</xsl:when>
 			</xsl:choose>
          </xsl:for-each>
+         <!-- add extra contextual no checks!-->
+			<xsl:copy-of copy-namespaces="no" select="./macros/macro"/>
     	</macros>
       </xsl:copy>
-</xsl:template> 
+</xsl:template>
+
+<xsl:template match="macros"/><!-- leave it empty -->
+ 
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
 		<name lang="EN">Cpu Load</name>

@@ -89,6 +89,17 @@
 		      <metricLocation>{#SNMPVALUE}</metricLocation>
 	    	</temperatureValue>
 	   </metrics>
+
+	   	<macros>
+	   		<macro>
+               <macro>{$TEMP_CRIT:"Processor"}</macro>
+               <value>60</value>
+            </macro>
+            <macro>
+               <macro>{$TEMP_WARN:"CPU"}</macro>
+               <value>60</value>
+            </macro>
+	   	</macros>
   </template>
   
   </tns:root>
