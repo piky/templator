@@ -26,9 +26,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!--  define macros with default values to add into template-->
     <xsl:variable name="MACROS" as="element()*">
-        <TEMP_CRIT>60</TEMP_CRIT>
-        <TEMP_WARN>50</TEMP_WARN>
-        <SNMP_TIMEOUT>600</SNMP_TIMEOUT>
+        <Performance>
+
+        </Performance>
+        <Fault>
+        	<TEMP_CRIT>60</TEMP_CRIT>
+        	<TEMP_WARN>50</TEMP_WARN>        
+        </Fault>
+        <General>
+        	<SNMP_TIMEOUT>600</SNMP_TIMEOUT>
+        </General>
     </xsl:variable>
 
 
@@ -45,18 +52,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="template">
+     <xsl:variable name="template_class" select="./class"></xsl:variable>
      <xsl:copy>
 		<xsl:apply-templates select="node()|@*"/>
 		<macros>
 		<xsl:for-each select="$MACROS">
-			<macro>
-        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
-                <value><xsl:value-of select="."/></value>
-			</macro>
+			<xsl:choose>
+				<xsl:when test="name(.) = $template_class">
+					<xsl:for-each select="./*">
+						<macro>
+			        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
+			                <value><xsl:value-of select="."/></value>
+						</macro>
+					</xsl:for-each>
+				</xsl:when>
+			</xsl:choose>
          </xsl:for-each>
     	</macros>
       </xsl:copy>
-</xsl:template>  
+</xsl:template> 
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
 		<name lang="EN">Cpu Load</name>

@@ -3,6 +3,7 @@
     <element name="root" type="tns:rootType"/>
     <complexType name="templateType">
     	 <all>
+    		<element name="class" type="tns:templateClass" maxOccurs="1" minOccurs="1"/>
     		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
     		<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
     		<element name="sysObjectID" type="string"/>
@@ -49,7 +50,7 @@
     		<element name="metrics">
     			<complexType>
 	    			 	<choice>
-	    			 		<sequence><!-- Template Performance + ENV -->
+	    			 		<sequence><!-- Template Performance -->
 				    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 				    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									<choice minOccurs="0">
@@ -64,16 +65,18 @@
 									  </sequence>
 									</choice>
 					    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-					    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
-									<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
-		    				<sequence> <!-- Template Availability and System Info -->
+		    				<sequence> <!-- Template General and System Info -->
 		    					<element name="sysUptime" type="tns:metricType"/>
 		    					<element name="sysLocation" type="tns:metricType"/>
 		    					<element name="sysContact" type="tns:metricType"/>
 		    					<element name="sysObjectID" type="tns:metricType"/>
 		    					<element name="sysName" type="tns:metricType"/>
 		    					<element name="sysDescr" type="tns:metricType"/>
+		    				</sequence>
+							<sequence> <!-- Template Fault and System Info -->
+				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
+								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
 	    				</choice>
     			</complexType>
@@ -165,6 +168,14 @@
         <enumeration value="Cpu"/>
         <enumeration value="Memory"/>
         <enumeration value="Temperature"/>
+        <enumeration value="General"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="templateClass">
+    <restriction base="string">
+        <enumeration value="Performance"/>
+        <enumeration value="Fault"/>
         <enumeration value="General"/>
     </restriction>
 </simpleType>
