@@ -121,8 +121,8 @@
 				</sequence>
 			</choice>
 			<choice maxOccurs="unbounded" minOccurs="0">
-				<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="vendorDescription" type="string" maxOccurs="1" minOccurs="0"/>
+				<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+			    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 			    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="history" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="trends" type="string" maxOccurs="1" minOccurs="0"/>
@@ -146,19 +146,20 @@
     </complexType>
 
     <complexType name="trigger">
-		<all>
+		<sequence>
 			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
-	 		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+	 		<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
-		    <element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+		    
 		  	<element name="priority" type="byte" maxOccurs="1" minOccurs="1"/>
+		  	<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 		  	<element name="dependsOn" maxOccurs="1" minOccurs="0">
 		  		<complexType>
 		  			<sequence><element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/></sequence>
 		  		</complexType>
 		  	</element>
-	 	</all>
+	 	</sequence>
     </complexType>    
 
                     

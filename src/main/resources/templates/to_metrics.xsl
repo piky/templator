@@ -101,7 +101,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<triggers>
 			<trigger>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
-                <name>CPU load is too high</name>
+                <name lang="EN">CPU load is too high</name>
+                <name lang="RU">Загрузка ЦПУ слишком велика</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
