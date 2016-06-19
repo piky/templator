@@ -274,7 +274,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 			    <id>tempWarn</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="metricLocation"/>"}</expression>
-                <name><xsl:value-of select="metricLocation"/> temperature is above warning threshold</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above warning threshold</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Температура выше нормы</name>
                 <url/>
                 <priority>2</priority>
                 <description/>
@@ -285,7 +286,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 				<id>tempCrit</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="metricLocation"/>"}</expression>
-                <name><xsl:value-of select="metricLocation"/> temperature is above critical threshold</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above critical threshold</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Температура очень высокая</name>
                 <url/>
                 <priority>4</priority>
                 <description/>
@@ -348,10 +350,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 			    <id>uptime.restarted</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600</expression>
-                <name><xsl:value-of select="metricLocation"/> The {HOST.NAME} has just been  restarted</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> The {HOST.NAME} has just been  restarted</name>
+                <name lang="RU"><xsl:value-of select="metricLocation"/>{HOST.NAME} был только что перезагружен</name>
                 <url/>
                 <priority>2</priority>
-                <description>The device uptime is less then 10 minutes</description>
+                <description lang="EN">The device uptime is less then 10 minutes</description>
+                <description lang="RU">Аптайм устройства менее 10 минут</description>
                 <dependsOn>
                 	<dependency>uptime.nodata</dependency>
                	</dependsOn>
@@ -359,10 +363,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 				<id>uptime.nodata</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.nodata({$SNMP_TIMEOUT})}=1</expression>
-                <name><xsl:value-of select="metricLocation"/>  No SNMP data collection</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> No SNMP data collection</name>
+                <name lang="RU"><xsl:value-of select="metricLocation"/> Нет сбора данных по SNMP</name>
                 <url/>
                 <priority>2</priority>
-                <description>SNMP object sysUptime.0 is not available for polling. Please check device connectivity and SNMP settings.</description>
+                <description lang="EN">SNMP object sysUptime.0 is not available for polling. Please check device connectivity and SNMP settings.</description>
+                <description lang="RU">Не удается опросить sysUptime.0. Проверьте доступность устройства и настройки SNMP.</description>
 			</trigger>
 		</triggers>
 	</xsl:copy>
