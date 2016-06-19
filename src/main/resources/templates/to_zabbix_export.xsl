@@ -4,13 +4,10 @@
 <xsl:output method="xml" indent="yes"/>
 
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
-<!-- <xsl:variable name="snmp_item_type">4</xsl:variable>  defined outside in camel route-->
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:param name="lang" select="EN"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
-
-
 
 
 <xsl:template match="/">
