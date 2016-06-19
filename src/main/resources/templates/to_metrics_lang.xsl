@@ -3,7 +3,7 @@
 
 <xsl:output method="xml" indent="yes"/>
 
-<xsl:param name="template_suffix" select="undef"/>
+<xsl:param name="lang" select="undef"/>
 
 
 <!-- 
@@ -17,11 +17,16 @@
 
 
 
-<xsl:template match="template/name">
+<xsl:template match="node()[@lang!=$lang]">
+	<!--<xsl:copy>
+		<xsl:copy-of  select="concat(., '_TBD')"/>
+	</xsl:copy> or just delete it   -->
+</xsl:template>
+
+<xsl:template match="node()[@lang=$lang]">
 	<xsl:copy>
-		<xsl:copy-of  select="concat(.,'_SNMP_PLACEHOLDER')"/>
-	</xsl:copy>
-    <!--    -->
+		<xsl:value-of  select="."/>
+	</xsl:copy> 
 </xsl:template>
 
 </xsl:stylesheet>
