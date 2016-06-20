@@ -81,8 +81,31 @@
 	    				</choice>
     			</complexType>
     		</element>
-    		<element name="macros" minOccurs="0">
-    			<complexType>
+    		<element name="templates" minOccurs="0" type="tns:templateDependencies"/>
+    		<element name="macros" minOccurs="0" type="tns:macros"/>
+    	</all>
+    </complexType>
+    
+	<complexType name="rootType">
+    	 <sequence>
+    		<element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
+    		<element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
+    	 </sequence>
+    </complexType>
+    
+		<complexType name="templateDependencies">
+					<sequence>
+	    				<element name="template" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="name" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+		</complexType>
+		
+		 	<complexType name="macros">
 	    			<sequence>
 	    				<element name="macro" minOccurs="0" maxOccurs="unbounded">
 	    					<complexType>
@@ -93,17 +116,8 @@
 	    					</complexType>
 	    				</element>
 	    			</sequence>
-    			</complexType>
-    		</element>
-    	</all>
-    </complexType>
+    		</complexType>
     
-	<complexType name="rootType">
-    	 <sequence>
-    		<element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
-    		<element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
-    	 </sequence>
-    </complexType>
     
     <complexType name="metricType">
 		<sequence>

@@ -61,7 +61,7 @@
 						</macro>
 					</xsl:for-each-group>
 	            </macros>
-	            <templates/>
+	            <xsl:copy-of copy-namespaces="no" select="./templates"/><!-- template dependencies block -->
 	            <screens/>
 			</template>
 </xsl:template>

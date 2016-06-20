@@ -73,6 +73,23 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
          </xsl:for-each>
 
     	</macros>
+    	<!-- add template name with _SNMP_PLACEHOLDER at the end to make dependency dynamic -->
+    	<templates>
+   			<xsl:choose>
+				<xsl:when test="$template_class = 'Performance'">
+						<template>
+			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
+						</template>
+				</xsl:when>
+				 <xsl:when test="$template_class = 'Fault'">
+						<template>
+			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
+						</template>
+				</xsl:when>
+				
+			</xsl:choose>
+    	
+    	</templates>
       </xsl:copy>
 </xsl:template>
 
