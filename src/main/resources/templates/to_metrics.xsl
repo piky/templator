@@ -9,6 +9,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:variable name="updateDefault">30</xsl:variable> <!-- change to 5min -->
 <xsl:variable name="update1min">60</xsl:variable>
 <xsl:variable name="update1hour">60</xsl:variable> <!-- change to 3600 -->
+<xsl:variable name="update1day">86400</xsl:variable> <!-- change to 3600 -->
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -86,7 +87,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
 						</template>
 				</xsl:when>
-				
+				<xsl:when test="$template_class = 'Inventory'">
+						<template>
+			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
+						</template>
+				</xsl:when>
 			</xsl:choose>
     	
     	</templates>
@@ -531,8 +536,34 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</xsl:copy>
 </xsl:template>
 
+<!-- inventory -->
 
-
+<xsl:template match="template/metrics/osVersion">
+	<xsl:copy>
+		<name>OS</name>
+		<group>Inventory</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1day"/></update>
+		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<inventory_link>5</inventory_link>
+	</xsl:copy>
+</xsl:template>
 
 
 </xsl:stylesheet>

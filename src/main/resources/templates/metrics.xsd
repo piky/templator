@@ -78,6 +78,9 @@
 				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
+							<sequence> <!-- Template Inventory -->
+				    			<element name="osVersion" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+		    				</sequence>
 	    				</choice>
     			</complexType>
     		</element>
@@ -184,6 +187,7 @@
         <enumeration value="Memory"/>
         <enumeration value="Temperature"/>
         <enumeration value="General"/>
+        <enumeration value="Inventory"/>
     </restriction>
 </simpleType>
 
@@ -192,6 +196,7 @@
         <enumeration value="Performance"/>
         <enumeration value="Fault"/>
         <enumeration value="General"/>
+        <enumeration value="Inventory"/>
     </restriction>
 </simpleType>
 
