@@ -88,7 +88,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							</template>  -->
 					</xsl:when>
 					 <xsl:when test="$template_class = 'Fault'">
-	
+							<!-- temp include -->
+							<template>
+				        		<name>Template ICMP Ping</name>
+							</template>	
 					</xsl:when>
 					<xsl:when test="$template_class = 'Inventory'">
 							<template>

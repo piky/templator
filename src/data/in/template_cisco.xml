@@ -84,6 +84,18 @@
 		      <valueMap>CISCO-ENVMON-MIB::CiscoEnvMonState</valueMap>	    
 	    </temperatureStatus>
 	  </metrics>
+	  
+	  
+	   <macros>
+	   	<macro>
+	   		<macro>{$TEMP_CRIT:"CPU"}</macro>
+	   		<value>75</value>
+	   	</macro>
+	   	<macro>
+	   		<macro>{$TEMP_WARN:"CPU"}</macro>
+	   		<value>70</value>
+	   	</macro>
+	   </macros>
   </template>
   
     <template>
@@ -166,6 +178,18 @@ of value (0..100)</vendorDescription>
 		      <valueMap>CISCO-ENVMON-MIB::CiscoEnvMonState</valueMap>	    
 	    </temperatureStatus>
 	  </metrics>
+	  
+	  
+	  <macros>
+	   	<macro>
+	   		<macro>{$TEMP_CRIT:"CPU"}</macro>
+	   		<value>75</value>
+	   	</macro>
+	   	<macro>
+	   		<macro>{$TEMP_WARN:"CPU"}</macro>
+	   		<value>70</value>
+	   	</macro>
+	   </macros>
   </template>
   
   
