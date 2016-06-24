@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
   <template>
-	  <class>General</class>
+	  <classes>
+	  	<class>General</class>
+	  </classes>
 	  <name>Template SNMP Generic</name>
 	  <description>Template SNMP Generic</description>
 	  <sysObjectID>na</sysObjectID>

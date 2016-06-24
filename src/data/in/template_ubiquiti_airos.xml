@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
   <template>
-  	  <class>Performance</class>
-	  <name>Template Ubiquiti AirOS Performance</name>
-	  <description>Template Ubiquiti AirOS Performance</description>
+  	  <classes>
+  	  	<class>Performance</class>
+  	  	<class>Inventory</class>
+  	  </classes>
+	  <name>Template Ubiquiti AirOS</name>
+	  <description>Template Ubiquiti AirOS</description>
 	  <sysObjectID>.1.3.6.1.4.1.10002.1</sysObjectID>
 	  <metrics>
 	    <cpuLoad>

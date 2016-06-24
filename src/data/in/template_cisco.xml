@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:root xmlns:tns="http://www.example.org/zbx_template_new/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/zbx_template_new/ ../../main/resources/templates/zbx_template_new.xsd ">
   <template>
+  	  <classes>
+  	  	<class>Performance</class>
+  	  	<class>Fault</class>
+  	  	<class>Inventory</class>
+  	  </classes>
 	  <name>Template Cisco IOS Software releases 12.2_3.5_ or later</name>
 	  <description>Cisco IOS Software releases 12.2(3.5) or later</description>
 	  <sysObjectID>{sysobjectid}</sysObjectID>
@@ -82,6 +87,11 @@
   </template>
   
     <template>
+     <classes>
+  	  	<class>Performance</class>
+  	  	<class>Fault</class>
+  	  	<class>Inventory</class>
+  	  </classes>
 	  <name>Template Cisco IOS Software releases later to 12.0_3_T and prior to 12.2_3.5_</name>
 	  <description>Cisco IOS Software releases later to 12.0(3)T and prior to 12.2(3.5)</description>
 	  <sysObjectID>{sysobjectid}</sysObjectID>
@@ -160,6 +170,11 @@ of value (0..100)</vendorDescription>
   
   
 <template>
+     <classes>
+  	  	<class>Performance</class>
+  	  	<class>Fault</class>
+  	  	<class>Inventory</class>
+  	  </classes>
 	  <name>Template Cisco IOS Software releases prior to 12.0_3_T</name>
 	  <description>Cisco IOS Software releases prior to 12.0(3)T</description>
 	  <sysObjectID>{sysobjectid}</sysObjectID>

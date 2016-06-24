@@ -45,9 +45,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("direct:zabbix_export");
     
     from("direct:zabbix_export")
-		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
+		//with lang.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
+		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		.to("file:src/data/out")
+		.to("file:src/data/out/")
 	    .to("validator:templates/zabbix_export.xsd");
 
   } 

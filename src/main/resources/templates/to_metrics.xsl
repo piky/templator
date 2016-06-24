@@ -53,49 +53,55 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="template">
-     <xsl:variable name="template_class" select="./class"></xsl:variable>
-     <xsl:copy>
-		<xsl:apply-templates select="node()|@*"/>
-		<macros>
-
-         <!-- add extra contextual no checks. should be before default $MACROS!-->
-		<xsl:copy-of copy-namespaces="no" select="./macros/macro"/>
-		<xsl:for-each select="$MACROS">
-			<xsl:choose>
-				<xsl:when test="name(.) = $template_class">
-					<xsl:for-each select="./*">
-						<macro>
-			        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
-			                <value><xsl:value-of select="."/></value>
-						</macro>
-					</xsl:for-each>
-				</xsl:when>
-			</xsl:choose>
-         </xsl:for-each>
+     
+	     <xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+			<macros>
+			<xsl:for-each select="./classes">
+	     		<xsl:variable name="template_class" select="./class"/>
+	         <!-- add extra contextual no checks. should be before default $MACROS!-->
+			<xsl:copy-of copy-namespaces="no" select="../macros/macro"/>
+				<xsl:for-each select="$MACROS">
+					<xsl:choose>
+						<xsl:when test="name(.) = $template_class">
+							<xsl:for-each select="./*">
+								<macro>
+					        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
+					                <value><xsl:value-of select="."/></value>
+								</macro>
+							</xsl:for-each>
+						</xsl:when>
+					</xsl:choose>
+		         </xsl:for-each>
+         	</xsl:for-each>
 
     	</macros>
     	<!-- add template name with _SNMP_PLACEHOLDER at the end to make dependency dynamic -->
     	<templates>
-   			<xsl:choose>
-				<xsl:when test="$template_class = 'Performance'">
-						<template>
-			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
-						</template>
-				</xsl:when>
-				 <xsl:when test="$template_class = 'Fault'">
-						<template>
-			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
-						</template>
-				</xsl:when>
-				<xsl:when test="$template_class = 'Inventory'">
-						<template>
-			        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
-						</template>
-				</xsl:when>
-			</xsl:choose>
+    		<xsl:for-each select="./classes/*">
+		     		<xsl:variable name="template_class" select="."/>
+	   			<xsl:choose>
+					<xsl:when test="$template_class = 'Performance'">
+							<!-- monitor.virton specific
+							<template>
+				        		<name>Template Interfaces vZbx3_SNMP_PLACEHOLDER</name>
+							</template>  -->
+					</xsl:when>
+					 <xsl:when test="$template_class = 'Fault'">
+	
+					</xsl:when>
+					<xsl:when test="$template_class = 'Inventory'">
+							<template>
+				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
+							</template>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:for-each>
     	
     	</templates>
       </xsl:copy>
+      
+      
 </xsl:template>
 
 <xsl:template match="macros"/><!-- leave it empty -->
@@ -347,6 +353,74 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
+<!-- metric of hw servers fault -->
+<xsl:template match="template/metrics/overallStatus">
+	<xsl:copy>
+		<name lang="EN">Overall system health status</name>
+		<name lang="RU">Общий статус системы</name>
+		<group>Status</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<triggers>
+			<trigger>
+			    <id>health.disaster</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+                <name lang="EN">System is in unrecoverable state!</name>
+                <name lang="RU">Статус системы: сбой</name>
+                <url/>
+                <priority>5</priority>
+                <description lang="EN">Please check the device for faults</description>
+                <description lang="RU">Проверьте устройство</description>
+			</trigger>
+			<trigger>
+			    <id>health.warning</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$HEALTH_WARN_STATUS}</expression>
+                <name lang="EN">System status is in warning state</name>
+                <name lang="RU">Статус системы: предупреждение</name>
+                <url/>
+                <priority>2</priority>
+                <description lang="EN">Please check the device for warnings</description>
+                <description lang="RU">Проверьте устройство</description>
+                <dependsOn>
+                	<dependency>health.critical</dependency>
+               	</dependsOn>
+			</trigger>
+			<trigger>
+				<id>health.critical</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+                <name lang="EN">System status is in critical state</name>
+                <name lang="RU">Статус системы: авария</name>
+                <url/>
+                <priority>4</priority>
+                <description lang="EN">Please check the device for errors</description>
+                <description lang="RU">Проверьте устройство</description>
+                <dependsOn>
+                	<dependency>health.disaster</dependency>
+               	</dependsOn>
+			</trigger>
+		</triggers>
+	</xsl:copy>
+</xsl:template>
+
+
 <!-- generic template metrics -->
 
 
@@ -562,6 +636,35 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<inventory_link>5</inventory_link>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/hwModel">
+	<xsl:copy>
+		<name lang="EN">Hardware model name</name>
+		<name lang="RU">Модель</name>
+		<group>Inventory</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1day"/></update>
+		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<inventory_link>29</inventory_link> <!-- model -->
 	</xsl:copy>
 </xsl:template>
 

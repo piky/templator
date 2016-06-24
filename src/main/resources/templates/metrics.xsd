@@ -3,7 +3,13 @@
     <element name="root" type="tns:rootType"/>
     <complexType name="templateType">
     	 <all>
-    		<element name="class" type="tns:templateClass" maxOccurs="1" minOccurs="1"/>
+    		<element name="classes" maxOccurs="1" minOccurs="1">
+    			<complexType>
+    				<sequence>
+    					<element type="tns:templateClass" name="class" maxOccurs="unbounded"/>
+    				</sequence>
+    			</complexType>
+    		</element>
     		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
     		<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
     		<element name="sysObjectID" type="string"/>
@@ -49,7 +55,7 @@
     		</element>
     		<element name="metrics">
     			<complexType>
-	    			 	<choice>
+	    			 	<choice maxOccurs="unbounded">
 	    			 		<sequence><!-- Template Performance -->
 				    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 				    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
@@ -77,9 +83,15 @@
 							<sequence> <!-- Template Fault and System Info -->
 				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="overallStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
 							<sequence> <!-- Template Inventory -->
-				    			<element name="osVersion" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+				    			<choice maxOccurs="unbounded">
+				    				<element name="osVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="hwVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="hwModel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="hwLabel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    			</choice>
 		    				</sequence>
 	    				</choice>
     			</complexType>
@@ -188,6 +200,7 @@
         <enumeration value="Temperature"/>
         <enumeration value="General"/>
         <enumeration value="Inventory"/>
+        <enumeration value="Status"/>
     </restriction>
 </simpleType>
 
