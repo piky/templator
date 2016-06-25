@@ -91,6 +91,7 @@
 				    				<element name="hwVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    				<element name="hwModel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    				<element name="hwLabel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="hwSerialNumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    			</choice>
 		    				</sequence>
 	    				</choice>
