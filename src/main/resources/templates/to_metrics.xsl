@@ -5,11 +5,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes"/>
 
 <xsl:variable name="historyDefault">30</xsl:variable>
+<xsl:variable name="history1week">30</xsl:variable>
 <xsl:variable name="trendsDefault">365</xsl:variable>
+<xsl:variable name="trends0days">0</xsl:variable>
 <xsl:variable name="updateDefault">30</xsl:variable> <!-- change to 5min -->
 <xsl:variable name="update1min">60</xsl:variable>
+<xsl:variable name="update5min">300</xsl:variable>
 <xsl:variable name="update1hour">60</xsl:variable> <!-- change to 3600 -->
-<xsl:variable name="update1day">86400</xsl:variable> <!-- change to 3600 -->
+<xsl:variable name="update1day">86400</xsl:variable>
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -518,8 +521,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
 		<description>The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueTypeText"/></valueType>
@@ -547,8 +550,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
 		<description>The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -600,8 +603,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:choose>  -->
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -629,8 +632,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:choose>  -->
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -658,8 +661,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:choose>  -->
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1day"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -687,8 +690,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:choose>  -->
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1day"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -716,8 +719,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:choose>  -->
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$update1day"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
