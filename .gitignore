@@ -23,3 +23,4 @@ src/data/samples/mikrotik_old.xml
 src/data/samples/template_snmp_generic.xml
 src/data/out/
 src/data/result_step1/template_ibm_imm.xml
+src/data/result_step1/template_hp_ilo.xml

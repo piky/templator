@@ -83,6 +83,7 @@
 							<sequence> <!-- Template Fault and System Info -->
 				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="temperatureLocale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<element name="overallStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
 							<sequence> <!-- Template Inventory -->

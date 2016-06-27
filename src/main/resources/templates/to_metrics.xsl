@@ -279,7 +279,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/temperatureValue">
 	<xsl:copy>
-		<name>Temperature[<xsl:value-of select="metricLocation"/>]</name>
+		<name>[<xsl:value-of select="metricLocation"/>]Temperature</name>
 		<group>Temperature</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -330,7 +330,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/temperatureStatus">
 	<xsl:copy>
-		<name>Temperature status[<xsl:value-of select="metricLocation"/>]</name>
+		<name>[<xsl:value-of select="metricLocation"/>]Temperature status</name>
 		<group>Temperature</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -348,6 +348,34 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units></units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/temperatureLocale">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>]Temperature sensor location</name>
+		<group>Temperature</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Temperature location of testpoint: <xsl:value-of select="metricLocation"/></description>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<multiplier><xsl:value-of select="multiplier"/></multiplier>
