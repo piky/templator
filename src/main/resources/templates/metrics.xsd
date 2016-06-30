@@ -93,6 +93,12 @@
 								<element name="physicalDiskStatus" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 								<element name="physicalDiskSerialNumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
+		    				
+							<sequence> <!-- Template Fault (Power Supply) -->
+								<element name="psVoltage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="psStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+		    				</sequence>
+		    				
 							<sequence> <!-- Template Inventory -->
 				    			<choice maxOccurs="unbounded">
 				    				<element name="osVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
@@ -204,14 +210,18 @@
     
 <simpleType name="groupList">
     <restriction base="string">
-        <enumeration value="Cpu"/>
+        <enumeration value="CPU"/>
         <enumeration value="Memory"/>
+        
         <enumeration value="Temperature"/>
-        <enumeration value="General"/>
-        <enumeration value="Inventory"/>
         <enumeration value="Status"/>
         <enumeration value="Disk Arrays"/>
         <enumeration value="Disks"/>
+        <enumeration value="Power Supply"/>
+        
+		<enumeration value="General"/>
+        <enumeration value="Inventory"/>
+        
     </restriction>
 </simpleType>
 

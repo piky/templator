@@ -114,16 +114,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
  
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
-		<name lang="EN">Cpu Load</name>
+		<name lang="EN">CPU Load</name>
 		<name lang="RU">Загрузка процессора</name>
-		<group>Cpu</group>
+		<group>CPU</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
 		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Cpu load in %</description>
+		<description>CPU load in %</description>
 		<history><xsl:copy-of select="$historyDefault"/></history>
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>%</units>
@@ -148,8 +148,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/cpuUtil">
 	<xsl:copy>
-		<name>Cpu Util</name>
-		<group>Cpu</group>
+		<name>CPU Util</name>
+		<group>CPU</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
