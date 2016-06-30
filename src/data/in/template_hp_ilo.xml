@@ -78,6 +78,13 @@
             <description>Scanning table of Array controllers: CPQIDA-MIB::cpqDaCntlrTable </description>
 		</discoveryRule>
 		
+		<discoveryRule>
+			<name>Physical Disk Discovery</name>
+            <snmp_oid>discovery[{#SNMPVALUE},1.3.6.1.4.1.232.3.2.5.1.1.5,{#DISK_LOCATION},1.3.6.1.4.1.232.3.2.5.1.1.64]</snmp_oid>
+            <key>physicalDisk.discovery</key>
+            <description>Scanning  table of physical drive entries CPQIDA-MIB::cpqDaPhyDrvTable.</description>
+		</discoveryRule>
+		
 	  </discoveryRules>
 	  <metrics>
 	  	<temperatureValue>
@@ -176,6 +183,35 @@
 	      <metricLocation>{#CNTLR_LOCATION}</metricLocation>
 	      <valueMap>CPQIDA-MIB::cpqDaCntlrModel</valueMap>
 	    </diskArrayModel>
+	    
+	    <physicalDiskStatus>
+	      <oid>1.3.6.1.4.1.232.3.2.5.1.1.6.{#SNMPINDEX}</oid>
+	      <snmpObject>cpqDaPhyDrvStatus[{#SNMPINDEX}]</snmpObject>
+	      <mib>CPQIDA-MIB</mib>
+	      <discoveryRule>Physical Disk Discovery</discoveryRule>
+	      <vendorDescription>Physical Drive Status. This shows the status of the physical drive. The following values are valid for the physical drive status:
+	      other (1)  Indicates that the instrument agent does not recognize  the drive. 
+	      You may need to upgrade your instrument agent  and/or driver software.
+	      ok (2)  Indicates the drive is functioning properly.
+	      failed (3)  Indicates that the drive is no longer operating and  should be replaced.
+	      predictiveFailure(4)  Indicates that the drive has a predictive failure error and  should be replaced.
+		  </vendorDescription>
+	      <metricLocation>{#DISK_LOCATION}</metricLocation>
+	      <valueMap>CPQIDA-MIB::cpqDaPhyDrvStatus</valueMap>
+	    </physicalDiskStatus>
+	    
+	     <physicalDiskSerialNumber>
+	      <oid>1.3.6.1.4.1.232.3.2.5.1.1.51.{#SNMPINDEX}</oid>
+	      <snmpObject>cpqDaPhyDrvSerialNum[{#SNMPINDEX}]</snmpObject>
+	      <mib>CPQIDA-MIB</mib>
+	      <discoveryRule>Physical Disk Discovery</discoveryRule>
+	      <vendorDescription>Physical Drive Serial Number.
+	      This is the serial number assigned to the physical drive.
+	      This value is based upon the serial number as returned by the SCSI inquiry command
+	      but may have been modified due to spacelimitations.  This can be used for identification purposes.
+		  </vendorDescription>
+	      <metricLocation>{#DISK_LOCATION}</metricLocation>
+	    </physicalDiskSerialNumber>
 
 		<!-- inventory -->
 	    <hwModel>
@@ -223,6 +259,20 @@
                     <macro>{$DISK_ARRAY_WARN_STATUS}</macro>
                     <value>3</value>
                 </macro>
+                
+                <macro>
+                    <macro>{$DISK_OK_STATUS}</macro>
+                    <value>2</value>
+                </macro>
+                <macro>
+                    <macro>{$DISK_WARN_STATUS}</macro>
+                    <value>4</value>
+                </macro>
+                <macro>
+                    <macro>{$DISK_FAIL_STATUS}</macro>
+                    <value>3</value>
+                </macro>
+                
                 
             </macros>
   	</template>
@@ -599,27 +649,6 @@
             </mappings>
         </value_map>
         <value_map>
-            <name>HP RAID drive status</name>
-            <mappings>
-                <mapping>
-                    <value>1</value>
-                    <newvalue>other</newvalue>
-                </mapping>
-                <mapping>
-                    <value>2</value>
-                    <newvalue>OK</newvalue>
-                </mapping>
-                <mapping>
-                    <value>3</value>
-                    <newvalue>degraded</newvalue>
-                </mapping>
-                <mapping>
-                    <value>4</value>
-                    <newvalue>failed</newvalue>
-                </mapping>
-            </mappings>
-        </value_map>
-        <value_map>
             <name>HP RAID fault tolerance</name>
             <mappings>
                 <mapping>
@@ -885,6 +914,26 @@
             </mappings>
         </value_map>
         
-     
+     	 <value_map>
+            <name>CPQIDA-MIB::cpqDaPhyDrvStatus</name>
+            <mappings>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>other</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>ok</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>failed</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>predictiveFailure</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
     </value_maps>
   </tns:root>

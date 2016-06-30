@@ -526,8 +526,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/diskArrayModel">
 	<xsl:copy>
-		<name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller model</name>
-		<name lang="RU">[<xsl:value-of select="metricLocation"/>]Модель контроллера дискового массива</name>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>] Disk array controller model</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>] Модель контроллера дискового массива</name>
 		<group>Disk Arrays</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -546,6 +546,103 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<units></units>
 		<update><xsl:copy-of select="$updateDefault"/></update>
 		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/physicalDiskStatus">
+	<xsl:copy>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>] Physical Disk Status</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус физического диска</name>
+		<group>Disks</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<triggers>
+			<trigger>
+			    <id>disk.notok</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.str({$DISK_OK_STATUS})}=0 and 
+				{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.str("")}=0</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Physical disk is not in OK state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус физического диска не норма</name>
+                <url/>
+                <priority>2</priority>
+                <description lang="EN">Please check physical disk for warnings or errors</description>
+                <description lang="RU">Проверьте диск</description>
+                <dependsOn>
+                	<dependency>disk.fail</dependency>
+                	<dependency>disk.warning</dependency>
+               	</dependsOn>
+			</trigger>
+
+			<trigger>
+			    <id>disk.warning</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_WARN_STATUS}</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Physical disk is in warning state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус физического диска: предупреждение</name>
+                <url/>
+                <priority>2</priority>
+                <description lang="EN">Please check physical disk for warnings or errors</description>
+                <description lang="RU">Проверьте диск</description><dependsOn>
+                	<dependency>disk.fail</dependency>
+               	</dependsOn>
+			</trigger>
+			<trigger>
+				<id>disk.fail</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_FAIL_STATUS}</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Physical disk failed</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус физического диска: сбой</name>
+                <url/>
+                <priority>4</priority>
+				<description lang="EN">Please check physical disk for warnings or errors</description>
+                <description lang="RU">Проверьте диск</description>                
+            </trigger>
+		</triggers>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/physicalDiskSerialNumber">
+	<xsl:copy>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>] Physical Disk Serial Number</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>] Серийный номер физического диска</name>
+		<group>Disks</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1day"/></update>
+		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<multiplier><xsl:value-of select="multiplier"/></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
