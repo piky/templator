@@ -71,6 +71,13 @@
                   </conditions>
             </filter>
 		</discoveryRule>
+		<discoveryRule>
+			<name>Array Controller Discovery</name>
+            <snmp_oid>discovery[{#SNMPVALUE},.1.3.6.1.4.1.232.3.2.2.1.1.1,{#CNTLR_SLOT},1.3.6.1.4.1.232.3.2.2.1.1.5,{#CNTLR_LOCATION},1.3.6.1.4.1.232.3.2.2.1.1.20]</snmp_oid>
+            <key>array.discovery</key>
+            <description>Scanning table of Array controllers: CPQIDA-MIB::cpqDaCntlrTable </description>
+		</discoveryRule>
+		
 	  </discoveryRules>
 	  <metrics>
 	  	<temperatureValue>
@@ -137,7 +144,7 @@
 		      <metricLocation>{#SNMPINDEX}</metricLocation>
 		      <valueMap>CPQHLTH-MIB::cpqHeTemperatureLocale</valueMap>
 	    </temperatureLocale>
-	  
+	  	
 	    <overallStatus>
 	      <oid>.1.3.6.1.4.1.232.2.1.3.0</oid>
 	      <snmpObject>cpqSiMibCondition.0</snmpObject>
@@ -145,8 +152,32 @@
 	      <vendorDescription>The overall condition. This object represents the overall status of the server information represented by this MIB.</vendorDescription>
 	      <valueMap>CPQSINFO-MIB::status</valueMap>
 	    </overallStatus>
-	    
+	      
 
+	    <diskArrayStatus>
+	      <oid>1.3.6.1.4.1.232.3.2.2.1.1.6.{#SNMPINDEX}</oid>
+	      <snmpObject>cpqDaCntlrCondition[{#SNMPINDEX}]</snmpObject>
+	      <mib>CPQIDA-MIB</mib>
+	      <discoveryRule>Array Controller Discovery</discoveryRule>
+	      <vendorDescription>This value represents the overall condition of this controller,
+	      and any associated logical drives,physical drives, and array accelerators.</vendorDescription>
+	      <!-- <metricLocation>{#CNTLR_SLOT}</metricLocation>  -->
+	      <metricLocation>{#CNTLR_LOCATION}</metricLocation>
+	      <valueMap>CPQSINFO-MIB::status</valueMap>
+	    </diskArrayStatus>
+	    
+	    <diskArrayModel>
+	      <oid>1.3.6.1.4.1.232.3.2.2.1.1.2.{#SNMPINDEX}</oid>
+	      <snmpObject>cpqDaCntlrModel[{#SNMPINDEX}]</snmpObject>
+	      <mib>CPQIDA-MIB</mib>
+	      <discoveryRule>Array Controller Discovery</discoveryRule>
+	      <vendorDescription>Array Controller Model. The type of controller card.</vendorDescription>
+	      <!-- <metricLocation>{#CNTLR_SLOT}</metricLocation>  -->
+	      <metricLocation>{#CNTLR_LOCATION}</metricLocation>
+	      <valueMap>CPQIDA-MIB::cpqDaCntlrModel</valueMap>
+	    </diskArrayModel>
+
+		<!-- inventory -->
 	    <hwModel>
 	       <oid>.1.3.6.1.4.1.232.2.2.4.2.0</oid>
 	       <snmpObject>cpqSiProductName</snmpObject>
@@ -183,6 +214,16 @@
                     <macro>{$TEMP_WARN:"Ambient"}</macro>
                     <value>30</value>
                 </macro>
+                
+                <macro>
+                    <macro>{$DISK_ARRAY_CRIT_STATUS}</macro>
+                    <value>4</value>
+                </macro>
+                <macro>
+                    <macro>{$DISK_ARRAY_WARN_STATUS}</macro>
+                    <value>3</value>
+                </macro>
+                
             </macros>
   	</template>
   
@@ -665,8 +706,9 @@
                 </mapping>
             </mappings>
         </value_map>
+        -->
         <value_map>
-            <name>HP RAID модель</name>
+            <name>CPQIDA-MIB::cpqDaCntlrModel</name>
             <mappings>
                 <mapping>
                     <value>1</value>
@@ -843,6 +885,6 @@
             </mappings>
         </value_map>
         
-     -->
+     
     </value_maps>
   </tns:root>

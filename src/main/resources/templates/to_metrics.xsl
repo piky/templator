@@ -456,6 +456,103 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
+
+
+<xsl:template match="template/metrics/diskArrayStatus">
+	<xsl:copy>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller status</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива</name>
+		<group>Status</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<triggers>
+			<trigger>
+			    <id>disk_array.disaster</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_DISASTER_STATUS}</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in unrecoverable state!</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: сбой</name>
+                <url/>
+                <priority>5</priority>
+                <description lang="EN">Please check the device for faults</description>
+                <description lang="RU">Проверьте устройство</description>
+			</trigger>
+			<trigger>
+			    <id>disk_array.warning</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_WARN_STATUS}</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in warning state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: предупреждение</name>
+                <url/>
+                <priority>2</priority>
+                <description lang="EN">Please check the device for warnings</description>
+                <description lang="RU">Проверьте устройство</description>
+                <dependsOn>
+                	<dependency>disk_array.critical</dependency>
+               	</dependsOn>
+			</trigger>
+			<trigger>
+				<id>disk_array.critical</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_CRIT_STATUS}</expression>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in critical state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: авария</name>
+                <url/>
+                <priority>4</priority>
+                <description lang="EN">Please check the device for errors</description>
+                <description lang="RU">Проверьте устройство</description>
+                <dependsOn>
+                	<dependency>disk_array.disaster</dependency>
+               	</dependsOn>
+			</trigger>
+		</triggers>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/diskArrayModel">
+	<xsl:copy>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller model</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>]Модель контроллера дискового массива</name>
+		<group>Disk Arrays</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
 <!-- generic template metrics -->
 
 
