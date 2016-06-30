@@ -4,9 +4,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes"/>
 
-<xsl:variable name="historyDefault">30</xsl:variable>
+<xsl:variable name="historyDefault">3</xsl:variable>  <!-- change to 30 -->
 <xsl:variable name="history1week">30</xsl:variable>
-<xsl:variable name="trendsDefault">365</xsl:variable>
+<xsl:variable name="trendsDefault">7</xsl:variable> <!-- change to 365 -->
 <xsl:variable name="trends0days">0</xsl:variable>
 <xsl:variable name="updateDefault">30</xsl:variable> <!-- change to 5min -->
 <xsl:variable name="update1min">60</xsl:variable>
@@ -460,9 +460,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/diskArrayStatus">
 	<xsl:copy>
-		<name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller status</name>
-		<name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива</name>
-		<group>Status</group>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>] Disk array controller status</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус контроллера дискового массива</name>
+		<group>Disk Arrays</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
@@ -487,8 +487,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 			    <id>disk_array.disaster</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_DISASTER_STATUS}</expression>
-                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in unrecoverable state!</name>
-                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: сбой</name>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Disk array controller is in unrecoverable state!</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус контроллера дискового массива: сбой</name>
                 <url/>
                 <priority>5</priority>
                 <description lang="EN">Please check the device for faults</description>
@@ -497,8 +497,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 			    <id>disk_array.warning</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_WARN_STATUS}</expression>
-                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in warning state</name>
-                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: предупреждение</name>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Disk array controller is in warning state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус контроллера дискового массива: предупреждение</name>
                 <url/>
                 <priority>2</priority>
                 <description lang="EN">Please check the device for warnings</description>
@@ -510,8 +510,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 				<id>disk_array.critical</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}={$DISK_ARRAY_CRIT_STATUS}</expression>
-                <name lang="EN">[<xsl:value-of select="metricLocation"/>]Disk array controller is in critical state</name>
-                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Статус контроллера дискового массива: авария</name>
+                <name lang="EN">[<xsl:value-of select="metricLocation"/>] Disk array controller is in critical state</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Статус контроллера дискового массива: авария</name>
                 <url/>
                 <priority>4</priority>
                 <description lang="EN">Please check the device for errors</description>

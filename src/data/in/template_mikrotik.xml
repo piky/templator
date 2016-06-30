@@ -58,7 +58,7 @@
 		      <snmpObject>mtxrHlProcessorTemperature</snmpObject>
 		      <mib>MIKROTIK-MIB</mib>
 		      <vendorDescription>(mtxrHlProcessorTemperature) Processor temperature in Celsius (degrees C). Might be missing in entry models (RB750, RB450G..)</vendorDescription>
-		      <metricLocation>Processor</metricLocation>
+		      <metricLocation>CPU</metricLocation>
 		      <multiplier>0.1</multiplier>
 	    </temperatureValue>
 	    <temperatureValue>
