@@ -55,7 +55,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</value_maps>
 </xsl:template>
 
-<xsl:template match="template">
+<xsl:template match="/*/template">
      
 	     <xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
@@ -77,10 +77,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:choose>
 		         </xsl:for-each>
          	</xsl:for-each>
-
     	</macros>
     	<!-- add template name with _SNMP_PLACEHOLDER at the end to make dependency dynamic -->
     	<templates>
+    		<!-- copy from templates first -->
+    		<xsl:copy-of copy-namespaces="no" select="templates/template"/>
     		<xsl:for-each select="./classes/*">
 		     		<xsl:variable name="template_class" select="."/>
 	   			<xsl:choose>
@@ -111,6 +112,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 <xsl:template match="macros"/><!-- leave it empty -->
+<xsl:template match="template/templates"/><!-- leave it empty -->
  
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>

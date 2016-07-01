@@ -4,10 +4,17 @@
 	  <classes>
 	  	<class>General</class>
 	  </classes>
-	  <name>Template SNMP Disks</name>
-	  <description>Template SNMP Disks</description>
+	  <name>Template HOST-RESOURCES-MIB</name>
+	  <description>HOST-RESOURCES-MIB: CPU, Memory and Storage</description>
 	  <sysObjectID>na</sysObjectID>
 	   <discoveryRules>
+		<discoveryRule>
+	  				<name>CPU Discovery</name>
+                    <snmp_oid>discovery[{#SNMPVALUE},1.3.6.1.2.1.25.3.3.1.1]</snmp_oid>
+                    <key>hrProcessorLoad.discovery</key>
+                    <description>HOST-RESOURCES-MIB::hrProcessorTable discovery</description>
+	  	</discoveryRule>
+
 	  	<discoveryRule>
 	  				<name>Memory Discovery</name>
                     <snmp_oid>discovery[{#SNMPVALUE},HOST-RESOURCES-MIB::hrStorageDescr,{#ALLOC_UNITS},HOST-RESOURCES-MIB::hrStorageAllocationUnits,{#STORAGE_TYPE},.1.3.6.1.2.1.25.2.3.1.2]</snmp_oid>
@@ -100,11 +107,7 @@
 			 <discoveryRule>Memory Discovery</discoveryRule>
 	  	</memoryTotal>
 	  	
-	  	<memoryUsedPercentage>
-			 <snmpObject>memoryUsedPercentage[{#SNMPVALUE}]</snmpObject>
-			 <calculated>true</calculated>
-			 <discoveryRule>Memory Discovery</discoveryRule>	    	  
-	    </memoryUsedPercentage>
+
 	  	
 	  	
 	  	<!-- storage coming up next -->
@@ -159,6 +162,23 @@
 			 <metricLocation>{#SNMPVALUE}</metricLocation>
 			 <discoveryRule>Storage Discovery</discoveryRule>	    	  
 	    </storageUsedPercentage>
+	    
+	    
+	    <!-- performance template part -->
+		<cpuLoad>
+	      <oid>1.3.6.1.2.1.25.3.3.1.2.{#SNMPINDEX}</oid>
+	      <snmpObject>hrProcessorLoad[{#SNMPVALUE}]</snmpObject>
+	      <mib>HOST-RESOURCES-MIB</mib>
+	      <vendorDescription>The average, over the last minute, of the percentage of time that this processor was not idle.Implementations may approximate this one minute smoothing period if necessary.</vendorDescription>
+	      <discoveryRule>CPU Discovery</discoveryRule>
+	    </cpuLoad>
+	    
+	    <memoryUsedPercentage>
+			 <snmpObject>memoryUsedPercentage[{#SNMPVALUE}]</snmpObject>
+			 <calculated>true</calculated>
+			 <discoveryRule>Memory Discovery</discoveryRule>	    	  
+	    </memoryUsedPercentage>
+	    
 	  </metrics>
   </template>
   </tns:root>

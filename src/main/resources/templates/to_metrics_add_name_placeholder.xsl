@@ -17,7 +17,7 @@
 
 
 
-<xsl:template match="template/name">
+<xsl:template match="/*/template/name">
 	<xsl:copy>
 		<xsl:copy-of  select="concat(.,'_SNMP_PLACEHOLDER')"/>
 	</xsl:copy>
