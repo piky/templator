@@ -166,6 +166,75 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 	</xsl:copy>
 </xsl:template>
+
+
+<!-- memory -->
+<xsl:template match="template/metrics/memoryUnits">
+	<xsl:copy>
+		<name>Memory units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description/>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/memoryUnitsUsed">
+	<xsl:copy>
+		<name>Used memory in units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Used memory in units</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>units</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/memoryUnitsTotal">
+	<xsl:copy>
+		<name>Total memory in units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Total memory in units</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>units</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
 <xsl:template match="template/metrics/memoryUsed">
 	<xsl:copy>
 		<name>Used memory</name>
@@ -173,10 +242,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+					<xsl:choose>
+						<xsl:when test="../memoryUnitsUsed and  ../memoryUnits">
+							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)*last(<xsl:value-of select="../memoryUnits/snmpObject"/>))</expressionFormula>
+						</xsl:when>
+					</xsl:choose>				
+			</xsl:when>
+		</xsl:choose>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Used memory in bytes</description>
+		<description>Used memory in Bytes</description>
 		<history><xsl:copy-of select="$historyDefault"/></history>
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>B</units>
@@ -218,10 +295,18 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+					<xsl:choose>
+						<xsl:when test="../memoryUnitsTotal and  ../memoryUnits">
+							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsTotal/snmpObject"/>)*last(<xsl:value-of select="../memoryUnits/snmpObject"/>))</expressionFormula>
+						</xsl:when>
+					</xsl:choose>				
+			</xsl:when>
+		</xsl:choose>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Total memory in bytes</description>
+		<description>Total memory in Bytes</description>
 		<history><xsl:copy-of select="$historyDefault"/></history>
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>B</units>
@@ -244,6 +329,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:choose>
 			<xsl:when test="./calculated = 'true'">
 					<xsl:choose>
+						<xsl:when test="../memoryUnitsTotal and  ../memoryUnitsUsed">
+							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryUnitsTotal/snmpObject"/>))*100</expressionFormula>
+						</xsl:when>
 						<xsl:when test="../memoryTotal and  ../memoryUsed">
 							<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
 						</xsl:when>
@@ -279,6 +367,223 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</triggers>
 	</xsl:copy>
 </xsl:template>
+
+
+<!-- storage(same as memory) -->
+
+<xsl:template match="template/metrics/storageUnits">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Storage units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description/>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/storageUnitsUsed">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Used storage in units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Used storage in units</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>units</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/storageUnitsTotal">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Total storage in units</name>
+		<group>Internal Items</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Total storage in units</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>units</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/storageUsed">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Used space</name>
+		<group>Storage</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+					<xsl:choose>
+						<xsl:when test="../storageUnitsUsed and  ../storageUnits">
+							<expressionFormula>(last(<xsl:value-of select="../storageUnitsUsed/snmpObject"/>)*last(<xsl:value-of select="../storageUnits/snmpObject"/>))</expressionFormula>
+						</xsl:when>
+					</xsl:choose>				
+			</xsl:when>
+		</xsl:choose>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Used storage in Bytes</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>B</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/storageFree">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Free space</name>
+		<group>Storage</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>B</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
+
+<xsl:template match="template/metrics/storageTotal">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Total storage</name>
+		<group>Storage</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+					<xsl:choose>
+						<xsl:when test="../storageUnitsTotal and  ../storageUnits">
+							<expressionFormula>(last(<xsl:value-of select="../storageUnitsTotal/snmpObject"/>)*last(<xsl:value-of select="../storageUnits/snmpObject"/>))</expressionFormula>
+						</xsl:when>
+					</xsl:choose>				
+			</xsl:when>
+		</xsl:choose>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Total storage in Bytes</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>B</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueType"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
+<xsl:template match="template/metrics/storageUsedPercentage">
+	<xsl:copy>
+		<name>[<xsl:value-of select="metricLocation"/>] Storage utilization</name>
+		<group>Storage</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+					<xsl:choose>
+						<xsl:when test="../storageUnitsTotal and  ../storageUnitsUsed">
+							<expressionFormula>(last(<xsl:value-of select="../storageUnitsUsed/snmpObject"/>)/last(<xsl:value-of select="../storageUnitsTotal/snmpObject"/>))*100</expressionFormula>
+						</xsl:when>
+						<xsl:when test="../storageTotal and  ../storageUsed">
+							<expressionFormula>(last(<xsl:value-of select="../storageUsed/snmpObject"/>)/last(<xsl:value-of select="../storageTotal/snmpObject"/>))*100</expressionFormula>
+						</xsl:when>
+						<xsl:when test="../storageTotal and  ../storageFree">
+							<expressionFormula>((last(<xsl:value-of select="../storageTotal/snmpObject"/>)-last(<xsl:value-of select="../storageFree/snmpObject"/>))/last(<xsl:value-of select="../storageTotal/snmpObject"/>))*100</expressionFormula>
+						</xsl:when>
+						<xsl:otherwise>
+							<expressionFormula>(last(<xsl:value-of select="../storageUsed/snmpObject"/>)/(last(<xsl:value-of select="../storageFree/snmpObject"/>)+last(<xsl:value-of select="../storageUsed/snmpObject"/>)))*100</expressionFormula>
+						</xsl:otherwise>
+					</xsl:choose>				
+			</xsl:when>
+		</xsl:choose>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<description>Storage utilization in % for <xsl:value-of select="metricLocation"/></description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units>%</units>
+		<update><xsl:copy-of select="$updateDefault"/></update>
+		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+		<triggers>
+			<trigger>
+				<id>storageCrit</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
+                <name lang="EN">Free disk space is less than 10% on <xsl:value-of select="metricLocation"/></name>
+                <name lang="RU">Свободного места на <xsl:value-of select="metricLocation"/> меньше 10%</name>
+                <url/>
+                <priority>3</priority>
+                <description/>
+			</trigger>
+			
+			<trigger>
+				<id>storageWarn</id>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>80</expression>
+                <name lang="EN">Free disk space is less than 20% on <xsl:value-of select="metricLocation"/></name>
+                <name lang="RU">Свободного места на <xsl:value-of select="metricLocation"/> меньше 20%</name>
+                <url/>
+                <priority>2</priority>
+                <description/>
+				<dependsOn>
+                	<dependency>storageCrit</dependency>
+               	</dependsOn>
+			</trigger>
+		</triggers>
+	</xsl:copy>
+</xsl:template>
+
 
 
 <xsl:template match="template/metrics/temperatureValue">

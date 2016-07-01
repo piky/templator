@@ -56,6 +56,30 @@
     		<element name="metrics">
     			<complexType>
 	    			 	<choice maxOccurs="unbounded">
+	    			 		<sequence><!-- Template HOST-RESOURCES -->
+									<choice minOccurs="0">
+									  <sequence>
+									    <element name="memoryUnits" type="tns:metricType"/>
+									    <element name="memoryUnitsUsed" type="tns:metricType"/>
+								        <element name="memoryUnitsTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+										<element name="memoryUsed" type="tns:metricType"/>
+								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									</choice>
+					    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+					    			 
+					    			<choice minOccurs="0">
+									  <sequence>
+									    <element name="storageUnits" type="tns:metricType"/>
+									    <element name="storageUnitsUsed" type="tns:metricType"/>
+								        <element name="storageUnitsTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+										<element name="storageUsed" type="tns:metricType"/>
+								        <element name="storageTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									</choice>
+					    			<element name="storageUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+					    			 
+		    				</sequence>
 	    			 		<sequence><!-- Template Performance -->
 				    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 				    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
@@ -212,6 +236,7 @@
     <restriction base="string">
         <enumeration value="CPU"/>
         <enumeration value="Memory"/>
+        <enumeration value="Storage"/>
         
         <enumeration value="Temperature"/>
         <enumeration value="Status"/>
@@ -221,6 +246,8 @@
         
 		<enumeration value="General"/>
         <enumeration value="Inventory"/>
+        
+        <enumeration value="Internal Items"/><!-- place items used in calculated items only -->
         
     </restriction>
 </simpleType>
