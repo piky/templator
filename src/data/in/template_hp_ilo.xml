@@ -229,51 +229,49 @@
 	    </hwSerialNumber>
 	    
 	   </metrics>
-	   
+
 	   
 	    <macros>
-                <macro>
-                    <macro>{$HEALTH_CRIT_STATUS}</macro>
-                    <value>4</value>
-                </macro>
-                <macro>
-                    <macro>{$HEALTH_WARN_STATUS}</macro>
-                    <value>3</value>
-                </macro>
-                
-				<macro>
-                    <macro>{$TEMP_CRIT:"Ambient"}</macro>
-                    <value>35</value>
-                </macro>
-                
-                <macro>
-                    <macro>{$TEMP_WARN:"Ambient"}</macro>
-                    <value>30</value>
-                </macro>
-                
-                <macro>
-                    <macro>{$DISK_ARRAY_CRIT_STATUS}</macro>
-                    <value>4</value>
-                </macro>
-                <macro>
-                    <macro>{$DISK_ARRAY_WARN_STATUS}</macro>
-                    <value>3</value>
-                </macro>
-                
-                <macro>
-                    <macro>{$DISK_OK_STATUS}</macro>
-                    <value>2</value>
-                </macro>
-                <macro>
-                    <macro>{$DISK_WARN_STATUS}</macro>
-                    <value>4</value>
-                </macro>
-                <macro>
-                    <macro>{$DISK_FAIL_STATUS}</macro>
-                    <value>3</value>
-                </macro>
-                
-                
+              <macro>
+                  <macro>{$HEALTH_CRIT_STATUS}</macro>
+                  <value>4</value>
+              </macro>
+              <macro>
+                  <macro>{$HEALTH_WARN_STATUS}</macro>
+                  <value>3</value>
+              </macro>
+              
+			<macro>
+                  <macro>{$TEMP_CRIT:"Ambient"}</macro>
+                  <value>35</value>
+              </macro>
+              
+              <macro>
+                  <macro>{$TEMP_WARN:"Ambient"}</macro>
+                  <value>30</value>
+              </macro>
+              
+              <macro>
+                  <macro>{$DISK_ARRAY_CRIT_STATUS}</macro>
+                  <value>4</value>
+              </macro>
+              <macro>
+                  <macro>{$DISK_ARRAY_WARN_STATUS}</macro>
+                  <value>3</value>
+              </macro>
+              
+              <macro>
+                  <macro>{$DISK_OK_STATUS}</macro>
+                  <value>2</value>
+              </macro>
+              <macro>
+                  <macro>{$DISK_WARN_STATUS}</macro>
+                  <value>4</value>
+              </macro>
+              <macro>
+                  <macro>{$DISK_FAIL_STATUS}</macro>
+                  <value>3</value>
+              </macro>
             </macros>
   	</template>
   

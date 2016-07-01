@@ -20,7 +20,7 @@
 	  <metrics>
 	    <cpuLoad>
 	      <oid>1.3.6.1.2.1.25.3.3.1.2.{#SNMPINDEX}</oid>
-	      <snmpObject>hrProcessorLoad[{#SNMPVALUE}]</snmpObject>
+	      <snmpObject>hrProcessorLoad[{#SNMPINDEX}]</snmpObject>
 	      <mib>HOST-RESOURCES-MIB</mib>
 	      <vendorDescription>The average, over the last minute, of the percentage of time that this processor was not idle.Implementations may approximate this one minute smoothing period if necessary.</vendorDescription>
 	      <discoveryRule>CPU Discovery</discoveryRule>
@@ -82,11 +82,11 @@
 	   
    	   <macros>
 	   	<macro>
-	   		<macro>{$TEMP_CRIT:"Processor"}</macro>
+	   		<macro>{$TEMP_CRIT:"CPU"}</macro>
 	   		<value>75</value>
 	   	</macro>
 	   	<macro>
-	   		<macro>{$TEMP_WARN:"Processor"}</macro>
+	   		<macro>{$TEMP_WARN:"CPU"}</macro>
 	   		<value>70</value>
 	   	</macro>
 	   </macros>
