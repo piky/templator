@@ -1233,5 +1233,32 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	</xsl:copy>
 </xsl:template>
 
+<xsl:template match="template/metrics/hwFirmwareVersion">
+	<xsl:copy>
+		<name lang="EN">Firmware version</name>
+		<name lang="RU">Версия прошивки</name>
+		<group>Inventory</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+<!-- <xsl:choose>
+			<xsl:when test="./calculated = 'true'">
+				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>  -->
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<history><xsl:copy-of select="$history1week"/></history>
+		<trends><xsl:copy-of select="$trends0days"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1day"/></update>
+		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
 </xsl:stylesheet>
 
