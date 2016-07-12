@@ -31,7 +31,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!--  define macros with default values to add into template-->
     <xsl:variable name="MACROS" as="element()*">
         <Performance>
-
+			<CPU_LOAD_MAX>90</CPU_LOAD_MAX>
         </Performance>
         <Fault>
         	<TEMP_CRIT>60</TEMP_CRIT>
@@ -93,14 +93,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:when>
 					 <xsl:when test="$template_class = 'Fault'">
 							<!-- temp include -->
-							<template>
-				        		<name>Template ICMP Ping</name>
-							</template>	
+
 					</xsl:when>
 					<xsl:when test="$template_class = 'Inventory'">
 							<template>
 				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
 							</template>
+							<template>
+				        		<name>Template ICMP Ping</name>
+							</template>	
 					</xsl:when>
 				</xsl:choose>
 			</xsl:for-each>
@@ -136,7 +137,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
                 <name lang="EN">CPU load is too high</name>
                 <name lang="RU">Загрузка ЦПУ слишком велика</name>
                 <url/>
@@ -590,7 +591,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="template/metrics/temperatureValue">
 	<xsl:copy>
-		<name>[<xsl:value-of select="metricLocation"/>]Temperature</name>
+		<name lang="EN">[<xsl:value-of select="metricLocation"/>] Temperature</name>
+		<name lang="RU">[<xsl:value-of select="metricLocation"/>] Температура</name>
 		<group>Temperature</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -616,8 +618,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 			    <id>tempWarn</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="metricLocation"/>"}</expression>
-                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above warning threshold</name>
-                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Температура выше нормы</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="metricLocation"/>"}</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="metricLocation"/>"}</name>
                 <url/>
                 <priority>2</priority>
                 <description/>
