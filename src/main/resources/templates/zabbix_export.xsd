@@ -76,7 +76,7 @@
                       						name="snmp_oid" />
                       					<xs:element type="xs:string"
                       						name="key" />
-                      					<xs:element type="xs:byte"
+                      					<xs:element type="xs:integer"
                       						name="delay" />
                       					<xs:element type="xs:byte"
                       						name="status" />

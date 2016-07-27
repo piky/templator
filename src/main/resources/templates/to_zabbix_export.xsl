@@ -74,7 +74,7 @@
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
 	                    <snmp_oid><xsl:value-of select="./snmp_oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./key"></xsl:value-of></key>
-	                    <delay>30</delay>
+	                    <delay>1800</delay>
 	                    <status>0</status>
 	                    <allowed_hosts/>
 	                    <snmpv3_contextname/>
