@@ -8,7 +8,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
  
   @Override
   public void configure() throws Exception {
-    from("file:src/data/in?noop=true&delay=30000")
+    from("file:src/data/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
     .log("Loading file: ${in.headers.CamelFileNameOnly}")
 	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
     .to("xslt:templates/to_metrics.xsl?saxon=true")
