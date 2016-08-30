@@ -505,34 +505,41 @@
    
 			<xs:complexType name="triggerObj">
 				<xs:sequence>
-					<xs:element
-						type="xs:string" name="expression" />
-					<xs:element
-						type="xs:string" name="name" />
-					<xs:element
-						type="xs:string" name="url" />
-					<xs:element
-						type="xs:byte" name="status" />
-					<xs:element
-						type="triggerPriority" name="priority" />
-					<xs:element
-						type="xs:string" name="description" />
-					<xs:element
-						type="xs:byte" name="type" />
-					<xs:element
-						name="dependencies">
-						<xs:complexType
-							mixed="true">
+					<xs:element type="xs:string" name="expression" />
+					<xs:element type="xs:int" name="recovery_mode" />
+					<xs:element type="xs:string" name="recovery_expression" />
+					<xs:element type="xs:string" name="name" />
+					<xs:element type="xs:int" name="correlation_mode" />
+					<xs:element type="xs:string" name="correlation_tag" />
+					<xs:element type="xs:string" name="url" />
+					<xs:element type="xs:byte" name="status" />
+					<xs:element type="triggerPriority" name="priority" />
+					<xs:element type="xs:string" name="description" />
+					<xs:element type="xs:byte" name="type" />
+					<xs:element type="xs:byte" name="manual_close" />
+					<xs:element name="dependencies">
+						<xs:complexType mixed="true">
 							<xs:sequence>
-								<xs:element
-									name="dependency" minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="dependency" minOccurs="0" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element
-												type="xs:string" name="name" />
-											<xs:element
-												type="xs:string"
-												name="expression" />
+											<xs:element type="xs:string" name="name" />
+											<xs:element type="xs:string" name="expression" />
+											<xs:element type="xs:string" name="recovery_expression" />
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="tags">
+						<xs:complexType	mixed="true">
+							<xs:sequence>
+								<xs:element name="tag" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element type="xs:string" name="tag" />
+											<xs:element type="xs:string" name="value" />
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>

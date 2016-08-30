@@ -638,6 +638,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>tempCrit</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>tempCrit</id>
@@ -647,6 +648,7 @@ for output: -->
                 <url/>
                 <priority>4</priority>
                 <description/>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -814,6 +816,7 @@ for output: -->
                 <priority>5</priority>
                 <description lang="EN">Please check the device for faults</description>
                 <description lang="RU">Проверьте устройство</description>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 			<trigger>
 			    <id>disk_array.warning</id>
@@ -827,6 +830,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>disk_array.critical</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>disk_array.critical</id>
@@ -840,6 +844,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>disk_array.disaster</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -913,6 +918,7 @@ for output: -->
                 	<dependency>disk.fail</dependency>
                 	<dependency>disk.warning</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 
 			<trigger>
@@ -926,6 +932,7 @@ for output: -->
                 <description lang="RU">Проверьте диск</description><dependsOn>
                 	<dependency>disk.fail</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>disk.fail</id>
@@ -935,7 +942,8 @@ for output: -->
                 <url/>
                 <priority>4</priority>
 				<description lang="EN">Please check physical disk for warnings or errors</description>
-                <description lang="RU">Проверьте диск</description>                
+                <description lang="RU">Проверьте диск</description>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag></tags>             
             </trigger>
 		</triggers>
 	</xsl:copy>

@@ -11,7 +11,7 @@
 
 <xsl:template match="/">
 	<zabbix_export>
-	    <version>3.0</version>
+	    <version>3.2</version>
 	    <date>2015-12-30T14:41:30Z</date>
 	    <groups>
 	        <group>
@@ -74,7 +74,7 @@
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
 	                    <snmp_oid><xsl:value-of select="./snmp_oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./key"></xsl:value-of></key>
-	                    <delay>1800</delay>
+	                    <delay>180</delay>
 	                    <status>0</status>
 	                    <allowed_hosts/>
 	                    <snmpv3_contextname/>
@@ -128,41 +128,59 @@
         	<xsl:when test="../../.[not (discoveryRule)]">
 							<trigger>
 								<expression><xsl:value-of select="./expression"/></expression>
+								<recovery_mode>0</recovery_mode>
+                            	<recovery_expression/>
 								<name><xsl:value-of select="./name"/></name>
+								<correlation_mode>0</correlation_mode>
+                            	<correlation_tag/>
 	                            <url><xsl:value-of select="./url"/></url>
 	                            <status>0</status>
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
+	                            <manual_close>0</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression/>
 										</dependency>
-									</xsl:for-each>                      	                
+									</xsl:for-each>                        	                
 	                            </dependencies>
+								<tags>
+	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
+	                            </tags>
 							</trigger>
 			</xsl:when>
         <xsl:otherwise>
      						<trigger_prototype>
 								<expression><xsl:value-of select="./expression"/></expression>
+								<recovery_mode>0</recovery_mode>
+                            	<recovery_expression/>
 								<name><xsl:value-of select="./name"/></name>
+								<correlation_mode>0</correlation_mode>
+                            	<correlation_tag/>
 	                            <url><xsl:value-of select="./url"/></url>
 	                            <status>0</status>
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
+	                            <manual_close>0</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression/>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
+	                           <tags>
+	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
+	                            </tags>
 							</trigger_prototype>
         </xsl:otherwise>
         </xsl:choose>

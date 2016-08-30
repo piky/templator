@@ -171,6 +171,19 @@
 	    				</element>
 	    			</sequence>
     		</complexType>
+    		
+ 			<complexType name="tags">
+	    			<sequence>
+	    				<element name="tag" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="tag" type="string"/>
+	    							<element name="value" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+    		</complexType>
     
     
     <complexType name="metricType">
@@ -227,6 +240,7 @@
 		  			<sequence><element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/></sequence>
 		  		</complexType>
 		  	</element>
+			<element name="tags" minOccurs="0" type="tns:tags"/>
 	 	</sequence>
     </complexType>    
 
