@@ -4,15 +4,27 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes"/>
 
-<xsl:variable name="historyDefault">3</xsl:variable>  <!-- change to 30 -->
-<xsl:variable name="history1week">30</xsl:variable>
-<xsl:variable name="trendsDefault">7</xsl:variable> <!-- change to 365 -->
+
+<xsl:variable name="historyDefault">3</xsl:variable> 
+<xsl:variable name="history1week">7</xsl:variable>
+<xsl:variable name="trendsDefault">7</xsl:variable> 
 <xsl:variable name="trends0days">0</xsl:variable>
-<xsl:variable name="updateDefault">30</xsl:variable> <!-- change to 5min -->
+<xsl:variable name="updateDefault">30</xsl:variable> 
 <xsl:variable name="update1min">60</xsl:variable>
 <xsl:variable name="update5min">300</xsl:variable>
-<xsl:variable name="update1hour">60</xsl:variable> <!-- change to 3600 -->
-<xsl:variable name="update1day">300</xsl:variable><!-- change to 86400 -->
+<xsl:variable name="update1hour">60</xsl:variable> 
+<xsl:variable name="update1day">300</xsl:variable>
+<!-- 
+<xsl:variable name="historyDefault">30</xsl:variable>  
+<xsl:variable name="history1week">7</xsl:variable>
+<xsl:variable name="trendsDefault">365</xsl:variable> 
+<xsl:variable name="trends0days">0</xsl:variable>
+<xsl:variable name="updateDefault">300</xsl:variable> 
+<xsl:variable name="update1min">60</xsl:variable>
+<xsl:variable name="update5min">300</xsl:variable>
+<xsl:variable name="update1hour">3600</xsl:variable> 
+<xsl:variable name="update1day">86400</xsl:variable>
+for output: -->
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -630,8 +642,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trigger>
 				<id>tempCrit</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="metricLocation"/>"}</expression>
-                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above critical threshold</name>
-                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Температура очень высокая</name>
+                <name lang="EN"><xsl:value-of select="metricLocation"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="metricLocation"/>"}</name>
+                <name lang="RU">[<xsl:value-of select="metricLocation"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="metricLocation"/>"}</name>
                 <url/>
                 <priority>4</priority>
                 <description/>
