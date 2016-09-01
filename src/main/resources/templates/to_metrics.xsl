@@ -1003,18 +1003,15 @@ for output: -->
 		<triggers>
 			<trigger>
 			    <id>uptime.restarted</id>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600</expression>
-				<recovery_expression>
-				{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&gt;600 or
-				{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.nodata(1800)}=1
-				</recovery_expression>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="../snmpTrapFallback/snmpObject"></xsl:value-of>.str(coldStart)}=1</expression>
+				<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&gt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.nodata(1800)}=1</recovery_expression>
 				<manual_close>1</manual_close>
                 <name lang="EN"><xsl:value-of select="metricLocation"/> The {HOST.NAME} has just been  restarted</name>
                 <name lang="RU"><xsl:value-of select="metricLocation"/>{HOST.NAME} был только что перезагружен</name>
                 <url/>
                 <priority>2</priority>
-                <description lang="EN">The device uptime is less then 10 minutes</description>
-                <description lang="RU">Аптайм устройства менее 10 минут</description>
+                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
+                <description lang="RU">Аптайм устройства менее 10 минут или был получен SNMP trap(coldStart)</description>
                 <dependsOn>
                 	<dependency>uptime.nodata</dependency>
                	</dependsOn>
