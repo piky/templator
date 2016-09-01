@@ -6,6 +6,7 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
+<xsl:variable name="snmptrap_item_type">17</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
 
 
@@ -217,6 +218,9 @@
 						  <xsl:when test="./expressionFormula != ''">
 						    <xsl:copy-of select="$calc_item_type"/> <!-- calc zabbix type -->
 						  </xsl:when>
+						  <xsl:when test="./snmpObject eq 'snmptrap.fallback'">
+						    <xsl:copy-of select="$snmptrap_item_type"/> <!-- snmptrap item zabbix type -->
+						  </xsl:when>
 					      <xsl:otherwise>
 							<xsl:copy-of select="$snmp_item_type"/>
 						  </xsl:otherwise>
@@ -293,7 +297,7 @@
 							  </xsl:when>
 							</xsl:choose>
 	                    </valuemap>
-	                    <logtimefmt/>
+	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
   				</item>        
 		</xsl:when>
         <xsl:otherwise>
@@ -380,7 +384,7 @@
 							  </xsl:when>
 						</xsl:choose>
 	                    </valuemap>
-	                    <logtimefmt/>
+	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
 					<application_prototypes/>
 				</item_prototype>
         </xsl:otherwise>

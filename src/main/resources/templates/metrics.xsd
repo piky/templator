@@ -97,6 +97,7 @@
 		    				</sequence>
 		    				<sequence> <!-- Template General and System Info -->
 		    					<element name="sysUptime" type="tns:metricType"/>
+		    					<element name="snmpTrapFallback" type="tns:metricType"/>
 		    					<element name="sysLocation" type="tns:metricType"/>
 		    					<element name="sysContact" type="tns:metricType"/>
 		    					<element name="sysObjectID" type="tns:metricType"/>
@@ -202,6 +203,7 @@
 				</sequence>
 			</choice>
 			<choice maxOccurs="unbounded" minOccurs="0">
+				<element name="logFormat" type="string" minOccurs="0"/>
 				<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 			    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 			    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>

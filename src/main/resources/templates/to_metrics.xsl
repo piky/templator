@@ -1034,6 +1034,30 @@ for output: -->
 </xsl:template>
 
 
+<xsl:template match="template/metrics/snmpTrapFallback">
+	<xsl:copy>
+		<name>SNMP traps (fallback)</name>
+		<group>General</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<logFormat>%H:%M:%S %Y/%m/%d</logFormat>
+		<description>Item is used to collect all SNMP traps unmatched by other snmptrap items</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1min"/></update>
+		<valueType><xsl:copy-of select="$valueTypeLog"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
+
+
 <xsl:template match="template/metrics/sysContact">
 	<xsl:copy>
 		<name>Device contact details</name>
