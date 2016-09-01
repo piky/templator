@@ -230,9 +230,10 @@
 		<sequence>
 			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="recovery_expression" type="string" maxOccurs="1" minOccurs="0"/>
+			<element name="manual_close" type="byte" maxOccurs="1" minOccurs="0"/>
 	 		<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
-		    
 		  	<element name="priority" type="byte" maxOccurs="1" minOccurs="1"/>
 		  	<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 		  	<element name="dependsOn" maxOccurs="1" minOccurs="0">

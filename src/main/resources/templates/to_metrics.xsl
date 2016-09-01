@@ -1004,6 +1004,11 @@ for output: -->
 			<trigger>
 			    <id>uptime.restarted</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600</expression>
+				<recovery_expression>
+				{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&gt;600 or
+				{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.nodata(1800)}=1
+				</recovery_expression>
+				<manual_close>1</manual_close>
                 <name lang="EN"><xsl:value-of select="metricLocation"/> The {HOST.NAME} has just been  restarted</name>
                 <name lang="RU"><xsl:value-of select="metricLocation"/>{HOST.NAME} был только что перезагружен</name>
                 <url/>

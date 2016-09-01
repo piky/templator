@@ -128,8 +128,13 @@
         	<xsl:when test="../../.[not (discoveryRule)]">
 							<trigger>
 								<expression><xsl:value-of select="./expression"/></expression>
-								<recovery_mode>0</recovery_mode>
-                            	<recovery_expression/>
+								<recovery_mode>
+									<xsl:choose>
+						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</recovery_mode>
+                            	<recovery_expression><xsl:value-of select="./recovery_expression"/></recovery_expression>
 								<name><xsl:value-of select="./name"/></name>
 								<correlation_mode>0</correlation_mode>
                             	<correlation_tag/>
@@ -138,14 +143,19 @@
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
-	                            <manual_close>0</manual_close>
+	                            <manual_close>
+									<xsl:choose>
+						  				<xsl:when test="./manual_close = 1">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
-      										<recovery_expression/>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
@@ -157,8 +167,13 @@
         <xsl:otherwise>
      						<trigger_prototype>
 								<expression><xsl:value-of select="./expression"/></expression>
-								<recovery_mode>0</recovery_mode>
-                            	<recovery_expression/>
+								<recovery_mode>
+									<xsl:choose>
+						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</recovery_mode>
+                            	<recovery_expression><xsl:value-of select="./recovery_expression"/></recovery_expression>
 								<name><xsl:value-of select="./name"/></name>
 								<correlation_mode>0</correlation_mode>
                             	<correlation_tag/>
@@ -167,14 +182,19 @@
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
-	                            <manual_close>0</manual_close>
+	                            <manual_close>
+									<xsl:choose>
+						  				<xsl:when test="./manual_close eq 1">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
-      										<recovery_expression/>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
