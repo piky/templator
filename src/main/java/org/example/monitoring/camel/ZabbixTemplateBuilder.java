@@ -47,14 +47,16 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     from("direct:zabbix_export")
 		//with lang.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
-	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		.to("file:src/data/out/")
-
+	
 		//local only
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
-	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack")
 		.to("validator:templates/zabbix_export.xsd");
+    
+    	
 
   } 
 }
