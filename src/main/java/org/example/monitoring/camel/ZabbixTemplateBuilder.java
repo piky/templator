@@ -49,7 +49,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		.to("file:src/data/out/")
-	    .to("validator:templates/zabbix_export.xsd");
+
+		//local only
+		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
+	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack")
+		.to("validator:templates/zabbix_export.xsd");
 
   } 
 }
