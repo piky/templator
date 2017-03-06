@@ -8,7 +8,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
  
   @Override
   public void configure() throws Exception {
-    from("file:src/data/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
+    from("file:src/data/out/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
     .log("Loading file: ${in.headers.CamelFileNameOnly}")
 	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
     .to("xslt:templates/to_metrics.xsl?saxon=true")
@@ -47,16 +47,15 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     from("direct:zabbix_export")
 		//with lang.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
-	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
+		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		.to("file:src/data/out/")
 	
 		//local only
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 	    .setHeader("CamelOverruleFileName",simple("${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack")
+		.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack/")
 		.to("validator:templates/zabbix_export.xsd");
-    
-    	
 
   } 
 }
