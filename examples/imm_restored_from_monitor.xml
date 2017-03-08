@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>3.0</version>
+    <date>2016-06-24T13:28:04Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template IBM IMM1 Fault SNMPv1</template>
+            <name>Template IBM IMM1 Fault SNMPv1</name>
+            <description>Template IBM IMM1</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Status</name>
+                </application>
+                <application>
+                    <name>Temperature</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Общий статус системы</name>
+                    <type>1</type>
+                    <snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+                    <multiplier>0</multiplier>
+                    <snmp_oid>.1.3.6.1.4.1.2.3.51.3.1.4.1.0</snmp_oid>
+                    <key>systemHealthStat.0</key>
+                    <delay>30</delay>
+                    <history>30</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>0</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port>161</port>
+                    <description>IMM-MIB  Indicates status of system health for the system in which the IMM resides. Value of 'nonRecoverable' indicates a severe error has occurred and the system may not be functioning. A value of 'critical' indicates that a error has occurred but the system is currently functioning properly. A value of 'nonCritical' indicates that a condition has occurred that may change the state of the system in the future but currently the system is working properly. A value of 'normal' indicates that the system is operating normally.</description>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Status</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>IMM-MIB::systemHealthStat</name>
+                    </valuemap>
+                    <logtimefmt/>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Temperature discovery</name>
+                    <type>1</type>
+                    <snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+                    <snmp_oid>discovery[{#SNMPVALUE},1.3.6.1.4.1.2.3.51.3.1.1.2.1.2]</snmp_oid>
+                    <key>tempDescr.discovery</key>
+                    <delay>30</delay>
+                    <status>0</status>
+                    <allowed_hosts/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port>161</port>
+                    <filter>
+                        <evaltype>0</evaltype>
+                        <formula/>
+                        <conditions/>
+                    </filter>
+                    <lifetime>30</lifetime>
+                    <description>Scanning IMM-MIB::tempTable</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Temperature[{#SNMPVALUE}]</name>
+                            <type>1</type>
+                            <snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+                            <multiplier>0</multiplier>
+                            <snmp_oid>.1.3.6.1.4.1.2.3.51.3.1.1.2.1.3.{#SNMPINDEX}</snmp_oid>
+                            <key>tempReading[{#SNMPVALUE}]</key>
+                            <delay>30</delay>
+                            <history>30</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>0</value_type>
+                            <allowed_hosts/>
+                            <units>C</units>
+                            <delta>0</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>0</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port>161</port>
+                            <description>IMM-MIB  The temperature in Celsius (degrees C) of {#SNMPVALUE}</description>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Temperature</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                            <application_prototypes/>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>{Template IBM IMM1 Fault SNMPv1:tempReading[{#SNMPVALUE}].avg(300)}&gt;{$TEMP_WARN:&quot;{#SNMPVALUE}&quot;}</expression>
+                            <name>[{#SNMPVALUE}]Температура выше нормы</name>
+                            <url/>
+                            <status>0</status>
+                            <priority>2</priority>
+                            <description/>
+                            <type>0</type>
+                            <dependencies>
+                                <dependency>
+                                    <name>[{#SNMPVALUE}]Температура очень высокая</name>
+                                    <expression>{Template IBM IMM1 Fault SNMPv1:tempReading[{#SNMPVALUE}].avg(300)}&gt;{$TEMP_CRIT:&quot;{#SNMPVALUE}&quot;}</expression>
+                                </dependency>
+                            </dependencies>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>{Template IBM IMM1 Fault SNMPv1:tempReading[{#SNMPVALUE}].avg(300)}&gt;{$TEMP_CRIT:&quot;{#SNMPVALUE}&quot;}</expression>
+                            <name>[{#SNMPVALUE}]Температура очень высокая</name>
+                            <url/>
+                            <status>0</status>
+                            <priority>4</priority>
+                            <description/>
+                            <type>0</type>
+                            <dependencies/>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <graph_prototypes/>
+                    <host_prototypes/>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$HEALTH_CRIT_STATUS}</macro>
+                    <value>2</value>
+                </macro>
+                <macro>
+                    <macro>{$HEALTH_DISASTER_STATUS}</macro>
+                    <value>0</value>
+                </macro>
+                <macro>
+                    <macro>{$HEALTH_WARN_STATUS}</macro>
+                    <value>4</value>
+                </macro>
+                <macro>
+                    <macro>{$TEMP_CRIT:&quot;Ambient Temp&quot;}</macro>
+                    <value>35</value>
+                </macro>
+                <macro>
+                    <macro>{$TEMP_CRIT}</macro>
+                    <value>60</value>
+                </macro>
+                <macro>
+                    <macro>{$TEMP_WARN:&quot;Ambient Temp&quot;}</macro>
+                    <value>30</value>
+                </macro>
+                <macro>
+                    <macro>{$TEMP_WARN}</macro>
+                    <value>50</value>
+                </macro>
+            </macros>
+            <templates/>
+            <screens/>
+        </template>
+        <template>
+            <template>Template IBM IMM1 Inventory SNMPv1</template>
+            <name>Template IBM IMM1 Inventory SNMPv1</name>
+            <description>Template IBM IMM1</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Inventory</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Модель</name>
+                    <type>1</type>
+                    <snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+                    <multiplier>0</multiplier>
+                    <snmp_oid>.1.3.6.1.4.1.2.3.51.3.1.5.2.1.5.0</snmp_oid>
+                    <key>machineLevelProductName</key>
+                    <delay>86400</delay>
+                    <history>30</history>
+                    <trends>0</trends>
+                    <status>0</status>
+                    <value_type>1</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>0</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port>161</port>
+                    <description>IMM-MIB  </description>
+                    <inventory_link>29</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Inventory</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                </item>
+            </items>
+            <discovery_rules/>
+            <macros/>
+            <templates>
+                <template>
+                    <name>Template SNMP Generic SNMPv1</name>
+                </template>
+            </templates>
+            <screens/>
+        </template>
+    </templates>
+    <triggers>
+        <trigger>
+            <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+            <name>Статус системы: авария</name>
+            <url/>
+            <status>0</status>
+            <priority>4</priority>
+            <description>Проверьте устройство</description>
+            <type>0</type>
+            <dependencies>
+                <dependency>
+                    <name>Статус системы: сбой</name>
+                    <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+                </dependency>
+            </dependencies>
+        </trigger>
+        <trigger>
+            <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_WARN_STATUS}</expression>
+            <name>Статус системы: предупреждение</name>
+            <url/>
+            <status>0</status>
+            <priority>2</priority>
+            <description>Проверьте устройство</description>
+            <type>0</type>
+            <dependencies>
+                <dependency>
+                    <name>Статус системы: авария</name>
+                    <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+                </dependency>
+            </dependencies>
+        </trigger>
+        <trigger>
+            <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+            <name>Статус системы: сбой</name>
+            <url/>
+            <status>0</status>
+            <priority>4</priority>
+            <description>Проверьте устройство</description>
+            <type>0</type>
+            <dependencies>
+                <dependency>
+                    <name>Статус системы: сбой</name>
+                    <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+                </dependency>
+            </dependencies>
+        </trigger>
+        <trigger>
+            <expression>{Template IBM IMM1 Fault SNMPv1:systemHealthStat.0.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+            <name>Статус системы: сбой</name>
+            <url/>
+            <status>0</status>
+            <priority>5</priority>
+            <description>Проверьте устройство</description>
+            <type>0</type>
+            <dependencies/>
+        </trigger>
+    </triggers>
+    <value_maps>
+        <value_map>
+            <name>IMM-MIB::systemHealthStat</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>nonRecoverable</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>critical</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>nonCritical</newvalue>
+                </mapping>
+                <mapping>
+                    <value>255</value>
+                    <newvalue>normal</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>

@@ -1,0 +1,7 @@
+<metric name="cpuLoad">
+	<oid>.1.2.3</oid>
+	<mib>MIB-INTERFACES</mib>
+	<type>Cisco</type>
+	<sysObjectID></sysObjectID>
+	<metricGroup>cpu</metricGroup>
+</metric>
