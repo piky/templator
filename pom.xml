@@ -2,15 +2,14 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.camel.archetypes</groupId>
-  <artifactId>camel-archetype-spring</artifactId>
-  <version>${camel.version}</version>
-  <name>A Camel Spring Route</name>
-  <url>http://www.myorganization.org</url>
+  <groupId>vzhuravlev</groupId>
+  <artifactId>zabbix-template-generator</artifactId>
+  <version>0.5</version>
+  <name>Zabbix Template Generator</name>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <camel.version>2.17.1</camel.version>
+    <camel.version>2.18.2</camel.version>
   </properties>
   <dependencies>
       	<!--  spring boot -->
@@ -28,13 +27,13 @@
             <artifactId>spring-boot-starter-logging</artifactId>
         </exclusion>
     </exclusions>
-    	<version>1.3.5.RELEASE</version>
+    	<version>1.5.2.RELEASE</version>
     </dependency> 
 <!-- http://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
 	<dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-devtools</artifactId>
-	    <version>1.3.5.RELEASE</version>
+	    <version>1.5.2.RELEASE</version>
 	    <optional>true</optional>
 	</dependency>      
 	
@@ -94,60 +93,9 @@
     </dependency>
     
   </dependencies>
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>release.fusesource.org</id>
-      <name>FuseSource Release Repository</name>
-      <url>http://repo.fusesource.com/nexus/content/repositories/releases</url>
-    </repository>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>ea.fusesource.org</id>
-      <name>FuseSource Community Early Access Release Repository</name>
-      <url>http://repo.fusesource.com/nexus/content/groups/ea</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>release.fusesource.org</id>
-      <name>FuseSource Release Repository</name>
-      <url>http://repo.fusesource.com/nexus/content/repositories/releases</url>
-    </pluginRepository>
-    <pluginRepository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>ea.fusesource.org</id>
-      <name>FuseSource Community Early Access Release Repository</name>
-      <url>http://repo.fusesource.com/nexus/content/groups/ea</url>
-    </pluginRepository>
-  </pluginRepositories>
   <build>
     <defaultGoal>install</defaultGoal>
     <resources>
-      <resource>
-        <directory>.transformations</directory>
-      </resource>
         <resource>
         <directory>src/main/resources</directory>
       </resource>
