@@ -655,7 +655,7 @@ for output: -->
 
 <xsl:template match="template/metrics/temperatureStatus">
 	<xsl:copy>
-		<name>[<xsl:value-of select="metricLocation"/>]Temperature status</name>
+		<name>[<xsl:value-of select="metricLocation"/>] Temperature status</name>
 		<group>Temperature</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
