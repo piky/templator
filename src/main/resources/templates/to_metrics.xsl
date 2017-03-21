@@ -638,6 +638,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>tempCrit</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>tempCrit</id>
@@ -647,6 +648,7 @@ for output: -->
                 <url/>
                 <priority>4</priority>
                 <description/>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -814,6 +816,7 @@ for output: -->
                 <priority>5</priority>
                 <description lang="EN">Please check the device for faults</description>
                 <description lang="RU">Проверьте устройство</description>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 			<trigger>
 			    <id>disk_array.warning</id>
@@ -827,6 +830,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>disk_array.critical</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>disk_array.critical</id>
@@ -840,6 +844,7 @@ for output: -->
                 <dependsOn>
                 	<dependency>disk_array.disaster</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -913,6 +918,7 @@ for output: -->
                 	<dependency>disk.fail</dependency>
                 	<dependency>disk.warning</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 
 			<trigger>
@@ -926,6 +932,7 @@ for output: -->
                 <description lang="RU">Проверьте диск</description><dependsOn>
                 	<dependency>disk.fail</dependency>
                	</dependsOn>
+               	<tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>disk.fail</id>
@@ -935,7 +942,8 @@ for output: -->
                 <url/>
                 <priority>4</priority>
 				<description lang="EN">Please check physical disk for warnings or errors</description>
-                <description lang="RU">Проверьте диск</description>                
+                <description lang="RU">Проверьте диск</description>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>             
             </trigger>
 		</triggers>
 	</xsl:copy>
@@ -995,13 +1003,15 @@ for output: -->
 		<triggers>
 			<trigger>
 			    <id>uptime.restarted</id>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600</expression>
+				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&lt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="../snmpTrapFallback/snmpObject"></xsl:value-of>.str(coldStart)}=1</expression>
+				<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.last(0)}&gt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.nodata(1800)}=1</recovery_expression>
+				<manual_close>1</manual_close>
                 <name lang="EN"><xsl:value-of select="metricLocation"/> The {HOST.NAME} has just been  restarted</name>
                 <name lang="RU"><xsl:value-of select="metricLocation"/>{HOST.NAME} был только что перезагружен</name>
                 <url/>
                 <priority>2</priority>
-                <description lang="EN">The device uptime is less then 10 minutes</description>
-                <description lang="RU">Аптайм устройства менее 10 минут</description>
+                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
+                <description lang="RU">Аптайм устройства менее 10 минут или был получен SNMP trap(coldStart)</description>
                 <dependsOn>
                 	<dependency>uptime.nodata</dependency>
                	</dependsOn>
@@ -1019,6 +1029,30 @@ for output: -->
 		</triggers>
 	</xsl:copy>
 </xsl:template>
+
+
+<xsl:template match="template/metrics/snmpTrapFallback">
+	<xsl:copy>
+		<name>SNMP traps (fallback)</name>
+		<group>General</group>
+		<xsl:copy-of select="oid"></xsl:copy-of>
+		<xsl:copy-of select="snmpObject"></xsl:copy-of>
+		<xsl:copy-of select="mib"></xsl:copy-of>
+		<xsl:copy-of select="ref"></xsl:copy-of>
+		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+		<logFormat>%H:%M:%S %Y/%m/%d</logFormat>
+		<description>Item is used to collect all SNMP traps unmatched by other snmptrap items</description>
+		<history><xsl:copy-of select="$historyDefault"/></history>
+		<trends><xsl:copy-of select="$trendsDefault"/></trends>
+		<units></units>
+		<update><xsl:copy-of select="$update1min"/></update>
+		<valueType><xsl:copy-of select="$valueTypeLog"/></valueType>
+		<valueMap><xsl:value-of select="valueMap"/></valueMap>
+		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+	</xsl:copy>
+</xsl:template>
+
 
 
 <xsl:template match="template/metrics/sysContact">

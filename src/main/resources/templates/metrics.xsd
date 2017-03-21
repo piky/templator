@@ -97,6 +97,7 @@
 		    				</sequence>
 		    				<sequence> <!-- Template General and System Info -->
 		    					<element name="sysUptime" type="tns:metricType"/>
+		    					<element name="snmpTrapFallback" type="tns:metricType"/>
 		    					<element name="sysLocation" type="tns:metricType"/>
 		    					<element name="sysContact" type="tns:metricType"/>
 		    					<element name="sysObjectID" type="tns:metricType"/>
@@ -171,6 +172,19 @@
 	    				</element>
 	    			</sequence>
     		</complexType>
+    		
+ 			<complexType name="tags">
+	    			<sequence>
+	    				<element name="tag" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="tag" type="string"/>
+	    							<element name="value" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+    		</complexType>
     
     
     <complexType name="metricType">
@@ -189,6 +203,7 @@
 				</sequence>
 			</choice>
 			<choice maxOccurs="unbounded" minOccurs="0">
+				<element name="logFormat" type="string" minOccurs="0"/>
 				<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 			    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 			    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
@@ -217,9 +232,10 @@
 		<sequence>
 			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="recovery_expression" type="string" maxOccurs="1" minOccurs="0"/>
+			<element name="manual_close" type="byte" maxOccurs="1" minOccurs="0"/>
 	 		<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
-		    
 		  	<element name="priority" type="byte" maxOccurs="1" minOccurs="1"/>
 		  	<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 		  	<element name="dependsOn" maxOccurs="1" minOccurs="0">
@@ -227,6 +243,7 @@
 		  			<sequence><element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/></sequence>
 		  		</complexType>
 		  	</element>
+			<element name="tags" minOccurs="0" type="tns:tags"/>
 	 	</sequence>
     </complexType>    
 

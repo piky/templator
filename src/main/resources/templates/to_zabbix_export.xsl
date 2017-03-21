@@ -6,12 +6,13 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
+<xsl:variable name="snmptrap_item_type">17</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
 
 
 <xsl:template match="/">
 	<zabbix_export>
-	    <version>3.0</version>
+	    <version>3.2</version>
 	    <date>2015-12-30T14:41:30Z</date>
 	    <groups>
 	        <group>
@@ -128,41 +129,79 @@
         	<xsl:when test="../../.[not (discoveryRule)]">
 							<trigger>
 								<expression><xsl:value-of select="./expression"/></expression>
+								<recovery_mode>
+									<xsl:choose>
+						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</recovery_mode>
+                            	<recovery_expression><xsl:value-of select="./recovery_expression"/></recovery_expression>
 								<name><xsl:value-of select="./name"/></name>
+								<correlation_mode>0</correlation_mode>
+                            	<correlation_tag/>
 	                            <url><xsl:value-of select="./url"/></url>
 	                            <status>0</status>
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
+	                            <manual_close>
+									<xsl:choose>
+						  				<xsl:when test="./manual_close = 1">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
-									</xsl:for-each>                      	                
+									</xsl:for-each>                        	                
 	                            </dependencies>
+								<tags>
+	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
+	                            </tags>
 							</trigger>
 			</xsl:when>
         <xsl:otherwise>
      						<trigger_prototype>
 								<expression><xsl:value-of select="./expression"/></expression>
+								<recovery_mode>
+									<xsl:choose>
+						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</recovery_mode>
+                            	<recovery_expression><xsl:value-of select="./recovery_expression"/></recovery_expression>
 								<name><xsl:value-of select="./name"/></name>
+								<correlation_mode>0</correlation_mode>
+                            	<correlation_tag/>
 	                            <url><xsl:value-of select="./url"/></url>
 	                            <status>0</status>
 	                            <priority><xsl:value-of select="./priority"/></priority>
 	                            <description><xsl:value-of select="./description"/></description>
 	                            <type>0</type>
+	                            <manual_close>
+									<xsl:choose>
+						  				<xsl:when test="./manual_close eq 1">1</xsl:when>
+					      				<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</manual_close>
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
       										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
       										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
+	                           <tags>
+	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
+	                            </tags>
 							</trigger_prototype>
         </xsl:otherwise>
         </xsl:choose>
@@ -178,6 +217,9 @@
 	                    <xsl:choose>
 						  <xsl:when test="./expressionFormula != ''">
 						    <xsl:copy-of select="$calc_item_type"/> <!-- calc zabbix type -->
+						  </xsl:when>
+						  <xsl:when test="./snmpObject eq 'snmptrap.fallback'">
+						    <xsl:copy-of select="$snmptrap_item_type"/> <!-- snmptrap item zabbix type -->
 						  </xsl:when>
 					      <xsl:otherwise>
 							<xsl:copy-of select="$snmp_item_type"/>
@@ -255,7 +297,7 @@
 							  </xsl:when>
 							</xsl:choose>
 	                    </valuemap>
-	                    <logtimefmt/>
+	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
   				</item>        
 		</xsl:when>
         <xsl:otherwise>
@@ -342,7 +384,7 @@
 							  </xsl:when>
 						</xsl:choose>
 	                    </valuemap>
-	                    <logtimefmt/>
+	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
 					<application_prototypes/>
 				</item_prototype>
         </xsl:otherwise>
