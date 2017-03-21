@@ -48,9 +48,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		.to("file:bin/out/");
-	
-
+		.to("file:bin/out/")
+		
+	    .to("validator:templates/zabbix_export.xsd");
 
   } 
 }
