@@ -129,9 +129,9 @@ for output: -->
  
 <xsl:template match="template/metrics/cpuLoad">
 	<xsl:copy>
-		<name lang="EN">CPU Load</name>
-		<name lang="RU">Загрузка процессора</name>
 		<documentation><xsl:value-of select="documentation"/></documentation>
+		<name lang="EN"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>CPU Load</name>
+		<name lang="RU"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Загрузка процессора</name>
 		<group>CPU</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -152,11 +152,16 @@ for output: -->
 			<trigger>
 				<documentation>If metricLocation is defined, it's added to trigger name.</documentation>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
-                <name lang="EN">CPU load is too high</name>
-                <name lang="RU">Загрузка ЦПУ слишком велика</name>
+                <name lang="EN"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>CPU load is too high</name>
+                <name lang="RU"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Загрузка ЦПУ слишком велика</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
+                <tags>
+	                <tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag>
+	                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
+	                <tag><tag>Performance</tag><value></value></tag>
+                </tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -254,7 +259,7 @@ for output: -->
 
 <xsl:template match="template/metrics/memoryUsed">
 	<xsl:copy>
-		<name>Used memory</name>
+		<name><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Used memory</name>
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -284,7 +289,7 @@ for output: -->
 
 <xsl:template match="template/metrics/memoryFree">
 	<xsl:copy>
-		<name>Free memory</name>
+		<name><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Free memory</name>
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -307,7 +312,7 @@ for output: -->
 
 <xsl:template match="template/metrics/memoryTotal">
 	<xsl:copy>
-		<name>Total memory</name>
+		<name><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Total memory</name>
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -338,7 +343,7 @@ for output: -->
 
 <xsl:template match="template/metrics/memoryUsedPercentage">
 	<xsl:copy>
-		<name>Memory utilization</name>
+		<name><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Memory utilization</name>
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -375,11 +380,12 @@ for output: -->
 		<triggers>
 			<trigger>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
-                <name lang="EN">Memory utilization is too high</name>
-                <name lang="RU">Мало свободной памяти ОЗУ</name>
+                <name lang="EN"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Memory utilization is too high</name>
+                <name lang="RU"><xsl:if test="metricLocation != ''">[<xsl:value-of select="metricLocation"/>] </xsl:if>Мало свободной памяти ОЗУ</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
+                <tags><tag><tag>Location</tag><value><xsl:value-of select="metricLocation"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
