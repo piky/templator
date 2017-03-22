@@ -131,6 +131,7 @@ for output: -->
 	<xsl:copy>
 		<name lang="EN">CPU Load</name>
 		<name lang="RU">Загрузка процессора</name>
+		<documentation><xsl:value-of select="documentation"/></documentation>
 		<group>CPU</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
@@ -149,6 +150,7 @@ for output: -->
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
 			<trigger>
+				<documentation>If metricLocation is defined, it's added to trigger name.</documentation>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
                 <name lang="EN">CPU load is too high</name>
                 <name lang="RU">Загрузка ЦПУ слишком велика</name>

@@ -189,6 +189,7 @@
     
     <complexType name="metricType">
 		<sequence>
+			<element name="documentation" maxOccurs="1" minOccurs="0"/>
 			<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 	 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/>
 			<choice>
@@ -230,6 +231,7 @@
 
     <complexType name="trigger">
 		<sequence>
+			<element name="documentation" maxOccurs="1" minOccurs="0"/>
 			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
 			<element name="recovery_expression" type="string" maxOccurs="1" minOccurs="0"/>
