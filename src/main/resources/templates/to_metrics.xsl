@@ -4,7 +4,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes"/>
 
-
+<!-- 
 <xsl:variable name="historyDefault">3</xsl:variable> 
 <xsl:variable name="history1week">7</xsl:variable>
 <xsl:variable name="trendsDefault">7</xsl:variable> 
@@ -14,7 +14,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:variable name="update5min">300</xsl:variable>
 <xsl:variable name="update1hour">60</xsl:variable> 
 <xsl:variable name="update1day">300</xsl:variable>
-<!-- 
+for output: -->
 <xsl:variable name="historyDefault">30</xsl:variable>  
 <xsl:variable name="history1week">7</xsl:variable>
 <xsl:variable name="trendsDefault">365</xsl:variable> 
@@ -24,7 +24,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:variable name="update5min">300</xsl:variable>
 <xsl:variable name="update1hour">3600</xsl:variable> 
 <xsl:variable name="update1day">86400</xsl:variable>
-for output: -->
+
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
