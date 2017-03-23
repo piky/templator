@@ -54,6 +54,12 @@ for output: -->
         </General>
     </xsl:variable>
 
+<xsl:variable name="nowEN">now: {ITEM.LASTVALUE1}</xsl:variable>
+<xsl:variable name="nowRU">сейчас: {ITEM.LASTVALUE1}</xsl:variable>
+
+
+
+
 
 <xsl:template match="node()|@*">
    <xsl:copy>
@@ -152,8 +158,8 @@ for output: -->
 			<trigger>
 				<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
-                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>CPU load is too high</name>
-                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Загрузка ЦПУ слишком велика</name>
+                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>CPU load is too high (<xsl:value-of select="$nowEN" />)</name>
+                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
@@ -380,8 +386,8 @@ for output: -->
 		<triggers>
 			<trigger>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
-                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization is too high</name>
-                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Мало свободной памяти ОЗУ</name>
+                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
@@ -584,8 +590,8 @@ for output: -->
 			<trigger>
 				<id>storageCrit</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
-                <name lang="EN">Free disk space is less than 10% on <xsl:value-of select="locationAddress"/></name>
-                <name lang="RU">Свободного места на <xsl:value-of select="locationAddress"/> меньше 10%</name>
+                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Free disk space is less than 10%</name>
+                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Свободного места <xsl:value-of select="locationAddress"/> меньше 10%</name>
                 <url/>
                 <priority>3</priority>
                 <description/>
@@ -594,8 +600,8 @@ for output: -->
 			<trigger>
 				<id>storageWarn</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>80</expression>
-                <name lang="EN">Free disk space is less than 20% on <xsl:value-of select="locationAddress"/></name>
-                <name lang="RU">Свободного места на <xsl:value-of select="locationAddress"/> меньше 20%</name>
+                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Free disk space is less than 20%</name>
+                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Свободного места <xsl:value-of select="locationAddress"/> меньше 20%</name>
                 <url/>
                 <priority>2</priority>
                 <description/>
@@ -638,8 +644,8 @@ for output: -->
 			<trigger>
 			    <id>tempWarn</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
-                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</name>
-                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</name>
+                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowEN" />)</name>
+                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowRU" />)</name>
                 <url />
                 <priority>2</priority>
                 <description />
@@ -651,8 +657,8 @@ for output: -->
 			<trigger>
 				<id>tempCrit</id>
 				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</expression>
-                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</name>
-                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</name>
+                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowEN" />)</name>
+                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowRU" />)</name>
                 <url/>
                 <priority>4</priority>
                 <description/>

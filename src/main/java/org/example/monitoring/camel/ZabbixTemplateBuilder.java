@@ -12,6 +12,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     .log("Loading file: ${in.headers.CamelFileNameOnly}")
 	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
     .to("xslt:templates/to_metrics.xsl?saxon=true")
+    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
     .to("file:bin/merged")
     .to("validator:templates/metrics.xsd")
 	.multicast().parallelProcessing().to("direct:RU", "direct:EN");
