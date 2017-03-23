@@ -74,7 +74,7 @@ for output: -->
 </xsl:template>
 
 
-
+<!-- This template modifies update interval if needed -->
 <xsl:template name="updateIntervalTemplate">
   <xsl:param name="updateMultiplier"/>
   <xsl:param name="default"/>
@@ -86,6 +86,23 @@ for output: -->
   </xsl:if>
 </xsl:template>
 
+<xsl:variable name="defaultLocationType">Device</xsl:variable>
+<xsl:template name="tagLocationType">
+  <xsl:param name="locationType"/>
+  <xsl:param name="locationAddress"/>
+  <xsl:param name="locationDefault"/>
+  <xsl:if test="$locationType">
+      <xsl:value-of select="$locationType" />
+  </xsl:if>
+  <xsl:if test="not($locationType)">
+  	<xsl:if test="$locationAddress">
+      <xsl:value-of select="$locationAddress" />
+  	</xsl:if>
+    <xsl:if test="not($locationAddress)">
+      <xsl:value-of select="$locationDefault" />
+    </xsl:if>
+  </xsl:if>
+</xsl:template>
 
 
 <xsl:template match="/*/template">
@@ -179,7 +196,16 @@ for output: -->
                 <priority>3</priority>
                 <description/>
                 <tags>
-	                <tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag>
+                	<tag>
+	                	<tag>Location.type</tag>
+		                <value>
+		             		<xsl:call-template name="tagLocationType">
+					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+					         		<xsl:with-param name="locationType" select="locationType"/>
+					         		<xsl:with-param name="locationDefault">CPU</xsl:with-param>
+		 					</xsl:call-template>
+		 				</value>
+ 					</tag>
 	                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
 	                <tag><tag>Performance</tag><value></value></tag>
                 </tags>
@@ -672,7 +698,8 @@ for output: -->
                 <dependsOn>
                 	<dependency>tempCrit</dependency>
                	</dependsOn>
-               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType" /></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
+               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType" /></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
+               	<tag><tag>Temperature</tag><value></value></tag></tags>
 			</trigger>
 			<trigger>
 				<id>tempCrit</id>
@@ -682,7 +709,21 @@ for output: -->
                 <url/>
                 <priority>4</priority>
                 <description/>
-                <tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
+                <tags>
+                <tag>
+                	<tag>Location.type</tag>
+	                <value>
+	             		<xsl:call-template name="tagLocationType">
+				         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+				         		<xsl:with-param name="locationType" select="locationType"/>
+				         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+	 					</xsl:call-template>
+	 				</value>
+ 					</tag>
+ 				<tag>
+                	<tag>Host</tag><value>{HOST.HOST}</value></tag>
+                <tag><tag>Temperature</tag><value></value></tag>
+                </tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
