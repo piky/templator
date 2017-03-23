@@ -289,7 +289,7 @@ for output: -->
 
 <xsl:template match="template/metrics/memoryFree">
 	<xsl:copy>
-		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Free memory</name>
+		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
 		<group>Memory</group>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
