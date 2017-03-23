@@ -212,6 +212,7 @@
 			    <element name="trends" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="units" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="update" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
 			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="locationAddress" type="string" maxOccurs="1" minOccurs="0"/>

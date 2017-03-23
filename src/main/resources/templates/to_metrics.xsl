@@ -73,6 +73,21 @@ for output: -->
 	</value_maps>
 </xsl:template>
 
+
+
+<xsl:template name="updateIntervalTemplate">
+  <xsl:param name="updateMultiplier"/>
+  <xsl:param name="default"/>
+  <xsl:if test="$updateMultiplier">
+      <xsl:value-of select="$updateMultiplier * $default" />
+    </xsl:if>
+    <xsl:if test="not($updateMultiplier)">
+      <xsl:value-of select="$default" />
+  </xsl:if>
+</xsl:template>
+
+
+
 <xsl:template match="/*/template">
      
 	     <xsl:copy>
@@ -635,7 +650,12 @@ for output: -->
 		<history><xsl:copy-of select="$historyDefault"/></history>
 		<trends><xsl:copy-of select="$trendsDefault"/></trends>
 		<units>C</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
+		<update>
+			<xsl:call-template name="updateIntervalTemplate">
+         		<xsl:with-param name="updateMultiplier" select="updateMultiplier"/>
+         		<xsl:with-param name="default" select="$updateDefault"/>
+ 			</xsl:call-template>
+ 		</update>
 		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 		<valueMap><xsl:value-of select="valueMap"/></valueMap>
 		<multiplier><xsl:value-of select="multiplier"/></multiplier>
