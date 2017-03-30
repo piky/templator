@@ -262,6 +262,7 @@ for output: -->
 			<name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка процессора</name>
 			<group>CPU</group>
 			<description>CPU load in %</description>
+			<units>%</units>
 			<triggers>
 				<trigger>
 					<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
