@@ -327,120 +327,96 @@ for output: -->
 
 <!-- memory -->
 <xsl:template match="template/metrics/memoryUnits">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>Memory units</name>
+			<group>Internal Items</group>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>Memory units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description/>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 <xsl:template match="template/metrics/memoryUnitsUsed">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>Used memory in units</name>
+			<group>Internal Items</group>
+			<units>units</units>
+			<description>Used memory in units</description>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>Used memory in units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Used memory in units</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>units</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 <xsl:template match="template/metrics/memoryUnitsTotal">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>Total memory in units</name>
+			<group>Internal Items</group>
+			<units>units</units>
+			<description>Total memory in units</description>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>Total memory in units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Total memory in units</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>units</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
-</xsl:template>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>	
+
 
 
 <xsl:template match="template/metrics/memoryUsed">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Used memory</name>
+			<group>Memory</group>
+			<units>B</units>
+			<description>Used memory in Bytes</description>
+			<xsl:choose>
+				<xsl:when test="./calculated = 'true'">
+						<xsl:choose>
+							<xsl:when test="../memoryUnitsUsed and  ../memoryUnits">
+								<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)*last(<xsl:value-of select="../memoryUnits/snmpObject"/>))</expressionFormula>
+							</xsl:when>
+						</xsl:choose>				
+				</xsl:when>
+			</xsl:choose>			
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Used memory</name>
-		<group>Memory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:choose>
-			<xsl:when test="./calculated = 'true'">
-					<xsl:choose>
-						<xsl:when test="../memoryUnitsUsed and  ../memoryUnits">
-							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)*last(<xsl:value-of select="../memoryUnits/snmpObject"/>))</expressionFormula>
-						</xsl:when>
-					</xsl:choose>				
-			</xsl:when>
-		</xsl:choose>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Used memory in Bytes</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>B</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 <xsl:template match="template/metrics/memoryFree">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
+			<group>Memory</group>
+			<units>B</units>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
-		<group>Memory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>B</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
@@ -448,7 +424,6 @@ for output: -->
 
 
 <xsl:template match="template/metrics/memoryTotal">
-	
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Total memory</name>
@@ -539,68 +514,53 @@ for output: -->
 <!-- storage(same as memory) -->
 
 <xsl:template match="template/metrics/storageUnits">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>[<xsl:value-of select="locationAddress"/>] Storage units</name>
+			<group>Internal Items</group>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>[<xsl:value-of select="locationAddress"/>] Storage units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description/>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 <xsl:template match="template/metrics/storageUnitsUsed">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>[<xsl:value-of select="locationAddress"/>] Used storage in units</name>
+			<group>Internal Items</group>
+			<description>Used storage in units</description>
+			<units>units</units>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>[<xsl:value-of select="locationAddress"/>] Used storage in units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Used storage in units</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>units</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
+
 <xsl:template match="template/metrics/storageUnitsTotal">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>[<xsl:value-of select="locationAddress"/>] Total storage in units</name>
+			<group>Internal Items</group>
+			<description>Total storage in units</description>
+			<units>units</units>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>[<xsl:value-of select="locationAddress"/>] Total storage in units</name>
-		<group>Internal Items</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Total storage in units</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>units</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>		
 </xsl:template>
 
 
@@ -752,7 +712,6 @@ for output: -->
 </xsl:template>
 
 <xsl:template match="template/metrics/temperatureValue">
-	
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Temperature</name>
@@ -830,58 +789,39 @@ for output: -->
 
 
 <xsl:template match="template/metrics/temperatureStatus">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>[<xsl:value-of select="locationAddress"/>] Temperature status</name>
+			<group>Temperature</group>
+			<description>Temperature status of testpoint: <xsl:value-of select="locationAddress"/></description>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>[<xsl:value-of select="locationAddress"/>] Temperature status</name>
-		<group>Temperature</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-<!-- <xsl:choose>
-			<xsl:when test="./calculated = 'true'">
-				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
-			</xsl:when>
-			<xsl:otherwise></xsl:otherwise>
-		</xsl:choose>  -->
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Temperature status of testpoint: <xsl:value-of select="locationAddress"/></description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
 <xsl:template match="template/metrics/temperatureLocale">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>[<xsl:value-of select="locationAddress"/>] Temperature sensor location</name>
+			<group>Temperature</group>
+			<description>Temperature location of testpoint: <xsl:value-of select="locationAddress"/></description>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1hour"/></update>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name>[<xsl:value-of select="locationAddress"/>] Temperature sensor location</name>
-		<group>Temperature</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-<!-- <xsl:choose>
-			<xsl:when test="./calculated = 'true'">
-				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
-			</xsl:when>
-			<xsl:otherwise></xsl:otherwise>
-		</xsl:choose>  -->
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Temperature location of testpoint: <xsl:value-of select="locationAddress"/></description>
-		<history><xsl:copy-of select="$history1week"/></history>
-		<trends><xsl:copy-of select="$trends0days"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$update1hour"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
