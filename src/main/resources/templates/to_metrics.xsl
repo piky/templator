@@ -432,7 +432,18 @@ for output: -->
                 <url/>
                 <priority>3</priority>
                 <description/>
-                <tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
+                <tags>
+                	<tag>
+	                	<tag>Location.type</tag>
+		                <value>
+		             		<xsl:call-template name="tagLocationType">
+					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+					         		<xsl:with-param name="locationType" select="locationType"/>
+					         		<xsl:with-param name="locationDefault">Memory</xsl:with-param>	 					
+		 					</xsl:call-template>
+		 				</value>
+					</tag>
+					<tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
 			</trigger>
 		</triggers>
 	</xsl:copy>
@@ -698,7 +709,18 @@ for output: -->
                 <dependsOn>
                 	<dependency>tempCrit</dependency>
                	</dependsOn>
-               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType" /></value></tag><tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
+               	<tags>	                
+               		<tag>
+	                	<tag>Location.type</tag>
+		                <value>
+		             		<xsl:call-template name="tagLocationType">
+					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+					         		<xsl:with-param name="locationType" select="locationType"/>
+					         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+		 					</xsl:call-template>
+		 				</value>
+					</tag>
+					<tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
                	<tag><tag>Temperature</tag><value></value></tag></tags>
 			</trigger>
 			<trigger>
@@ -710,16 +732,16 @@ for output: -->
                 <priority>4</priority>
                 <description/>
                 <tags>
-                <tag>
-                	<tag>Location.type</tag>
-	                <value>
-	             		<xsl:call-template name="tagLocationType">
-				         		<xsl:with-param name="locationAddress" select="locationAddress"/>
-				         		<xsl:with-param name="locationType" select="locationType"/>
-				         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
-	 					</xsl:call-template>
-	 				</value>
- 					</tag>
+	                <tag>
+	                	<tag>Location.type</tag>
+		                <value>
+		             		<xsl:call-template name="tagLocationType">
+					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+					         		<xsl:with-param name="locationType" select="locationType"/>
+					         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+		 					</xsl:call-template>
+		 				</value>
+					</tag>
  				<tag>
                 	<tag>Host</tag><value>{HOST.HOST}</value></tag>
                 <tag><tag>Temperature</tag><value></value></tag>
