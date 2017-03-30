@@ -176,7 +176,7 @@ for output: -->
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
+		<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
 		<xsl:copy-of select="$metric/description"></xsl:copy-of>
@@ -223,13 +223,17 @@ for output: -->
 		<valueMap><xsl:value-of select="valueMap" /></valueMap>
 		<multiplier><xsl:value-of select="multiplier" /></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<triggers>
-			
-			<xsl:call-template name="defaultTriggerBlock">
-				<xsl:with-param name="trigger" select="$metric/triggers/trigger" />
-	    	</xsl:call-template>
+		<xsl:if test="$metric/triggers/trigger">
+			<triggers>
+				<xsl:for-each select="$metric/triggers/*">
 
-		</triggers>
+	    			<xsl:call-template name="defaultTriggerBlock">
+						<xsl:with-param name="trigger" select="." />
+		    		</xsl:call-template>            
+				</xsl:for-each> 
+				
+			</triggers>
+		</xsl:if>
 		<!-- <xsl:copy-of select="$metric/triggers"></xsl:copy-of> -->
 
 </xsl:template>
@@ -238,13 +242,14 @@ for output: -->
 <xsl:template name="defaultTriggerBlock">
 		<xsl:param name="trigger"/>
 			<trigger>
+					<xsl:copy-of select="$trigger/id"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/documentation"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/expression"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/name"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/url"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/priority"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/description"></xsl:copy-of>
-
+					<xsl:copy-of select="$trigger/dependsOn"></xsl:copy-of>
 	                <tags>
 	                	<xsl:copy-of select="$trigger/tags/tag"></xsl:copy-of>
 		                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
@@ -440,97 +445,95 @@ for output: -->
 
 
 
+
+
 <xsl:template match="template/metrics/memoryTotal">
-	<xsl:copy>
-		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Total memory</name>
-		<group>Memory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:choose>
-			<xsl:when test="./calculated = 'true'">
+	
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Total memory</name>
+			<group>Memory</group>
+			<description>Total memory in Bytes</description>
+			<units>B</units>
+			<xsl:choose>
+				<xsl:when test="./calculated = 'true'">
 					<xsl:choose>
 						<xsl:when test="../memoryUnitsTotal and  ../memoryUnits">
 							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsTotal/snmpObject"/>)*last(<xsl:value-of select="../memoryUnits/snmpObject"/>))</expressionFormula>
 						</xsl:when>
 					</xsl:choose>				
-			</xsl:when>
-		</xsl:choose>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Total memory in Bytes</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>B</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+				</xsl:when>
+			</xsl:choose>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
 <xsl:template match="template/metrics/memoryUsedPercentage">
+	
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization</name>
+			<group>Memory</group>
+			<description>Memory utilization in %</description>
+			<units>%</units>
+			<xsl:choose>
+				<xsl:when test="./calculated = 'true'">
+						<xsl:choose>
+							<xsl:when test="../memoryUnitsTotal and  ../memoryUnitsUsed">
+								<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryUnitsTotal/snmpObject"/>))*100</expressionFormula>
+							</xsl:when>
+							<xsl:when test="../memoryTotal and  ../memoryUsed">
+								<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
+							</xsl:when>
+							<xsl:when test="../memoryTotal and  ../memoryFree">
+								<expressionFormula>((last(<xsl:value-of select="../memoryTotal/snmpObject"/>)-last(<xsl:value-of select="../memoryFree/snmpObject"/>))/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
+							</xsl:when>
+							<xsl:otherwise>
+								<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>)))*100</expressionFormula>
+							</xsl:otherwise>
+						</xsl:choose>				
+				</xsl:when>
+			</xsl:choose>
+			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+			<triggers>
+				<trigger>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
+	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
+	                <url/>
+	                <priority>3</priority>
+	                <description/>
+	                <tags>
+	                	<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault">Memory</xsl:with-param>	 					
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+					</tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization</name>
-		<group>Memory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:choose>
-			<xsl:when test="./calculated = 'true'">
-					<xsl:choose>
-						<xsl:when test="../memoryUnitsTotal and  ../memoryUnitsUsed">
-							<expressionFormula>(last(<xsl:value-of select="../memoryUnitsUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryUnitsTotal/snmpObject"/>))*100</expressionFormula>
-						</xsl:when>
-						<xsl:when test="../memoryTotal and  ../memoryUsed">
-							<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
-						</xsl:when>
-						<xsl:when test="../memoryTotal and  ../memoryFree">
-							<expressionFormula>((last(<xsl:value-of select="../memoryTotal/snmpObject"/>)-last(<xsl:value-of select="../memoryFree/snmpObject"/>))/last(<xsl:value-of select="../memoryTotal/snmpObject"/>))*100</expressionFormula>
-						</xsl:when>
-						<xsl:otherwise>
-							<expressionFormula>(last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>)))*100</expressionFormula>
-						</xsl:otherwise>
-					</xsl:choose>				
-			</xsl:when>
-		</xsl:choose>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Memory utilization in %</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>%</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<triggers>
-			<trigger>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>90</expression>
-                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
-                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
-                <url/>
-                <priority>3</priority>
-                <description/>
-                <tags>
-                	<tag>
-	                	<tag>Location.type</tag>
-		                <value>
-		             		<xsl:call-template name="tagLocationType">
-					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
-					         		<xsl:with-param name="locationType" select="locationType"/>
-					         		<xsl:with-param name="locationDefault">Memory</xsl:with-param>	 					
-		 					</xsl:call-template>
-		 				</value>
-					</tag>
-					<tag><tag>Host</tag><value>{HOST.HOST}</value></tag></tags>
-			</trigger>
-		</triggers>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
+
 
 
 <!-- storage(same as memory) -->
@@ -748,90 +751,81 @@ for output: -->
 	</xsl:copy>
 </xsl:template>
 
-
-
 <xsl:template match="template/metrics/temperatureValue">
+	
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Temperature</name>
+			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Температура</name>
+			<group>Temperature</group>
+			<description>Temperature readings of testpoint: <xsl:value-of select="locationAddress"/></description>
+			<units>C</units>
+			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+			<update>
+				<!-- TODO: make this feature global -->
+				<xsl:call-template name="updateIntervalTemplate">
+	         		<xsl:with-param name="updateMultiplier" select="updateMultiplier"/>
+	         		<xsl:with-param name="default" select="$updateDefault"/>
+	 			</xsl:call-template>
+ 			</update>
+			<triggers>
+				<trigger>
+				    <id>tempWarn</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
+	                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowRU" />)</name>
+	                <url />
+	                <priority>2</priority>
+	                <description />
+	                <dependsOn>
+	                	<dependency>tempCrit</dependency>
+	               	</dependsOn>
+	               	<tags>	                
+	               		<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+						
+	               	<tag><tag>Temperature</tag><value></value></tag></tags>
+				</trigger>
+				<trigger>
+					<id>tempCrit</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</expression>
+	                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowRU" />)</name>
+	                <url/>
+	                <priority>4</priority>
+	                <description/>
+	                <tags>
+		                <tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	 				
+	                <tag><tag>Temperature</tag><value></value></tag>
+	                </tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name lang="EN">[<xsl:value-of select="locationAddress"/>] Temperature</name>
-		<name lang="RU">[<xsl:value-of select="locationAddress"/>] Температура</name>
-		<group>Temperature</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-<!-- <xsl:choose>
-			<xsl:when test="./calculated = 'true'">
-				<expressionFormula>last(<xsl:value-of select="../memoryUsed/snmpObject"/>)/(last(<xsl:value-of select="../memoryFree/snmpObject"/>)+last(<xsl:value-of select="../memoryUsed/snmpObject"/>))</expressionFormula>
-			</xsl:when>
-			<xsl:otherwise></xsl:otherwise>
-		</xsl:choose>  -->
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>Temperature readings of testpoint: <xsl:value-of select="locationAddress"/></description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>C</units>
-		<update>
-			<xsl:call-template name="updateIntervalTemplate">
-         		<xsl:with-param name="updateMultiplier" select="updateMultiplier"/>
-         		<xsl:with-param name="default" select="$updateDefault"/>
- 			</xsl:call-template>
- 		</update>
-		<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<triggers>
-			<trigger>
-			    <id>tempWarn</id>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
-                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowEN" />)</name>
-                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowRU" />)</name>
-                <url />
-                <priority>2</priority>
-                <description />
-                <dependsOn>
-                	<dependency>tempCrit</dependency>
-               	</dependsOn>
-               	<tags>	                
-               		<tag>
-	                	<tag>Location.type</tag>
-		                <value>
-		             		<xsl:call-template name="tagLocationType">
-					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
-					         		<xsl:with-param name="locationType" select="locationType"/>
-					         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
-		 					</xsl:call-template>
-		 				</value>
-					</tag>
-					<tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
-               	<tag><tag>Temperature</tag><value></value></tag></tags>
-			</trigger>
-			<trigger>
-				<id>tempCrit</id>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</expression>
-                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowEN" />)</name>
-                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowRU" />)</name>
-                <url/>
-                <priority>4</priority>
-                <description/>
-                <tags>
-	                <tag>
-	                	<tag>Location.type</tag>
-		                <value>
-		             		<xsl:call-template name="tagLocationType">
-					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
-					         		<xsl:with-param name="locationType" select="locationType"/>
-					         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
-		 					</xsl:call-template>
-		 				</value>
-					</tag>
- 				<tag>
-                	<tag>Host</tag><value>{HOST.HOST}</value></tag>
-                <tag><tag>Temperature</tag><value></value></tag>
-                </tags>
-			</trigger>
-		</triggers>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
