@@ -164,54 +164,136 @@ for output: -->
 
 <xsl:template match="macros"/><!-- leave it empty -->
 <xsl:template match="template/templates"/><!-- leave it empty -->
- 
-<xsl:template match="template/metrics/cpuLoad">
-	<xsl:copy>
-		<documentation><xsl:value-of select="documentation"/></documentation>
-		<name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>CPU Load</name>
-		<name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Загрузка процессора</name>
-		<group>CPU</group>
+
+
+<!-- This block describes basic metric structure. Call it from each metric below-->
+<xsl:template name="defaultMetricBlock">
+		<xsl:param name="metric"/>
+		
+		<documentation><xsl:value-of select="documentation" /></documentation>
+		<xsl:copy-of select="$metric/name"></xsl:copy-of>
+		<xsl:copy-of select="$metric/group"></xsl:copy-of>
 		<xsl:copy-of select="oid"></xsl:copy-of>
 		<xsl:copy-of select="snmpObject"></xsl:copy-of>
 		<xsl:copy-of select="mib"></xsl:copy-of>
 		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<description>CPU load in %</description>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units>%</units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
+		<xsl:copy-of select="$metric/description"></xsl:copy-of>
+		
+		<xsl:choose>
+			<xsl:when test="$metric/history">
+				<xsl:copy-of select="$metric/history"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<history><xsl:copy-of select="$historyDefault"/></history>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		<xsl:choose>
+			<xsl:when test="$metric/trends">
+				<xsl:copy-of select="$metric/trends"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		<xsl:copy-of select="$metric/units"></xsl:copy-of>
+		
+		<xsl:choose>
+			<xsl:when test="$metric/update">
+				<xsl:copy-of select="$metric/update"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<update><xsl:copy-of select="$updateDefault" /></update>
+			</xsl:otherwise>
+		</xsl:choose> 
+		
+		<xsl:choose>
+			<xsl:when test="$metric/valueType">
+				<xsl:copy-of select="$metric/valueType"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<valueType><xsl:copy-of select="$valueType" /></valueType>
+			</xsl:otherwise>
+		</xsl:choose> 
+		
+		
+		<valueMap><xsl:value-of select="valueMap" /></valueMap>
+		<multiplier><xsl:value-of select="multiplier" /></multiplier>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<triggers>
-			<trigger>
-				<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
-				<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
-                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>CPU load is too high (<xsl:value-of select="$nowEN" />)</name>
-                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
-                <url/>
-                <priority>3</priority>
-                <description/>
-                <tags>
-                	<tag>
-	                	<tag>Location.type</tag>
-		                <value>
-		             		<xsl:call-template name="tagLocationType">
-					         		<xsl:with-param name="locationAddress" select="locationAddress"/>
-					         		<xsl:with-param name="locationType" select="locationType"/>
-					         		<xsl:with-param name="locationDefault">CPU</xsl:with-param>
-		 					</xsl:call-template>
-		 				</value>
- 					</tag>
-	                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
-	                <tag><tag>Performance</tag><value></value></tag>
-                </tags>
-			</trigger>
+			
+			<xsl:call-template name="defaultTriggerBlock">
+				<xsl:with-param name="trigger" select="$metric/triggers/trigger" />
+	    	</xsl:call-template>
+
 		</triggers>
-	</xsl:copy>
+		<!-- <xsl:copy-of select="$metric/triggers"></xsl:copy-of> -->
+
+</xsl:template>
+
+<!-- This block describes basic trigger structure. Call it from each trigger in metrics below-->
+<xsl:template name="defaultTriggerBlock">
+		<xsl:param name="trigger"/>
+			<trigger>
+					<xsl:copy-of select="$trigger/documentation"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/expression"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/name"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/url"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/priority"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/description"></xsl:copy-of>
+
+	                <tags>
+	                	<xsl:copy-of select="$trigger/tags/tag"></xsl:copy-of>
+		                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
+	                </tags>
+			</trigger>
+
+</xsl:template>
+
+ 
+<xsl:template match="template/metrics/cpuLoad">
+	
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU Load</name>
+			<name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка процессора</name>
+			<group>CPU</group>
+			<description>CPU load in %</description>
+			<triggers>
+				<trigger>
+					<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:<xsl:value-of select="snmpObject"></xsl:value-of>.avg(300)}>{$CPU_LOAD_MAX}</expression>
+	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU load is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
+	                <url />
+	                <priority>3</priority>
+	                <description />
+	                <tags>
+	                	<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		<xsl:with-param name="locationAddress" select="locationAddress" />
+						         		<xsl:with-param name="locationType" select="locationType" />
+						         		<xsl:with-param name="locationDefault">CPU</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+	 					</tag>
+		                <tag><tag>Performance</tag><value></value></tag>
+	                </tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+	
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+			<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
 </xsl:template>
 
 
