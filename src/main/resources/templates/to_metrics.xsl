@@ -255,6 +255,70 @@ for output: -->
 		                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
 	                </tags>
 			</trigger>
+</xsl:template>
+
+
+<!-- This block describes basic graph structure. Call it for each graph needed-->
+<xsl:template name="defaultGraphBlock">
+		<xsl:param name="graph"/>
+			<xsl:copy-of select="$graph/name"/>
+            <width>900</width>
+            <height>200</height>
+         	<xsl:choose>
+				<xsl:when test="$graph/yaxismin">
+					<xsl:copy-of select="$graph/yaxismin"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<yaxismin>0</yaxismin>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<xsl:choose>
+				<xsl:when test="$graph/yaxismax">
+					<xsl:copy-of select="$graph/yaxismax"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<yaxismin>100</yaxismin>
+				</xsl:otherwise>
+			</xsl:choose>  
+			
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0000</percent_left>
+            <percent_right>0.0000</percent_right>
+            <ymin_type_1>0</ymin_type_1> <!-- type_1: 0 fixed, 1- calculated, 2- item -->
+            <ymax_type_1>0</ymax_type_1>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <graph_item>
+                    <sortorder>0</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>1A7C11</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template Cisco IOS Software releases 12.2_3.5_ or later SNMPv2</host>
+                        <key>sysUpTime</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>0</drawtype>
+                    <color>F63100</color>
+                    <yaxisside>0</yaxisside>
+                    <calc_fnc>2</calc_fnc>
+                    <type>0</type>
+                    <item>
+                        <host>Template Cisco IOS Software releases 12.2_3.5_ or later SNMPv2</host>
+                        <key>icmppingsec</key>
+                    </item>
+                </graph_item>
+            </graph_items>
 
 </xsl:template>
 
