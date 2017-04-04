@@ -89,18 +89,12 @@ for output: -->
 <xsl:variable name="defaultLocationType">Device</xsl:variable>
 <xsl:template name="tagLocationType">
   <xsl:param name="locationType"/>
-  <xsl:param name="locationAddress"/>
   <xsl:param name="locationDefault"/>
   <xsl:if test="$locationType">
       <xsl:value-of select="$locationType" />
   </xsl:if>
   <xsl:if test="not($locationType)">
-  	<xsl:if test="$locationAddress">
-      <xsl:value-of select="$locationAddress" />
-  	</xsl:if>
-    <xsl:if test="not($locationAddress)">
       <xsl:value-of select="$locationDefault" />
-    </xsl:if>
   </xsl:if>
 </xsl:template>
 
@@ -306,7 +300,7 @@ for output: -->
 		                	<tag>Location.type</tag>
 			                <value>
 			             		<xsl:call-template name="tagLocationType">
-						         		<xsl:with-param name="locationAddress" select="locationAddress" />
+						         		
 						         		<xsl:with-param name="locationType" select="locationType" />
 						         		<xsl:with-param name="locationDefault">CPU</xsl:with-param>
 			 					</xsl:call-template>
@@ -514,7 +508,7 @@ for output: -->
 		                	<tag>Location.type</tag>
 			                <value>
 			             		<xsl:call-template name="tagLocationType">
-						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		
 						         		<xsl:with-param name="locationType" select="locationType"/>
 						         		<xsl:with-param name="locationDefault">Memory</xsl:with-param>	 					
 			 					</xsl:call-template>
@@ -752,13 +746,12 @@ for output: -->
 		                	<tag>Location.type</tag>
 			                <value>
 			             		<xsl:call-template name="tagLocationType">
-						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		
 						         		<xsl:with-param name="locationType" select="locationType"/>
 						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
-						
 	               	<tag><tag>Temperature</tag><value></value></tag></tags>
 				</trigger>
 				<trigger>
@@ -774,7 +767,7 @@ for output: -->
 		                	<tag>Location.type</tag>
 			                <value>
 			             		<xsl:call-template name="tagLocationType">
-						         		<xsl:with-param name="locationAddress" select="locationAddress"/>
+						         		
 						         		<xsl:with-param name="locationType" select="locationType"/>
 						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
 			 					</xsl:call-template>
@@ -910,7 +903,18 @@ for output: -->
 	                <priority>5</priority>
 	                <description lang="EN">Please check the device for faults</description>
 	                <description lang="RU">Проверьте устройство</description>
-	                <tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>
+	                <tags>
+						<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	                </tags>
 				</trigger>
 				<trigger>
 				    <id>disk_array.warning</id>
@@ -924,7 +928,18 @@ for output: -->
 	                <dependsOn>
 	                	<dependency>disk_array.critical</dependency>
 	               	</dependsOn>
-	               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>
+	               	<tags>
+             			<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+               		</tags>
 				</trigger>
 				<trigger>
 					<id>disk_array.critical</id>
@@ -938,7 +953,18 @@ for output: -->
 	                <dependsOn>
 	                	<dependency>disk_array.disaster</dependency>
 	               	</dependsOn>
-	               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>
+	               	<tags>
+						<tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	               	</tags>
 				</trigger>
 			</triggers>
 		</metric>
@@ -993,7 +1019,18 @@ for output: -->
 		                	<dependency>disk.fail</dependency>
 		                	<dependency>disk.warning</dependency>
 		               	</dependsOn>
-		               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>
+		               	<tags>
+		                <tag>
+		                	<tag>Location.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagLocationType">
+						         		<xsl:with-param name="locationType" select="locationType"/>
+						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>	 					
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+		               		
+		               	</tags>
 					</trigger>
 		
 					<trigger>
@@ -1007,7 +1044,18 @@ for output: -->
 		                <description lang="RU">Проверьте диск</description><dependsOn>
 		                	<dependency>disk.fail</dependency>
 		               	</dependsOn>
-		               	<tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>
+		               	<tags>			                
+		               		<tag>
+			                	<tag>Location.type</tag>
+				                <value>
+				             		<xsl:call-template name="tagLocationType">
+							         		
+							         		<xsl:with-param name="locationType" select="locationType"/>
+							         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+				 					</xsl:call-template>
+				 				</value>
+							</tag>
+						</tags>
 					</trigger>
 					<trigger>
 						<id>disk.fail</id>
@@ -1018,7 +1066,18 @@ for output: -->
 		                <priority>4</priority>
 						<description lang="EN">Please check physical disk for warnings or errors</description>
 		                <description lang="RU">Проверьте диск</description>
-		                <tags><tag><tag>Location.type</tag><value><xsl:value-of select="locationType"/></value></tag></tags>             
+		                <tags>
+			                <tag>
+			                	<tag>Location.type</tag>
+				                <value>
+				             		<xsl:call-template name="tagLocationType">
+							         		
+							         		<xsl:with-param name="locationType" select="locationType"/>
+							         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+				 					</xsl:call-template>
+				 				</value>
+							</tag>
+		                </tags>             
 		            </trigger>
 				</triggers>			
 		</metric>
