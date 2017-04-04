@@ -91,8 +91,8 @@
 					    			 
 		    				</sequence>
 	    			 		<sequence><!-- Template Performance -->
-				    				<element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-				    				<element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+				    				<element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									<choice minOccurs="0">
 									  <sequence>
 									    <element name="vm.memory.used" type="tns:metricType"/>

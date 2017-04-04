@@ -43,7 +43,7 @@ for output: -->
 <!--  define macros with default values to add into template-->
     <xsl:variable name="MACROS" as="element()*">
         <Performance>
-			<CPU_LOAD_MAX>90</CPU_LOAD_MAX>
+			<CPU_UTIL_MAX>90</CPU_UTIL_MAX>
         </Performance>
         <Fault>
         	<TEMP_CRIT>60</TEMP_CRIT>
@@ -276,21 +276,21 @@ for output: -->
 </xsl:template> -->
  
  
-<xsl:template match="template/metrics/system.cpu.load">
+<xsl:template match="template/metrics/system.cpu.util">
 	 
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU Load</name>
+			<name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU Utilization</name>
 			<name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка процессора</name>
 			<group>CPU</group>
-			<description>CPU load in %</description>
+			<description>CPU utilization in %</description>
 			<units>%</units>
 			<triggers>
 				<trigger>
 					<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
 					<!-- {<xsl:value-of select="../../name"></xsl:value-of>:123 -->
-					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_LOAD_MAX}</expression>
-	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU load is too high (<xsl:value-of select="$nowEN" />)</name>
+					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_UTIL_MAX}</expression>
+	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU utilization is too high (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
 	                <priority>3</priority>
