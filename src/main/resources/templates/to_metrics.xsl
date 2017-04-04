@@ -720,7 +720,7 @@ for output: -->
 			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Температура</name>
 			<group>Temperature</group>
 			<description>Temperature readings of testpoint: <xsl:value-of select="locationAddress"/></description>
-			<units>C</units>
+			<units>°С</units>
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<update>
 				<!-- TODO: make this feature global -->
