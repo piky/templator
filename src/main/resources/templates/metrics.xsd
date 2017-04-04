@@ -67,15 +67,26 @@
 									  </sequence>
 									</choice>
 					    			 
-					    			<choice minOccurs="0">
+					    			<choice minOccurs="0" maxOccurs="1">
 									  <sequence>
-									    <element name="vfs.fs.units" type="tns:metricType"/>
-									    <element name="vfs.fs.units.used" type="tns:metricType"/>
-								        <element name="vfs.fs.units.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-										<element name="vfs.fs.used" type="tns:metricType"/>
+									    <element name="vfs.fs.units" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									    <element name="vfs.fs.units.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								        <element name="vfs.fs.units.total" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+										<element name="vfs.fs.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									  <!-- as a free part of FAULT (not HOST-RESOURCES) -->
+									  <sequence>
+									    <element name="vfs.fs.used" type="tns:metricType"/>
+									    <element name="vfs.fs.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									  <sequence>
+									    <element name="vfs.fs.free" type="tns:metricType"/>
 								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									  </sequence>
 									</choice>
+
 					    			<element name="vfs.fs.used.percentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 					    			 
 		    				</sequence>
