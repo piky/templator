@@ -731,8 +731,10 @@ for output: -->
  			</update>
 			<triggers>
 				<trigger>
+				    <!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 				    <id>tempWarn</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="locationType" />"}-5</recovery_expression>
 	                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
@@ -755,8 +757,10 @@ for output: -->
 	               	<tag><tag>Temperature</tag><value></value></tag></tags>
 				</trigger>
 				<trigger>
+					<!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 					<id>tempCrit</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="locationType" />"}-5</recovery_expression>
 	                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
