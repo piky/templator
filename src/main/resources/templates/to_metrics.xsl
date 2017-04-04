@@ -1261,69 +1261,69 @@ for output: -->
 
 
 <xsl:template match="template/metrics/system.hw.model">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Hardware model name</name>
+			<name lang="RU">Модель</name>
+			<group>Inventory</group>
+			<zabbixKey>system.hw.model</zabbixKey>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1day"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+			<inventory_link>29</inventory_link> <!-- model -->
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name lang="EN">Hardware model name</name>
-		<name lang="RU">Модель</name>
-		<group>Inventory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$history1week"/></history>
-		<trends><xsl:copy-of select="$trends0days"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$update1day"/></update>
-		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
-		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<inventory_link>29</inventory_link> <!-- model -->
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 
 <xsl:template match="template/metrics/system.hw.serialnumber">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Hardware Serial Number</name>
+			<name lang="RU">Серийный номер</name>
+			<group>Inventory</group>
+			<zabbixKey>system.hw.serialnumber</zabbixKey>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1day"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+			<inventory_link>8</inventory_link> <!-- serial_noa-->
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name lang="EN">Hardware Serial Number</name>
-		<name lang="RU">Серийный номер</name>
-		<group>Inventory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$history1week"/></history>
-		<trends><xsl:copy-of select="$trends0days"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$update1day"/></update>
-		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
-		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<inventory_link>8</inventory_link> <!-- serial_noa-->
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 <xsl:template match="template/metrics/system.hw.firmware">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Firmware version</name>
+			<name lang="RU">Версия прошивки</name>
+			<group>Inventory</group>
+			<zabbixKey>system.hw.firmware</zabbixKey>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1day"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		</metric>
+    </xsl:variable>
+				
 	<xsl:copy>
-		<name lang="EN">Firmware version</name>
-		<name lang="RU">Версия прошивки</name>
-		<group>Inventory</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$history1week"/></history>
-		<trends><xsl:copy-of select="$trends0days"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$update1day"/></update>
-		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
-		<valueMap><xsl:value-of select="valueTypeChar"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 </xsl:stylesheet>
