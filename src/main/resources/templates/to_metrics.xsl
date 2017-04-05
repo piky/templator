@@ -1237,7 +1237,7 @@ for output: -->
 <xsl:template match="template/metrics/system.objectid">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>system ObjectID</name>
+			<name>System ObjectID</name>
 			<group>General</group>
 			<zabbixKey>system.objectid</zabbixKey>
 			<history><xsl:copy-of select="$history1week"/></history>
@@ -1283,7 +1283,7 @@ for output: -->
 		<metric>
 			<name>Device description</name>
 			<group>General</group>
-			<zabbixKey>system.objectid</zabbixKey>
+			<zabbixKey>system.descr</zabbixKey>
 			<history><xsl:copy-of select="$history1week"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
