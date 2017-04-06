@@ -1543,10 +1543,12 @@ for output: -->
 <xsl:template match="template/metrics/system.hw.serialnumber">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Hardware Serial Number</name>
-			<name lang="RU">Серийный номер</name>
+			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Hardware Serial Number</name>
+			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Серийный номер</name>
 			<group>Inventory</group>
-			<zabbixKey>system.hw.serialnumber</zabbixKey>
+			<xsl:if test="not(alarmObject)">
+				<zabbixKey>system.hw.serialnumber</zabbixKey>
+			</xsl:if>
 			<history><xsl:copy-of select="$history1week"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1day"/></update>
@@ -1558,18 +1560,16 @@ for output: -->
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
-	                <name lang="EN">Device might have been replaced (new serial number:{ITEM.VALUE1})</name>
-	                <name lang="RU">Возможно замена устройства (новый серийный номер:{ITEM.VALUE1})</name>
+	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> might have been replaced (new serial number:{ITEM.VALUE1})</name>
+	                <name lang="RU">Возможно замена <xsl:value-of select="if (alarmObject!='') then alarmObject else 'устройства'" /> (новый серийный номер:{ITEM.VALUE1})</name>
 	                <url/>
 	                <priority>1</priority>
-	                <description lang="EN">Serial number has changed. Ack to close</description>
-	                <description lang="RU">Изменился серийный номер устройства. Подтвердите и закройте.</description>
+	                <description lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
+	                <description lang="RU">Изменился серийный номер <xsl:value-of select="if (alarmObject!='') then alarmObject else 'устройства'" />. Подтвердите и закройте.</description>
 				</trigger>
 			</triggers>		
-			
 		</metric>
     </xsl:variable>
-				
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
