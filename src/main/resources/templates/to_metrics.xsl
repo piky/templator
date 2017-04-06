@@ -738,13 +738,38 @@ for output: -->
 				<trigger>
 				    <!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 				    <id>tempWarn</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</recovery_expression>
-	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
+
+					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
+					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="discoveryRule" select="discoveryRule"/>
+					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
+					<xsl:choose>
+						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule]">
+						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/name()"/>[<xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/snmpObject"/>]</xsl:variable>
+							<expression><xsl:value-of select="$expression"/>
+							or
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}</expression>
+							<recovery_expression>
+							<xsl:value-of select="$recovery_expression"/>
+							<!-- AND
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
+							</recovery_expression>
+							<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
+	                		<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
+														
+						</xsl:when>
+						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
+						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
+						<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
+	                	<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
+						</xsl:otherwise>
+					</xsl:choose>	                
+	                
+	                
 	                <url />
 	                <priority>2</priority>
-	                <description />
+	                <description>This trigger uses temperature sensor values as well as temperature sensor status if available</description>
 	                <dependsOn>
 	                	<dependency>tempCrit</dependency>
 	               	</dependsOn>
@@ -767,13 +792,39 @@ for output: -->
 				<trigger>
 					<!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 					<id>tempCrit</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</recovery_expression>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)</name>
+					
+					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
+					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="discoveryRule" select="discoveryRule"/>
+					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
+					
+					<xsl:choose>
+						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule]">
+						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/name()"/>[<xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/snmpObject"/>]</xsl:variable>
+							<expression><xsl:value-of select="$expression"/>
+							or
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}</expression>
+							<recovery_expression>
+							<xsl:value-of select="$recovery_expression"/>
+							<!-- AND
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
+							</recovery_expression>
+							<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
+	                		<name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
+						</xsl:when>
+						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
+						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
+						<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
+	                	<name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>						
+						</xsl:otherwise>
+					</xsl:choose>
+					
+					
+	                
 	                <url/>
 	                <priority>4</priority>
-	                <description/>
+	                <description>This trigger uses temperature sensor values as well as temperature sensor status if available</description>
 	                <tags>
 		                <tag>
 		                	<tag>Alarm.object.type</tag>
