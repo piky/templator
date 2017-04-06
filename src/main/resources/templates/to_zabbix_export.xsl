@@ -187,7 +187,7 @@
 	                            <type>0</type>
 	                            <manual_close>
 									<xsl:choose>
-						  				<xsl:when test="./manual_close eq 1">1</xsl:when>
+						  				<xsl:when test="./manual_close = 1">1</xsl:when>
 					      				<xsl:otherwise>0</xsl:otherwise>
 									</xsl:choose>
 								</manual_close>
