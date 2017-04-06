@@ -4,7 +4,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes"/>
 
-<!-- 
+ 
 <xsl:variable name="historyDefault">3</xsl:variable> 
 <xsl:variable name="history1week">7</xsl:variable>
 <xsl:variable name="trendsDefault">7</xsl:variable> 
@@ -14,7 +14,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:variable name="update5min">300</xsl:variable>
 <xsl:variable name="update1hour">60</xsl:variable> 
 <xsl:variable name="update1day">300</xsl:variable>
-for output: -->
+<!--
 <xsl:variable name="historyDefault">30</xsl:variable>  
 <xsl:variable name="history1week">7</xsl:variable>
 <xsl:variable name="trendsDefault">365</xsl:variable> 
@@ -24,7 +24,7 @@ for output: -->
 <xsl:variable name="update5min">300</xsl:variable>
 <xsl:variable name="update1hour">3600</xsl:variable> 
 <xsl:variable name="update1day">86400</xsl:variable>
-
+for output: -->
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -252,6 +252,7 @@ for output: -->
 					<!-- <xsl:copy-of select="$trigger/expression"></xsl:copy-of> -->
 					<expression><xsl:value-of select="replace($trigger/expression, 'METRIC', $metricKey)"/></expression>
 					<recovery_expression><xsl:value-of select="replace($trigger/recovery_expression, 'METRIC', $metricKey)"/></recovery_expression>
+		            <xsl:copy-of select="$trigger/recovery_mode"></xsl:copy-of>
 		            <xsl:copy-of select="$trigger/manual_close"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/name"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/url"></xsl:copy-of>
@@ -1359,6 +1360,21 @@ for output: -->
 			<update><xsl:copy-of select="$update1day"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>8</inventory_link> <!-- serial_noa-->
+			<triggers>
+				<trigger>
+				    <id>sn.changed</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression><!-- TODO proper multiitem triggers shall be invented -->
+					<recovery_mode>2</recovery_mode>
+					<manual_close>1</manual_close>
+	                <name lang="EN">Device might have been replaced (new serial number:{ITEM.VALUE1})</name>
+	                <name lang="RU">Возможно замена устройства (новый серийный номер:{ITEM.VALUE1})</name>
+	                <url/>
+	                <priority>1</priority>
+	                <description lang="EN">Serial number has changed. Ack to close</description>
+	                <description lang="RU">Изменился серийный номер устройства. Подтвердите и закройте.</description>
+				</trigger>
+			</triggers>		
+			
 		</metric>
     </xsl:variable>
 				
@@ -1380,6 +1396,20 @@ for output: -->
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1day"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+			<triggers>
+				<trigger>
+				    <id>firmware.changed</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression>
+					<recovery_mode>2</recovery_mode>
+					<manual_close>1</manual_close>
+	                <name lang="EN">Firmware has changed: (new:{ITEM.VALUE1})</name>
+	                <name lang="RU">Версия прошивки изменилась: (сейчас:{ITEM.VALUE1})</name>
+	                <url/>
+	                <priority>1</priority>
+	                <description lang="EN">Firmware version has changed. Ack to close</description>
+	                <description lang="RU">Версия прошивки изменилась. Подтвердите и закройте.</description>
+				</trigger>
+			</triggers>			
 		</metric>
     </xsl:variable>
 				

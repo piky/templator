@@ -132,6 +132,7 @@
 								<recovery_mode>
 									<xsl:choose>
 						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+						  				<xsl:when test="./recovery_mode != ''"><xsl:value-of select="./recovery_mode"/></xsl:when>
 					      				<xsl:otherwise>0</xsl:otherwise>
 									</xsl:choose>
 								</recovery_mode>
@@ -171,6 +172,7 @@
 								<recovery_mode>
 									<xsl:choose>
 						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+						  				<xsl:when test="./recovery_mode != ''"><xsl:value-of select="./recovery_mode"/></xsl:when>
 					      				<xsl:otherwise>0</xsl:otherwise>
 									</xsl:choose>
 								</recovery_mode>
