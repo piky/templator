@@ -975,6 +975,114 @@ for output: -->
 
 
 
+<xsl:template match="template/metrics/sensor.psu.status">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply status</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания</name>
+			<group>Power Supply</group>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+			<triggers>
+				<trigger>
+					<id>psu.critical</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$PSU_CRIT_STATUS}</expression>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: авария (<xsl:value-of select="$nowRU" />)</name>
+	                <priority>4</priority>
+	                <description lang="EN">Please check the power supply unit for errors</description>
+	                <description lang="RU">Проверьте блок питания</description>
+	               	<tags>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	               	</tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
+</xsl:template>
+
+
+
+<xsl:template match="template/metrics/sensor.fan.status">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan status</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора</name>
+			<group>Fans</group>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+			<triggers>
+				<trigger>
+					<id>fan.critical</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$FAN_CRIT_STATUS}</expression>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой (<xsl:value-of select="$nowRU" />)</name>
+	                <priority>4</priority>
+	                <description lang="EN">Please check the fan unit</description>
+	                <description lang="RU">Проверьте вентилятор</description>
+	               	<tags>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	               	</tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
+</xsl:template>
+
+
+
+
+<xsl:template match="template/metrics/sensor.fan.value">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan speed</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Скорость вращения вентилятора</name>
+			<group>Fans</group>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<units>rpm</units>
+			<triggers/>
+			
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>
+</xsl:template>
+
+
 
 <xsl:template match="template/metrics/system.hw.diskarray.status">
 	 <xsl:variable name="metric" as="element()*">

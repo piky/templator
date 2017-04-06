@@ -118,8 +118,13 @@
 							<sequence> <!-- Template Fault and System Info -->
 				    			<element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 								<element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>								
+								<choice maxOccurs="unbounded">
+									<element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.fan.value" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</choice>
 		    				</sequence>
 							<sequence> <!-- Template Fault (Disks) -->
 								<!-- array controllers -->
@@ -277,6 +282,7 @@
         <enumeration value="Disk Arrays"/>
         <enumeration value="Disks"/>
         <enumeration value="Power Supply"/>
+        <enumeration value="Fans"/>
         
 		<enumeration value="General"/>
         <enumeration value="Inventory"/>
