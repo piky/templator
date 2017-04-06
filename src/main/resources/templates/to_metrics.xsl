@@ -86,15 +86,15 @@ for output: -->
   </xsl:if>
 </xsl:template>
 
-<xsl:variable name="defaultLocationType">Device</xsl:variable>
-<xsl:template name="tagLocationType">
-  <xsl:param name="locationType"/>
-  <xsl:param name="locationDefault"/>
-  <xsl:if test="$locationType">
-      <xsl:value-of select="$locationType" />
+<xsl:variable name="defaultAlarmObjectType">Device</xsl:variable>
+<xsl:template name="tagAlarmObjectType">
+  <xsl:param name="alarmObjectType"/>
+  <xsl:param name="alarmObjectDefault"/>
+  <xsl:if test="$alarmObjectType">
+      <xsl:value-of select="$alarmObjectType" />
   </xsl:if>
-  <xsl:if test="not($locationType)">
-      <xsl:value-of select="$locationDefault" />
+  <xsl:if test="not($alarmObjectType)">
+      <xsl:value-of select="$alarmObjectDefault" />
   </xsl:if>
 </xsl:template>
 
@@ -280,29 +280,28 @@ for output: -->
 	 
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU Utilization</name>
-			<name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка процессора</name>
+			<name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU Utilization</name>
+			<name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка процессора</name>
 			<group>CPU</group>
 			<description>CPU utilization in %</description>
 			<units>%</units>
 			<triggers>
 				<trigger>
-					<documentation>If locationAddress is defined, it's added to trigger name.</documentation>
+					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
 					<!-- {<xsl:value-of select="../../name"></xsl:value-of>:123 -->
 					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>CPU utilization is too high (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
 	                <priority>3</priority>
 	                <description />
 	                <tags>
 	                	<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
-						         		
-						         		<xsl:with-param name="locationType" select="locationType" />
-						         		<xsl:with-param name="locationDefault">CPU</xsl:with-param>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
+						         		<xsl:with-param name="alarmObjectDefault">CPU</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
 	 					</tag>
@@ -398,7 +397,7 @@ for output: -->
 <xsl:template match="template/metrics/vm.memory.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Used memory</name>
+			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Used memory</name>
 			<group>Memory</group>
 			<units>B</units>
 			<description>Used memory in Bytes</description>
@@ -424,7 +423,7 @@ for output: -->
 <xsl:template match="template/metrics/vm.memory.free">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
+			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
 			<group>Memory</group>
 			<units>B</units>
 		</metric>
@@ -444,7 +443,7 @@ for output: -->
 <xsl:template match="template/metrics/vm.memory.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Total memory</name>
+			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Total memory</name>
 			<group>Memory</group>
 			<description>Total memory in Bytes</description>
 			<units>B</units>
@@ -472,7 +471,7 @@ for output: -->
 	
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization</name>
+			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Memory utilization</name>
 			<group>Memory</group>
 			<description>Memory utilization in %</description>
 			<units>%</units>
@@ -498,19 +497,19 @@ for output: -->
 			<triggers>
 				<trigger>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>90</expression>
-	                <name lang="EN"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU"><xsl:if test="locationAddress != ''">[<xsl:value-of select="locationAddress"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description/>
 	                <tags>
 	                	<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
+			             		<xsl:call-template name="tagAlarmObjectType">
 						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault">Memory</xsl:with-param>	 					
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">Memory</xsl:with-param>	 					
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
@@ -534,7 +533,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.units">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Storage units</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Storage units</name>
 			<group>Internal Items</group>
 		</metric>
     </xsl:variable>
@@ -549,7 +548,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.units.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Used storage in units</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Used storage in units</name>
 			<group>Internal Items</group>
 			<description>Used storage in units</description>
 			<units>units</units>
@@ -567,7 +566,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.units.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Total storage in units</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Total storage in units</name>
 			<group>Internal Items</group>
 			<description>Total storage in units</description>
 			<units>units</units>
@@ -585,7 +584,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Used space</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Used space</name>
 			<group>Storage</group>
 			<description>Used storage in Bytes</description>
 			<xsl:choose>
@@ -611,7 +610,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.free">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Free space</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Free space</name>
 			<group>Storage</group>
 			<units>B</units>
 		</metric>
@@ -629,7 +628,7 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Total storage</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Total storage</name>
 			<group>Storage</group>
 			<description>Total storage in Bytes</description>			
 			<xsl:choose>
@@ -656,9 +655,9 @@ for output: -->
 <xsl:template match="template/metrics/vfs.fs.used.percentage">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Storage utilization</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Storage utilization</name>
 			<group>Storage</group>
-			<description>Storage utilization in % for <xsl:value-of select="locationAddress"/></description>			
+			<description>Storage utilization in % for <xsl:value-of select="alarmObject"/></description>			
 			<xsl:choose>
 				<xsl:when test="./calculated = 'true'">
 						<xsl:choose>
@@ -683,8 +682,8 @@ for output: -->
 					<trigger>
 						<id>storageCrit</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>90</expression>
-		                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Free disk space is less than 10%</name>
-		                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Свободного места <xsl:value-of select="locationAddress"/> меньше 10%</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is less than 10%</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Свободного места <xsl:value-of select="alarmObject"/> меньше 10%</name>
 		                <url/>
 		                <priority>3</priority>
 		                <description/>
@@ -693,8 +692,8 @@ for output: -->
 					<trigger>
 						<id>storageWarn</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>80</expression>
-		                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Free disk space is less than 20%</name>
-		                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Свободного места <xsl:value-of select="locationAddress"/> меньше 20%</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is less than 20%</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Свободного места <xsl:value-of select="alarmObject"/> меньше 20%</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description/>
@@ -716,10 +715,10 @@ for output: -->
 <xsl:template match="template/metrics/sensor.temp.value">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Temperature</name>
-			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Температура</name>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Temperature</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура</name>
 			<group>Temperature</group>
-			<description>Temperature readings of testpoint: <xsl:value-of select="locationAddress"/></description>
+			<description>Temperature readings of testpoint: <xsl:value-of select="alarmObject"/></description>
 			<units>°С</units>
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<update>
@@ -733,10 +732,10 @@ for output: -->
 				<trigger>
 				    <!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 				    <id>tempWarn</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="locationType" />"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="locationType" />"}-5</recovery_expression>
-	                <name lang="EN"><xsl:value-of select="locationAddress" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="locationAddress" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="locationType" />"} (<xsl:value-of select="$nowRU" />)</name>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</recovery_expression>
+	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
 	                <priority>2</priority>
 	                <description />
@@ -745,40 +744,44 @@ for output: -->
 	               	</dependsOn>
 	               	<tags>	                
 	               		<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
-						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault" select="$defaultAlarmObjectType"/>	 					
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
-	               	<tag><tag>Temperature</tag><value></value></tag></tags>
+		               	<tag>
+		               		<tag>Alarm.type</tag>
+		               		<value>Overheat</value>
+	               		</tag>
+               		</tags>
 				</trigger>
 				<trigger>
 					<!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
 					<id>tempCrit</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="locationType" />"}-5</recovery_expression>
-	                <name lang="EN"><xsl:value-of select="locationAddress"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="locationAddress"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="locationType"/>"} (<xsl:value-of select="$nowRU" />)</name>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</recovery_expression>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
 	                <priority>4</priority>
 	                <description/>
 	                <tags>
 		                <tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
-						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault" select="$defaultLocationType"/>	 					
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault" select="$defaultAlarmObjectType"/>	 					
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
-	 				
-	                <tag><tag>Temperature</tag><value></value></tag>
+   		               	<tag>
+		               		<tag>Alarm.type</tag>
+		               		<value>Overheat</value>
+	               		</tag>
 	                </tags>
 				</trigger>
 			</triggers>
@@ -796,9 +799,9 @@ for output: -->
 <xsl:template match="template/metrics/sensor.temp.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Temperature status</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Temperature status</name>
 			<group>Temperature</group>
-			<description>Temperature status of testpoint: <xsl:value-of select="locationAddress"/></description>
+			<description>Temperature status of testpoint: <xsl:value-of select="alarmObject"/></description>
 		</metric>
     </xsl:variable>
 				
@@ -813,9 +816,9 @@ for output: -->
 <xsl:template match="template/metrics/sensor.temp.locale">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="locationAddress"/>] Temperature sensor location</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Temperature sensor location</name>
 			<group>Temperature</group>
-			<description>Temperature location of testpoint: <xsl:value-of select="locationAddress"/></description>
+			<description>Temperature location of testpoint: <xsl:value-of select="alarmObject"/></description>
 			<history><xsl:copy-of select="$history1week"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
@@ -891,8 +894,8 @@ for output: -->
 <xsl:template match="template/metrics/system.hw.diskarray.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Disk array controller status</name>
-			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус контроллера дискового массива</name>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller status</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива</name>
 			<group>Disk Arrays</group>
 			<history><xsl:copy-of select="$history1week"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -901,20 +904,20 @@ for output: -->
 				<trigger>
 				    <id>disk_array.disaster</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_DISASTER_STATUS}</expression>
-	                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Disk array controller is in unrecoverable state!</name>
-	                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус контроллера дискового массива: сбой</name>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in unrecoverable state!</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: сбой</name>
 	                <url/>
 	                <priority>5</priority>
 	                <description lang="EN">Please check the device for faults</description>
 	                <description lang="RU">Проверьте устройство</description>
 	                <tags>
 						<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
+			             		<xsl:call-template name="tagAlarmObjectType">
 						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
@@ -923,8 +926,8 @@ for output: -->
 				<trigger>
 				    <id>disk_array.warning</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_WARN_STATUS}</expression>
-	                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Disk array controller is in warning state</name>
-	                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус контроллера дискового массива: предупреждение</name>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in warning state</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: предупреждение</name>
 	                <url/>
 	                <priority>2</priority>
 	                <description lang="EN">Please check the device for warnings</description>
@@ -934,12 +937,12 @@ for output: -->
 	               	</dependsOn>
 	               	<tags>
              			<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
+			             		<xsl:call-template name="tagAlarmObjectType">
 						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
@@ -948,8 +951,8 @@ for output: -->
 				<trigger>
 					<id>disk_array.critical</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_CRIT_STATUS}</expression>
-	                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Disk array controller is in critical state</name>
-	                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус контроллера дискового массива: авария</name>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in critical state</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: авария</name>
 	                <url/>
 	                <priority>4</priority>
 	                <description lang="EN">Please check the device for errors</description>
@@ -959,12 +962,12 @@ for output: -->
 	               	</dependsOn>
 	               	<tags>
 						<tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
+			             		<xsl:call-template name="tagAlarmObjectType">
 						         		
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
@@ -984,8 +987,8 @@ for output: -->
 <xsl:template match="template/metrics/system.hw.diskarray.model">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Disk array controller model</name>
-			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Модель контроллера дискового массива</name>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller model</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Модель контроллера дискового массива</name>
 			<group>Disk Arrays</group>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1day"/></update>
@@ -1003,8 +1006,8 @@ for output: -->
 <xsl:template match="template/metrics/system.hw.physicaldisk.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Physical Disk Status</name>
-			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус физического диска</name>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical Disk Status</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска</name>
 			<group>Disks</group>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1013,8 +1016,8 @@ for output: -->
 					    <id>disk.notok</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.str({$DISK_OK_STATUS})}=0 and 
 						{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.str("")}=0</expression>
-		                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Physical disk is not in OK state</name>
-		                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус физического диска не норма</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk is not in OK state</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска не норма</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN">Please check physical disk for warnings or errors</description>
@@ -1025,11 +1028,11 @@ for output: -->
 		               	</dependsOn>
 		               	<tags>
 		                <tag>
-		                	<tag>Location.type</tag>
+		                	<tag>Alarm.object.type</tag>
 			                <value>
-			             		<xsl:call-template name="tagLocationType">
-						         		<xsl:with-param name="locationType" select="locationType"/>
-						         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>	 					
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>	 					
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
@@ -1040,8 +1043,8 @@ for output: -->
 					<trigger>
 					    <id>disk.warning</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_WARN_STATUS}</expression>
-		                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Physical disk is in warning state</name>
-		                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус физического диска: предупреждение</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk is in warning state</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска: предупреждение</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN">Please check physical disk for warnings or errors</description>
@@ -1050,12 +1053,12 @@ for output: -->
 		               	</dependsOn>
 		               	<tags>			                
 		               		<tag>
-			                	<tag>Location.type</tag>
+			                	<tag>Alarm.object.type</tag>
 				                <value>
-				             		<xsl:call-template name="tagLocationType">
+				             		<xsl:call-template name="tagAlarmObjectType">
 							         		
-							         		<xsl:with-param name="locationType" select="locationType"/>
-							         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+							         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+							         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
 				 					</xsl:call-template>
 				 				</value>
 							</tag>
@@ -1064,20 +1067,19 @@ for output: -->
 					<trigger>
 						<id>disk.fail</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_FAIL_STATUS}</expression>
-		                <name lang="EN">[<xsl:value-of select="locationAddress"/>] Physical disk failed</name>
-		                <name lang="RU">[<xsl:value-of select="locationAddress"/>] Статус физического диска: сбой</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk failed</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска: сбой</name>
 		                <url/>
 		                <priority>4</priority>
 						<description lang="EN">Please check physical disk for warnings or errors</description>
 		                <description lang="RU">Проверьте диск</description>
 		                <tags>
 			                <tag>
-			                	<tag>Location.type</tag>
+			                	<tag>Alarm.object.type</tag>
 				                <value>
-				             		<xsl:call-template name="tagLocationType">
-							         		
-							         		<xsl:with-param name="locationType" select="locationType"/>
-							         		<xsl:with-param name="locationDefault">Disk</xsl:with-param>
+				             		<xsl:call-template name="tagAlarmObjectType">
+							         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+							         		<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
 				 					</xsl:call-template>
 				 				</value>
 							</tag>
@@ -1090,7 +1092,6 @@ for output: -->
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
-				
 	    </xsl:call-template>
     </xsl:copy>
 </xsl:template>
@@ -1099,8 +1100,8 @@ for output: -->
 <xsl:template match="template/metrics/system.hw.physicaldisk.serialnumber">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="locationAddress"/>] Physical Disk Serial Number</name>
-			<name lang="RU">[<xsl:value-of select="locationAddress"/>] Серийный номер физического диска</name>
+			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical Disk Serial Number</name>
+			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Серийный номер физического диска</name>
 			<group>Disks</group>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1day"/></update>
@@ -1124,7 +1125,7 @@ for output: -->
 		<metric>
 			<name>Device uptime</name>
 			<group>General</group>
-			<description>The time since the network management portion of the system was last re-initialized.<xsl:value-of select="locationAddress"/></description>
+			<description>The time since the network management portion of the system was last re-initialized.<xsl:value-of select="alarmObject"/></description>
 			<units>uptime</units>
 			<zabbixKey>system.uptime</zabbixKey>
 			<update><xsl:copy-of select="$update1min"/></update>
@@ -1134,8 +1135,8 @@ for output: -->
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;600 or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
 					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&gt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata(1800)}=1</recovery_expression>
 					<manual_close>1</manual_close>
-	                <name lang="EN"><xsl:value-of select="locationAddress"/> The {HOST.NAME} has just been  restarted</name>
-	                <name lang="RU"><xsl:value-of select="locationAddress"/>{HOST.NAME} был только что перезагружен</name>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
+	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
 	                <url/>
 	                <priority>2</priority>
 	                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
@@ -1147,8 +1148,8 @@ for output: -->
 				<trigger>
 					<id>uptime.nodata</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
-	                <name lang="EN"><xsl:value-of select="locationAddress"/> No SNMP data collection</name>
-	                <name lang="RU"><xsl:value-of select="locationAddress"/> Нет сбора данных по SNMP</name>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
+	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
 	                <priority>2</priority>
 	                <description lang="EN">SNMP object sysUptime.0 is not available for polling. Please check device connectivity and SNMP settings.</description>

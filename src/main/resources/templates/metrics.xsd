@@ -227,8 +227,8 @@
 			    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
 			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="locationAddress" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="locationType" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="alarmObject" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="alarmObjectType" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
