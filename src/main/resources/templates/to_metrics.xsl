@@ -1042,7 +1042,7 @@ for output: -->
 			                <value>
 			             		<xsl:call-template name="tagAlarmObjectType">
 						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+						         		<xsl:with-param name="alarmObjectDefault">Fan</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
