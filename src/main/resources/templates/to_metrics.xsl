@@ -47,7 +47,8 @@ for output: -->
         </Performance>
         <Fault>
         	<TEMP_CRIT>60</TEMP_CRIT>
-        	<TEMP_WARN>50</TEMP_WARN>        
+        	<TEMP_WARN>50</TEMP_WARN>
+        	<TEMP_CRIT_LOW>5</TEMP_CRIT_LOW>
         </Fault>
         <General>
         	<SNMP_TIMEOUT>600</SNMP_TIMEOUT>
@@ -306,6 +307,10 @@ for output: -->
 			 					</xsl:call-template>
 			 				</value>
 	 					</tag>
+						<tag>
+		                	<tag>Alarm.type</tag>
+			                <value>CPU load</value>
+	 					</tag>	 					
 		                <tag><tag>Performance</tag><value></value></tag>
 	                </tags>
 				</trigger>
@@ -785,6 +790,32 @@ for output: -->
 	               		</tag>
 	                </tags>
 				</trigger>
+				<trigger>
+				    <!-- <documentation>Using recovery expression... Temperature has to be 5 points more than threshold level  ({$TEMP_CRIT_LOW}+5)</documentation>  -->
+				    <id>tempLow</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.min(300)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
+	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
+	                <url />
+	                <priority>3</priority>
+	                <description />
+	               	<tags>	                
+	               		<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault" select="$defaultAlarmObjectType"/>	 					
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+		               	<tag>
+		               		<tag>Alarm.type</tag>
+		               		<value>Cold Temperature</value>
+	               		</tag>
+               		</tags>
+				</trigger>				
 			</triggers>
 		</metric>
     </xsl:variable>
@@ -845,8 +876,8 @@ for output: -->
 					<trigger>
 					    <id>health.disaster</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
-		                <name lang="EN">System is in unrecoverable state!</name>
-		                <name lang="RU">Статус системы: сбой</name>
+		                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
+		                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
 		                <url/>
 		                <priority>5</priority>
 		                <description lang="EN">Please check the device for faults</description>
@@ -855,8 +886,10 @@ for output: -->
 					<trigger>
 					    <id>health.warning</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
-		                <name lang="EN">System status is in warning state</name>
-		                <name lang="RU">Статус системы: предупреждение</name>
+		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
+		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
+		                
+		                
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN">Please check the device for warnings</description>
@@ -868,8 +901,8 @@ for output: -->
 					<trigger>
 						<id>health.critical</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
-		                <name lang="EN">System status is in critical state</name>
-		                <name lang="RU">Статус системы: авария</name>
+		                <name lang="EN">System status is in critical state (<xsl:value-of select="$nowEN"/>)</name>
+		                <name lang="RU">Статус системы: авария (<xsl:value-of select="$nowRU"/>)</name>
 		                <url/>
 		                <priority>4</priority>
 		                <description lang="EN">Please check the device for errors</description>
@@ -1363,7 +1396,7 @@ for output: -->
 			<triggers>
 				<trigger>
 				    <id>sn.changed</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression><!-- TODO proper multiitem triggers shall be invented -->
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
 	                <name lang="EN">Device might have been replaced (new serial number:{ITEM.VALUE1})</name>
