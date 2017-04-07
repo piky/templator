@@ -748,8 +748,8 @@ for output: -->
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
-						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule]">
-						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/name()"/>[<xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/snmpObject"/>]</xsl:variable>
+						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and not(discoveryRule))"><!-- if discoveryRules match or both doesn't have discoveryRule -->
+						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
 							<expression><xsl:value-of select="$expression"/>
 							or
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}</expression>
@@ -803,8 +803,8 @@ for output: -->
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					
 					<xsl:choose>
-						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule]">
-						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/name()"/>[<xsl:value-of select="../sensor.temp.status[discoveryRule = $discoveryRule]/snmpObject"/>]</xsl:variable>
+						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and not(discoveryRule))"><!-- if discoveryRules match or both doesn't have discoveryRule -->
+						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
 							<expression><xsl:value-of select="$expression"/>
 							or
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}</expression>
