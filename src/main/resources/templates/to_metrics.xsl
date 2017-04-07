@@ -44,11 +44,14 @@ for output: -->
     <xsl:variable name="MACROS" as="element()*">
         <Performance>
 			<CPU_UTIL_MAX>90</CPU_UTIL_MAX>
+			<MEMORY_UTIL_MAX>90</MEMORY_UTIL_MAX>
         </Performance>
         <Fault>
         	<TEMP_CRIT>60</TEMP_CRIT>
         	<TEMP_WARN>50</TEMP_WARN>
         	<TEMP_CRIT_LOW>5</TEMP_CRIT_LOW>
+        	<STORAGE_UTIL_CRIT>90</STORAGE_UTIL_CRIT>
+        	<STORAGE_UTIL_WARN>80</STORAGE_UTIL_WARN>
         </Fault>
         <General>
         	<SNMP_TIMEOUT>600</SNMP_TIMEOUT>
@@ -502,7 +505,7 @@ for output: -->
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<triggers>
 				<trigger>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>90</expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$MEMORY_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
@@ -687,9 +690,9 @@ for output: -->
 			<triggers>
 					<trigger>
 						<id>storageCrit</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>90</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is less than 10%</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Свободного места <xsl:value-of select="alarmObject"/> меньше 10%</name>
+						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$STORAGE_UTIL_CRIT}</expression>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
 		                <priority>3</priority>
 		                <description/>
@@ -697,9 +700,9 @@ for output: -->
 					
 					<trigger>
 						<id>storageWarn</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>80</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is less than 20%</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Свободного места <xsl:value-of select="alarmObject"/> меньше 20%</name>
+						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$STORAGE_UTIL_WARN}</expression>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description/>
@@ -1600,8 +1603,34 @@ for output: -->
 	                <priority>1</priority>
 	                <description lang="EN">Firmware version has changed. Ack to close</description>
 	                <description lang="RU">Версия прошивки изменилась. Подтвердите и закройте.</description>
+	                <!-- <dependsOn>
+		                	<dependency>sn.changed</dependency>
+		            </dependsOn> -->
 				</trigger>
 			</triggers>			
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+
+
+<xsl:template match="template/metrics/system.hw.version">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Hardware version(revision)</name>
+			<name lang="RU">Версия ревизии</name>
+			<group>Inventory</group>
+			<zabbixKey>system.hw.version</zabbixKey>
+			<history><xsl:copy-of select="$history1week"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1day"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>		
 		</metric>
     </xsl:variable>
 				
