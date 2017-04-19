@@ -185,7 +185,13 @@ for output: -->
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
 		<xsl:copy-of select="$metric/description"></xsl:copy-of>
 		<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
-		<xsl:copy-of select="$metric/inventory_link"></xsl:copy-of>
+		<xsl:choose>
+			<xsl:when test="$metric/inventory_link and not(discoveryRule)">
+				<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
+			</xsl:when>
+		</xsl:choose>
+		
+		
 		
 
 		<xsl:choose>
