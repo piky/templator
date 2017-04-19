@@ -9,6 +9,7 @@
 <xsl:variable name="snmptrap_item_type">17</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
 
+<xsl:param name="discoveryDelay">3600</xsl:param>
 
 <xsl:template match="/">
 	<zabbix_export>

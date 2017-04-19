@@ -4,27 +4,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" indent="yes"/>
 
- 
-<xsl:variable name="historyDefault">3</xsl:variable> 
-<xsl:variable name="history1week">7</xsl:variable>
-<xsl:variable name="trendsDefault">7</xsl:variable> 
-<xsl:variable name="trends0days">0</xsl:variable>
-<xsl:variable name="updateDefault">30</xsl:variable> 
-<xsl:variable name="update1min">60</xsl:variable>
-<xsl:variable name="update5min">300</xsl:variable>
-<xsl:variable name="update1hour">60</xsl:variable> 
-<xsl:variable name="update1day">300</xsl:variable>
-<!--
-<xsl:variable name="historyDefault">30</xsl:variable>  
-<xsl:variable name="history1week">7</xsl:variable>
-<xsl:variable name="trendsDefault">365</xsl:variable> 
+
+<xsl:variable name="historyDefault">30</xsl:variable>
+<xsl:variable name="history30days">30</xsl:variable>
+<xsl:variable name="history14days">14</xsl:variable>  
+<xsl:variable name="history7days">7</xsl:variable>
+<xsl:variable name="trendsDefault">365</xsl:variable>
+<xsl:variable name="trends365days">365</xsl:variable> 
 <xsl:variable name="trends0days">0</xsl:variable>
 <xsl:variable name="updateDefault">300</xsl:variable> 
+<xsl:variable name="update30s">30</xsl:variable>
 <xsl:variable name="update1min">60</xsl:variable>
+<xsl:variable name="update3min">180</xsl:variable>
 <xsl:variable name="update5min">300</xsl:variable>
-<xsl:variable name="update1hour">3600</xsl:variable> 
+<xsl:variable name="update1hour">3600</xsl:variable>
+<xsl:variable name="update4hours">14400</xsl:variable> 
 <xsl:variable name="update1day">86400</xsl:variable>
-for output: -->
+
+
+
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -296,10 +294,10 @@ for output: -->
 			<group>CPU</group>
 			<description>CPU utilization in %</description>
 			<units>%</units>
+			<update><xsl:value-of select="$update3min"/></update>
 			<triggers>
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
-					<!-- {<xsl:value-of select="../../name"></xsl:value-of>:123 -->
 					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU utilization is too high (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
@@ -318,9 +316,8 @@ for output: -->
 	 					</tag>
 						<tag>
 		                	<tag>Alarm.type</tag>
-			                <value>CPU load</value>
+			                <value>CPU_UTIL_HIGH</value>
 	 					</tag>	 					
-		                <tag><tag>Performance</tag><value></value></tag>
 	                </tags>
 				</trigger>
 			</triggers>
@@ -363,6 +360,9 @@ for output: -->
 		<metric>
 			<name>Memory units</name>
 			<group>Internal Items</group>
+			<update><xsl:value-of select="$update3min"/></update>
+			<trends><xsl:value-of select="$trends0days"/></trends>
+			<history><xsl:value-of select="$history7days"/></history>
 		</metric>
     </xsl:variable>
 				
@@ -379,6 +379,9 @@ for output: -->
 			<name>Used memory in units</name>
 			<group>Internal Items</group>
 			<units>units</units>
+			<update><xsl:value-of select="$update3min"/></update>
+			<trends><xsl:value-of select="$trends0days"/></trends>
+			<history><xsl:value-of select="$history7days"/></history>
 			<description>Used memory in units</description>
 		</metric>
     </xsl:variable>
@@ -395,6 +398,9 @@ for output: -->
 		<metric>
 			<name>Total memory in units</name>
 			<group>Internal Items</group>
+			<update><xsl:value-of select="$update3min"/></update>
+			<trends><xsl:value-of select="$trends0days"/></trends>
+			<history><xsl:value-of select="$history7days"/></history>
 			<units>units</units>
 			<description>Total memory in units</description>
 		</metric>
@@ -416,6 +422,7 @@ for output: -->
 			<group>Memory</group>
 			<units>B</units>
 			<description>Used memory in Bytes</description>
+			<update><xsl:value-of select="$update3min"/></update>
 			<xsl:choose>
 				<xsl:when test="./calculated = 'true'">
 						<xsl:choose>
@@ -440,6 +447,7 @@ for output: -->
 		<metric>
 			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
 			<group>Memory</group>
+			<update><xsl:value-of select="$update3min"/></update>
 			<units>B</units>
 		</metric>
     </xsl:variable>
@@ -462,6 +470,7 @@ for output: -->
 			<group>Memory</group>
 			<description>Total memory in Bytes</description>
 			<units>B</units>
+			<update><xsl:value-of select="$update3min"/></update>
 			<xsl:choose>
 				<xsl:when test="./calculated = 'true'">
 					<xsl:choose>
@@ -490,6 +499,7 @@ for output: -->
 			<group>Memory</group>
 			<description>Memory utilization in %</description>
 			<units>%</units>
+			<update><xsl:value-of select="$update3min"/></update>
 			<xsl:choose>
 				<xsl:when test="./calculated = 'true'">
 						<xsl:choose>
@@ -517,7 +527,7 @@ for output: -->
 	                <url/>
 	                <priority>3</priority>
 	                <description/>
-	                <tags>
+	                <tags>	
 	                	<tag>
 		                	<tag>Alarm.object.type</tag>
 			                <value>
@@ -528,6 +538,10 @@ for output: -->
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
+						<tag>
+		                	<tag>Alarm.type</tag>
+			                <value>MEMORY_UTIL_HIGH</value>
+						</tag>						
 					</tags>
 				</trigger>
 			</triggers>
@@ -550,6 +564,8 @@ for output: -->
 		<metric>
 			<name>[<xsl:value-of select="alarmObject"/>] Storage units</name>
 			<group>Internal Items</group>
+			<history><xsl:value-of select="$history7days"/></history>
+			<trends><xsl:value-of select="$trends0days"/></trends>
 		</metric>
     </xsl:variable>
 				
@@ -567,6 +583,8 @@ for output: -->
 			<group>Internal Items</group>
 			<description>Used storage in units</description>
 			<units>units</units>
+			<history><xsl:value-of select="$history7days"/></history>
+			<trends><xsl:value-of select="$trends0days"/></trends>
 		</metric>
     </xsl:variable>
 				
@@ -584,6 +602,8 @@ for output: -->
 			<name>[<xsl:value-of select="alarmObject"/>] Total storage in units</name>
 			<group>Internal Items</group>
 			<description>Total storage in units</description>
+			<history><xsl:value-of select="$history7days"/></history>
+			<trends><xsl:value-of select="$trends0days"/></trends>
 			<units>units</units>
 		</metric>
     </xsl:variable>
@@ -702,6 +722,21 @@ for output: -->
 		                <url/>
 		                <priority>3</priority>
 		                <description/>
+		                <tags>
+			                <tag>
+			                	<tag>Alarm.object.type</tag>
+				                <value>
+				             		<xsl:call-template name="tagAlarmObjectType">
+							         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+							         		<xsl:with-param name="alarmObjectDefault">Storage</xsl:with-param>	 					
+				 					</xsl:call-template>
+				 				</value>
+							</tag>
+							<tag>
+			                	<tag>Alarm.type</tag>
+				                <value>STORAGE_UTIL_HIGH</value>
+							</tag>
+						</tags>
 					</trigger>
 					
 					<trigger>
@@ -715,6 +750,21 @@ for output: -->
 						<dependsOn>
 		                	<dependency>storageCrit</dependency>
 		               	</dependsOn>
+		               	<tags>
+			               	<tag>
+			                	<tag>Alarm.object.type</tag>
+				                <value>
+				             		<xsl:call-template name="tagAlarmObjectType">
+							         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+							         		<xsl:with-param name="alarmObjectDefault">Storage</xsl:with-param>	 					
+				 					</xsl:call-template>
+				 				</value>
+							</tag>
+							<tag>
+			                	<tag>Alarm.type</tag>
+				                <value>STORAGE_UTIL_HIGH</value>
+							</tag>
+						</tags>
 					</trigger>
 				</triggers>			
 		</metric>
@@ -740,7 +790,7 @@ for output: -->
 				<!-- TODO: make this feature global -->
 				<xsl:call-template name="updateIntervalTemplate">
 	         		<xsl:with-param name="updateMultiplier" select="updateMultiplier"/>
-	         		<xsl:with-param name="default" select="$updateDefault"/>
+	         		<xsl:with-param name="default" select="$update3min"/>
 	 			</xsl:call-template>
  			</update>
 			<triggers>
@@ -794,7 +844,7 @@ for output: -->
 						</tag>
 		               	<tag>
 		               		<tag>Alarm.type</tag>
-		               		<value>Overheat</value>
+		               		<value>OVERHEAT</value>
 	               		</tag>
                		</tags>
 				</trigger>
@@ -813,19 +863,21 @@ for output: -->
 						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
 							<expression><xsl:value-of select="$expression"/>
 							or
-							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}</expression>
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}
+							or
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_DISASTER_STATUS}</expression>
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>
 							<!-- AND
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
 							</recovery_expression>
 							<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
-	                		<name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
+	                		<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
 						</xsl:when>
 						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
 						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
-						<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
-	                	<name lang="RU">[<xsl:value-of select="alarmObject"/>]Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>						
+						<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)</name>
+	                	<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)</name>						
 						</xsl:otherwise>
 					</xsl:choose>
 					
@@ -846,7 +898,7 @@ for output: -->
 						</tag>
    		               	<tag>
 		               		<tag>Alarm.type</tag>
-		               		<value>Overheat</value>
+		               		<value>OVERHEAT</value>
 	               		</tag>
 	                </tags>
 				</trigger>
@@ -872,7 +924,7 @@ for output: -->
 						</tag>
 		               	<tag>
 		               		<tag>Alarm.type</tag>
-		               		<value>Cold Temperature</value>
+		               		<value>TEMP_LOW</value>
 	               		</tag>
                		</tags>
 				</trigger>				
@@ -893,6 +945,9 @@ for output: -->
 		<metric>
 			<name>[<xsl:value-of select="alarmObject"/>] Temperature status</name>
 			<group>Temperature</group>
+			<update><xsl:value-of select="$update3min"/></update>
+			<history><xsl:value-of select="$history14days"/></history>
+			<trends><xsl:value-of select="$trends0days"/></trends>
 			<description>Temperature status of testpoint: <xsl:value-of select="alarmObject"/></description>
 		</metric>
     </xsl:variable>
@@ -911,7 +966,7 @@ for output: -->
 			<name>[<xsl:value-of select="alarmObject"/>] Temperature sensor location</name>
 			<group>Temperature</group>
 			<description>Temperature location of testpoint: <xsl:value-of select="alarmObject"/></description>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
 		</metric>
@@ -932,45 +987,55 @@ for output: -->
 			<name lang="EN">Overall system health status</name>
 			<name lang="RU">Общий статус системы</name>
 			<group>Status</group>
+			<update><xsl:copy-of select="$update30s"/></update>
+			<history><xsl:copy-of select="$history14days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<triggers>
 					<trigger>
 					    <id>health.disaster</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
 		                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
-		                <url/>
-		                <priority>5</priority>
+		                <priority>4</priority>
 		                <description lang="EN">Please check the device for faults</description>
 		                <description lang="RU">Проверьте устройство</description>
-					</trigger>
-					<trigger>
-					    <id>health.warning</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
-		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
-		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
-		                
-		                
-		                <url/>
-		                <priority>2</priority>
-		                <description lang="EN">Please check the device for warnings</description>
-		                <description lang="RU">Проверьте устройство</description>
-		                <dependsOn>
-		                	<dependency>health.critical</dependency>
-		               	</dependsOn>
+		                <tags><tag>
+			 				<tag>Alarm.type</tag>
+			                <value>HEALTH_FAIL</value>
+						</tag></tags>
 					</trigger>
 					<trigger>
 						<id>health.critical</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
 		                <name lang="EN">System status is in critical state (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: авария (<xsl:value-of select="$nowRU"/>)</name>
-		                <url/>
 		                <priority>4</priority>
 		                <description lang="EN">Please check the device for errors</description>
 		                <description lang="RU">Проверьте устройство</description>
 		                <dependsOn>
 		                	<dependency>health.disaster</dependency>
 		               	</dependsOn>
+		               	<tags><tag>
+			 				<tag>Alarm.type</tag>
+			                <value>HEALTH_FAIL</value>
+						</tag></tags>
 					</trigger>
+					<trigger>
+					    <id>health.warning</id>
+						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
+		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
+		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
+		                <priority>2</priority>
+		                <description lang="EN">Please check the device for warnings</description>
+		                <description lang="RU">Проверьте устройство</description>
+		                <dependsOn>
+		                	<dependency>health.critical</dependency>
+		               	</dependsOn>
+		               	<tags><tag>
+			 				<tag>Alarm.type</tag>
+			                <value>HEALTH_FAIL</value>
+						</tag></tags>
+					</trigger>					
 			</triggers>
 		</metric>
     </xsl:variable>
@@ -990,7 +1055,8 @@ for output: -->
 			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply status</name>
 			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания</name>
 			<group>Power Supply</group>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<update><xsl:copy-of select="$update3min"/></update>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
@@ -998,8 +1064,8 @@ for output: -->
 					<id>psu.critical</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$PSU_CRIT_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: авария (<xsl:value-of select="$nowRU" />)</name>
-	                <priority>4</priority>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: авария (<xsl:value-of select="$nowRU" />)</name>
+	                <priority>3</priority>
 	                <description lang="EN">Please check the power supply unit for errors</description>
 	                <description lang="RU">Проверьте блок питания</description>
 	               	<tags>
@@ -1011,9 +1077,36 @@ for output: -->
 						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
 			 					</xsl:call-template>
 			 				</value>
-						</tag>
+			 				</tag>
+			 				<tag>
+				 				<tag>Alarm.type</tag>
+				                <value>PSU_FAIL</value>
+							</tag>
 	               	</tags>
 				</trigger>
+<!-- 				<trigger>
+					<id>psu.notok</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;&gt;{$PSU_OK_STATUS}</expression>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply status: (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: (<xsl:value-of select="$nowRU" />)</name>
+	                <priority>1</priority>
+	                <description lang="EN">Please check the power supply unit</description>
+	                <description lang="RU">Проверьте блок питания</description>
+	                <dependsOn>
+	                	<dependency>psu.critical</dependency>
+	               	</dependsOn>
+	               	<tags>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	               	</tags>
+				</trigger>	 -->			
 			</triggers>
 		</metric>
     </xsl:variable>
@@ -1033,7 +1126,8 @@ for output: -->
 			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan status</name>
 			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора</name>
 			<group>Fans</group>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<update><xsl:copy-of select="$update3min"/></update>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
@@ -1042,7 +1136,7 @@ for output: -->
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$FAN_CRIT_STATUS}</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой (<xsl:value-of select="$nowRU" />)</name>
-	                <priority>4</priority>
+	                <priority>3</priority>
 	                <description lang="EN">Please check the fan unit</description>
 	                <description lang="RU">Проверьте вентилятор</description>
 	               	<tags>
@@ -1055,8 +1149,35 @@ for output: -->
 			 					</xsl:call-template>
 			 				</value>
 						</tag>
+						<tag>
+				 				<tag>Alarm.type</tag>
+				                <value>FAN_FAIL</value>
+						</tag>
 	               	</tags>
 				</trigger>
+<!-- 				<trigger>
+					<id>fan.notok</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;&gt;{$FAN_OK_STATUS}</expression>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan status: (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: (<xsl:value-of select="$nowRU" />)</name>
+	                <priority>1</priority>
+	                <description lang="EN">Please check the fan unit</description>
+	                <description lang="RU">Проверьте вентилятор</description>
+	                <dependsOn>
+	                	<dependency>fan.critical</dependency>
+	               	</dependsOn>
+	               	<tags>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						         		<xsl:with-param name="alarmObjectDefault">FAN</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+						</tag>
+	               	</tags>
+				</trigger>	 -->
 			</triggers>
 		</metric>
     </xsl:variable>
@@ -1077,10 +1198,8 @@ for output: -->
 			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan speed</name>
 			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Скорость вращения вентилятора</name>
 			<group>Fans</group>
-			<history><xsl:copy-of select="$history1week"/></history>
 			<units>rpm</units>
 			<triggers/>
-			
 		</metric>
     </xsl:variable>
 				
@@ -1099,7 +1218,7 @@ for output: -->
 			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller status</name>
 			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива</name>
 			<group>Disk Arrays</group>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
@@ -1330,7 +1449,9 @@ for output: -->
 			<description>The time since the network management portion of the system was last re-initialized.<xsl:value-of select="alarmObject"/></description>
 			<units>uptime</units>
 			<zabbixKey>system.uptime</zabbixKey>
-			<update><xsl:copy-of select="$update1min"/></update>
+			<update><xsl:copy-of select="$update30s"/></update>
+			<history><xsl:copy-of select="$history14days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<triggers>
 				<trigger>
 				    <id>uptime.restarted</id>
@@ -1346,6 +1467,12 @@ for output: -->
 	                <dependsOn>
 	                	<dependency>uptime.nodata</dependency>
 	               	</dependsOn>
+              	    <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>RESTARTED</value>
+						</tag>
+					</tags>
 				</trigger>
 				<trigger>
 					<id>uptime.nodata</id>
@@ -1356,6 +1483,12 @@ for output: -->
 	                <priority>2</priority>
 	                <description lang="EN">SNMP object sysUptime.0 is not available for polling. Please check device connectivity and SNMP settings.</description>
 	                <description lang="RU">Не удается опросить sysUptime.0. Проверьте доступность устройства и настройки SNMP.</description>
+	                <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>NO_DATA</value>
+						</tag>
+					</tags>
 				</trigger>
 			</triggers>
 		</metric>
@@ -1377,9 +1510,8 @@ for output: -->
 			<logFormat>%H:%M:%S %Y/%m/%d</logFormat>
 			<description>Item is used to collect all SNMP traps unmatched by other snmptrap items</description>
 			<zabbixKey>snmptrap.fallback</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeLog"/></valueType>
 		</metric>
     </xsl:variable>
@@ -1400,7 +1532,7 @@ for output: -->
 			<group>General</group>
 			<description>The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.</description>
 			<zabbixKey>system.contact</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1422,7 +1554,7 @@ for output: -->
 		<name>Device location</name>
 		<group>General</group>
 		<zabbixKey>system.location</zabbixKey>
-		<history><xsl:copy-of select="$history1week"/></history>
+		<history><xsl:copy-of select="$history14days"/></history>
 		<trends><xsl:copy-of select="$trends0days"/></trends>
 		<update><xsl:copy-of select="$update1hour"/></update>
 		<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1443,7 +1575,7 @@ for output: -->
 			<name>System ObjectID</name>
 			<group>General</group>
 			<zabbixKey>system.objectid</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1464,7 +1596,7 @@ for output: -->
 			<name>Device name</name>
 			<group>General</group>
 			<zabbixKey>system.name</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1487,7 +1619,7 @@ for output: -->
 			<name>Device description</name>
 			<group>General</group>
 			<zabbixKey>system.descr</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -1510,9 +1642,9 @@ for output: -->
 			<name>OS</name>
 			<group>Inventory</group>
 			<zabbixKey>system.sw.os</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1day"/></update>
+			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>5</inventory_link>
 		</metric>
@@ -1533,9 +1665,9 @@ for output: -->
 			<name lang="RU">Модель</name>
 			<group>Inventory</group>
 			<zabbixKey>system.hw.model</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1day"/></update>
+			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>29</inventory_link> <!-- model -->
 		</metric>
@@ -1558,9 +1690,9 @@ for output: -->
 			<xsl:if test="not(alarmObject)">
 				<zabbixKey>system.hw.serialnumber</zabbixKey>
 			</xsl:if>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1day"/></update>
+			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>8</inventory_link> <!-- serial_noa-->
 			<triggers>
@@ -1575,6 +1707,21 @@ for output: -->
 	                <priority>1</priority>
 	                <description lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
 	                <description lang="RU">Изменился серийный номер <xsl:value-of select="if (alarmObject!='') then alarmObject else 'устройства'" />. Подтвердите и закройте.</description>
+	                <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>SN_CHANGE</value>
+						</tag>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
+						         		<xsl:with-param name="alarmObjectDefault">Device</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+	 					</tag>
+					</tags>
 				</trigger>
 			</triggers>		
 		</metric>
@@ -1593,9 +1740,9 @@ for output: -->
 			<name lang="RU">Версия прошивки</name>
 			<group>Inventory</group>
 			<zabbixKey>system.hw.firmware</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1day"/></update>
+			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
 				<trigger>
@@ -1612,6 +1759,21 @@ for output: -->
 	                <!-- <dependsOn>
 		                	<dependency>sn.changed</dependency>
 		            </dependsOn> -->
+                    <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>FIRMWARE_CHANGE</value>
+						</tag>
+						<tag>
+		                	<tag>Alarm.object.type</tag>
+			                <value>
+			             		<xsl:call-template name="tagAlarmObjectType">
+						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
+						         		<xsl:with-param name="alarmObjectDefault">Device</xsl:with-param>
+			 					</xsl:call-template>
+			 				</value>
+	 					</tag>
+					</tags>
 				</trigger>
 			</triggers>			
 		</metric>
@@ -1633,9 +1795,9 @@ for output: -->
 			<name lang="RU">Версия ревизии</name>
 			<group>Inventory</group>
 			<zabbixKey>system.hw.version</zabbixKey>
-			<history><xsl:copy-of select="$history1week"/></history>
+			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1day"/></update>
+			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>		
 		</metric>
     </xsl:variable>
