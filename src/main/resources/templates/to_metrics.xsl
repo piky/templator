@@ -814,11 +814,20 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
-						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and not(discoveryRule))"><!-- if discoveryRules match or both doesn't have discoveryRule -->
+						 <xsl:when test="
+						 	(../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and
+						 	 not(discoveryRule))
+						 	 )
+						 	 and ../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]
+						 	"><!-- if discoveryRules match or both doesn't have discoveryRule -->
 						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
+							
 							<expression><xsl:value-of select="$expression"/>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]">
 							or
-							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}</expression>
+							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}
+							</xsl:if></expression>
+							
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>
 							<!-- AND
@@ -869,13 +878,26 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					
 					<xsl:choose>
-						 <xsl:when test="../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and not(discoveryRule))"><!-- if discoveryRules match or both doesn't have discoveryRule -->
+						 <xsl:when test="
+						 	(../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and
+						 	 not(discoveryRule))
+						 	 )
+						 	 and (
+						 	 ../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')] or
+						 	 ../../macros/macro/macro[contains(text(),'TEMP_DISASTER_STATUS')])
+						 "><!-- if discoveryRules match or both doesn't have discoveryRule -->
 						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
+							
 							<expression><xsl:value-of select="$expression"/>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')]">
 							or
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}
-							or
-							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_DISASTER_STATUS}</expression>
+							</xsl:if>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_DISASTER_STATUS')]">
+								or
+								{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_DISASTER_STATUS}
+							</xsl:if></expression>
+							
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>
 							<!-- AND
@@ -1001,19 +1023,22 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<triggers>
-					<trigger>
-					    <id>health.disaster</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
-		                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
-		                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
-		                <priority>4</priority>
-		                <description lang="EN">Please check the device for faults</description>
-		                <description lang="RU">Проверьте устройство</description>
-		                <tags><tag>
-			 				<tag>Alarm.type</tag>
-			                <value>HEALTH_FAIL</value>
-						</tag></tags>
-					</trigger>
+					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
+						<trigger>
+						    <id>health.disaster</id>
+							<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+			                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
+			                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
+			                <priority>4</priority>
+			                <description lang="EN">Please check the device for faults</description>
+			                <description lang="RU">Проверьте устройство</description>
+			                <tags><tag>
+				 				<tag>Alarm.type</tag>
+				                <value>HEALTH_FAIL</value>
+							</tag></tags>
+						</trigger>
+					</xsl:if>
+					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
 					<trigger>
 						<id>health.critical</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
@@ -1023,13 +1048,17 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		                <description lang="EN">Please check the device for errors</description>
 		                <description lang="RU">Проверьте устройство</description>
 		                <dependsOn>
-		                	<dependency>health.disaster</dependency>
+		                	<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
+		                		<dependency>health.disaster</dependency>
+		                	</xsl:if>
 		               	</dependsOn>
 		               	<tags><tag>
 			 				<tag>Alarm.type</tag>
 			                <value>HEALTH_FAIL</value>
 						</tag></tags>
 					</trigger>
+					</xsl:if>
+					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">
 					<trigger>
 					    <id>health.warning</id>
 						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
@@ -1039,13 +1068,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		                <description lang="EN">Please check the device for warnings</description>
 		                <description lang="RU">Проверьте устройство</description>
 		                <dependsOn>
-		                	<dependency>health.critical</dependency>
+		                	<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
+		                		<dependency>health.critical</dependency>
+		                	</xsl:if>
 		               	</dependsOn>
 		               	<tags><tag>
 			 				<tag>Alarm.type</tag>
 			                <value>HEALTH_FAIL</value>
 						</tag></tags>
-					</trigger>					
+					</trigger>
+					</xsl:if>					
 			</triggers>
 		</metric>
     </xsl:variable>
