@@ -59,63 +59,79 @@
 	    			 		<sequence><!-- Template HOST-RESOURCES -->
 									<choice minOccurs="0">
 									  <sequence>
-									    <element name="memoryUnits" type="tns:metricType"/>
-									    <element name="memoryUnitsUsed" type="tns:metricType"/>
-								        <element name="memoryUnitsTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-										<element name="memoryUsed" type="tns:metricType"/>
-								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									    <element name="vm.memory.units" type="tns:metricType"/>
+									    <element name="vm.memory.units.used" type="tns:metricType"/>
+								        <element name="vm.memory.units.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+										<element name="vm.memory.used" type="tns:metricType"/>
+								        <element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									  </sequence>
 									</choice>
 					    			 
-					    			<choice minOccurs="0">
+					    			<choice minOccurs="0" maxOccurs="1">
 									  <sequence>
-									    <element name="storageUnits" type="tns:metricType"/>
-									    <element name="storageUnitsUsed" type="tns:metricType"/>
-								        <element name="storageUnitsTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-										<element name="storageUsed" type="tns:metricType"/>
-								        <element name="storageTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									    <element name="vfs.fs.units" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									    <element name="vfs.fs.units.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								        <element name="vfs.fs.units.total" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+										<element name="vfs.fs.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									  <!-- as a free part of FAULT (not HOST-RESOURCES) -->
+									  <sequence>
+									    <element name="vfs.fs.used" type="tns:metricType"/>
+									    <element name="vfs.fs.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									  </sequence>
+									  <sequence>
+									    <element name="vfs.fs.free" type="tns:metricType"/>
+								        <element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									  </sequence>
 									</choice>
-					    			<element name="storageUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+
+					    			<element name="vfs.fs.used.percentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 					    			 
 		    				</sequence>
 	    			 		<sequence><!-- Template Performance -->
-				    				<element name="cpuLoad" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-				    				<element name="cpuUtil" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+				    				<element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									<choice minOccurs="0">
 									  <sequence>
-									    <element name="memoryUsed" type="tns:metricType"/>
-									    <element name="memoryFree" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									    <element name="vm.memory.used" type="tns:metricType"/>
+									    <element name="vm.memory.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								        <element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									  </sequence>
 									  <sequence>
-									    <element name="memoryFree" type="tns:metricType"/>
-								        <element name="memoryTotal" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									    <element name="vm.memory.free" type="tns:metricType"/>
+								        <element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									  </sequence>
 									</choice>
-					    			<element name="memoryUsedPercentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+					    			<element name="vm.memory.used.percentage" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 		    				</sequence>
 		    				<sequence> <!-- Template General and System Info -->
-		    					<element name="sysUptime" type="tns:metricType"/>
-		    					<element name="snmpTrapFallback" type="tns:metricType"/>
-		    					<element name="sysLocation" type="tns:metricType"/>
-		    					<element name="sysContact" type="tns:metricType"/>
-		    					<element name="sysObjectID" type="tns:metricType"/>
-		    					<element name="sysName" type="tns:metricType"/>
-		    					<element name="sysDescr" type="tns:metricType"/>
+		    					<element name="system.uptime" type="tns:metricType"/>
+		    					<element name="snmptrap.fallback" type="tns:metricType"/>
+		    					<element name="system.location" type="tns:metricType"/>
+		    					<element name="system.contact" type="tns:metricType"/>
+		    					<element name="system.objectid" type="tns:metricType"/>
+		    					<element name="system.name" type="tns:metricType"/>
+		    					<element name="system.descr" type="tns:metricType"/>
 		    				</sequence>
 							<sequence> <!-- Template Fault and System Info -->
-				    			<element name="temperatureValue" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
-								<element name="temperatureStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="temperatureLocale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="overallStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    			<element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
+								<element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>								
+								<choice maxOccurs="unbounded">
+									<element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.fan.value" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</choice>
 		    				</sequence>
 							<sequence> <!-- Template Fault (Disks) -->
 								<!-- array controllers -->
-								<element name="diskArrayStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="diskArrayModel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<element name="physicalDiskStatus" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-								<element name="physicalDiskSerialNumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="system.hw.diskarray.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<element name="system.hw.physicaldisk.status" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+								<element name="system.hw.physicaldisk.serialnumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 		    				</sequence>
 		    				
 							<sequence> <!-- Template Fault (Power Supply) -->
@@ -125,12 +141,12 @@
 		    				
 							<sequence> <!-- Template Inventory -->
 				    			<choice maxOccurs="unbounded">
-				    				<element name="osVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<element name="hwVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<element name="hwModel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<element name="hwLabel" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<element name="hwSerialNumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<element name="hwFirmwareVersion" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.sw.os" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.hw.version" type="tns:metricType" maxOccurs="1" minOccurs="0"/><!-- revision -->
+				    				<element name="system.hw.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.hw.label" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+				    				<element name="system.hw.serialnumber" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+				    				<element name="system.hw.firmware" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    			</choice>
 		    				</sequence>
 	    				</choice>
@@ -185,6 +201,28 @@
 	    				</element>
 	    			</sequence>
     		</complexType>
+    		
+    		
+    		 <complexType name="preprocessing">
+	    			<sequence>
+	    				<element name="step" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="type">
+	    							    <simpleType>
+								       	 	<restriction base="string">
+										        <enumeration value="regex"/>
+										        <enumeration value="delta"/>
+										        <enumeration value="multiplier"/>
+								    		</restriction>
+							       	 	</simpleType>
+							       	</element>
+	    							<element name="params" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+    		</complexType>
     
     
     <complexType name="metricType">
@@ -204,6 +242,7 @@
 				</sequence>
 			</choice>
 			<choice maxOccurs="unbounded" minOccurs="0">
+				<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
 				<element name="logFormat" type="string" minOccurs="0"/>
 				<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
@@ -215,11 +254,12 @@
 			    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
 			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="locationAddress" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="locationType" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="alarmObject" type="string" maxOccurs="1" minOccurs="0"/>
+			    <element name="alarmObjectType" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+			    <element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
 			    <element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
 			    	<complexType>
 			    		<sequence>
@@ -237,6 +277,7 @@
 			<element name="id" type="string" maxOccurs="1" minOccurs="0"/>
 			<element name="expression" type="string" maxOccurs="1" minOccurs="1"/>
 			<element name="recovery_expression" type="string" maxOccurs="1" minOccurs="0"/>
+			<element name="recovery_mode" type="byte" maxOccurs="1" minOccurs="0"/>
 			<element name="manual_close" type="byte" maxOccurs="1" minOccurs="0"/>
 	 		<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
 		    <element name="url" type="string" maxOccurs="1" minOccurs="0"/>
@@ -264,6 +305,7 @@
         <enumeration value="Disk Arrays"/>
         <enumeration value="Disks"/>
         <enumeration value="Power Supply"/>
+        <enumeration value="Fans"/>
         
 		<enumeration value="General"/>
         <enumeration value="Inventory"/>
@@ -314,10 +356,10 @@
       <extension base="string">
        	 <attribute name="lang" default="EN">
        	 	<simpleType>
-       	 		<restriction base="string">
-		        <enumeration value="EN"/>
-		        <enumeration value="RU"/>
-    		</restriction>
+	       	 	<restriction base="string">
+			        <enumeration value="EN"/>
+			        <enumeration value="RU"/>
+	    		</restriction>
        	 	</simpleType>
        	 </attribute>
       </extension>
