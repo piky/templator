@@ -233,6 +233,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		
 		<valueMap><xsl:value-of select="valueMap" /></valueMap>
 		<multiplier><xsl:value-of select="multiplier" /></multiplier>
+		
+		<xsl:choose>
+			<xsl:when test="preprocessing">
+				<xsl:copy-of select="preprocessing"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<preprocessing/> <!-- 3.4 -->
+			</xsl:otherwise>
+		</xsl:choose>
+		
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<xsl:if test="$metric/triggers/trigger">
 			<triggers>

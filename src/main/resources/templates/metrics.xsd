@@ -201,6 +201,28 @@
 	    				</element>
 	    			</sequence>
     		</complexType>
+    		
+    		
+    		 <complexType name="preprocessing">
+	    			<sequence>
+	    				<element name="step" minOccurs="0" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="type">
+	    							    <simpleType>
+								       	 	<restriction base="string">
+										        <enumeration value="regex"/>
+										        <enumeration value="delta"/>
+										        <enumeration value="multiplier"/>
+								    		</restriction>
+							       	 	</simpleType>
+							       	</element>
+	    							<element name="params" type="string"/>
+	    						</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+    		</complexType>
     
     
     <complexType name="metricType">
@@ -237,6 +259,7 @@
 			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
 			    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+			    <element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
 			    <element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
 			    	<complexType>
 			    		<sequence>

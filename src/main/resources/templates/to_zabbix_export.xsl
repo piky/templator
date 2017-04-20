@@ -5,15 +5,22 @@
 
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
+<xsl:param name="zbx_ver" select="3.2"/>
 <xsl:variable name="calc_item_type">15</xsl:variable>
 <xsl:variable name="snmptrap_item_type">17</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
-
 <xsl:param name="discoveryDelay">3600</xsl:param>
+
+ <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
+   <entry key="regex">5</entry>
+   <entry key="multiplier">1</entry>
+   <entry key="delta">10</entry>
+ </xsl:variable>
+
 
 <xsl:template match="/">
 	<zabbix_export>
-	    <version>3.2</version>
+	    <version><xsl:value-of select="$zbx_ver"></xsl:value-of></version>
 	    <date>2015-12-30T14:41:30Z</date>
 	    <groups>
 	        <group>
@@ -55,6 +62,7 @@
 				<discovery_rules>
 					<xsl:apply-templates select="discoveryRules"></xsl:apply-templates>
 				</discovery_rules>
+				<xsl:if test="$zbx_ver=3.4"><httptests/></xsl:if>
 	            <macros>
 	            	<xsl:for-each-group select="macros/macro" group-by="macro">
   						<macro>
@@ -230,14 +238,16 @@
 						</xsl:choose>
 	                    </type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-	                    <xsl:choose>
-						  <xsl:when test="./multiplier != ''">
-						    <multiplier>1</multiplier>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<multiplier>0</multiplier>
-						  </xsl:otherwise>
-						</xsl:choose>
+	                    <xsl:if test="$zbx_ver = 3.2">
+		                    <xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
+							    <multiplier>1</multiplier>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<multiplier>0</multiplier>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
 	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
@@ -247,7 +257,7 @@
 	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
 	                    <allowed_hosts/>
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
-	                    <delta>0</delta>
+	                    <xsl:if test="$zbx_ver = 3.2"><delta>0</delta></xsl:if>
 	                    <snmpv3_contextname/>
 	                    <snmpv3_securityname/>
 	                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -255,18 +265,20 @@
 	                    <snmpv3_authpassphrase/>
 	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
 	                    <snmpv3_privpassphrase/>
-	                    <xsl:choose>
-						  <xsl:when test="./multiplier != ''">
-						    <formula><xsl:value-of select="./multiplier"/></formula>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<formula>0</formula>
-						  </xsl:otherwise>
-						</xsl:choose>
+						<xsl:if test="$zbx_ver=3.2">
+	                		<xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
+							    <formula><xsl:value-of select="./preprocessing/step[type eq 'multiplier']/params"/></formula>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<formula>0</formula>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 	                    <delay_flex/>
 	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
 	                    <ipmi_sensor/>
-	                    <data_type>0</data_type>
+	                    <xsl:if test="$zbx_ver = 3.2"><data_type>0</data_type></xsl:if>
 	                    <authtype>0</authtype>
 	                    <username/>
 	                    <password/>
@@ -301,6 +313,17 @@
 							</xsl:choose>
 	                    </valuemap>
 	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
+	                    <xsl:if test="$zbx_ver = 3.4">
+	                    <preprocessing>
+		                    <xsl:for-each select="./preprocessing/step">
+											<xsl:variable name="step" select="."/>
+	    									<step>
+	    										<type><xsl:value-of select="$step_map/entry[@key=$step/type]"/></type>
+	    										<params><xsl:value-of select="$step/params"/></params>
+	    									</step>
+							</xsl:for-each>
+						</preprocessing>
+	                    </xsl:if>
   				</item>        
 		</xsl:when>
         <xsl:otherwise>
@@ -317,14 +340,16 @@
 						</xsl:choose>
 	                    </type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-	                    <xsl:choose>
-						  <xsl:when test="./multiplier != ''">
-						    <multiplier>1</multiplier>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<multiplier>0</multiplier>
-						  </xsl:otherwise>
-						</xsl:choose>
+	                    <xsl:if test="$zbx_ver=3.2">
+		                    <xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
+							    <multiplier>1</multiplier>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<multiplier>0</multiplier>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
 	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
@@ -334,7 +359,7 @@
 	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
 	                    <allowed_hosts/>
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
-	                    <delta>0</delta>
+	                    <xsl:if test="$zbx_ver=3.2"><delta>0</delta></xsl:if>
 	                    <snmpv3_contextname/>
 	                    <snmpv3_securityname/>
 	                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -342,18 +367,20 @@
 	                    <snmpv3_authpassphrase/>
 	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
 	                    <snmpv3_privpassphrase/>
-                		<xsl:choose>
-						  <xsl:when test="./multiplier != ''">
-						    <formula><xsl:value-of select="./multiplier"/></formula>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<formula>0</formula>
-						  </xsl:otherwise>
-						</xsl:choose>
+						<xsl:if test="$zbx_ver=3.2">
+	                		<xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
+							    <formula><xsl:value-of select="./preprocessing/step[type eq 'multiplier']/params"/></formula>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<formula>0</formula>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 	                    <delay_flex/>
 	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
 	                    <ipmi_sensor/>
-	                    <data_type>0</data_type>
+	                    <xsl:if test="$zbx_ver=3.2"><data_type>0</data_type></xsl:if>
 	                    <authtype>0</authtype>
 	                    <username/>
 	                    <password/>
@@ -388,11 +415,21 @@
 						</xsl:choose>
 	                    </valuemap>
 	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
+	                    <xsl:if test="$zbx_ver = 3.4">
+	                    <preprocessing>
+		                    <xsl:for-each select="./preprocessing/step">
+											<xsl:variable name="step" select="."/>
+	    									<step>
+	    										<type><xsl:value-of select="$step_map/entry[@key=$step/type]"/></type>
+	    										<params><xsl:value-of select="$step/params"/></params>
+	    									</step>
+							</xsl:for-each>
+						</preprocessing>
+	                    </xsl:if>
 					<application_prototypes/>
 				</item_prototype>
         </xsl:otherwise>
       </xsl:choose>
-
 </xsl:template>
 
 
