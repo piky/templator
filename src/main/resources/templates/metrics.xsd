@@ -356,10 +356,10 @@
       <extension base="string">
        	 <attribute name="lang" default="EN">
        	 	<simpleType>
-       	 		<restriction base="string">
-		        <enumeration value="EN"/>
-		        <enumeration value="RU"/>
-    		</restriction>
+	       	 	<restriction base="string">
+			        <enumeration value="EN"/>
+			        <enumeration value="RU"/>
+	    		</restriction>
        	 	</simpleType>
        	 </attribute>
       </extension>
