@@ -267,6 +267,13 @@
 			    		</sequence>
 			    	</complexType>
 		    	</element>
+		    	<element name="graphs" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+			    	<complexType>
+			    		<sequence>
+			    			<element name="graph" type="tns:graphType" maxOccurs="unbounded" minOccurs="0"/>
+			    		</sequence>
+			    	</complexType>
+		    	</element>
 			</choice>
 	 	</sequence>
     </complexType>
@@ -371,11 +378,63 @@
     	<restriction base="int">
     		<minInclusive value="1"></minInclusive>
     		<maxInclusive value="70"></maxInclusive>
-    		
     	</restriction>
 
   </simpleType>
 
+
+
+<complexType name="graphType">
+		<sequence>
+			<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="width" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="height" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="yaxismin" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="yaxismax" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="show_work_period" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="show_triggers" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="type" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="show_legend" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="show_3d" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="percent_left" type="float" maxOccurs="1" minOccurs="1"/>
+			<element name="percent_right" type="float" maxOccurs="1" minOccurs="1"/>
+			<element name="ymin_type_1" type="byte" maxOccurs="1" minOccurs="1"/> <!-- type_1: 0 fixed, 1- calculated, 2- item -->
+			<element name="ymax_type_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="ymin_item_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="ymax_item_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="graph_items">
+				<complexType>
+					<sequence>
+	    				<element name="graph_item" minOccurs="1" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="sortorder" type="byte"/>
+	    							<element name="drawtype" type="byte"/>
+	    							<element name="color" type="string"/>
+	    							<element name="yaxisside" type="byte"/>
+	    							<element name="calc_fnc" type="byte"/>
+	    							<element name="type" type="byte"/>
+			    					<element name="item" minOccurs="1" maxOccurs="unbounded">
+				    					<complexType>
+				    						<sequence>
+				    							<element name="host" type="string"/>
+				    							<element name="key" type="string"/>
+				    						</sequence>
+				    					</complexType>
+			    					</element>
+			    				</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+				</complexType>
+			</element>
+
+	 	</sequence>
+    </complexType>
+
+
+    
+    
 
 <!-- host inventory (for inventory link) 
 ID	Property	Type	Description

@@ -247,7 +247,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:if test="$metric/triggers/trigger">
 			<triggers>
 				<xsl:for-each select="$metric/triggers/*">
-
 	    			<xsl:call-template name="defaultTriggerBlock">
 						<xsl:with-param name="trigger" select="." />
 						<xsl:with-param name="metricKey" select="$metricKey" />
@@ -256,6 +255,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				
 			</triggers>
 		</xsl:if>
+		<xsl:if test="$metric/graphs/graph">
+			<graphs>
+				<xsl:for-each select="$metric/graphs/*">
+						<xsl:copy-of select="."/>       
+				</xsl:for-each> 
+				
+			</graphs>
+		</xsl:if>
+		
 		<!-- <xsl:copy-of select="$metric/triggers"></xsl:copy-of> -->
 
 </xsl:template>
@@ -1550,7 +1558,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 				<trigger>
 					<id>uptime.nodata</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
+					<expression>{<xsl:value-of select="../../name"/>:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
@@ -1565,6 +1573,52 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</tags>
 				</trigger>
 			</triggers>
+			<graphs>
+				<graph>
+					<name>Hello world graph</name>
+            		<width>900</width>
+            		<height>200</height>
+         			<yaxismin>0</yaxismin>
+					<yaxismax>100</yaxismax>
+					<show_work_period>1</show_work_period>
+		            <show_triggers>1</show_triggers>
+		            <type>0</type>
+		            <show_legend>1</show_legend>
+		            <show_3d>0</show_3d>
+		            <percent_left>0.0000</percent_left>
+		            <percent_right>0.0000</percent_right>
+		            <ymin_type_1>0</ymin_type_1> <!-- type_1: 0 fixed, 1- calculated, 2- item -->
+		            <ymax_type_1>0</ymax_type_1>
+		            <ymin_item_1>0</ymin_item_1>
+		            <ymax_item_1>0</ymax_item_1>
+		            <graph_items>
+		                <graph_item>
+		                    <sortorder>0</sortorder>
+		                    <drawtype>0</drawtype>
+		                    <color>1A7C11</color>
+		                    <yaxisside>0</yaxisside>
+		                    <calc_fnc>2</calc_fnc>
+		                    <type>0</type>
+		                    <item>
+		                        <host><xsl:value-of select="../../name"/></host>
+		                        <key>METRIC</key>
+		                    </item>
+		                </graph_item>
+<!-- 		                <graph_item>
+		                    <sortorder>1</sortorder>
+		                    <drawtype>0</drawtype>
+		                    <color>F63100</color>
+		                    <yaxisside>0</yaxisside>
+		                    <calc_fnc>2</calc_fnc>
+		                    <type>0</type>
+		                    <item>
+		                        <host><xsl:value-of select="../../name"/></host>
+		                        <key>icmppingsec</key>
+		                    </item>
+		                </graph_item> -->
+		            </graph_items>
+				</graph>
+			</graphs>
 		</metric>
     </xsl:variable>
 				

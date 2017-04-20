@@ -30,6 +30,9 @@
 		<templates>
 				 <xsl:apply-templates select="child::*/template"></xsl:apply-templates>  
 		</templates>
+		<graphs>
+			<xsl:copy-of copy-namespaces="no" select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
+		</graphs>
 		<triggers>
 				<xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
 		</triggers>
@@ -125,7 +128,9 @@
 	                    <trigger_prototypes>
 	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"></xsl:apply-templates>
 	                    </trigger_prototypes>
-	                    <graph_prototypes/>
+	                    <graph_prototypes>
+	                    	<xsl:copy-of copy-namespaces="no" select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>
+	                    </graph_prototypes>
 	                    <host_prototypes/>
                 	</discovery_rule>
 </xsl:template>
