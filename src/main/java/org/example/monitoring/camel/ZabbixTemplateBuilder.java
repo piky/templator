@@ -22,16 +22,16 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     from("direct:zbx3.4")
     	//.filter().xpath("//node()[@zbx_ver ='3.4']") // only if there are attributes zbx_ver=3.4
     	.log("Going to do 3.4 template")
-    	.setHeader("zbx_ver", simple("3.4", Double.class)).to("xslt:templates/to_metrics_zbx_ver.xsl?saxon=true");
-		//.to("direct:merge");
+    	.setHeader("zbx_ver", simple("3.4", Double.class)).to("xslt:templates/to_metrics_zbx_ver.xsl?saxon=true")
+		.to("direct:merge");
     
     from("direct:merge")
-	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
-    .to("xslt:templates/to_metrics.xsl?saxon=true")
-    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
-    .to("file:bin/merged")
-    .to("validator:templates/metrics.xsd")
-	.multicast().parallelProcessing().to("direct:RU", "direct:EN");
+		.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
+	    .to("xslt:templates/to_metrics.xsl?saxon=true")
+	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
+	    .to("file:bin/merged")
+	    .to("validator:templates/metrics.xsd")
+		.multicast().parallelProcessing().to("direct:RU", "direct:EN");
   
     from("direct:RU")
 	    .filter().xpath("//node()[@lang='RU']")
@@ -39,8 +39,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setHeader("lang", simple("RU", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().to("direct:snmpv1", "direct:snmpv2");
 	    
-    
-    
     from("direct:EN")
 	    .log("Going to do English template")
 		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
