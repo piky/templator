@@ -299,7 +299,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	 
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU Utilization</name>
+			<name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU utilization</name>
 			<name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка процессора</name>
 			<group>CPU</group>
 			<description>CPU utilization in %</description>
@@ -609,9 +609,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.units.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Total storage in units</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Total space in units</name>
 			<group>Internal Items</group>
-			<description>Total storage in units</description>
+			<description>Total space in units</description>
 			<history><xsl:value-of select="$history7days"/></history>
 			<trends><xsl:value-of select="$trends0days"/></trends>
 			<units>units</units>
@@ -673,9 +673,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Total storage</name>
+			<name>[<xsl:value-of select="alarmObject"/>] Total space</name>
 			<group>Storage</group>
-			<description>Total storage in Bytes</description>			
+			<description>Total space in Bytes</description>			
 			<xsl:choose>
 				<xsl:when test="./calculated = 'true'">
 						<xsl:choose>
@@ -1614,7 +1614,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/system.objectid">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>System ObjectID</name>
+			<name>System object ID</name>
 			<group>General</group>
 			<zabbixKey>system.objectid</zabbixKey>
 			<history><xsl:copy-of select="$history14days"/></history>
@@ -1681,7 +1681,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/system.sw.os">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>OS</name>
+			<name>Operating system</name>
 			<group>Inventory</group>
 			<zabbixKey>system.sw.os</zabbixKey>
 			<history><xsl:copy-of select="$history14days"/></history>
@@ -1726,7 +1726,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/system.hw.serialnumber">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Hardware Serial Number</name>
+			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Hardware serial number</name>
 			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Серийный номер</name>
 			<group>Inventory</group>
 			<xsl:if test="not(alarmObject)">
