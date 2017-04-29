@@ -501,7 +501,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
-<xsl:template match="template/metrics/vm.memory.used.percentage">
+<xsl:template match="template/metrics/vm.memory.pused">
 	
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
@@ -697,7 +697,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
-<xsl:template match="template/metrics/vfs.fs.used.percentage">
+<xsl:template match="template/metrics/vfs.fs.pused">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name>[<xsl:value-of select="alarmObject"/>] Storage utilization</name>
