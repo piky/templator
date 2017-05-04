@@ -26,7 +26,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("direct:merge");
     
     from("direct:merge")
-		.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
+    	.setHeader("template_ver", simple("0.6", String.class))
+    	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER and generator ver
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
 	    .to("file:bin/merged")
