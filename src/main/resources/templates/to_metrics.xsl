@@ -1234,7 +1234,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 
 
-<xsl:template match="template/metrics/sensor.fan.value">
+<xsl:template match="template/metrics/sensor.fan.speed">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan speed</name>

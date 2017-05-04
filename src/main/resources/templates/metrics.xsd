@@ -123,7 +123,7 @@
 									<element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									<element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 									<element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<element name="sensor.fan.value" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<element name="sensor.fan.speed" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								</choice>
 		    				</sequence>
 							<sequence> <!-- Template Fault (Disks) -->
