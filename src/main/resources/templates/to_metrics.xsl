@@ -790,8 +790,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/sensor.temp.value">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">[<xsl:value-of select="alarmObject"/>] Temperature</name>
-			<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура</name>
+			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Temperature</name>
+			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Температура</name>
 			<group>Temperature</group>
 			<description>Temperature readings of testpoint: <xsl:value-of select="alarmObject"/></description>
 			<units>°С</units>
