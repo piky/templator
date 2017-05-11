@@ -309,7 +309,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
 					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>High CPU utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
 	                <priority>3</priority>
@@ -532,7 +532,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$MEMORY_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Memory utilization is too high (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
 	                <priority>3</priority>
