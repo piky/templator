@@ -52,7 +52,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         	<STORAGE_UTIL_WARN>80</STORAGE_UTIL_WARN>
         </Fault>
         <General>
-        	<SNMP_TIMEOUT>600</SNMP_TIMEOUT>
+        	<SNMP_TIMEOUT>10m</SNMP_TIMEOUT>
         </General>
     </xsl:variable>
 
@@ -308,7 +308,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
-					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(300)}>{$CPU_UTIL_MAX}</expression>
+					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>High CPU utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
@@ -531,7 +531,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<triggers>
 				<trigger>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$MEMORY_UTIL_MAX}</expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$MEMORY_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
@@ -726,7 +726,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 					<trigger>
 						<id>storageCrit</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$STORAGE_UTIL_CRIT}</expression>
+						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
@@ -751,7 +751,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					
 					<trigger>
 						<id>storageWarn</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$STORAGE_UTIL_WARN}</expression>
+						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
@@ -809,8 +809,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <id>tempWarn</id>
 
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
-					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
@@ -872,8 +872,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<id>tempCrit</id>
 					
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
-					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(300)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					
@@ -937,8 +937,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 				    <!-- <documentation>Using recovery expression... Temperature has to be 5 points more than threshold level  ({$TEMP_CRIT_LOW}+5)</documentation>  -->
 				    <id>tempLow</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(300)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.min(300)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
@@ -1497,8 +1497,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 				    <id>uptime.restarted</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;600 or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&gt;600 or {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata(1800)}=1</recovery_expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;10m or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
+					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&gt;10m or {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata(30m)}=1</recovery_expression>
 					<manual_close>1</manual_close>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
