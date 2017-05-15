@@ -47,7 +47,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<MEMORY_UTIL_MAX><value>90</value></MEMORY_UTIL_MAX>
         </Performance>
         <Fault>
-        	<TEMP_CRIT>
+        	<!-- <TEMP_CRIT>
         		<value>75</value>
         		<context>CPU</context>
        		</TEMP_CRIT>
@@ -62,7 +62,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
        		<TEMP_WARN>
         		<value>30</value>
         		<context>Ambient</context>
-       		</TEMP_WARN>
+       		</TEMP_WARN> -->
        		
         	<TEMP_CRIT><value>60</value></TEMP_CRIT>
         	<TEMP_WARN><value>50</value></TEMP_WARN>
