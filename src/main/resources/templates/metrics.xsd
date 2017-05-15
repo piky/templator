@@ -226,49 +226,83 @@
     
     
     <complexType name="metricType">
+		
 		<sequence>
-			<element name="documentation" maxOccurs="1" minOccurs="0"/>
-			<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/> <!-- in to_metrics only -->
-	 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
 			<choice>
-				<sequence>
-					<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
-				    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
-				    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
-				</sequence>
-				<sequence>
-					<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
-					<element name="expressionFormula" type="string" maxOccurs="1" minOccurs="1"/>
-				</sequence>
-			</choice>
-			<choice maxOccurs="unbounded" minOccurs="0">
-				<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
-				<element name="logFormat" type="string" minOccurs="0"/>
-				<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
-			    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="history" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="trends" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="units" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="update" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
-			    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="alarmObject" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="alarmObjectType" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
-			    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-			    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
-			    <element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
-			    <element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
-			    	<complexType>
-			    		<sequence>
-			    			<element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
-			    		</sequence>
-			    	</complexType>
-		    	</element>
-			</choice>
+				<sequence> <!-- in file metric source -->
+					<element name="vendorDocumentation" type="string" maxOccurs="1" minOccurs="0"/>
+					<choice>
+						<sequence>
+							<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
+						    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+						    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
+						</sequence>
+						<sequence>
+							<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+							<element name="calculated" type="boolean" maxOccurs="1" minOccurs="1"/>
+						</sequence>
+					</choice>
+					<choice maxOccurs="unbounded" minOccurs="0">
+						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
+						<element name="logFormat" type="string" minOccurs="0"/>
+					    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+					    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+					    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="alarmObject" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="alarmObjectType" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+					    <element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+					</choice>
+			 	</sequence>
+			 	
+			 	<sequence> <!--  full metric after merge -->
+					<element name="documentation" maxOccurs="1" minOccurs="0"/>
+					<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/> <!-- in to_metrics only -->
+			 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
+					<choice>
+						<sequence>
+							<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
+						    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+						    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
+						</sequence>
+						<sequence>
+							<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+							<element name="expressionFormula" type="string" maxOccurs="1" minOccurs="1"/>
+						</sequence>
+					</choice>
+					<choice maxOccurs="unbounded" minOccurs="0">
+						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
+						<element name="logFormat" type="string" minOccurs="0"/>
+						<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+					    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="history" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="trends" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="units" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="update" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="updateMultiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+					    <element name="valueType" type="string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="discoveryRule" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="alarmObject" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="alarmObjectType" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="valueMap" type="string" maxOccurs="1" minOccurs="0"/>
+					    <element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <element name="multiplier" type="string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+					    <element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+					    <element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+					    	<complexType>
+					    		<sequence>
+					    			<element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
+					    		</sequence>
+					    	</complexType>
+				    	</element>
+					</choice>
+			 	</sequence>
+		 	</choice>
 	 	</sequence>
+	 	<attribute name="zbx_ver" type="string" use="optional"/>
     </complexType>
 
     <complexType name="trigger">
@@ -371,7 +405,6 @@
     	<restriction base="int">
     		<minInclusive value="1"></minInclusive>
     		<maxInclusive value="70"></maxInclusive>
-    		
     	</restriction>
 
   </simpleType>
