@@ -41,18 +41,37 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!--  define macros with default values to add into template-->
     <xsl:variable name="MACROS" as="element()*">
         <Performance>
-			<CPU_UTIL_MAX>90</CPU_UTIL_MAX>
-			<MEMORY_UTIL_MAX>90</MEMORY_UTIL_MAX>
+			<CPU_UTIL_MAX>
+				<value>90</value>
+			</CPU_UTIL_MAX>
+			<MEMORY_UTIL_MAX><value>90</value></MEMORY_UTIL_MAX>
         </Performance>
         <Fault>
-        	<TEMP_CRIT>60</TEMP_CRIT>
-        	<TEMP_WARN>50</TEMP_WARN>
-        	<TEMP_CRIT_LOW>5</TEMP_CRIT_LOW>
-        	<STORAGE_UTIL_CRIT>90</STORAGE_UTIL_CRIT>
-        	<STORAGE_UTIL_WARN>80</STORAGE_UTIL_WARN>
+        	<TEMP_CRIT>
+        		<value>75</value>
+        		<context>CPU</context>
+       		</TEMP_CRIT>
+       		<TEMP_WARN>
+        		<value>70</value>
+        		<context>CPU</context>
+       		</TEMP_WARN>
+       		<TEMP_CRIT>
+        		<value>35</value>
+        		<context>Ambient</context>
+       		</TEMP_CRIT>
+       		<TEMP_WARN>
+        		<value>30</value>
+        		<context>Ambient</context>
+       		</TEMP_WARN>
+       		
+        	<TEMP_CRIT><value>60</value></TEMP_CRIT>
+        	<TEMP_WARN><value>50</value></TEMP_WARN>
+        	<TEMP_CRIT_LOW><value>5</value></TEMP_CRIT_LOW>
+        	<STORAGE_UTIL_CRIT><value>90</value></STORAGE_UTIL_CRIT>
+        	<STORAGE_UTIL_WARN><value>80</value></STORAGE_UTIL_WARN>
         </Fault>
         <General>
-        	<SNMP_TIMEOUT>10m</SNMP_TIMEOUT>
+        	<SNMP_TIMEOUT><value>10m</value></SNMP_TIMEOUT>
         </General>
     </xsl:variable>
 
@@ -106,24 +125,24 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	     <xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 			<macros>
-			<xsl:for-each select="./classes">
-	     		<xsl:variable name="template_class" select="./class"/>
-	         <!-- add extra contextual no checks. should be before default $MACROS!-->
-			<xsl:copy-of copy-namespaces="no" select="../macros/macro"/>
-				<xsl:for-each select="$MACROS">
-					<xsl:choose>
-						<xsl:when test="name(.) = $template_class">
-							<xsl:for-each select="./*">
-								<macro>
-					        		<macro>{$<xsl:value-of select ="name(.)"/>}</macro>
-					                <value><xsl:value-of select="."/></value>
-								</macro>
-							</xsl:for-each>
-						</xsl:when>
-					</xsl:choose>
-		         </xsl:for-each>
-         	</xsl:for-each>
-    	</macros>
+				<xsl:for-each select="./classes">
+		     		<xsl:variable name="template_class" select="./class"/>
+			         <!-- add extra contextual no checks. should be before default $MACROS!-->
+					<xsl:copy-of copy-namespaces="no" select="../macros/macro"/>
+						<xsl:for-each select="$MACROS">
+							<xsl:choose>
+								<xsl:when test="name(.) = $template_class">
+									<xsl:for-each select="./*">
+										<macro>
+							        		<macro>{$<xsl:value-of select ="name(.)"/><xsl:if test="./context!=''">:"<xsl:value-of select="./context"/>"</xsl:if>}</macro>
+							                <value><xsl:value-of select="./value"/></value>
+										</macro>
+									</xsl:for-each>
+								</xsl:when>
+							</xsl:choose>
+			         	</xsl:for-each>
+	         	</xsl:for-each>
+    		</macros>
     	<!-- add template name with _SNMP_PLACEHOLDER at the end to make dependency dynamic -->
     	<templates>
     		<!-- copy from templates first -->
