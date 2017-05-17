@@ -231,7 +231,14 @@
 				<item>
   					<name><xsl:value-of select="./name"></xsl:value-of></name>
 	                    <type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
-	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
+                        <xsl:choose>
+						  <xsl:when test="./itemType eq 'snmp'">
+						    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<snmp_community/>
+						  </xsl:otherwise>
+						</xsl:choose>
 	                    <xsl:if test="$zbx_ver = 3.2">
 		                    <xsl:choose>
 							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
@@ -324,7 +331,14 @@
         		<item_prototype>
         			<name><xsl:value-of select="./name"></xsl:value-of></name>
 					<type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
-	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
+	                   <xsl:choose>
+						  <xsl:when test="./itemType eq 'snmp'">
+						    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
+						  </xsl:when>
+					      <xsl:otherwise>
+							<snmp_community/>
+						  </xsl:otherwise>
+						</xsl:choose>
 	                    <xsl:if test="$zbx_ver=3.2">
 		                    <xsl:choose>
 							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
