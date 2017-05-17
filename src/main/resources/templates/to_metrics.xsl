@@ -361,28 +361,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
-<xsl:template match="template/metrics/cpuUtil">
-	<xsl:copy>
-		<name>CPU Util</name>
-		<group>CPU</group>
-		<xsl:copy-of select="oid"></xsl:copy-of>
-		<xsl:copy-of select="snmpObject"></xsl:copy-of>
-		<xsl:copy-of select="mib"></xsl:copy-of>
-		<xsl:copy-of select="./expressionFormula"></xsl:copy-of>
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<history><xsl:copy-of select="$historyDefault"/></history>
-		<trends><xsl:copy-of select="$trendsDefault"/></trends>
-		<units></units>
-		<update><xsl:copy-of select="$updateDefault"/></update>
-		<valueType><xsl:copy-of select="$valueType"/></valueType>
-		<valueMap><xsl:value-of select="valueMap"/></valueMap>
-		<multiplier><xsl:value-of select="multiplier"/></multiplier>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-	</xsl:copy>
-</xsl:template>
-
-
 <!-- memory -->
 <xsl:template match="template/metrics/vm.memory.units">
 	 <xsl:variable name="metric" as="element()*">

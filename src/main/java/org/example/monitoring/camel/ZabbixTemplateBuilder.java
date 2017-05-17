@@ -64,19 +64,23 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		
+		
+		
 		.choice()
 		    .when(header("zbx_ver").isEqualTo("3.4"))
 		    	.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		    	.to("file:bin/out/")
 		    	.to("validator:templates/zabbix_export_3.4.xsd")
 			.when(header("zbx_ver").isEqualTo("3.2"))
 				.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+				.to("file:bin/out/")
 				.to("validator:templates/zabbix_export_3.2.xsd")
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
 	    .end()
 		
 	    
-		.to("file:bin/out/")
+		
 		.to("direct:local_tmon");
 		
 	
