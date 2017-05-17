@@ -190,14 +190,30 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
 		</xsl:choose>
 		</xsl:variable>
-		
 		<documentation><xsl:value-of select="documentation" /></documentation>
 		<xsl:copy-of select="$metric/name"></xsl:copy-of>
 		<xsl:copy-of select="$metric/group"></xsl:copy-of>
-		<xsl:copy-of select="oid"/>
-		<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-		<xsl:copy-of select="mib"/>
-		<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
+
+		
+		
+			<xsl:choose>
+				<xsl:when test="itemType">
+					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+					<xsl:copy-of select="itemType"/>
+				</xsl:when>
+				<xsl:when test="$metric/expressionFormula">
+					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+					<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
+					<itemType>calculated</itemType>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="oid"/>
+					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+					<xsl:copy-of select="mib"/>
+					<itemType>snmp</itemType>
+				</xsl:otherwise>
+			</xsl:choose>
+		
 		<xsl:copy-of select="ref"></xsl:copy-of>
 		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
 		<xsl:copy-of select="$metric/description"></xsl:copy-of>

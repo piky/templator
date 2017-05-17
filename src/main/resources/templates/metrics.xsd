@@ -114,6 +114,7 @@
 		    					<element name="system.objectid" type="tns:metricType"/>
 		    					<element name="system.name" type="tns:metricType"/>
 		    					<element name="system.descr" type="tns:metricType"/>
+		    					<element name="zabbix.snmp.available" type="tns:metricType"/>
 		    				</sequence>
 							<sequence> <!-- Template Fault and System Info -->
 				    			<element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
@@ -241,9 +242,12 @@
 							<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
 							<element name="calculated" type="boolean" maxOccurs="1" minOccurs="1"/>
 						</sequence>
+						<sequence> <!-- use for all nonsnmps and noncalc -->
+							<element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
+						</sequence>
 					</choice>
 					<choice maxOccurs="unbounded" minOccurs="0">
-						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
+						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<element name="logFormat" type="string" minOccurs="0"/>
 					    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 					    <element name="ref" type="string" maxOccurs="1" minOccurs="0"/>
@@ -261,19 +265,13 @@
 					<element name="documentation" maxOccurs="1" minOccurs="0"/>
 					<element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/> <!-- in to_metrics only -->
 			 		<element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
-					<choice>
-						<sequence>
-							<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
-						    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
-						    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
-						</sequence>
-						<sequence>
-							<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
-							<element name="expressionFormula" type="string" maxOccurs="1" minOccurs="1"/>
-						</sequence>
-					</choice>
+			 		<element name="oid" type="string" maxOccurs="1" minOccurs="0"/>
+					<element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
+					<element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
+					<element name="expressionFormula" type="string" maxOccurs="1" minOccurs="0"/>
+					<element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
 					<choice maxOccurs="unbounded" minOccurs="0">
-						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="0"/> <!-- use it to redefine zabbix item key -->
+						<element name="zabbixKey" type="string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<element name="logFormat" type="string" minOccurs="0"/>
 						<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
 					    <element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
@@ -346,6 +344,18 @@
         
         <enumeration value="Internal Items"/><!-- place items used in calculated items only -->
         
+    </restriction>
+</simpleType>
+
+
+
+<simpleType name="itemTypeList">
+    <restriction base="string">
+        <enumeration value="snmp"/>
+        <enumeration value="internal"/>
+        <enumeration value="zabbix_agent"/>
+        <enumeration value="snmptrap"/>
+        <enumeration value="calculated"/>
     </restriction>
 </simpleType>
 

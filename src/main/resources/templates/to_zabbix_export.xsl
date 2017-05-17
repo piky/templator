@@ -6,8 +6,6 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:param name="zbx_ver" select="3.2"/>
-<xsl:variable name="calc_item_type">15</xsl:variable>
-<xsl:variable name="snmptrap_item_type">17</xsl:variable>
 <xsl:variable name="snmp_port">161</xsl:variable>
 <xsl:param name="discoveryDelay">3600</xsl:param>
 
@@ -17,6 +15,13 @@
    <entry key="delta">10</entry>
  </xsl:variable>
 
+
+ <xsl:variable name="item_type"> <!-- zabbix item types, replace with zabbix ints -->
+   <entry key="snmp"><xsl:value-of select="$snmp_item_type"/></entry> <!-- 1 or 4 -->
+   <entry key="internal">5</entry>
+   <entry key="calculated">15</entry>
+   <entry key="snmptrap">17</entry>
+ </xsl:variable>
 
 <xsl:template match="/">
 	<zabbix_export>
@@ -220,23 +225,12 @@
 
 
 <xsl:template match="metrics/*">
+      <xsl:variable name="itemType" select="./itemType"/>
       <xsl:choose>
         <xsl:when test="./not (discoveryRule)">
 				<item>
   					<name><xsl:value-of select="./name"></xsl:value-of></name>
-	                    <type>
-	                    <xsl:choose>
-						  <xsl:when test="./expressionFormula != ''">
-						    <xsl:copy-of select="$calc_item_type"/> <!-- calc zabbix type -->
-						  </xsl:when>
-						  <xsl:when test="./snmpObject eq 'snmptrap.fallback'">
-						    <xsl:copy-of select="$snmptrap_item_type"/> <!-- snmptrap item zabbix type -->
-						  </xsl:when>
-					      <xsl:otherwise>
-							<xsl:copy-of select="$snmp_item_type"/>
-						  </xsl:otherwise>
-						</xsl:choose>
-	                    </type>
+	                    <type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
 	                    <xsl:if test="$zbx_ver = 3.2">
 		                    <xsl:choose>
@@ -329,16 +323,7 @@
         <xsl:otherwise>
         		<item_prototype>
         			<name><xsl:value-of select="./name"></xsl:value-of></name>
-	                    <type>
-	                    <xsl:choose>
-						  <xsl:when test="./expressionFormula != ''">
-						    <xsl:copy-of select="$calc_item_type"/> <!-- calc zabbix type -->
-						  </xsl:when>
-					      <xsl:otherwise>
-							<xsl:copy-of select="$snmp_item_type"/>
-						  </xsl:otherwise>
-						</xsl:choose>
-	                    </type>
+					<type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
 	                    <xsl:if test="$zbx_ver=3.2">
 		                    <xsl:choose>
