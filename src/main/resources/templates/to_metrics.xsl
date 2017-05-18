@@ -1704,7 +1704,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>nosnmp</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last()}=0</expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(#3)}=0</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
