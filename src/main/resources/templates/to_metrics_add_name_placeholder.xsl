@@ -19,8 +19,8 @@
 
 
 <xsl:template match="/*/template/name">
-	<xsl:copy>
-		<xsl:copy-of  select="concat(.,'_SNMP_PLACEHOLDER')"/>
+	<xsl:copy> <!--  hardcode for non SNMP templates (currently only ICMP) -->
+		<xsl:copy-of select="if (contains(./text(),'ICMP')) then (./text()) else concat(.,'_SNMP_PLACEHOLDER')"/>
 	</xsl:copy>
 </xsl:template>
 

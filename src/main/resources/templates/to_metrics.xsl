@@ -73,6 +73,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <General>
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
         </General>
+        <ICMP>
+        	<ICMP_LOSS_WARN>20</ICMP_LOSS_WARN>
+        	<ICMP_RESPONSE_TIME_WARN>0.15</ICMP_RESPONSE_TIME_WARN>
+        </ICMP>
     </xsl:variable>
 
 <xsl:variable name="nowEN">now: {ITEM.LASTVALUE1}</xsl:variable>
@@ -158,15 +162,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:when>
 					 <xsl:when test="$template_class = 'Fault'">
 							<!-- temp include -->
-
+							
 					</xsl:when>
 					<xsl:when test="$template_class = 'Inventory'">
 							<template>
 				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
 							</template>
-							<template>
+<!-- 							<template>
 				        		<name>Template ICMP Ping</name>
-							</template>	
+							</template>	 -->
 					</xsl:when>
 				</xsl:choose>
 			</xsl:for-each>
@@ -1711,6 +1715,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	                <priority>2</priority>
 	                <description lang="EN">SNMP is not available for polling. Please check device connectivity and SNMP settings.</description>
 	                <description lang="RU">Не удается опросить по SNMP. Проверьте доступность устройства и настройки SNMP.</description>
+	                <dependsOn>
+	                	<dependency>noping</dependency>
+	                	<global>true</global>
+	                </dependsOn>
 	                <tags>
 	                	<tag>
 			 				<tag>Alarm.type</tag>
@@ -1729,6 +1737,114 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     </xsl:copy>	
 </xsl:template>
 
+
+<xsl:template match="template/metrics/icmpping">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>ICMP ping</name>
+			<group>Status</group>
+			<zabbixKey>icmpping</zabbixKey>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<update><xsl:copy-of select="$update1min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers>
+				<trigger>
+					<id>noping</id>
+					<expression>{TEMPLATE_NAME:METRIC.max(#3)}=0</expression>
+	                <name lang="EN">Unavailable by ICMP ping</name>
+	                <name lang="RU">Нет ответа на ICMP ping</name>
+	                <description>Last three attempts returned timeout.  Please check device connectivity.</description>
+	                <priority>4</priority>
+	                <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>NO_PING</value>
+						</tag>
+					</tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+<xsl:template match="template/metrics/icmppingloss">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>ICMP loss</name>
+			<group>Status</group>
+			<zabbixKey>icmppingloss</zabbixKey>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<update><xsl:copy-of select="$update1min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+			<units>%</units>
+			<triggers>
+				<trigger>
+					<id>icmppingloss</id>
+					<expression>{TEMPLATE_NAME:METRIC.min(5m)}>{$ICMP_LOSS_WARN}</expression>
+	                <name lang="EN">High ICMP ping loss</name>
+	                <name lang="RU">Потеря пакетов ICMP ping</name>
+	                <priority>2</priority>
+	                <dependsOn>
+	                	<dependency>noping</dependency>
+	                </dependsOn>
+	                <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>PING_LOSS</value>
+						</tag>
+					</tags>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+<xsl:template match="template/metrics/icmppingsec">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>ICMP response time</name>
+			<group>Status</group>
+			<zabbixKey>icmppingsec</zabbixKey>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<update><xsl:copy-of select="$update1min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
+			<units>s</units>
+			<triggers>
+				<trigger>
+					<id>icmppingsec</id>
+					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$ICMP_RESPONSE_TIME_WARN}</expression>
+	                <name>High response time</name>
+	                <priority>2</priority>
+	                <dependsOn>
+	                	<dependency>noping</dependency>
+	                	<dependency>icmppingloss</dependency>
+	                </dependsOn>
+	                <tags/>
+				</trigger>
+			</triggers>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
 <!-- inventory -->
 
 <xsl:template match="template/metrics/system.sw.os">
