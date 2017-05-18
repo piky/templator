@@ -74,8 +74,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
         </General>
         <ICMP>
-        	<ICMP_LOSS_WARN>20</ICMP_LOSS_WARN>
-        	<ICMP_RESPONSE_TIME_WARN>0.15</ICMP_RESPONSE_TIME_WARN>
+        	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
+        	<ICMP_RESPONSE_TIME_WARN><value>0.15</value></ICMP_RESPONSE_TIME_WARN>
         </ICMP>
     </xsl:variable>
 
