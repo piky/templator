@@ -1520,7 +1520,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
 	                <description lang="RU">Аптайм устройства менее 10 минут или был получен SNMP trap(coldStart)</description>
 	                <dependsOn>
-	                	<dependency>uptime.nodata</dependency>
+	                	<!-- <dependency>uptime.nodata</dependency> -->
+	                	<dependency>nosnmp</dependency>
 	               	</dependsOn>
               	    <tags>
 	                	<tag>
@@ -1529,7 +1530,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 						</tag>
 					</tags>
 				</trigger>
-				<trigger>
+<!-- 				<trigger>
 					<id>uptime.nodata</id>
 					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
@@ -1544,7 +1545,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			                <value>NO_DATA</value>
 						</tag>
 					</tags>
-				</trigger>
+				</trigger> -->
 			</triggers>
 		</metric>
     </xsl:variable>
@@ -1679,6 +1680,45 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<update><xsl:copy-of select="$update1hour"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>14</inventory_link>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+
+<xsl:template match="template/metrics/zabbix.snmp.available">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name>SNMP availability</name>
+			<group>General</group>
+			<zabbixKey>zabbix[host,snmp,available]</zabbixKey>
+			<history><xsl:copy-of select="$history14days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers>
+				<trigger>
+					<id>nosnmp</id>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last()}=0</expression>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
+	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
+	                <url/>
+	                <priority>2</priority>
+	                <description lang="EN">SNMP is not available for polling. Please check device connectivity and SNMP settings.</description>
+	                <description lang="RU">Не удается опросить по SNMP. Проверьте доступность устройства и настройки SNMP.</description>
+	                <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>NO_DATA</value>
+						</tag>
+					</tags>
+				</trigger>
+			</triggers>
 		</metric>
     </xsl:variable>
 				
