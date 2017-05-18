@@ -21,8 +21,30 @@
    <entry key="internal">5</entry>
    <entry key="calculated">15</entry>
    <entry key="snmptrap">17</entry>
+   <entry key="simple">3</entry>
+   <entry key="zabbix_agent">0</entry>
+   <entry key="zabbix_agent_active">7</entry>
  </xsl:variable>
-
+ <!-- 
+	0 - Zabbix agent; 
+	1 - SNMPv1 agent; 
+	2 - Zabbix trapper; 
+	3 - simple check; 
+	4 - SNMPv2 agent; 
+	5 - Zabbix internal; 
+	6 - SNMPv3 agent; 
+	7 - Zabbix agent (active); 
+	8 - Zabbix aggregate; 
+	9 - web item; 
+	10 - external check; 
+	11 - database monitor; 
+	12 - IPMI agent; 
+	13 - SSH agent; 
+	14 - TELNET agent; 
+	15 - calculated; 
+	16 - JMX agent; 
+	17 - SNMP trap.  
+ -->
 <xsl:template match="/">
 	<zabbix_export>
 	    <version><xsl:value-of select="$zbx_ver"></xsl:value-of></version>

@@ -356,6 +356,7 @@
         <enumeration value="zabbix_agent"/>
         <enumeration value="snmptrap"/>
         <enumeration value="calculated"/>
+        <enumeration value="simple"/>
     </restriction>
 </simpleType>
 
