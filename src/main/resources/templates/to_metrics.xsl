@@ -1789,8 +1789,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<id>icmppingloss</id>
 					<expression>{TEMPLATE_NAME:METRIC.min(5m)}>{$ICMP_LOSS_WARN}</expression>
-	                <name lang="EN">High ICMP ping loss</name>
-	                <name lang="RU">Потеря пакетов ICMP ping</name>
+	                <name lang="EN">High ICMP ping loss (<xsl:value-of select="$nowEN" />)</name>
+	                <name lang="RU">Потеря пакетов ICMP ping (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>2</priority>
 	                <dependsOn>
 	                	<dependency>noping</dependency>
@@ -1827,7 +1827,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<id>icmppingsec</id>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$ICMP_RESPONSE_TIME_WARN}</expression>
-	                <name>High response time</name>
+	                <name>High response time (<xsl:value-of select="$nowEN" />)</name>
 	                <priority>2</priority>
 	                <dependsOn>
 	                	<dependency>noping</dependency>
