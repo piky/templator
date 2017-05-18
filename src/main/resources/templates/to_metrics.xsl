@@ -277,7 +277,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<preprocessing/> <!-- 3.4 -->
 			</xsl:otherwise>
 		</xsl:choose>
-		
+		<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
 		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
 		<xsl:if test="$metric/triggers/trigger">
 			<triggers>

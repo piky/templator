@@ -138,6 +138,7 @@
 <xsl:template match="metrics/*/triggers/trigger">
 		<xsl:variable name="template_name" select="../../../../name"/>
 		<xsl:variable name="metric_name" select="../../name"/>
+		<xsl:variable name="metric_alarm_object" select="../../alarmObject"/>
 
 		<xsl:choose>
         	<xsl:when test="../../.[not (discoveryRule)]">
@@ -168,10 +169,10 @@
 	                            <dependencies>
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
-    									<dependency>			
-      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
-      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
-      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
+    									<dependency>			<!-- dependencies must be of the same alarmObject. Or without alarmObject ata all -->
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
@@ -209,9 +210,9 @@
 	               					<xsl:for-each select="./dependsOn/dependency">
 										<xsl:variable name="trigger_id" select="."/>
     									<dependency>			
-      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/name"/></name>
-      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/expression"/></expression>
-      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[name=$metric_name]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
+      										<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
+      										<expression><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression"/></expression>
+      										<recovery_expression><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression"/></recovery_expression>
 										</dependency>
 									</xsl:for-each>                        	                
 	                            </dependencies>
