@@ -71,7 +71,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         	<STORAGE_UTIL_WARN><value>80</value></STORAGE_UTIL_WARN>
         </Fault>
         <General>
-        	<SNMP_TIMEOUT><value>10m</value></SNMP_TIMEOUT>
+        	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
         </General>
     </xsl:variable>
 
@@ -1704,7 +1704,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>nosnmp</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(#3)}=0</expression>
+					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max({$SNMP_TIMEOUT})}=0</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
