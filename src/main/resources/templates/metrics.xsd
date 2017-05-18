@@ -317,7 +317,10 @@
 		  	<element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 		  	<element name="dependsOn" maxOccurs="1" minOccurs="0">
 		  		<complexType>
-		  			<sequence><element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/></sequence>
+		  			<sequence>
+		  				<element name="dependency" type="string" maxOccurs="unbounded" minOccurs="0"/>
+		  				<element name="global" type="boolean" maxOccurs="unbounded" minOccurs="0"/> <!-- use global for triggers dependencies between templates (templates must be in the same file though)-->
+		  			</sequence>
 		  		</complexType>
 		  	</element>
 			<element name="tags" minOccurs="0" type="tns:tags"/>

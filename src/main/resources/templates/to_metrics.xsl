@@ -544,7 +544,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<triggers>
 				<trigger>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$MEMORY_UTIL_MAX}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$MEMORY_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
@@ -739,7 +739,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 					<trigger>
 						<id>storageCrit</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
@@ -764,7 +764,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					
 					<trigger>
 						<id>storageWarn</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
 		                <url/>
@@ -822,8 +822,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <id>tempWarn</id>
 
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
-					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
@@ -885,8 +885,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<id>tempCrit</id>
 					
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
-					<xsl:variable name="expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
+					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					
@@ -950,8 +950,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 				    <!-- <documentation>Using recovery expression... Temperature has to be 5 points more than threshold level  ({$TEMP_CRIT_LOW}+5)</documentation>  -->
 				    <id>tempLow</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
+					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
+					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
 	                <url />
@@ -1039,7 +1039,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
 						<trigger>
 						    <id>health.disaster</id>
-							<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+							<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
 			                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
 			                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
 			                <priority>4</priority>
@@ -1054,7 +1054,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
 					<trigger>
 						<id>health.critical</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
 		                <name lang="EN">System status is in critical state (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: авария (<xsl:value-of select="$nowRU"/>)</name>
 		                <priority>4</priority>
@@ -1074,7 +1074,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">
 					<trigger>
 					    <id>health.warning</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
 		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
 		                <priority>2</priority>
@@ -1117,7 +1117,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>psu.critical</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$PSU_CRIT_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$PSU_CRIT_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: авария (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>3</priority>
@@ -1141,7 +1141,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 <!-- 				<trigger>
 					<id>psu.notok</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;&gt;{$PSU_OK_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;&gt;{$PSU_OK_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply status: (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>1</priority>
@@ -1188,7 +1188,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>fan.critical</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$FAN_CRIT_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$FAN_CRIT_STATUS}</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>3</priority>
@@ -1212,7 +1212,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 <!-- 				<trigger>
 					<id>fan.notok</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;&gt;{$FAN_OK_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;&gt;{$FAN_OK_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan status: (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>1</priority>
@@ -1279,7 +1279,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 				    <id>disk_array.disaster</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_DISASTER_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$DISK_ARRAY_DISASTER_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in unrecoverable state!</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: сбой</name>
 	                <url/>
@@ -1301,7 +1301,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 				<trigger>
 				    <id>disk_array.warning</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_WARN_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$DISK_ARRAY_WARN_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in warning state</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: предупреждение</name>
 	                <url/>
@@ -1326,7 +1326,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 				<trigger>
 					<id>disk_array.critical</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_ARRAY_CRIT_STATUS}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$DISK_ARRAY_CRIT_STATUS}</expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Disk array controller is in critical state</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус контроллера дискового массива: авария</name>
 	                <url/>
@@ -1390,8 +1390,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 					<trigger>
 					    <id>disk.notok</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.str({$DISK_OK_STATUS})}=0 and 
-						{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.str("")}=0</expression>
+						<expression>{TEMPLATE_NAME:METRIC.str({$DISK_OK_STATUS})}=0 and 
+						{TEMPLATE_NAME:METRIC.str("")}=0</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk is not in OK state</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска не норма</name>
 		                <url/>
@@ -1418,7 +1418,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		
 					<trigger>
 					    <id>disk.warning</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_WARN_STATUS}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$DISK_WARN_STATUS}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk is in warning state</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска: предупреждение</name>
 		                <url/>
@@ -1442,7 +1442,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</trigger>
 					<trigger>
 						<id>disk.fail</id>
-						<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}={$DISK_FAIL_STATUS}</expression>
+						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$DISK_FAIL_STATUS}</expression>
 		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Physical disk failed</name>
 		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус физического диска: сбой</name>
 		                <url/>
@@ -1510,8 +1510,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 				    <id>uptime.restarted</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&lt;10m or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
-					<recovery_expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.last(0)}&gt;10m or {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata(30m)}=1</recovery_expression>
+					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;10m or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
+					<recovery_expression>{TEMPLATE_NAME:METRIC.last(0)}&gt;10m or {TEMPLATE_NAME:METRIC.nodata(30m)}=1</recovery_expression>
 					<manual_close>1</manual_close>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
@@ -1532,7 +1532,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				</trigger>
 <!-- 				<trigger>
 					<id>uptime.nodata</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
+					<expression>{TEMPLATE_NAME:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
@@ -1704,7 +1704,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>nosnmp</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.max({$SNMP_TIMEOUT})}=0</expression>
+					<expression>{TEMPLATE_NAME:METRIC.max({$SNMP_TIMEOUT})}=0</expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
 	                <url/>
@@ -1797,7 +1797,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 				    <id>sn.changed</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression>
+					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
 	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> might have been replaced (new serial number:{ITEM.VALUE1})</name>
@@ -1848,7 +1848,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 				    <id>firmware.changed</id>
-					<expression>{<xsl:value-of select="../../name"></xsl:value-of>:METRIC.diff()}=1 and {<xsl:value-of select="../../name"></xsl:value-of>:METRIC.strlen()}&gt;0</expression>
+					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
 	                <name lang="EN">Firmware has changed: (new:{ITEM.VALUE1})</name>
