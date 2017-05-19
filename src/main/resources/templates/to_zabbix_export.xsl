@@ -329,9 +329,9 @@
 	                    <privatekey/>
 	                    <port><xsl:copy-of select="$snmp_port"/></port>
 						<description>
-							<xsl:value-of select="./mib"></xsl:value-of><xsl:text> </xsl:text>
-							<xsl:value-of select="./ref"></xsl:value-of><xsl:text> </xsl:text>
-							<xsl:value-of select="./vendorDescription"></xsl:value-of>
+							<xsl:value-of select="if (./mib) then (concat(./mib,' ')) else ()"/>
+							<xsl:value-of select="if (./ref) then (concat(./ref,' ')) else ()"/>
+							<xsl:value-of select="if (./vendorDescription) then (./vendorDescription) else (./description)"/>
 						</description>
 						<xsl:choose>
 						  <xsl:when test="./inventory_link != ''">
@@ -429,9 +429,9 @@
 	                    <privatekey/>
 	                    <port><xsl:copy-of select="$snmp_port"/></port>
 						<description>
-							<xsl:value-of select="./mib"></xsl:value-of><xsl:text> </xsl:text>
-							<xsl:value-of select="./ref"></xsl:value-of><xsl:text> </xsl:text>
-							<xsl:value-of select="./vendorDescription"></xsl:value-of>
+							<xsl:value-of select="if (./mib) then (concat(./mib,' ')) else ()"/>
+							<xsl:value-of select="if (./ref) then (concat(./ref,' ')) else ()"/>
+							<xsl:value-of select="if (./vendorDescription) then (./vendorDescription) else (./description)"/>
 						</description>
 	                    <xsl:choose>
 						  <xsl:when test="./inventory_link != ''">
