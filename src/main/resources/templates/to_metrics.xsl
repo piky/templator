@@ -1513,9 +1513,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<triggers>
 				<trigger>
+				    <documentation>This trigger expression work as follows:
+1. Can be triggered from coldStart trap (either perl script or snmptt)
+2. Can be triggered if uptime metric is too low (less then 10 minutes)
+3. TRIGGER.VALUE wrappers and avg(1s), str(x,1s) are used to make sure that only metrics with actual values are used to determine proper  trigger's condition.</documentation>
 				    <id>uptime.restarted</id>
-					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;10m or {<xsl:value-of select="../../name"/>:snmptrap.fallback.str(coldStart)}=1</expression><!-- TODO proper multiitem triggers shall be invented -->
-					<recovery_expression>{TEMPLATE_NAME:METRIC.last(0)}&gt;10m or {TEMPLATE_NAME:METRIC.nodata(30m)}=1</recovery_expression>
+					<expression>{TRIGGER.VALUE}=0 and ({TEMPLATE_NAME:METRIC.avg(1s)}&lt;10m or
+{TEMPLATE_NAME:snmptrap.fallback.str(".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.1",1s)}=1 or
+{TEMPLATE_NAME:snmptrap.fallback.str("coldStart",1s)}=1)</expression>
+					<recovery_expression>{TRIGGER.VALUE}=1 and ({TEMPLATE_NAME:METRIC.avg(1s)}&gt;10m)</recovery_expression>
 					<manual_close>1</manual_close>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
@@ -1524,7 +1530,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
 	                <description lang="RU">Аптайм устройства менее 10 минут или был получен SNMP trap(coldStart)</description>
 	                <dependsOn>
-	                	<!-- <dependency>uptime.nodata</dependency> -->
 	                	<dependency>nosnmp</dependency>
 	               	</dependsOn>
               	    <tags>
@@ -1534,22 +1539,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 						</tag>
 					</tags>
 				</trigger>
-<!-- 				<trigger>
-					<id>uptime.nodata</id>
-					<expression>{TEMPLATE_NAME:METRIC.nodata({$SNMP_TIMEOUT})}=1</expression>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> No SNMP data collection</name>
-	                <name lang="RU"><xsl:value-of select="alarmObject"/> Нет сбора данных по SNMP</name>
-	                <url/>
-	                <priority>2</priority>
-	                <description lang="EN">SNMP object sysUptime.0 is not available for polling. Please check device connectivity and SNMP settings.</description>
-	                <description lang="RU">Не удается опросить sysUptime.0. Проверьте доступность устройства и настройки SNMP.</description>
-	                <tags>
-	                	<tag>
-			 				<tag>Alarm.type</tag>
-			                <value>NO_DATA</value>
-						</tag>
-					</tags>
-				</trigger> -->
 			</triggers>
 		</metric>
     </xsl:variable>
