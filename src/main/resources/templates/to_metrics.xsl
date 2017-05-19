@@ -336,5 +336,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="include/icmp.xsl"/>
 <xsl:include href="include/inventory.xsl"/>
 
+<xsl:include href="include/interfaces.xsl"/>
+
 </xsl:stylesheet>
 

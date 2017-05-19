@@ -155,6 +155,15 @@
 				    				<element name="system.hw.firmware" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    			</choice>
 		    				</sequence>
+		    				
+		    				
+							<sequence> <!-- Template Network Interfaces -->
+				    				<element name="net.if.status" type="tns:metricType"/>
+				    				<element name="net.if.in" type="tns:metricType"/>
+				    				<element name="net.if.out" type="tns:metricType"/>
+				    				<element name="net.if.in.errors" type="tns:metricType"/>
+				    				<element name="net.if.out.errors" type="tns:metricType"/>
+		    				</sequence>
 	    				</choice>
     			</complexType>
     		</element>
@@ -350,6 +359,8 @@
 		<enumeration value="General"/>
         <enumeration value="Inventory"/>
         
+        <enumeration value="Interfaces"/> <!-- Network interfaces -->
+        
         <enumeration value="Internal Items"/><!-- place items used in calculated items only -->
         
     </restriction>
@@ -377,6 +388,8 @@
         <enumeration value="General"/>
         
         <enumeration value="ICMP"/>
+        
+        <enumeration value="Interfaces"/>
     </restriction>
 </simpleType>
 
