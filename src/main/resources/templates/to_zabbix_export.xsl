@@ -12,7 +12,7 @@
  <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
    <entry key="regex">5</entry>
    <entry key="multiplier">1</entry>
-   <entry key="delta">10</entry> <!-- delta per second -->
+   <entry key="delta_per_second">10</entry> <!-- delta per second -->
  </xsl:variable>
 
 
@@ -302,7 +302,7 @@
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
 						<xsl:if test="$zbx_ver=3.2">
 	                		<xsl:choose>
-							  <xsl:when test="./preprocessing/step[type eq 'delta']">
+							  <xsl:when test="./preprocessing/step[type eq 'delta_per_second']">
 							    <delta>1</delta>
 							  </xsl:when>
 						      <xsl:otherwise>
@@ -411,7 +411,7 @@
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
 						<xsl:if test="$zbx_ver=3.2">
 	                		<xsl:choose>
-							  <xsl:when test="./preprocessing/step[type eq 'delta']">
+							  <xsl:when test="./preprocessing/step[type eq 'delta_per_second']">
 							    <delta>1</delta>
 							  </xsl:when>
 						      <xsl:otherwise>

@@ -163,6 +163,7 @@
 				    				<element name="net.if.out" type="tns:metricType"/>
 				    				<element name="net.if.in.errors" type="tns:metricType"/>
 				    				<element name="net.if.out.errors" type="tns:metricType"/>
+				    				<element name="net.if.traps" type="tns:metricType"/>	
 		    				</sequence>
 	    				</choice>
     			</complexType>
@@ -228,6 +229,7 @@
 								       	 	<restriction base="string">
 										        <enumeration value="regex"/>
 										        <enumeration value="delta"/>
+										        <enumeration value="delta_per_second"/>
 										        <enumeration value="multiplier"/>
 								    		</restriction>
 							       	 	</simpleType>
