@@ -304,8 +304,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:param name="trigger"/>
 		<xsl:param name="metricKey"/>
 			<trigger>
-					<xsl:copy-of select="$trigger/id"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/documentation"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/id"></xsl:copy-of>
 					<!-- <xsl:copy-of select="$trigger/expression"></xsl:copy-of> -->
 					<expression><xsl:value-of select="replace($trigger/expression, 'METRIC', $metricKey)"/></expression>
 					<recovery_expression><xsl:value-of select="replace($trigger/recovery_expression, 'METRIC', $metricKey)"/></recovery_expression>
