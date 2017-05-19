@@ -12,7 +12,7 @@
  <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
    <entry key="regex">5</entry>
    <entry key="multiplier">1</entry>
-   <entry key="delta">10</entry>
+   <entry key="delta">10</entry> <!-- delta per second -->
  </xsl:variable>
 
 
@@ -300,7 +300,16 @@
 	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
 	                    <allowed_hosts/>
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
-	                    <xsl:if test="$zbx_ver = 3.2"><delta>0</delta></xsl:if>
+						<xsl:if test="$zbx_ver=3.2">
+	                		<xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'delta']">
+							    <delta>1</delta>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<delta>0</delta>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 	                    <snmpv3_contextname/>
 	                    <snmpv3_securityname/>
 	                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -400,7 +409,16 @@
 	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
 	                    <allowed_hosts/>
 	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
-	                    <xsl:if test="$zbx_ver=3.2"><delta>0</delta></xsl:if>
+						<xsl:if test="$zbx_ver=3.2">
+	                		<xsl:choose>
+							  <xsl:when test="./preprocessing/step[type eq 'delta']">
+							    <delta>1</delta>
+							  </xsl:when>
+						      <xsl:otherwise>
+								<delta>0</delta>
+							  </xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>	                    
 	                    <snmpv3_contextname/>
 	                    <snmpv3_securityname/>
 	                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
