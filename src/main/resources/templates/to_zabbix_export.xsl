@@ -157,121 +157,79 @@
                 	</discovery_rule>
 </xsl:template>
 
-<xsl:template match="metrics/*/triggers/trigger">
+<xsl:template name="triggerTemplate">
 		<xsl:variable name="template_name" select="../../../../name"/>
 		<xsl:variable name="metric_name" select="../../name"/>
 		<xsl:variable name="metric_alarm_object" select="../../alarmObject"/>
 
+					<expression><xsl:value-of select="replace(./expression,'TEMPLATE_NAME',$template_name)"/></expression>
+				<recovery_mode>
+					<xsl:choose>
+		  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
+		  				<xsl:when test="./recovery_mode != ''"><xsl:value-of select="./recovery_mode"/></xsl:when>
+	      				<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
+				</recovery_mode>
+                        	<recovery_expression><xsl:value-of select="replace(./recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+				<name><xsl:value-of select="./name"/></name>
+				<correlation_mode>0</correlation_mode>
+                        	<correlation_tag/>
+                         <url><xsl:value-of select="./url"/></url>
+                         <status>0</status>
+                         <priority><xsl:value-of select="./priority"/></priority>
+                         <description><xsl:value-of select="./description"/></description>
+                         <type>0</type>
+                         <manual_close>
+					<xsl:choose>
+		  				<xsl:when test="./manual_close = 1">1</xsl:when>
+	      				<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
+				</manual_close>
+                         <dependencies>
+            					<xsl:for-each select="./dependsOn/dependency">
+						<xsl:variable name="trigger_id" select="."/>
+									<dependency>
+									<xsl:choose>
+										<xsl:when test="../global = true()"> <!-- search in other templates (but templates must in the same file) -->
+   										<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
+   										<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   										<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+  										</xsl:when>
+  										<xsl:otherwise>
+  											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
+   										<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   										<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+  										</xsl:otherwise>
+ 									</xsl:choose>
+						</dependency>
+					</xsl:for-each>                        	                
+                         </dependencies>
+				<tags>
+            					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
+                         </tags>
+
+</xsl:template>
+
+
+<xsl:template match="metrics/*/triggers/trigger">
+
 		<xsl:choose>
         	<xsl:when test="../../.[not (discoveryRule)]">
 							<trigger>
-								<expression><xsl:value-of select="replace(./expression,'TEMPLATE_NAME',$template_name)"/></expression>
-								<recovery_mode>
-									<xsl:choose>
-						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
-						  				<xsl:when test="./recovery_mode != ''"><xsl:value-of select="./recovery_mode"/></xsl:when>
-					      				<xsl:otherwise>0</xsl:otherwise>
-									</xsl:choose>
-								</recovery_mode>
-                            	<recovery_expression><xsl:value-of select="replace(./recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-								<name><xsl:value-of select="./name"/></name>
-								<correlation_mode>0</correlation_mode>
-                            	<correlation_tag/>
-	                            <url><xsl:value-of select="./url"/></url>
-	                            <status>0</status>
-	                            <priority><xsl:value-of select="./priority"/></priority>
-	                            <description><xsl:value-of select="./description"/></description>
-	                            <type>0</type>
-	                            <manual_close>
-									<xsl:choose>
-						  				<xsl:when test="./manual_close = 1">1</xsl:when>
-					      				<xsl:otherwise>0</xsl:otherwise>
-									</xsl:choose>
-								</manual_close>
-	                            <dependencies>
-	               					<xsl:for-each select="./dependsOn/dependency">
-										<xsl:variable name="trigger_id" select="."/>
-    									<dependency>
-    									<xsl:choose>
-    										<xsl:when test="../global = true()"> <!-- search in other templates (but templates must in the same file) -->
-	      										<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-	      										<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-	      										<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-      										</xsl:when>
-      										<xsl:otherwise>
-      											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-	      										<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-	      										<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-      										</xsl:otherwise>
-     									</xsl:choose>
-										</dependency>
-									</xsl:for-each>                        	                
-	                            </dependencies>
-								<tags>
-	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
-	                            </tags>
+								<xsl:call-template name="triggerTemplate"/>
 							</trigger>
 			</xsl:when>
         <xsl:otherwise>
      						<trigger_prototype>
-								<expression><xsl:value-of select="replace(./expression,'TEMPLATE_NAME',$template_name)"/></expression>
-								<recovery_mode>
-									<xsl:choose>
-						  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
-						  				<xsl:when test="./recovery_mode != ''"><xsl:value-of select="./recovery_mode"/></xsl:when>
-					      				<xsl:otherwise>0</xsl:otherwise>
-									</xsl:choose>
-								</recovery_mode>
-                            	<recovery_expression><xsl:value-of select="replace(./recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-								<name><xsl:value-of select="./name"/></name>
-								<correlation_mode>0</correlation_mode>
-                            	<correlation_tag/>
-	                            <url><xsl:value-of select="./url"/></url>
-	                            <status>0</status>
-	                            <priority><xsl:value-of select="./priority"/></priority>
-	                            <description><xsl:value-of select="./description"/></description>
-	                            <type>0</type>
-	                            <manual_close>
-									<xsl:choose>
-						  				<xsl:when test="./manual_close = 1">1</xsl:when>
-					      				<xsl:otherwise>0</xsl:otherwise>
-									</xsl:choose>
-								</manual_close>
-	                            <dependencies>
-	               					<xsl:for-each select="./dependsOn/dependency">
-										<xsl:variable name="trigger_id" select="."/>
-    									<dependency>
-    									<xsl:choose>
-    										<xsl:when test="../global = true()"> <!-- search in other templates (but templates must in the same file) -->
-	      										<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-	      										<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-	      										<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-      										</xsl:when>
-      										<xsl:otherwise>
-      											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-	      										<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-	      										<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
-      										</xsl:otherwise>
-     									</xsl:choose>
-
-										</dependency>
-									</xsl:for-each>                        	                
-	                            </dependencies>
-	                           <tags>
-	               					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
-	                            </tags>
+								<xsl:call-template name="triggerTemplate"/>
 							</trigger_prototype>
         </xsl:otherwise>
         </xsl:choose>
 </xsl:template>
 
-
-<xsl:template match="metrics/*">
-      <xsl:variable name="itemType" select="./itemType"/>
-      <xsl:choose>
-        <xsl:when test="./not (discoveryRule)">
-				<item>
-  					<name><xsl:value-of select="./name"></xsl:value-of></name>
+<xsl:template name="itemTemplate">
+	<xsl:variable name="itemType" select="./itemType"/>
+	<name><xsl:value-of select="./name"></xsl:value-of></name>
 	                    <type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
                         <xsl:choose>
 						  <xsl:when test="./itemType eq 'snmp'">
@@ -376,115 +334,20 @@
 							</xsl:for-each>
 						</preprocessing>
 	                    </xsl:if>
+
+</xsl:template>
+
+
+<xsl:template match="metrics/*">
+      <xsl:choose>
+        <xsl:when test="./not (discoveryRule)">
+				<item>
+  					<xsl:call-template name="itemTemplate"/>
   				</item>        
 		</xsl:when>
         <xsl:otherwise>
         		<item_prototype>
-        			<name><xsl:value-of select="./name"></xsl:value-of></name>
-					<type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
-	                   <xsl:choose>
-						  <xsl:when test="./itemType eq 'snmp'">
-						    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<snmp_community/>
-						  </xsl:otherwise>
-						</xsl:choose>
-	                    <xsl:if test="$zbx_ver=3.2">
-		                    <xsl:choose>
-							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
-							    <multiplier>1</multiplier>
-							  </xsl:when>
-						      <xsl:otherwise>
-								<multiplier>0</multiplier>
-							  </xsl:otherwise>
-							</xsl:choose>
-						</xsl:if>
-						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
-						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
-	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
-	                    <history><xsl:value-of select="./history"></xsl:value-of></history>
-	                    <trends><xsl:value-of select="./trends"></xsl:value-of></trends>
-	                    <status>0</status>
-	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
-	                    <allowed_hosts/>
-	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
-						<xsl:if test="$zbx_ver=3.2">
-	                		<xsl:choose>
-							  <xsl:when test="./preprocessing/step[type eq 'delta_per_second']">
-							    <delta>1</delta>
-							  </xsl:when>
-						      <xsl:otherwise>
-								<delta>0</delta>
-							  </xsl:otherwise>
-							</xsl:choose>
-						</xsl:if>	                    
-	                    <snmpv3_contextname/>
-	                    <snmpv3_securityname/>
-	                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-	                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-	                    <snmpv3_authpassphrase/>
-	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-	                    <snmpv3_privpassphrase/>
-						<xsl:if test="$zbx_ver=3.2">
-	                		<xsl:choose>
-							  <xsl:when test="./preprocessing/step[type eq 'multiplier']">
-							    <formula><xsl:value-of select="./preprocessing/step[type eq 'multiplier']/params"/></formula>
-							  </xsl:when>
-						      <xsl:otherwise>
-								<formula>0</formula>
-							  </xsl:otherwise>
-							</xsl:choose>
-						</xsl:if>
-	                    <delay_flex/>
-	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
-	                    <ipmi_sensor/>
-	                    <xsl:if test="$zbx_ver=3.2"><data_type>0</data_type></xsl:if>
-	                    <authtype>0</authtype>
-	                    <username/>
-	                    <password/>
-	                    <publickey/>
-	                    <privatekey/>
-	                    <port><xsl:copy-of select="$snmp_port"/></port>
-						<description>
-							<xsl:value-of select="if (./mib) then (concat(./mib,' ')) else ()"/>
-							<xsl:value-of select="if (./ref) then (concat(./ref,' ')) else ()"/>
-							<xsl:value-of select="if (./vendorDescription) then (./vendorDescription) else (./description)"/>
-						</description>
-	                    <xsl:choose>
-						  <xsl:when test="./inventory_link != ''">
-						    <inventory_link><xsl:value-of select="./inventory_link"/></inventory_link>
-						  </xsl:when>
-					      <xsl:otherwise>
-							<inventory_link>0</inventory_link>
-						  </xsl:otherwise>
-						</xsl:choose>
-		                <applications>
-                                <application>
-                                    <name><xsl:value-of select="./group"></xsl:value-of></name>
-                                </application>
-                        </applications>
-	                    <valuemap>
-						<xsl:choose>
-							  <xsl:when test="./valueMap != ''">
-							    <name>
-							    	<xsl:value-of select="./valueMap"/>
-							    </name>
-							  </xsl:when>
-						</xsl:choose>
-	                    </valuemap>
-	                    <logtimefmt><xsl:value-of select="./logFormat"/></logtimefmt>
-	                    <xsl:if test="$zbx_ver = 3.4">
-	                    <preprocessing>
-		                    <xsl:for-each select="./preprocessing/step">
-											<xsl:variable name="step" select="."/>
-	    									<step>
-	    										<type><xsl:value-of select="$step_map/entry[@key=$step/type]"/></type>
-	    										<params><xsl:value-of select="$step/params"/></params>
-	    									</step>
-							</xsl:for-each>
-						</preprocessing>
-	                    </xsl:if>
+        			<xsl:call-template name="itemTemplate"/>
 					<application_prototypes/>
 				</item_prototype>
         </xsl:otherwise>
