@@ -106,11 +106,11 @@
 <xsl:template match="discoveryRules/*">
 					<xsl:variable name="disc_name" select="./name"></xsl:variable>
 					<discovery_rule>
-						<name><xsl:value-of select="./name"></xsl:value-of></name>
+						<name><xsl:value-of select="./name"/></name>
 	                    <type><xsl:copy-of select="$snmp_item_type"/></type>
 	                    <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-	                    <snmp_oid><xsl:value-of select="./snmp_oid"></xsl:value-of></snmp_oid>
-						<key><xsl:value-of select="./key"></xsl:value-of></key>
+	                    <snmp_oid><xsl:value-of select="./snmp_oid"/></snmp_oid>
+						<key><xsl:value-of select="./key"/></key>
 	                    <delay><xsl:value-of select="$discoveryDelay"/></delay>
 	                    <status>0</status>
 	                    <allowed_hosts/>
@@ -133,7 +133,7 @@
 	                    
                     	<xsl:choose>
 						  <xsl:when test="./filter != ''">
-						    <xsl:copy-of copy-namespaces="no" select="./filter[name()!='xmlns:tns']"></xsl:copy-of>
+						    <xsl:copy-of copy-namespaces="no" select="./filter[name()!='xmlns:tns']"/>
 						  </xsl:when>
 					    <xsl:otherwise>
 					    <filter>
@@ -145,12 +145,12 @@
 						</xsl:choose>
 	                    
 	                    <lifetime>30</lifetime>
-	                    <description><xsl:value-of select="./description"></xsl:value-of></description>
+	                    <description><xsl:value-of select="./description"/></description>
 	                    <item_prototypes>
-	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"></xsl:apply-templates>
+	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"/>
 	                    </item_prototypes>
 	                    <trigger_prototypes>
-	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"></xsl:apply-templates>
+	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/>
 	                    </trigger_prototypes>
 	                    <graph_prototypes/>
 	                    <host_prototypes/>
