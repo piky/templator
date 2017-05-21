@@ -26,7 +26,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("direct:merge");
     
     from("direct:merge")
-		.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER
+    	.setHeader("template_ver", simple("0.7", String.class))
+    	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER and generator ver
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
 	    .to("file:bin/merged")
@@ -63,19 +64,23 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		
+		
+		
 		.choice()
 		    .when(header("zbx_ver").isEqualTo("3.4"))
 		    	.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		    	.to("file:bin/out/")
 		    	.to("validator:templates/zabbix_export_3.4.xsd")
 			.when(header("zbx_ver").isEqualTo("3.2"))
-				.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}_${in.headers.zbx_ver}.xml"))
+				.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+				.to("file:bin/out/")
 				.to("validator:templates/zabbix_export_3.2.xsd")
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
 	    .end()
 		
 	    
-		.to("file:bin/out/")
+		
 		.to("direct:local_tmon");
 		
 	
@@ -83,8 +88,18 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:local_tmon")
 			.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
 			.setBody(body().regexReplaceAll("<delay>([0-9]+)</delay>", "<delay>90</delay>")) //replace delay
-			.setHeader("CamelOverruleFileName",
-					simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+			.choice()
+			    .when(header("zbx_ver").isEqualTo("3.4"))
+			    	.setHeader("CamelOverruleFileName",
+						simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+			    .when(header("zbx_ver").isEqualTo("3.2"))
+				.setHeader("CamelOverruleFileName",
+						simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}_${in.headers.zbx_ver}.xml"))
+				.otherwise()
+				    .log("Unknown zbx_ver provided")
+			    .end()
+			
+
 			.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack/");
   } 
 }
