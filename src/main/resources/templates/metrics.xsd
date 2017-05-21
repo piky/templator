@@ -250,7 +250,10 @@
 					<element name="vendorDocumentation" type="string" maxOccurs="1" minOccurs="0"/>
 					<choice>
 						<sequence>
-							<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
+							<element name="oid" type="string" maxOccurs="1" minOccurs="1">
+								<annotation>
+									<documentation>SNMP oid</documentation>
+								</annotation></element>
 						    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
 						    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
 						</sequence>

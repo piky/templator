@@ -19,7 +19,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <documentation>This trigger expression work as follows:
 1. Can be triggered from linkDown trap
 2. Can be triggered if ifOperStatus = 2
-3. TRIGGER.VALUE wrappers and avg(1s), str(x,1s) are used to make sure that only metrics with actual values are used to determine proper  trigger's condition.</documentation>
+3. TRIGGER.VALUE wrappers and avg(1s) are used to make sure that only metrics with actual values are used to determine proper  trigger's condition.</documentation>
 				    <id>if.down</id>
 					<!-- will not expand MACRO in SNMPINDEX inside str function in 3.2, only in 3.4-->
 					<expression>{TRIGGER.VALUE}=0 and ({TEMPLATE_NAME:METRIC.avg(1s)}=2 or
