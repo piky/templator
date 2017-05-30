@@ -183,7 +183,6 @@
                       	</xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element name="httptests"/> <!-- expand later -->
                     <xs:element name="macros">
                       <xs:complexType>
                         <xs:sequence>
