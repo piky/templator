@@ -215,10 +215,8 @@
 						</dependency>
 					</xsl:for-each>                        	                
                          </dependencies>
-				<tags>
-            					<xsl:copy-of copy-namespaces="no" select="./tags/*"/>                        	                
-                         </tags>
-
+				<!--<tags><xsl:copy-of copy-namespaces="no" select="./tags/*"/></tags>   removed tags for now -->
+				<tags/>
 </xsl:template>
 
 
