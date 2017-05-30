@@ -147,8 +147,7 @@
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
-                      					<xs:element type="xs:byte"
-                      						name="lifetime" />
+                      					<xs:element type="xs:int" name="lifetime" />
                       					<xs:element type="xs:string"
                       						name="description" />
                       					<xs:element

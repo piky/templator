@@ -97,8 +97,6 @@
                       					<xs:element type="xs:string"
                       						name="snmpv3_privpassphrase" />
                       					<xs:element type="xs:string"
-                      						name="delay_flex" />
-                      					<xs:element type="xs:string"
                       						name="params" />
                       					<xs:element type="xs:string"
                       						name="ipmi_sensor" />
@@ -147,8 +145,7 @@
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
-                      					<xs:element type="xs:byte"
-                      						name="lifetime" />
+                      					<xs:element type="xs:string" name="lifetime" />
                       					<xs:element type="xs:string"
                       						name="description" />
                       					<xs:element
@@ -335,8 +332,8 @@
                                 <xs:element type="xs:string" name="snmp_oid"/>
                                 <xs:element type="xs:string" name="key"/>
                                 <xs:element type="xs:integer" name="delay"/>
-                                <xs:element type="xs:integer" name="history"/>
-                                <xs:element type="xs:integer" name="trends"/>
+                                <xs:element type="xs:string" name="history"/>
+                                <xs:element type="xs:string" name="trends"/>
                                 <xs:element type="xs:byte" name="status"/>
                                 <xs:element type="xs:byte" name="value_type"/>
                                 <xs:element type="xs:string" name="allowed_hosts"/>
@@ -348,7 +345,6 @@
                                 <xs:element type="xs:string" name="snmpv3_authpassphrase"/>
                                 <xs:element type="xs:string" name="snmpv3_privprotocol"/>
                                 <xs:element type="xs:string" name="snmpv3_privpassphrase"/>
-                                <xs:element type="xs:string" name="delay_flex"/>
                                 <xs:element type="xs:string" name="params"/>
                                 <xs:element type="xs:string" name="ipmi_sensor"/>
                                 <xs:element type="xs:byte" name="authtype"/>

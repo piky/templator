@@ -124,7 +124,7 @@
 	                    <snmpv3_authpassphrase/>
 	                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
 	                    <snmpv3_privpassphrase/>
-	                    <delay_flex/>
+	                    <xsl:if test="$zbx_ver = 3.2"><delay_flex/></xsl:if>
 	                    <params/>
 	                    <ipmi_sensor/>
 	                    <authtype>0</authtype>
@@ -146,8 +146,14 @@
                         </filter>
 						  </xsl:otherwise>
 						</xsl:choose>
-	                    
-	                    <lifetime>30</lifetime>
+	                    <xsl:choose>
+						  <xsl:when test="$zbx_ver = 3.4">
+						    <lifetime>30d</lifetime> <!-- 30days-->
+						  </xsl:when>
+					      <xsl:otherwise>
+							<lifetime>30</lifetime> <!-- in days -->
+						  </xsl:otherwise>
+						</xsl:choose>
 	                    <description><xsl:value-of select="./description"/></description>
 	                    <item_prototypes>
 	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"/>
@@ -257,8 +263,17 @@
 						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
 						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
 	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
-	                    <history><xsl:value-of select="./history"></xsl:value-of></history>
-	                    <trends><xsl:value-of select="./trends"></xsl:value-of></trends>
+						<xsl:choose>
+						  <xsl:when test="$zbx_ver = 3.4"> <!--  in seconds -->
+						    <history><xsl:value-of select="./history"></xsl:value-of>d</history>
+	                    	<trends><xsl:value-of select="./trends"></xsl:value-of>d</trends>
+						  </xsl:when>
+					      <xsl:otherwise> <!--  before 3.4 its in days -->
+							<history><xsl:value-of select="./history"></xsl:value-of></history>
+	                    	<trends><xsl:value-of select="./trends"></xsl:value-of></trends>
+						  </xsl:otherwise>
+						</xsl:choose>
+
 	                    <status>0</status>
 	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
 	                    <allowed_hosts/>
@@ -290,7 +305,7 @@
 							  </xsl:otherwise>
 							</xsl:choose>
 						</xsl:if>
-	                    <delay_flex/>
+	                    <xsl:if test="$zbx_ver = 3.2"><delay_flex/></xsl:if>
 	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
 	                    <ipmi_sensor/>
 	                    <xsl:if test="$zbx_ver = 3.2"><data_type>0</data_type></xsl:if>
