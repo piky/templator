@@ -21,7 +21,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>High CPU utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
-	                <url />
+	                <url/>
 	                <priority>3</priority>
 	                <description />
 	                <tags>
