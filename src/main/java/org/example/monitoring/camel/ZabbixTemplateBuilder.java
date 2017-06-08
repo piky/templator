@@ -77,29 +77,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.to("validator:templates/zabbix_export_3.2.xsd")
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
-	    .end()
-		
-	    
-		
-		.to("direct:local_tmon");
-		
-	
-		//local only
-		from("direct:local_tmon")
-			.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
-			.setBody(body().regexReplaceAll("<delay>([0-9]+)</delay>", "<delay>90</delay>")) //replace delay
-			.choice()
-			    .when(header("zbx_ver").isEqualTo("3.4"))
-			    	.setHeader("CamelOverruleFileName",
-						simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-			    .when(header("zbx_ver").isEqualTo("3.2"))
-				.setHeader("CamelOverruleFileName",
-						simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}_${in.headers.zbx_ver}.xml"))
-				.otherwise()
-				    .log("Unknown zbx_ver provided")
-			    .end()
-			
-
-			.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack/");
+	    .end();
   } 
 }
