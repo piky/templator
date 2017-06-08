@@ -26,3 +26,7 @@ src/data/result_step1/template_ibm_imm.xml
 src/data/result_step1/template_hp_ilo.xml
 src/data/result_step1/
 examples/
+.settings/
+.transformations/
+.project
+.classpath
