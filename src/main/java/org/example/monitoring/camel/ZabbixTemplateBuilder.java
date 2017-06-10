@@ -102,4 +102,4 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 			.to("file:C:/Temp/repos/tmon_deploy/zabbix/zbx_template_pack/");
   } 
-}}
+}
