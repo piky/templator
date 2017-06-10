@@ -9,8 +9,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
   @Override
   public void configure() throws Exception {
     from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
-    .log("Loading file: ${in.headers.CamelFileNameOnly}")
-    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
+	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
+	    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
     
     from("direct:zbx3.2")
     		//.filter().xpath("//node()[@zbx_ver = 3.4]") //if there are nodes with zbx_ver flags

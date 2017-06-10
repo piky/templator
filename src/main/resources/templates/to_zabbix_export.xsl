@@ -139,12 +139,12 @@
 						    <xsl:copy-of copy-namespaces="no" select="./filter[name()!='xmlns:tns']"/>
 						  </xsl:when>
 					    <xsl:otherwise>
-					    <filter>
-				            <evaltype>0</evaltype>
-	                        <formula/>
-	                        <conditions/>
-                        </filter>
-						  </xsl:otherwise>
+						    <filter>
+					            <evaltype>0</evaltype>
+		                        <formula/>
+		                        <conditions/>
+	                        </filter>
+						</xsl:otherwise>
 						</xsl:choose>
 	                    <xsl:choose>
 						  <xsl:when test="$zbx_ver = 3.4">
