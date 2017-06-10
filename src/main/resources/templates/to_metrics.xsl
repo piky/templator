@@ -337,8 +337,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- fill with colors -->
  <xsl:variable name="graph_colors">
    <entry>1A7C11</entry>
-   <entry>F63100</entry>
    <entry>2774A4</entry>
+   <entry>F63100</entry>
    
    <entry>A54F10</entry>
    <entry>FC6EA3</entry>

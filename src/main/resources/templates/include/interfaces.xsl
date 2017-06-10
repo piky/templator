@@ -64,6 +64,21 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
 			<triggers/>
+			<graphs>
+				<graph>
+					<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>traffic</name>
+					<graphItems>
+						<item>
+							<drawtype>gradient</drawtype>
+							<name>net.if.in</name>
+						</item>
+						<item>
+							<drawtype>bold_line</drawtype>
+							<name>net.if.out</name>
+						</item>
+					</graphItems>
+				</graph>
+			</graphs>
 		</metric>
     </xsl:variable>
 				
