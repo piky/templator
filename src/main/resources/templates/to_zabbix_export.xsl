@@ -9,11 +9,13 @@
 <xsl:variable name="snmp_port">161</xsl:variable>
 <xsl:param name="discoveryDelay">3600</xsl:param>
 
- <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
-   <entry key="regex">5</entry>
-   <entry key="multiplier">1</entry>
-   <entry key="delta_per_second">10</entry> <!-- delta per second -->
- </xsl:variable>
+<xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
+  <entry key="regex">5</entry>
+  <entry key="multiplier">1</entry>
+  <entry key="delta_per_second">10</entry> <!-- delta per second -->
+</xsl:variable>
+
+
 
 
  <xsl:variable name="item_type"> <!-- zabbix item types, replace with zabbix ints -->

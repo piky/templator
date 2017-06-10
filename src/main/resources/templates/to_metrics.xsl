@@ -287,8 +287,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<xsl:for-each select="$metric/triggers/*">
 	    			<xsl:call-template name="defaultTriggerBlock">
-						<xsl:with-param name="trigger" select="." />
-						<xsl:with-param name="metricKey" select="$metricKey" />
+						<xsl:with-param name="trigger" select="."/>
+						<xsl:with-param name="metricKey" select="$metricKey"/>
 		    		</xsl:call-template>            
 				</xsl:for-each> 
 				
