@@ -58,7 +58,7 @@
 				 <xsl:apply-templates select="child::*/template"></xsl:apply-templates>  
 		</templates>
 		<graphs>
-			<xsl:copy-of copy-namespaces="no" select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
+			<xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
 		</graphs>
 		<triggers>
 				<xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
@@ -162,7 +162,7 @@
 	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/>
 	                    </trigger_prototypes>
 	                    <graph_prototypes>
-	                    	<xsl:copy-of copy-namespaces="no" select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>
+	                    	<xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>
 	                    </graph_prototypes>
 	                    <host_prototypes/>
                 	</discovery_rule>
@@ -232,6 +232,45 @@
      						<trigger_prototype>
 								<xsl:call-template name="triggerTemplate"/>
 							</trigger_prototype>
+        </xsl:otherwise>
+        </xsl:choose>
+</xsl:template>
+
+<xsl:template name="graphTemplate">
+		     <xsl:copy-of copy-namespaces="no" select="name"/>
+		     <xsl:copy-of copy-namespaces="no" select="width"/>
+		     <xsl:copy-of copy-namespaces="no" select="height"/>
+		     <xsl:copy-of copy-namespaces="no" select="yaxismin"/>
+		     <xsl:copy-of copy-namespaces="no" select="yaxismax"/>
+		     <xsl:copy-of copy-namespaces="no" select="show_work_period"/>
+
+		     <xsl:copy-of copy-namespaces="no" select="show_triggers"/>
+		     <xsl:copy-of copy-namespaces="no" select="type"/>
+		     <xsl:copy-of copy-namespaces="no" select="show_legend"/>
+		     <xsl:copy-of copy-namespaces="no" select="show_3d"/>
+		     <xsl:copy-of copy-namespaces="no" select="percent_left"/>
+		     <xsl:copy-of copy-namespaces="no" select="percent_right"/>
+
+		     <xsl:copy-of copy-namespaces="no" select="ymin_type_1"/>
+		     <xsl:copy-of copy-namespaces="no" select="ymax_type_1"/>
+		     <xsl:copy-of copy-namespaces="no" select="ymin_item_1"/>
+		     <xsl:copy-of copy-namespaces="no" select="ymax_item_1"/>
+		     <xsl:copy-of copy-namespaces="no" select="graph_items"/>
+
+</xsl:template>
+
+<xsl:template match="metrics/*/graphs/graph">
+
+		<xsl:choose>
+        	<xsl:when test="../../.[not (discoveryRule)]">
+							<graph>
+								<xsl:call-template name="graphTemplate"/>
+							</graph>
+			</xsl:when>
+        <xsl:otherwise>
+     						<graph_prototype>
+								<xsl:call-template name="graphTemplate"/>
+							</graph_prototype>
         </xsl:otherwise>
         </xsl:choose>
 </xsl:template>

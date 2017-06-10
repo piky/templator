@@ -30,6 +30,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER and generator ver
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
+	    .to("xslt:templates/to_metrics_update_graph_items.xsl?saxon=true")
 	    .to("file:bin/merged")
 	    .to("validator:templates/metrics.xsd")
 		.multicast().parallelProcessing().to("direct:RU", "direct:EN");

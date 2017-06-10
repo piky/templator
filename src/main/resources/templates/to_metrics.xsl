@@ -297,9 +297,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:if test="$metric/graphs/graph">
 			<graphs>
 				<xsl:for-each select="$metric/graphs/*">
-						<xsl:copy-of select="."/>       
+					<xsl:call-template name="defaultGraphBlock">
+						<xsl:with-param name="graph" select="."/>
+						<xsl:with-param name="metric" select="$metric"/>
+		    		</xsl:call-template>         
 				</xsl:for-each> 
-				
 			</graphs>
 		</xsl:if>
 		
@@ -332,27 +334,50 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 </xsl:template>
 
 
+<!-- fill with colors -->
+ <xsl:variable name="graph_colors">
+   <entry>1A7C11</entry>
+   <entry>F63100</entry>
+   <entry>2774A4</entry>
+   
+   <entry>A54F10</entry>
+   <entry>FC6EA3</entry>
+   <entry>6C59DC</entry>
+   
+   <entry>AC8C14</entry>
+   <entry>611F27</entry>
+   <entry>F230E0</entry>
+ </xsl:variable>
+
+
 <!-- This block describes basic graph structure. Call it for each graph needed-->
 <xsl:template name="defaultGraphBlock">
 		<xsl:param name="graph"/>
+		<xsl:param name="metric"/>
+		<graph>
 			<xsl:copy-of select="$graph/name"/>
             <width>900</width>
             <height>200</height>
          	<xsl:choose>
 				<xsl:when test="$graph/yaxismin">
 					<xsl:copy-of select="$graph/yaxismin"/>
+					<ymin_type_1>1</ymin_type_1>
 				</xsl:when>
 				<xsl:otherwise>
 					<yaxismin>0</yaxismin>
+					<ymin_type_1>0</ymin_type_1>
 				</xsl:otherwise>
 			</xsl:choose>
+			<!-- type_1: 1 - fixed, 0- calculated, 2- item -->
 			
 			<xsl:choose>
 				<xsl:when test="$graph/yaxismax">
 					<xsl:copy-of select="$graph/yaxismax"/>
+					<ymax_type_1>1</ymax_type_1>
 				</xsl:when>
 				<xsl:otherwise>
-					<yaxismin>100</yaxismin>
+					<yaxismax>100</yaxismax>
+					<ymax_type_1>0</ymax_type_1>
 				</xsl:otherwise>
 			</xsl:choose>  
 			
@@ -363,37 +388,35 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
             <show_3d>0</show_3d>
             <percent_left>0.0000</percent_left>
             <percent_right>0.0000</percent_right>
-            <ymin_type_1>0</ymin_type_1> <!-- type_1: 0 fixed, 1- calculated, 2- item -->
-            <ymax_type_1>0</ymax_type_1>
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
             <graph_items>
-                <graph_item>
-                    <sortorder>0</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>1A7C11</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>Template Cisco IOS Software releases 12.2_3.5_ or later SNMPv2</host>
-                        <key>sysUpTime</key>
-                    </item>
-                </graph_item>
-                <graph_item>
-                    <sortorder>1</sortorder>
-                    <drawtype>0</drawtype>
-                    <color>F63100</color>
-                    <yaxisside>0</yaxisside>
-                    <calc_fnc>2</calc_fnc>
-                    <type>0</type>
-                    <item>
-                        <host>Template Cisco IOS Software releases 12.2_3.5_ or later SNMPv2</host>
-                        <key>icmppingsec</key>
-                    </item>
-                </graph_item>
-            </graph_items>
+                <xsl:for-each select="$graph/graphItems/item">
+	                <graph_item>
+	                	<xsl:variable name="index" select="position()"/>
+	                    <sortorder><xsl:value-of select="position()-1"/></sortorder>
+	                 	<xsl:choose>
+							<xsl:when test="./drawtype">
+								<xsl:copy-of select="./drawtype"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<drawtype>line</drawtype>
+							</xsl:otherwise>
+						</xsl:choose>  
+	                    <color><xsl:value-of select="$graph_colors/entry[$index]"/></color>
+	                    <yaxisside>0</yaxisside>
+	                  	<calc_fnc>2</calc_fnc>
+	                    <type>0</type> 
 
+	                    <item>
+	                        <host>TEMPLATE_NAME</host> <!-- special placeholder-->
+	                        <key><xsl:value-of select="./name"/></key>
+	                        <!-- <discoveryRule><xsl:value-of select="$metric/discoveryRule"/></discoveryRule> -->
+	                    </item>
+                	</graph_item>
+                </xsl:for-each>
+            </graph_items>
+		</graph>
 </xsl:template>
 
  
