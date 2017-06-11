@@ -72,7 +72,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </Fault>
         <General>
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
+        	
         </General>
+        <Interfaces>
+        	<IFCONTROL><value>1</value></IFCONTROL>
+        </Interfaces>
         <ICMP>
         	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
         	<ICMP_RESPONSE_TIME_WARN><value>0.15</value></ICMP_RESPONSE_TIME_WARN>
