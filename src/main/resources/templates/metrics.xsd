@@ -413,6 +413,8 @@
         <enumeration value="ICMP"/>
         
         <enumeration value="Interfaces"/>
+        <enumeration value="HOST-RESOURCES-MIB"/>
+        
     </restriction>
 </simpleType>
 
