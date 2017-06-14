@@ -192,122 +192,129 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- This block describes basic metric structure. Call it from each metric below-->
 <xsl:template name="defaultMetricBlock">
 		<xsl:param name="metric"/>
-		<xsl:variable name="metricKey">
 		<xsl:choose>
-			<xsl:when test="$metric/zabbixKey"><xsl:value-of select="$metric/zabbixKey"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
-		</xsl:choose>
-		</xsl:variable>
-		<documentation><xsl:value-of select="documentation" /></documentation>
-		<xsl:copy-of select="$metric/name"></xsl:copy-of>
-		<xsl:copy-of select="$metric/group"></xsl:copy-of>
-
-		
-		
-			<xsl:choose>
-				<xsl:when test="itemType">
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="itemType"/>
-				</xsl:when>
-				<xsl:when test="$metric/expressionFormula">
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
-					<itemType>calculated</itemType>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:copy-of select="oid"/>
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="mib"/>
-					<itemType>snmp</itemType>
-				</xsl:otherwise>
-			</xsl:choose>
-		
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<xsl:copy-of select="$metric/description"></xsl:copy-of>
-		<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
-		<xsl:choose>
-			<xsl:when test="$metric/inventory_link and not(discoveryRule)">
-				<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
+			<xsl:when test="imported=true()"> <!-- means imported -->
+				<xsl:copy-of select="child::node()"/>
 			</xsl:when>
-		</xsl:choose>
+			<xsl:otherwise> 
+				<xsl:variable name="metricKey">
+				<xsl:choose>
+					<xsl:when test="$metric/zabbixKey"><xsl:value-of select="$metric/zabbixKey"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
+				</xsl:choose>
+				</xsl:variable>
+				<documentation><xsl:value-of select="documentation" /></documentation>
+				<xsl:copy-of select="$metric/name"></xsl:copy-of>
+				<xsl:copy-of select="$metric/group"></xsl:copy-of>
 		
-		
-		
-
-		<xsl:choose>
-			<xsl:when test="$metric/history">
-				<xsl:copy-of select="$metric/history"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<history><xsl:copy-of select="$historyDefault"/></history>
-			</xsl:otherwise>
-		</xsl:choose>
-		
-		<xsl:choose>
-			<xsl:when test="$metric/trends">
-				<xsl:copy-of select="$metric/trends"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<trends><xsl:copy-of select="$trendsDefault"/></trends>
-			</xsl:otherwise>
-		</xsl:choose>
-		
-		<xsl:copy-of select="$metric/units"></xsl:copy-of>
-		
-		<xsl:choose>
-			<xsl:when test="$metric/update">
-				<xsl:copy-of select="$metric/update"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<update><xsl:copy-of select="$updateDefault" /></update>
-			</xsl:otherwise>
-		</xsl:choose> 
-		
-		<xsl:choose>
-			<xsl:when test="$metric/valueType">
-				<xsl:copy-of select="$metric/valueType"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<valueType><xsl:copy-of select="$valueType" /></valueType>
-			</xsl:otherwise>
-		</xsl:choose> 
-		
-		
-		<valueMap><xsl:value-of select="valueMap" /></valueMap>
-		<multiplier><xsl:value-of select="multiplier" /></multiplier>
-		
-		<xsl:choose>
-			<xsl:when test="preprocessing">
-				<xsl:copy-of select="preprocessing"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<preprocessing/> <!-- 3.4 -->
-			</xsl:otherwise>
-		</xsl:choose>
-		<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<xsl:if test="$metric/triggers/trigger">
-			<triggers>
-				<xsl:for-each select="$metric/triggers/*">
-	    			<xsl:call-template name="defaultTriggerBlock">
-						<xsl:with-param name="trigger" select="."/>
-						<xsl:with-param name="metricKey" select="$metricKey"/>
-		    		</xsl:call-template>            
-				</xsl:for-each> 
 				
-			</triggers>
-		</xsl:if>
-		<xsl:if test="$metric/graphs/graph">
-			<graphs>
-				<xsl:for-each select="$metric/graphs/*">
-					<xsl:call-template name="defaultGraphBlock">
-						<xsl:with-param name="graph" select="."/>
-						<xsl:with-param name="metric" select="$metric"/>
-		    		</xsl:call-template>         
-				</xsl:for-each> 
-			</graphs>
-		</xsl:if>
+				
+					<xsl:choose>
+						<xsl:when test="itemType">
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="itemType"/>
+						</xsl:when>
+						<xsl:when test="$metric/expressionFormula">
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
+							<itemType>calculated</itemType>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="oid"/>
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="mib"/>
+							<itemType>snmp</itemType>
+						</xsl:otherwise>
+					</xsl:choose>
+				
+				<xsl:copy-of select="ref"></xsl:copy-of>
+				<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+				<xsl:copy-of select="$metric/description"></xsl:copy-of>
+				<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
+				<xsl:choose>
+					<xsl:when test="$metric/inventory_link and not(discoveryRule)">
+						<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
+					</xsl:when>
+				</xsl:choose>
+				
+				
+				
+		
+				<xsl:choose>
+					<xsl:when test="$metric/history">
+						<xsl:copy-of select="$metric/history"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<history><xsl:copy-of select="$historyDefault"/></history>
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:choose>
+					<xsl:when test="$metric/trends">
+						<xsl:copy-of select="$metric/trends"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<trends><xsl:copy-of select="$trendsDefault"/></trends>
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:copy-of select="$metric/units"></xsl:copy-of>
+				
+				<xsl:choose>
+					<xsl:when test="$metric/update">
+						<xsl:copy-of select="$metric/update"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<update><xsl:copy-of select="$updateDefault" /></update>
+					</xsl:otherwise>
+				</xsl:choose> 
+				
+				<xsl:choose>
+					<xsl:when test="$metric/valueType">
+						<xsl:copy-of select="$metric/valueType"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<valueType><xsl:copy-of select="$valueType" /></valueType>
+					</xsl:otherwise>
+				</xsl:choose> 
+				
+				
+				<valueMap><xsl:value-of select="valueMap" /></valueMap>
+				<multiplier><xsl:value-of select="multiplier" /></multiplier>
+				
+				<xsl:choose>
+					<xsl:when test="preprocessing">
+						<xsl:copy-of select="preprocessing"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<preprocessing/> <!-- 3.4 -->
+					</xsl:otherwise>
+				</xsl:choose>
+				<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
+				<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+				<xsl:if test="$metric/triggers/trigger">
+					<triggers>
+						<xsl:for-each select="$metric/triggers/*">
+			    			<xsl:call-template name="defaultTriggerBlock">
+								<xsl:with-param name="trigger" select="."/>
+								<xsl:with-param name="metricKey" select="$metricKey"/>
+				    		</xsl:call-template>            
+						</xsl:for-each> 
+						
+					</triggers>
+				</xsl:if>
+				<xsl:if test="$metric/graphs/graph">
+					<graphs>
+						<xsl:for-each select="$metric/graphs/*">
+							<xsl:call-template name="defaultGraphBlock">
+								<xsl:with-param name="graph" select="."/>
+								<xsl:with-param name="metric" select="$metric"/>
+				    		</xsl:call-template>         
+						</xsl:for-each> 
+					</graphs>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 		
 		<!-- <xsl:copy-of select="$metric/triggers"></xsl:copy-of> -->
 
