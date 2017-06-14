@@ -250,6 +250,14 @@
 					<element name="vendorDocumentation" type="string" maxOccurs="1" minOccurs="0"/>
 					<choice>
 						<sequence>
+							
+							<element name="imported" type="boolean" maxOccurs="1" minOccurs="1">
+								<annotation>
+									<documentation>mark metrics that are to be included</documentation>
+								</annotation>
+							</element>
+						</sequence>
+						<sequence>
 							<element name="oid" type="string" maxOccurs="1" minOccurs="1">
 								<annotation>
 									<documentation>SNMP oid</documentation>

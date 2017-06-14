@@ -33,6 +33,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    .to("xslt:templates/to_metrics_update_graph_items.xsl?saxon=true")
 	    .to("file:bin/merged")
 	    .to("validator:templates/metrics.xsd")
+	    .to("xslt:templates/to_metrics_strip_imported_metrics.xsl?saxon=true")
 		.multicast().parallelProcessing().to("direct:RU", "direct:EN");
   
     from("direct:RU")
