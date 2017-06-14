@@ -414,6 +414,16 @@
         
         <enumeration value="Interfaces"/>
         <enumeration value="HOST-RESOURCES-MIB"/>
+        <enumeration value="ENTITY-SENSORS-MIB"/>
+        <enumeration value="ENTITY-MIB"/>
+        
+        <enumeration value="Network"/>
+        <enumeration value="Server"/>
+        <enumeration value="OS"/>
+        
+        <enumeration value="SNMP Device"/>
+        
+        
         
     </restriction>
 </simpleType>

@@ -168,7 +168,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<!-- temp include -->
 							
 					</xsl:when>
-					<xsl:when test="$template_class = 'Inventory'">
+					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
 				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
 							</template>
