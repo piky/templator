@@ -430,6 +430,9 @@
         <enumeration value="OS"/>
         
         <enumeration value="SNMP Device"/>
+        <enumeration value="SNMPv1"/>
+        <enumeration value="SNMPv2"/>
+        <enumeration value="SNMPv3"/>
         
         
         

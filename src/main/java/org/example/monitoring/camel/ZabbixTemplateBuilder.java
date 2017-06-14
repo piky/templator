@@ -49,6 +49,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
     from("direct:snmpv1")
+    	 .filter().xpath("//classes[class='SNMPv1']")
     	.setHeader("snmp_item_type", simple("1", String.class))
     	.setHeader("template_suffix", simple("SNMPv1", String.class))
     	.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
@@ -56,6 +57,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     
     
     from("direct:snmpv2")
+    	.filter().xpath("//classes[class='SNMPv2']")	
 	    .setHeader("snmp_item_type", simple("4", String.class))
 	    .setHeader("template_suffix", simple("SNMPv2", String.class))
 		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
