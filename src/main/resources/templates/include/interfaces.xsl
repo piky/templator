@@ -11,7 +11,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifOperStatus</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
-			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<triggers>
@@ -66,7 +66,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifOctetsIn</name>
 			<group>Interfaces</group>
-			<history><xsl:copy-of select="$history7days"/></history>
+			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
@@ -84,6 +84,14 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 							<drawtype>bold_line</drawtype>
 							<name>net.if.out</name>
 						</item>
+						<item>
+							<drawtype>line</drawtype>
+							<name>net.if.out.errors</name>
+						</item>
+						<item>
+							<drawtype>bold_line</drawtype>
+							<name>net.if.in.errors</name>
+						</item>						
 					</graphItems>
 				</graph>
 			</graphs>
@@ -103,7 +111,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifOctetsOut</name>
 			<group>Interfaces</group>
-			<history><xsl:copy-of select="$history7days"/></history>
+			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
@@ -127,7 +135,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
-			<update><xsl:copy-of select="$update1min"/></update>
+			<update><xsl:copy-of select="$update5min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<triggers/>
 		</metric>
@@ -147,7 +155,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
-			<update><xsl:copy-of select="$update1min"/></update>
+			<update><xsl:copy-of select="$update5min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<triggers/>
 		</metric>
@@ -181,6 +189,90 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
     </xsl:copy>
+</xsl:template>
+
+
+
+<xsl:template match="template/metrics/net.if.in.discards">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifDiscardsIn</name>
+			<group>Interfaces</group>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<update><xsl:copy-of select="$update5min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers/>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+<xsl:template match="template/metrics/net.if.out.discards">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifDiscardsOut</name>
+			<group>Interfaces</group>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trendsDefault"/></trends>
+			<update><xsl:copy-of select="$update5min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers/>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+
+<xsl:template match="template/metrics/net.if.speed">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifSpeed</name>
+			<group>Interfaces</group>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1hour"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<units>bps</units>
+			<triggers/>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+<xsl:template match="template/metrics/net.if.type">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifType</name>
+			<group>Interfaces</group>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1hour"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers/>
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
 </xsl:template>
 
 

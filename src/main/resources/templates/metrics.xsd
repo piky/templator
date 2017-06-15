@@ -163,7 +163,13 @@
 				    				<element name="net.if.out" type="tns:metricType"/>
 				    				<element name="net.if.in.errors" type="tns:metricType"/>
 				    				<element name="net.if.out.errors" type="tns:metricType"/>
-				    				<element name="net.if.traps" type="tns:metricType"/>	
+				    				<element name="net.if.traps" type="tns:metricType"/>
+				    				<choice maxOccurs="unbounded">
+				    					<element name="net.if.in.discards" type="tns:metricType"/>
+				    					<element name="net.if.out.discards" type="tns:metricType"/>
+				    				    <element name="net.if.speed" type="tns:metricType"/>
+				    					<element name="net.if.type" type="tns:metricType"/>
+				    				</choice>
 		    				</sequence>
 	    				</choice>
     			</complexType>
