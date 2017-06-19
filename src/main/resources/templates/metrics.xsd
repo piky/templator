@@ -427,9 +427,13 @@
         <enumeration value="ICMP"/>
         
         <enumeration value="Interfaces"/>
+        <enumeration value="Interfaces Simple"/>
+        
         <enumeration value="HOST-RESOURCES-MIB"/>
         <enumeration value="ENTITY-SENSORS-MIB"/>
         <enumeration value="ENTITY-MIB"/>
+        <enumeration value="IF-MIB"/>
+        <enumeration value="IF-MIB_Simple"/>
         
         <enumeration value="Network"/>
         <enumeration value="Server"/>

@@ -74,9 +74,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
         	
         </General>
-        <Interfaces>
+        <IF-MIB>
         	<IFCONTROL><value>1</value></IFCONTROL>
-        </Interfaces>
+        </IF-MIB>
+        <IF-MIB_Simple>
+        	<IFCONTROL><value>1</value></IFCONTROL>
+        </IF-MIB_Simple>
         <ICMP>
         	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
         	<ICMP_RESPONSE_TIME_WARN><value>0.15</value></ICMP_RESPONSE_TIME_WARN>
@@ -159,14 +162,23 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		     		<xsl:variable name="template_class" select="."/>
 	   			<xsl:choose>
 					<xsl:when test="$template_class = 'Performance'">
-							<!-- monitor.virton specific
-							<template>
-				        		<name>Template Interfaces vZbx3_SNMP_PLACEHOLDER</name>
-							</template>  -->
+
 					</xsl:when>
 					 <xsl:when test="$template_class = 'Fault'">
 							<!-- temp include -->
 							
+					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces'">
+							<template>
+				        		<name>Template SNMP Interfaces_SNMP_PLACEHOLDER</name>
+							</template>
+							
+					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces Simple'">
+							
+							<template>
+				        		<name>Template SNMP Interfaces Simple_SNMP_PLACEHOLDER</name>
+							</template>
 					</xsl:when>
 					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
