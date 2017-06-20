@@ -85,6 +85,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
         	<ICMP_RESPONSE_TIME_WARN><value>0.15</value></ICMP_RESPONSE_TIME_WARN>
         </ICMP>
+        <SNMPv1>
+        	<SNMP_PORT><value>161</value></SNMP_PORT>
+        </SNMPv1>
+        <SNMPv2>
+        	<SNMP_PORT><value>161</value></SNMP_PORT>
+        </SNMPv2>
     </xsl:variable>
 
 <xsl:variable name="nowEN">now: {ITEM.LASTVALUE1}</xsl:variable>

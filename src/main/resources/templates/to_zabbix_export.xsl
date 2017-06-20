@@ -6,7 +6,7 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:param name="zbx_ver" select="3.2"/>
-<xsl:variable name="snmp_port">161</xsl:variable>
+<xsl:variable name="snmp_port">{$SNMP_PORT}</xsl:variable>
 <xsl:param name="discoveryDelay">3600</xsl:param>
 
 <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
@@ -134,7 +134,7 @@
 	                    <password/>
 	                    <publickey/>
 	                    <privatekey/>
-	                    <port>161</port>
+	                    <port><xsl:value-of select="$snmp_port"/></port>
 	                    
                     	<xsl:choose>
 						  <xsl:when test="./filter != ''">
