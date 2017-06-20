@@ -76,6 +76,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </General>
         <IF-MIB>
         	<IFCONTROL><value>1</value></IFCONTROL>
+        	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
         </IF-MIB>
         <IF-MIB_Simple>
         	<IFCONTROL><value>1</value></IFCONTROL>

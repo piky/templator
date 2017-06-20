@@ -71,7 +71,35 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
-			<triggers/>
+			<triggers>
+				<trigger>
+				    <documentation>
+</documentation>
+				    <id>if.high_usage</id>
+					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*IFSPEED
+					{$IF_UTIL_MAX:"{#IFNAME}"}=1 and ({TRIGGER.VALUE}=0 and (
+({TEMPLATE_NAME:METRIC.avg(1s)}=2 and {TEMPLATE_NAME:METRIC.diff()}=1) or
+({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
+{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.3",1s)}=1)))</expression>
+					<recovery_expression>{$IFCONTROL:"{#IFNAME}"}=0 or ({TRIGGER.VALUE}=1 and (
+{TEMPLATE_NAME:METRIC.avg(1s)}=1 or
+({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
+{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.4",1s)}=1)))</recovery_expression>
+					<manual_close>0</manual_close>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> high bandwidth</name>
+	                <name lang="RU"><xsl:value-of select="alarmObject"/> загружен</name>
+	                <url/>
+	                <priority>3</priority>
+	                <description lang="EN"></description>
+	                <description lang="RU"></description>
+              	    <tags>
+	                	<tag>
+			 				<tag>Alarm.type</tag>
+			                <value>LINK_DOWN</value>
+						</tag>
+					</tags>
+				</trigger>
+			</triggers>			
 			<graphs>
 				<graph>
 					<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>traffic</name>
