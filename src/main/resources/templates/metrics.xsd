@@ -534,7 +534,7 @@
 	    							<element name="sortorder" type="byte"/>
 	    							<element name="drawtype" type="byte"/>
 	    							<element name="color" type="string"/>
-	    							<element name="yaxisside" type="byte"/>
+	    							<element name="yaxisside" type="string"/>
 	    							<element name="calc_fnc" type="byte"/>
 	    							<element name="type" type="byte"/>
 			    					<element name="item" minOccurs="1" maxOccurs="unbounded">

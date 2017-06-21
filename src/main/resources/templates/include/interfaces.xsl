@@ -107,19 +107,33 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 						<item>
 							<drawtype>gradient</drawtype>
 							<name>net.if.in</name>
+							<yaxisside>left</yaxisside>
 						</item>
 						<item>
 							<drawtype>bold_line</drawtype>
 							<name>net.if.out</name>
+							<yaxisside>left</yaxisside>
 						</item>
 						<item>
 							<drawtype>line</drawtype>
 							<name>net.if.out.errors</name>
+							<yaxisside>right</yaxisside>
 						</item>
 						<item>
-							<drawtype>bold_line</drawtype>
+							<drawtype>line</drawtype>
 							<name>net.if.in.errors</name>
-						</item>						
+							<yaxisside>right</yaxisside>
+						</item>
+						<item>
+							<drawtype>line</drawtype>
+							<name>net.if.out.discards</name>
+							<yaxisside>right</yaxisside>
+						</item>
+						<item>
+							<drawtype>line</drawtype>
+							<name>net.if.in.discards</name>
+							<yaxisside>right</yaxisside>
+						</item>
 					</graphItems>
 				</graph>
 			</graphs>

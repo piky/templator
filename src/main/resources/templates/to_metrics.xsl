@@ -440,7 +440,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							</xsl:otherwise>
 						</xsl:choose>  
 	                    <color><xsl:value-of select="$graph_colors/entry[$index]"/></color>
-	                    <yaxisside>0</yaxisside>
+	                 	<xsl:choose>
+							<xsl:when test="./yaxisside">
+								<xsl:copy-of select="./yaxisside"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<yaxisside>left</yaxisside>
+							</xsl:otherwise>
+						</xsl:choose>				                    
 	                  	<calc_fnc>2</calc_fnc>
 	                    <type>0</type> 
 

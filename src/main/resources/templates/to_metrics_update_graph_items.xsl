@@ -12,6 +12,11 @@
   <entry key="gradient">5</entry>  
 </xsl:variable>
 
+<xsl:variable name="graph_yaxisside"> <!-- preprocessing step types, replace with zabbix ints -->
+  <entry key="left">0</entry>
+  <entry key="right">1</entry>
+</xsl:variable>
+
 <xsl:template match="node()|@*">
    <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -26,12 +31,24 @@
 	</xsl:copy>
 </xsl:template>
 
+<xsl:template match="//graph_item/yaxisside">
+	<xsl:variable name="yaxisside" select="."></xsl:variable>
+	<xsl:copy>
+		<xsl:value-of select="$graph_yaxisside/entry[@key=$yaxisside]"/>
+	</xsl:copy>
+</xsl:template>
+
 
 <xsl:template match="//graph_item/item/key">
 	<xsl:variable name="key" select="."/>
-	<xsl:copy>
-		<xsl:value-of select="ancestor::template/metrics/*[name()=$key]/snmpObject"/>
-	</xsl:copy>
+	<xsl:choose>
+		<xsl:when test="ancestor::template/metrics/*[name()=$key]/snmpObject">
+			<xsl:copy>
+				<xsl:value-of select="ancestor::template/metrics/*[name()=$key]/snmpObject"/>
+			</xsl:copy>
+		</xsl:when>
+		<xsl:otherwise><xsl:message>Please check key used for graph</xsl:message></xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="//graph_item/item/host">
