@@ -62,6 +62,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 </xsl:template>
 
 <xsl:template match="template/metrics/net.if.in">
+	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifOctetsIn</name>
@@ -72,33 +73,37 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
 			<triggers>
-				<trigger>
-				    <documentation>
-</documentation>
-				    <id>if.high_usage</id>
-					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*IFSPEED
-					{$IF_UTIL_MAX:"{#IFNAME}"}=1 and ({TRIGGER.VALUE}=0 and (
-({TEMPLATE_NAME:METRIC.avg(1s)}=2 and {TEMPLATE_NAME:METRIC.diff()}=1) or
-({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
-{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.3",1s)}=1)))</expression>
-					<recovery_expression>{$IFCONTROL:"{#IFNAME}"}=0 or ({TRIGGER.VALUE}=1 and (
-{TEMPLATE_NAME:METRIC.avg(1s)}=1 or
-({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
-{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.4",1s)}=1)))</recovery_expression>
-					<manual_close>0</manual_close>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> high bandwidth</name>
-	                <name lang="RU"><xsl:value-of select="alarmObject"/> загружен</name>
-	                <url/>
-	                <priority>3</priority>
-	                <description lang="EN"></description>
-	                <description lang="RU"></description>
-              	    <tags>
-	                	<tag>
-			 				<tag>Alarm.type</tag>
-			                <value>LINK_DOWN</value>
-						</tag>
-					</tags>
-				</trigger>
+				<xsl:choose>
+					<xsl:when test="(ancestor::metrics/net.if.speed[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.speed[not(discoveryRule)] and not(discoveryRule)))
+					and (ancestor::metrics/net.if.out[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.out[not(discoveryRule)] and not(discoveryRule)))">
+					<xsl:variable name="speedMetricKey"><xsl:value-of select="ancestor::metrics/net.if.speed/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.speed/snmpObject"/>]</xsl:variable>
+					<xsl:variable name="outMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out/snmpObject"/>]</xsl:variable>
+					<trigger>
+					    <documentation/>
+					    <id>if.util_high</id>
+						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
+{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
+						<recovery_expression/>
+						<manual_close>1</manual_close>
+		                <name lang="EN"><xsl:value-of select="alarmObject"/> high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="RU"><xsl:value-of select="alarmObject"/> сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <url/>
+		                <priority>2</priority>
+		                <description lang="EN"></description>
+		                <description lang="RU"></description>
+		               	<dependsOn>
+	                		<dependency>if.down</dependency>
+	               		</dependsOn>
+	              	    <tags>
+		                	<tag>
+				 				<tag>Alarm.type</tag>
+				                <value>IF_UTIL_HIGH</value>
+							</tag>
+						</tags>
+					</trigger>
+					</xsl:when>
+					<xsl:otherwise><xsl:message terminate="yes">Please check net.if.speed and net.if.out</xsl:message></xsl:otherwise>
+				</xsl:choose>
 			</triggers>			
 			<graphs>
 				<graph>
@@ -149,6 +154,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 
 
 <xsl:template match="template/metrics/net.if.out">
+	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifOctetsOut</name>
@@ -158,7 +164,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
-			<triggers/>
+			<triggers/>		
 		</metric>
     </xsl:variable>
 				
@@ -171,6 +177,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 
 
 <xsl:template match="template/metrics/net.if.in.errors">
+	<xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifErrorsIn</name>
@@ -179,7 +186,38 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
-			<triggers/>
+			<triggers>
+				<xsl:choose>
+					<xsl:when test="ancestor::metrics/net.if.out.errors[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.out.errors[not(discoveryRule)] and not(discoveryRule))">
+						<xsl:variable name="outErrorsMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out.errors/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out.errors/snmpObject"/>]</xsl:variable>
+						<trigger>
+						<documentation/>
+					    <id>if.out.errors</id>
+						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}
+or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}</expression>
+						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
+and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2</recovery_expression>
+						<manual_close>1</manual_close>
+		                <name lang="EN"><xsl:value-of select="alarmObject"/> high error rate</name>
+		                <name lang="RU"><xsl:value-of select="alarmObject"/> большое количество ошибок</name>
+		                <url/>
+		                <priority>2</priority>
+		                <description lang="EN"></description>
+		                <description lang="RU"></description>
+		               	<dependsOn>
+	                		<dependency>if.down</dependency>
+	               		</dependsOn>
+	              	    <tags>
+		                	<tag>
+				 				<tag>Alarm.type</tag>
+				                <value>IF_ERRORS_HIGH</value>
+							</tag>
+						</tags>
+						</trigger>
+					</xsl:when>
+					<xsl:otherwise><xsl:message terminate="yes">Please check net.if.out.errors</xsl:message></xsl:otherwise>
+				</xsl:choose>
+			</triggers>
 		</metric>
     </xsl:variable>
 				
@@ -277,16 +315,54 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 
 
 <xsl:template match="template/metrics/net.if.speed">
+	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifSpeed</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update1hour"/></update>
+			<update><xsl:copy-of select="$update5min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
-			<triggers/>
+			<triggers>
+				<xsl:choose>
+					<xsl:when test="ancestor::metrics/net.if.type[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.type[not(discoveryRule)] and not(discoveryRule))">
+						<xsl:variable name="typeMetricKey"><xsl:value-of select="ancestor::metrics/net.if.type/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.type/snmpObject"/>]</xsl:variable>
+						<trigger>
+							<documentation>Might be problems with Mikrotik</documentation>
+						    <id>if.speed.not_max</id>
+							<expression>{TEMPLATE_NAME:METRIC.change()}&lt;0 and {TEMPLATE_NAME:METRIC.last()}&gt;0
+and (
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=6 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=7 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=11 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=62 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=69 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=117
+)
+</expression>
+							<recovery_expression>{TEMPLATE_NAME:METRIC.change()}&gt;0 and {TEMPLATE_NAME:METRIC.prev()}&gt;0</recovery_expression>>
+							<manual_close>1</manual_close>
+			                <name lang="EN"><xsl:value-of select="alarmObject"/> Ethernet interface is not at full known speed: </name>
+			                <name lang="RU"><xsl:value-of select="alarmObject"/> Ethernet интерфейс не на максимальной скорости:</name>
+			                <url/>
+			                <priority>1</priority>
+			                <description>This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Ack to close.</description>
+			               	<dependsOn>
+			               		<dependency>if.down</dependency>
+			              		</dependsOn>
+			             	    <tags>
+			                	<tag>
+					 				<tag>Alarm.type</tag>
+					                <value>IF_SPEED_NOT_MAX</value>
+								</tag>
+							</tags>
+						</trigger>
+					</xsl:when>
+					<xsl:otherwise><xsl:message>Please check the availability of net.if.type</xsl:message></xsl:otherwise>
+				</xsl:choose>	
+			</triggers>
 		</metric>
     </xsl:variable>
 				

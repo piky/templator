@@ -77,9 +77,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <IF-MIB>
         	<IFCONTROL><value>1</value></IFCONTROL>
         	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
+        	<IF_ERRORS_WARN><value>2</value></IF_ERRORS_WARN>
         </IF-MIB>
         <IF-MIB_Simple>
         	<IFCONTROL><value>1</value></IFCONTROL>
+        	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
+        	<IF_ERRORS_WARN><value>2</value></IF_ERRORS_WARN>
         </IF-MIB_Simple>
         <ICMP>
         	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
