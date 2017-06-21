@@ -187,6 +187,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				        		<name>Template SNMP Interfaces Simple_SNMP_PLACEHOLDER</name>
 							</template>
 					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces EtherLike Extension'">
+							
+							<template>
+				        		<name>Template SNMP EtherLike-MIB_SNMP_PLACEHOLDER</name>
+							</template>
+					</xsl:when>
 					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
 				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>

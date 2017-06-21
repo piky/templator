@@ -156,7 +156,6 @@
 				    			</choice>
 		    				</sequence>
 		    				
-		    				
 							<sequence> <!-- Template Network Interfaces -->
 				    				<element name="net.if.status" type="tns:metricType"/>
 				    				<element name="net.if.in" type="tns:metricType"/>
@@ -171,6 +170,10 @@
 				    					<element name="net.if.type" type="tns:metricType"/>
 				    				</choice>
 		    				</sequence>
+		    				
+							<sequence> <!-- Template Network Interfaces Ethernet -->
+			    					<element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
+		    				</sequence>		    				
 	    				</choice>
     			</complexType>
     		</element>
@@ -428,12 +431,14 @@
         
         <enumeration value="Interfaces"/>
         <enumeration value="Interfaces Simple"/>
+        <enumeration value="Interfaces EtherLike Extension"/>
         
         <enumeration value="HOST-RESOURCES-MIB"/>
         <enumeration value="ENTITY-SENSORS-MIB"/>
         <enumeration value="ENTITY-MIB"/>
         <enumeration value="IF-MIB"/>
         <enumeration value="IF-MIB_Simple"/>
+        <enumeration value="EtherLike-MIB"/>
         
         <enumeration value="Network"/>
         <enumeration value="Server"/>

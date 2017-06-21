@@ -304,5 +304,46 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 </xsl:template>
 
 
+<xsl:template match="template/metrics/net.if.duplex">
+	 <xsl:variable name="metric" as="element()*">
+		<metric>
+			<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>ifDuplexStatus</name>
+			<group>Interfaces</group>
+			<history><xsl:copy-of select="$history7days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update5min"/></update>
+			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
+			<triggers>
+					<trigger>
+					    <documentation/>
+					    <id>if.halfduplex</id>
+						<expression>{TEMPLATE_NAME:METRIC.last()}=2</expression>
+						<recovery_expression/>
+						<manual_close>1</manual_close>
+		                <name lang="EN"><xsl:value-of select="alarmObject"/> in half-duplex mode</name>
+		                <name lang="RU"><xsl:value-of select="alarmObject"/> в режиме half-duplex</name>
+		                <url/>
+		                <priority>2</priority>
+		                <description>Please check autonegotiation settings and cabling</description>
+		               	<dependsOn/>
+	              	    <tags>
+		                	<tag>
+				 				<tag>Alarm.type</tag>
+				                <value>IF_HALF_DUPLEX</value>
+							</tag>
+						</tags>
+					</trigger>
+			</triggers>	
+		</metric>
+    </xsl:variable>
+				
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+	    </xsl:call-template>
+    </xsl:copy>	
+</xsl:template>
+
+
 </xsl:stylesheet>
 
