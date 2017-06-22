@@ -51,12 +51,17 @@
 	<zabbix_export>
 	    <version><xsl:value-of select="$zbx_ver"></xsl:value-of></version>
 	    <date>2015-12-30T14:41:30Z</date>
-	    <groups>
+		<groups>
 	        <group>
-	            <name>Templates</name>
+	            <xsl:choose>
+		            <xsl:when test="child::*/template/classes[class='OS']"><name>Templates/OS</name></xsl:when>
+		            <xsl:when test="child::*/template/classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
+		            <xsl:when test="child::*/template/classes[class='Server']"><name>Templates/Server</name></xsl:when>
+		            <xsl:otherwise><name>Templates/Dependencies</name></xsl:otherwise>
+	            </xsl:choose>
 	        </group>
-	    </groups>
-		<templates>
+		</groups>    
+	    <templates>
 				 <xsl:apply-templates select="child::*/template"></xsl:apply-templates>  
 		</templates>
 		<graphs>
@@ -76,11 +81,16 @@
 	    		<template><xsl:value-of select="./name"></xsl:value-of></template>
 				<name><xsl:value-of select="./name"></xsl:value-of></name>
 				<description><xsl:value-of select="./description"></xsl:value-of></description>
-	            <groups>
-	                <group>
-	                    <name>Templates</name>
-	                </group>
-	            </groups>
+				<groups>
+			        <group>
+			            <xsl:choose>
+				            <xsl:when test="./classes[class='OS']"><name>Templates/OS</name></xsl:when>
+				            <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
+				            <xsl:when test="./classes[class='Server']"><name>Templates/Server</name></xsl:when>
+				            <xsl:otherwise><name>Templates/Dependencies</name></xsl:otherwise>
+			            </xsl:choose>
+			        </group>
+				</groups>
 	            <applications>
 				<xsl:for-each select="distinct-values(metrics//group)">
     				<application>
