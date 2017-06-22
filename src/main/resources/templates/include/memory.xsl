@@ -197,6 +197,19 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</tags>
 				</trigger>
 			</triggers>
+			<graphs>
+				<graph>
+					<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Memory utilization</name>
+					<yaxismin>0</yaxismin>
+					<yaxismax>100</yaxismax>
+					<graphItems>
+						<item>
+							<drawtype>gradient</drawtype>
+							<name>vm.memory.pused</name>
+						</item>
+					</graphItems>
+				</graph>
+			</graphs>			
 		</metric>
     </xsl:variable>
 				
