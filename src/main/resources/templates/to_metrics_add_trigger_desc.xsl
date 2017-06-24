@@ -24,10 +24,10 @@
 
 		<xsl:choose>
 			<xsl:when test="@lang='RU'">
-				<xsl:value-of  select="concat('Последнее значение: {ITEM.LASTVALUE1}.',.)"/>
+				<xsl:value-of  select="concat('Последнее значение: {ITEM.LASTVALUE1}.&#10;',.)"/>
 			</xsl:when>
 			<xsl:otherwise >
-				<xsl:value-of  select="concat('Last value: {ITEM.LASTVALUE1}.',.)"/>
+				<xsl:value-of  select="concat('Last value: {ITEM.LASTVALUE1}.&#10;',.)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		

@@ -196,7 +196,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff
 						<xsl:variable name="outErrorsMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out.errors/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out.errors/snmpObject"/>]</xsl:variable>
 						<trigger>
 						<documentation/>
-					    <id>if.out.errors</id>
+					    <id>if.errors</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}
 or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}</expression>
 						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
