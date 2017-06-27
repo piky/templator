@@ -78,9 +78,9 @@
 
 <xsl:template match="template">
 			<template>
-	    		<template><xsl:value-of select="./name"></xsl:value-of></template>
-				<name><xsl:value-of select="./name"></xsl:value-of></name>
-				<description><xsl:value-of select="./description"></xsl:value-of></description>
+	    		<template><xsl:value-of select="./name"/></template>
+				<name><xsl:value-of select="./name"/></name>
+				<description><xsl:value-of select="./description"/></description>
 				<groups>
 			        <group>
 			            <xsl:choose>
@@ -99,10 +99,10 @@
     			</xsl:for-each>
 	            </applications>				
 				<items>
-					<xsl:apply-templates select="metrics/*[not (discoveryRule)]"></xsl:apply-templates>
+					<xsl:apply-templates select="metrics/*[not (discoveryRule)]"/>
 				</items>
 				<discovery_rules>
-					<xsl:apply-templates select="discoveryRules"></xsl:apply-templates>
+					<xsl:apply-templates select="discoveryRules"/>
 				</discovery_rules>
 				<xsl:if test="$zbx_ver=3.4"><httptests/></xsl:if>
 	            <macros>
@@ -119,7 +119,7 @@
 </xsl:template>
 
 <xsl:template match="discoveryRules/*">
-					<xsl:variable name="disc_name" select="./name"></xsl:variable>
+					<xsl:variable name="disc_name" select="./name"/>
 					<discovery_rule>
 						<name><xsl:value-of select="./name"/></name>
 	                    <type><xsl:copy-of select="$snmp_item_type"/></type>
@@ -379,7 +379,7 @@
 						</xsl:choose>
 		                <applications>
                                 <application>
-                                    <name><xsl:value-of select="./group"></xsl:value-of></name>
+                                    <name><xsl:value-of select="./group"/></name>
                                 </application>
                         </applications>
 	                    <valuemap>
