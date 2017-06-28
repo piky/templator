@@ -63,7 +63,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:choose>	                
 	                
 	                
-	                <url />
+	                <url/>
 	                <priority>2</priority>
 	                <description>This trigger uses temperature sensor values as well as temperature sensor status if available</description>
 	                <dependsOn>

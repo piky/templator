@@ -21,7 +21,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
 						<trigger>
 						    <id>health.disaster</id>
-							<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_DISASTER_STATUS}</expression>
+							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
 			                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
 			                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
 			                <priority>4</priority>
@@ -36,7 +36,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
 					<trigger>
 						<id>health.critical</id>
-						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_CRIT_STATUS}</expression>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
 		                <name lang="EN">System status is in critical state (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: авария (<xsl:value-of select="$nowRU"/>)</name>
 		                <priority>4</priority>
@@ -56,7 +56,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">
 					<trigger>
 					    <id>health.warning</id>
-						<expression>{TEMPLATE_NAME:METRIC.last(0)}={$HEALTH_WARN_STATUS}</expression>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
 		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
 		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
 		                <priority>2</priority>

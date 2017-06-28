@@ -72,11 +72,28 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </Fault>
         <General>
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
+        	
         </General>
+        <IF-MIB>
+        	<IFCONTROL><value>1</value></IFCONTROL>
+        	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
+        	<IF_ERRORS_WARN><value>2</value></IF_ERRORS_WARN>
+        </IF-MIB>
+        <IF-MIB_Simple>
+        	<IFCONTROL><value>1</value></IFCONTROL>
+        	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
+        	<IF_ERRORS_WARN><value>2</value></IF_ERRORS_WARN>
+        </IF-MIB_Simple>
         <ICMP>
         	<ICMP_LOSS_WARN><value>20</value></ICMP_LOSS_WARN>
         	<ICMP_RESPONSE_TIME_WARN><value>0.15</value></ICMP_RESPONSE_TIME_WARN>
         </ICMP>
+        <SNMPv1>
+        	<SNMP_PORT><value>161</value></SNMP_PORT>
+        </SNMPv1>
+        <SNMPv2>
+        	<SNMP_PORT><value>161</value></SNMP_PORT>
+        </SNMPv2>
     </xsl:variable>
 
 <xsl:variable name="nowEN">now: {ITEM.LASTVALUE1}</xsl:variable>
@@ -155,16 +172,31 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		     		<xsl:variable name="template_class" select="."/>
 	   			<xsl:choose>
 					<xsl:when test="$template_class = 'Performance'">
-							<!-- monitor.virton specific
-							<template>
-				        		<name>Template Interfaces vZbx3_SNMP_PLACEHOLDER</name>
-							</template>  -->
+
 					</xsl:when>
 					 <xsl:when test="$template_class = 'Fault'">
 							<!-- temp include -->
 							
 					</xsl:when>
-					<xsl:when test="$template_class = 'Inventory'">
+					<xsl:when test="$template_class = 'Interfaces'">
+							<template>
+				        		<name>Template SNMP Interfaces_SNMP_PLACEHOLDER</name>
+							</template>
+							
+					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces Simple'">
+							
+							<template>
+				        		<name>Template SNMP Interfaces Simple_SNMP_PLACEHOLDER</name>
+							</template>
+					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces EtherLike Extension'">
+							
+							<template>
+				        		<name>Template SNMP EtherLike-MIB_SNMP_PLACEHOLDER</name>
+							</template>
+					</xsl:when>
+					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
 				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
 							</template>
@@ -188,113 +220,130 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- This block describes basic metric structure. Call it from each metric below-->
 <xsl:template name="defaultMetricBlock">
 		<xsl:param name="metric"/>
-		<xsl:variable name="metricKey">
 		<xsl:choose>
-			<xsl:when test="$metric/zabbixKey"><xsl:value-of select="$metric/zabbixKey"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
-		</xsl:choose>
-		</xsl:variable>
-		<documentation><xsl:value-of select="documentation" /></documentation>
-		<xsl:copy-of select="$metric/name"></xsl:copy-of>
-		<xsl:copy-of select="$metric/group"></xsl:copy-of>
-
-		
-		
-			<xsl:choose>
-				<xsl:when test="itemType">
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="itemType"/>
-				</xsl:when>
-				<xsl:when test="$metric/expressionFormula">
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
-					<itemType>calculated</itemType>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:copy-of select="oid"/>
-					<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-					<xsl:copy-of select="mib"/>
-					<itemType>snmp</itemType>
-				</xsl:otherwise>
-			</xsl:choose>
-		
-		<xsl:copy-of select="ref"></xsl:copy-of>
-		<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-		<xsl:copy-of select="$metric/description"></xsl:copy-of>
-		<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
-		<xsl:choose>
-			<xsl:when test="$metric/inventory_link and not(discoveryRule)">
-				<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
+			<xsl:when test="imported=true()"> <!-- means imported -->
+				<xsl:copy-of select="child::node()"/>
 			</xsl:when>
-		</xsl:choose>
+			<xsl:otherwise> 
+				<xsl:variable name="metricKey">
+				<xsl:choose>
+					<xsl:when test="$metric/zabbixKey"><xsl:value-of select="$metric/zabbixKey"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
+				</xsl:choose>
+				</xsl:variable>
+				<documentation><xsl:value-of select="documentation" /></documentation>
+				<xsl:copy-of select="$metric/name"></xsl:copy-of>
+				<xsl:copy-of select="$metric/group"></xsl:copy-of>
 		
-		
-		
-
-		<xsl:choose>
-			<xsl:when test="$metric/history">
-				<xsl:copy-of select="$metric/history"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<history><xsl:copy-of select="$historyDefault"/></history>
-			</xsl:otherwise>
-		</xsl:choose>
-		
-		<xsl:choose>
-			<xsl:when test="$metric/trends">
-				<xsl:copy-of select="$metric/trends"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<trends><xsl:copy-of select="$trendsDefault"/></trends>
-			</xsl:otherwise>
-		</xsl:choose>
-		
-		<xsl:copy-of select="$metric/units"></xsl:copy-of>
-		
-		<xsl:choose>
-			<xsl:when test="$metric/update">
-				<xsl:copy-of select="$metric/update"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<update><xsl:copy-of select="$updateDefault" /></update>
-			</xsl:otherwise>
-		</xsl:choose> 
-		
-		<xsl:choose>
-			<xsl:when test="$metric/valueType">
-				<xsl:copy-of select="$metric/valueType"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<valueType><xsl:copy-of select="$valueType" /></valueType>
-			</xsl:otherwise>
-		</xsl:choose> 
-		
-		
-		<valueMap><xsl:value-of select="valueMap" /></valueMap>
-		<multiplier><xsl:value-of select="multiplier" /></multiplier>
-		
-		<xsl:choose>
-			<xsl:when test="preprocessing">
-				<xsl:copy-of select="preprocessing"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<preprocessing/> <!-- 3.4 -->
-			</xsl:otherwise>
-		</xsl:choose>
-		<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
-		<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
-		<xsl:if test="$metric/triggers/trigger">
-			<triggers>
-				<xsl:for-each select="$metric/triggers/*">
-
-	    			<xsl:call-template name="defaultTriggerBlock">
-						<xsl:with-param name="trigger" select="." />
-						<xsl:with-param name="metricKey" select="$metricKey" />
-		    		</xsl:call-template>            
-				</xsl:for-each> 
 				
-			</triggers>
-		</xsl:if>
+				
+					<xsl:choose>
+						<xsl:when test="itemType">
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="itemType"/>
+						</xsl:when>
+						<xsl:when test="$metric/expressionFormula">
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
+							<itemType>calculated</itemType>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="oid"/>
+							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
+							<xsl:copy-of select="mib"/>
+							<itemType>snmp</itemType>
+						</xsl:otherwise>
+					</xsl:choose>
+				
+				<xsl:copy-of select="ref"></xsl:copy-of>
+				<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+				<xsl:copy-of select="$metric/description"></xsl:copy-of>
+				<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
+				<xsl:choose>
+					<xsl:when test="$metric/inventory_link and not(discoveryRule)">
+						<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
+					</xsl:when>
+				</xsl:choose>
+				
+				
+				
+		
+				<xsl:choose>
+					<xsl:when test="$metric/history">
+						<xsl:copy-of select="$metric/history"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<history><xsl:copy-of select="$historyDefault"/></history>
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:choose>
+					<xsl:when test="$metric/trends">
+						<xsl:copy-of select="$metric/trends"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<trends><xsl:copy-of select="$trendsDefault"/></trends>
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:copy-of select="$metric/units"></xsl:copy-of>
+				
+				<xsl:choose>
+					<xsl:when test="$metric/update">
+						<xsl:copy-of select="$metric/update"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<update><xsl:copy-of select="$updateDefault" /></update>
+					</xsl:otherwise>
+				</xsl:choose> 
+				
+				<xsl:choose>
+					<xsl:when test="$metric/valueType">
+						<xsl:copy-of select="$metric/valueType"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<valueType><xsl:copy-of select="$valueType" /></valueType>
+					</xsl:otherwise>
+				</xsl:choose> 
+				
+				
+				<valueMap><xsl:value-of select="valueMap" /></valueMap>
+				<multiplier><xsl:value-of select="multiplier" /></multiplier>
+				
+				<xsl:choose>
+					<xsl:when test="preprocessing">
+						<xsl:copy-of select="preprocessing"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<preprocessing/> <!-- 3.4 -->
+					</xsl:otherwise>
+				</xsl:choose>
+				<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
+				<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+				<xsl:if test="$metric/triggers/trigger">
+					<triggers>
+						<xsl:for-each select="$metric/triggers/*">
+			    			<xsl:call-template name="defaultTriggerBlock">
+								<xsl:with-param name="trigger" select="."/>
+								<xsl:with-param name="metricKey" select="$metricKey"/>
+				    		</xsl:call-template>            
+						</xsl:for-each> 
+						
+					</triggers>
+				</xsl:if>
+				<xsl:if test="$metric/graphs/graph">
+					<graphs>
+						<xsl:for-each select="$metric/graphs/*">
+							<xsl:call-template name="defaultGraphBlock">
+								<xsl:with-param name="graph" select="."/>
+								<xsl:with-param name="metric" select="$metric"/>
+				    		</xsl:call-template>         
+						</xsl:for-each> 
+					</graphs>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+		
 		<!-- <xsl:copy-of select="$metric/triggers"></xsl:copy-of> -->
 
 </xsl:template>
@@ -321,7 +370,99 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
 	                </tags>
 			</trigger>
+</xsl:template>
 
+
+<!-- fill with colors -->
+ <xsl:variable name="graph_colors">
+   <entry>1A7C11</entry>
+   <entry>2774A4</entry>
+   <entry>F63100</entry>
+   
+   <entry>A54F10</entry>
+   <entry>FC6EA3</entry>
+   <entry>6C59DC</entry>
+   
+   <entry>AC8C14</entry>
+   <entry>611F27</entry>
+   <entry>F230E0</entry>
+ </xsl:variable>
+
+
+<!-- This block describes basic graph structure. Call it for each graph needed-->
+<xsl:template name="defaultGraphBlock">
+		<xsl:param name="graph"/>
+		<xsl:param name="metric"/>
+		<graph>
+			<xsl:copy-of select="$graph/name"/>
+            <width>900</width>
+            <height>200</height>
+         	<xsl:choose>
+				<xsl:when test="$graph/yaxismin">
+					<xsl:copy-of select="$graph/yaxismin"/>
+					<ymin_type_1>1</ymin_type_1>
+				</xsl:when>
+				<xsl:otherwise>
+					<yaxismin>0</yaxismin>
+					<ymin_type_1>0</ymin_type_1>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- type_1: 1 - fixed, 0- calculated, 2- item -->
+			
+			<xsl:choose>
+				<xsl:when test="$graph/yaxismax">
+					<xsl:copy-of select="$graph/yaxismax"/>
+					<ymax_type_1>1</ymax_type_1>
+				</xsl:when>
+				<xsl:otherwise>
+					<yaxismax>100</yaxismax>
+					<ymax_type_1>0</ymax_type_1>
+				</xsl:otherwise>
+			</xsl:choose>  
+			
+            <show_work_period>1</show_work_period>
+            <show_triggers>1</show_triggers>
+            <type>0</type>
+            <show_legend>1</show_legend>
+            <show_3d>0</show_3d>
+            <percent_left>0.0000</percent_left>
+            <percent_right>0.0000</percent_right>
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+                <xsl:for-each select="$graph/graphItems/item">
+	                <graph_item>
+	                	<xsl:variable name="index" select="position()"/>
+	                    <sortorder><xsl:value-of select="position()-1"/></sortorder>
+	                 	<xsl:choose>
+							<xsl:when test="./drawtype">
+								<xsl:copy-of select="./drawtype"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<drawtype>line</drawtype>
+							</xsl:otherwise>
+						</xsl:choose>  
+	                    <color><xsl:value-of select="$graph_colors/entry[$index]"/></color>
+	                 	<xsl:choose>
+							<xsl:when test="./yaxisside">
+								<xsl:copy-of select="./yaxisside"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<yaxisside>left</yaxisside>
+							</xsl:otherwise>
+						</xsl:choose>				                    
+	                  	<calc_fnc>2</calc_fnc>
+	                    <type>0</type> 
+
+	                    <item>
+	                        <host>TEMPLATE_NAME</host> <!-- special placeholder-->
+	                        <key><xsl:value-of select="./name"/></key>
+	                        <!-- <discoveryRule><xsl:value-of select="$metric/discoveryRule"/></discoveryRule> -->
+	                    </item>
+                	</graph_item>
+                </xsl:for-each>
+            </graph_items>
+		</graph>
 </xsl:template>
 
  
@@ -335,6 +476,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="include/generic.xsl"/>
 <xsl:include href="include/icmp.xsl"/>
 <xsl:include href="include/inventory.xsl"/>
+
+<xsl:include href="include/interfaces.xsl"/>
 
 </xsl:stylesheet>
 

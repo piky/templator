@@ -9,8 +9,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
   @Override
   public void configure() throws Exception {
     from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
-    .log("Loading file: ${in.headers.CamelFileNameOnly}")
-    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
+	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
+	    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
     
     from("direct:zbx3.2")
     		//.filter().xpath("//node()[@zbx_ver = 3.4]") //if there are nodes with zbx_ver flags
@@ -26,12 +26,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("direct:merge");
     
     from("direct:merge")
-    	.setHeader("template_ver", simple("0.6", String.class))
+    	.setHeader("template_ver", simple("0.8", String.class))
     	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER and generator ver
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
+	    .to("xslt:templates/to_metrics_update_graph_items.xsl?saxon=true")
 	    .to("file:bin/merged")
 	    .to("validator:templates/metrics.xsd")
+	    .to("xslt:templates/to_metrics_strip_imported_metrics.xsl?saxon=true")
 		.multicast().parallelProcessing().to("direct:RU", "direct:EN");
   
     from("direct:RU")
@@ -47,6 +49,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
     from("direct:snmpv1")
+    	 .filter().xpath("//classes[class='SNMPv1']")
     	.setHeader("snmp_item_type", simple("1", String.class))
     	.setHeader("template_suffix", simple("SNMPv1", String.class))
     	.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
@@ -54,6 +57,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     
     
     from("direct:snmpv2")
+    	.filter().xpath("//classes[class='SNMPv2']")	
 	    .setHeader("snmp_item_type", simple("4", String.class))
 	    .setHeader("template_suffix", simple("SNMPv2", String.class))
 		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")

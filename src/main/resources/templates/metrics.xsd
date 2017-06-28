@@ -12,6 +12,7 @@
     		</element>
     		<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
     		<element name="description" type="string" maxOccurs="1" minOccurs="0"/>
+    		<element name="documentation" type="tns:documentationType" maxOccurs="1" minOccurs="0"/>
     		<element name="sysObjectID" type="string"/>
     		<element name="discoveryRules" minOccurs="0" maxOccurs="1">
 				<complexType>
@@ -155,6 +156,25 @@
 				    				<element name="system.hw.firmware" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 				    			</choice>
 		    				</sequence>
+		    				
+							<sequence> <!-- Template Network Interfaces -->
+				    				<element name="net.if.status" type="tns:metricType"/>
+				    				<element name="net.if.in" type="tns:metricType"/>
+				    				<element name="net.if.out" type="tns:metricType"/>
+				    				<element name="net.if.in.errors" type="tns:metricType"/>
+				    				<element name="net.if.out.errors" type="tns:metricType"/>
+				    				<element name="net.if.traps" type="tns:metricType"/>
+				    				<choice maxOccurs="unbounded">
+				    					<element name="net.if.in.discards" type="tns:metricType"/>
+				    					<element name="net.if.out.discards" type="tns:metricType"/>
+				    				    <element name="net.if.speed" type="tns:metricType"/>
+				    					<element name="net.if.type" type="tns:metricType"/>
+				    				</choice>
+		    				</sequence>
+		    				
+							<sequence> <!-- Template Network Interfaces Ethernet -->
+			    					<element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
+		    				</sequence>		    				
 	    				</choice>
     			</complexType>
     		</element>
@@ -169,6 +189,49 @@
     		<element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
     	 </sequence>
     </complexType>
+
+	<complexType name="documentationType">
+		<choice maxOccurs="unbounded">
+			<element name="overview" type="string" />
+			<element name="issues" maxOccurs="unbounded" minOccurs="1">
+				<complexType>
+					<sequence>
+								<element name="issue" minOccurs="0" maxOccurs="unbounded">
+									<complexType>
+										<sequence>
+											<element name="description"
+												type="string" />
+											<element name="version"
+												type="string" />
+											<element name="device"
+												type="string" />
+										</sequence>
+									</complexType>
+								</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="device_setup" maxOccurs="1" minOccurs="1"
+				type="string" />
+			<element name="known_devices" maxOccurs="unbounded"
+				minOccurs="1">
+				<complexType>
+					<sequence>
+						<element name="device" minOccurs="0" maxOccurs="unbounded">
+							<complexType>
+								<sequence>
+									<element name="name" minOccurs="0" maxOccurs="unbounded"
+										type="string" />
+									<element name="version" minOccurs="0" maxOccurs="unbounded"
+										type="string" />
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</choice>
+	</complexType>    
     
 		<complexType name="templateDependencies">
 					<sequence>
@@ -219,6 +282,7 @@
 								       	 	<restriction base="string">
 										        <enumeration value="regex"/>
 										        <enumeration value="delta"/>
+										        <enumeration value="delta_per_second"/>
 										        <enumeration value="multiplier"/>
 								    		</restriction>
 							       	 	</simpleType>
@@ -239,7 +303,18 @@
 					<element name="vendorDocumentation" type="string" maxOccurs="1" minOccurs="0"/>
 					<choice>
 						<sequence>
-							<element name="oid" type="string" maxOccurs="1" minOccurs="1"/>
+							
+							<element name="imported" type="boolean" maxOccurs="1" minOccurs="1">
+								<annotation>
+									<documentation>mark metrics that are to be included</documentation>
+								</annotation>
+							</element>
+						</sequence>
+						<sequence>
+							<element name="oid" type="string" maxOccurs="1" minOccurs="1">
+								<annotation>
+									<documentation>SNMP oid</documentation>
+								</annotation></element>
 						    <element name="snmpObject" type="string" maxOccurs="1" minOccurs="1"/>
 						    <element name="mib" type="string" maxOccurs="1" minOccurs="0"/>	
 						</sequence>
@@ -301,6 +376,13 @@
 					    		</sequence>
 					    	</complexType>
 				    	</element>
+		    	<element name="graphs" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+			    	<complexType>
+			    		<sequence>
+			    			<element name="graph" type="tns:graphType" maxOccurs="unbounded" minOccurs="0"/>
+			    		</sequence>
+			    	</complexType>
+		    	</element>
 					</choice>
 			 	</sequence>
 		 	</choice>
@@ -350,6 +432,8 @@
 		<enumeration value="General"/>
         <enumeration value="Inventory"/>
         
+        <enumeration value="Interfaces"/> <!-- Network interfaces -->
+        
         <enumeration value="Internal Items"/><!-- place items used in calculated items only -->
         
     </restriction>
@@ -368,6 +452,17 @@
     </restriction>
 </simpleType>
 
+<simpleType name="drawTypeList">
+    <restriction base="string">
+        <enumeration value="gradient"/>
+        <enumeration value="line"/>
+        <enumeration value="filled_region"/>
+        <enumeration value="dot"/>
+        <enumeration value="dashed_line"/>
+        <enumeration value="bold_line"/>
+    </restriction>
+</simpleType>
+
 <simpleType name="templateClass">
     <restriction base="string">
         <enumeration value="Performance"/>
@@ -377,6 +472,29 @@
         <enumeration value="General"/>
         
         <enumeration value="ICMP"/>
+        
+        <enumeration value="Interfaces"/>
+        <enumeration value="Interfaces Simple"/>
+        <enumeration value="Interfaces EtherLike Extension"/>
+        
+        <enumeration value="HOST-RESOURCES-MIB"/>
+        <enumeration value="ENTITY-SENSORS-MIB"/>
+        <enumeration value="ENTITY-MIB"/>
+        <enumeration value="IF-MIB"/>
+        <enumeration value="IF-MIB_Simple"/>
+        <enumeration value="EtherLike-MIB"/>
+        
+        <enumeration value="Network"/>
+        <enumeration value="Server"/>
+        <enumeration value="OS"/>
+        
+        <enumeration value="SNMP Device"/>
+        <enumeration value="SNMPv1"/>
+        <enumeration value="SNMPv2"/>
+        <enumeration value="SNMPv3"/>
+        
+        
+        
     </restriction>
 </simpleType>
 
@@ -431,6 +549,59 @@
 
   </simpleType>
 
+
+
+<complexType name="graphType">
+		<choice maxOccurs="unbounded">
+			<element name="name" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="width" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="height" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="yaxismin" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="yaxismax" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="show_work_period" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="show_triggers" type="integer" maxOccurs="1" minOccurs="1"/>
+			<element name="type" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="show_legend" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="show_3d" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="percent_left" type="float" maxOccurs="1" minOccurs="1"/>
+			<element name="percent_right" type="float" maxOccurs="1" minOccurs="1"/>
+			<element name="ymin_type_1" type="byte" maxOccurs="1" minOccurs="1"/> <!-- type_1: 1 fixed, 0- calculated, 2- item -->
+			<element name="ymax_type_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="ymin_item_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="ymax_item_1" type="byte" maxOccurs="1" minOccurs="1"/>
+			<element name="graph_items">
+				<complexType>
+					<sequence>
+	    				<element name="graph_item" minOccurs="1" maxOccurs="unbounded">
+	    					<complexType>
+	    						<sequence>
+	    							<element name="sortorder" type="byte"/>
+	    							<element name="drawtype" type="byte"/>
+	    							<element name="color" type="string"/>
+	    							<element name="yaxisside" type="string"/>
+	    							<element name="calc_fnc" type="byte"/>
+	    							<element name="type" type="byte"/>
+			    					<element name="item" minOccurs="1" maxOccurs="unbounded">
+				    					<complexType>
+				    						<sequence>
+				    							<element name="host" type="string"/>
+				    							<element name="key" type="string"/>
+				    						</sequence>
+				    					</complexType>
+			    					</element>
+			    				</sequence>
+	    					</complexType>
+	    				</element>
+	    			</sequence>
+				</complexType>
+			</element>
+
+	 	</choice>
+    </complexType>
+
+
+    
+    
 
 <!-- host inventory (for inventory link) 
 ID	Property	Type	Description

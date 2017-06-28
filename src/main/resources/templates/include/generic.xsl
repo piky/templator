@@ -64,7 +64,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<metric>
 			<name>SNMP traps (fallback)</name>
 			<group>General</group>
-			<logFormat>%H:%M:%S %Y/%m/%d</logFormat>
+			<logFormat>hh:mm:sszyyyy/MM/dd</logFormat>
 			<description>Item is used to collect all SNMP traps unmatched by other snmptrap items</description>
 			<zabbixKey>snmptrap.fallback</zabbixKey>
 			<history><xsl:copy-of select="$history14days"/></history>

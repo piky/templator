@@ -97,8 +97,6 @@
                       					<xs:element type="xs:string"
                       						name="snmpv3_privpassphrase" />
                       					<xs:element type="xs:string"
-                      						name="delay_flex" />
-                      					<xs:element type="xs:string"
                       						name="params" />
                       					<xs:element type="xs:string"
                       						name="ipmi_sensor" />
@@ -112,7 +110,7 @@
                       						name="publickey" />
                       					<xs:element type="xs:string"
                       						name="privatekey" />
-                      					<xs:element type="xs:short"
+                      					<xs:element type="xs:string"
                       						name="port" />
                       					<xs:element name="filter">
                       						<xs:complexType>
@@ -147,8 +145,7 @@
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
-                      					<xs:element type="xs:byte"
-                      						name="lifetime" />
+                      					<xs:element type="xs:string" name="lifetime" />
                       					<xs:element type="xs:string"
                       						name="description" />
                       					<xs:element
@@ -169,95 +166,14 @@
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
-                      					<xs:element
-                      						name="graph_prototypes">
+                      					<xs:element name="graph_prototypes">
                       						<xs:complexType>
                       							<xs:sequence>
-                      								<xs:element
-                      									name="graph_prototype"
-                      									maxOccurs="unbounded" minOccurs="0">
-                      									<xs:complexType>
-                      										<xs:sequence>
-                      											<xs:element
-                      												type="xs:string" name="name" />
-                      											<xs:element
-                      												type="xs:short" name="width" />
-                      											<xs:element
-                      												type="xs:short" name="height" />
-                      											<xs:element
-                      												type="xs:float" name="yaxismin" />
-                      											<xs:element
-                      												type="xs:float" name="yaxismax" />
-                      											<xs:element
-                      												type="xs:byte"
-                      												name="show_work_period" />
-                      											<xs:element
-                      												type="xs:byte" name="show_triggers" />
-                      											<xs:element
-                      												type="xs:byte" name="type" />
-                      											<xs:element
-                      												type="xs:byte" name="show_legend" />
-                      											<xs:element
-                      												type="xs:byte" name="show_3d" />
-                      											<xs:element
-                      												type="xs:float" name="percent_left" />
-                      											<xs:element
-                      												type="xs:float" name="percent_right" />
-                      											<xs:element
-                      												type="xs:byte" name="ymin_type_1" />
-                      											<xs:element
-                      												type="xs:byte" name="ymax_type_1" />
-                      											<xs:element
-                      												type="xs:byte" name="ymin_item_1" />
-                      											<xs:element
-                      												type="xs:byte" name="ymax_item_1" />
-                      											<xs:element
-                      												name="graph_items">
-                      												<xs:complexType>
-                      													<xs:sequence>
-                      														<xs:element
-                      															name="graph_item"
-                      															maxOccurs="unbounded"
-                      															minOccurs="0">
-                      															<xs:complexType>
-                      																<xs:sequence>
-                      																	<xs:element
-                      																		type="xs:byte" name="sortorder" />
-                      																	<xs:element
-                      																		type="xs:byte" name="drawtype" />
-                      																	<xs:element
-                      																		type="xs:string" name="color" />
-                      																	<xs:element
-                      																		type="xs:byte" name="yaxisside" />
-                      																	<xs:element
-                      																		type="xs:byte" name="calc_fnc" />
-                      																	<xs:element
-                      																		type="xs:byte" name="type" />
-                      																	<xs:element
-                      																		name="item">
-                      																		<xs:complexType>
-                      																			<xs:sequence>
-                      																				<xs:element
-                      																					type="xs:string" name="host" />
-                      																				<xs:element
-                      																					type="xs:string" name="key" />
-                      																			</xs:sequence>
-                      																		</xs:complexType>
-                      																	</xs:element>
-                      																</xs:sequence>
-                      															</xs:complexType>
-                      														</xs:element>
-                      													</xs:sequence>
-                      												</xs:complexType>
-                      											</xs:element>
-                      										</xs:sequence>
-                      									</xs:complexType>
-                      								</xs:element>
+                      								<xs:element name="graph_prototype" type="graphType" maxOccurs="unbounded" minOccurs="0"/>
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
-                      					<xs:element type="xs:string"
-                      						name="host_prototypes" />
+                      					<xs:element type="xs:string" name="host_prototypes" />
                       				</xs:sequence>
                       			</xs:complexType>
                       		</xs:element>
@@ -337,6 +253,13 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="graphs" minOccurs="0" maxOccurs="1">
+	         <xs:complexType>
+	         	<xs:sequence>
+	            	<xs:element name="graph" type="graphType" maxOccurs="unbounded" minOccurs="0"/>
+	            </xs:sequence>
+	        </xs:complexType>
+        </xs:element>
         <xs:element name="triggers">
         	<xs:complexType>
         		<xs:sequence>
@@ -409,8 +332,8 @@
                                 <xs:element type="xs:string" name="snmp_oid"/>
                                 <xs:element type="xs:string" name="key"/>
                                 <xs:element type="xs:integer" name="delay"/>
-                                <xs:element type="xs:integer" name="history"/>
-                                <xs:element type="xs:integer" name="trends"/>
+                                <xs:element type="xs:string" name="history"/>
+                                <xs:element type="xs:string" name="trends"/>
                                 <xs:element type="xs:byte" name="status"/>
                                 <xs:element type="xs:byte" name="value_type"/>
                                 <xs:element type="xs:string" name="allowed_hosts"/>
@@ -422,7 +345,6 @@
                                 <xs:element type="xs:string" name="snmpv3_authpassphrase"/>
                                 <xs:element type="xs:string" name="snmpv3_privprotocol"/>
                                 <xs:element type="xs:string" name="snmpv3_privpassphrase"/>
-                                <xs:element type="xs:string" name="delay_flex"/>
                                 <xs:element type="xs:string" name="params"/>
                                 <xs:element type="xs:string" name="ipmi_sensor"/>
                                 <xs:element type="xs:byte" name="authtype"/>
@@ -582,5 +504,59 @@
 	   </xs:restriction>
 	</xs:simpleType>
 	<!-- https://searchcode.com/codesearch/view/80067365/ -->
+
+
+<xs:complexType name="graphType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="width" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="height" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="yaxismin" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="yaxismax" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="show_work_period" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="show_triggers" type="xs:integer" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="type" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="show_legend" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="show_3d" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="percent_left" type="xs:float" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="percent_right" type="xs:float" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="ymin_type_1" type="xs:byte" maxOccurs="1" minOccurs="1"/> <!-- type_1: 0 fixed, 1- calculated, 2- item -->
+			<xs:element name="ymax_type_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="ymin_item_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="ymax_item_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="graph_items">
+				<xs:complexType>
+					<xs:sequence>
+	    				<xs:element name="graph_item" minOccurs="1" maxOccurs="unbounded">
+	    					<xs:complexType>
+	    						<xs:sequence>
+	    							<xs:element name="sortorder" type="xs:byte"/>
+	    							<xs:element name="drawtype" type="xs:byte"/>
+	    							<xs:element name="color" type="xs:string"/>
+	    							<xs:element name="yaxisside" type="xs:byte"/>
+	    							<xs:element name="calc_fnc" type="xs:byte"/>
+	    							<xs:element name="type" type="xs:byte"/>
+			    					<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+				    					<xs:complexType>
+				    						<xs:sequence>
+				    							<xs:element name="host" type="xs:string"/>
+				    							<xs:element name="key" type="xs:string"/>
+				    						</xs:sequence>
+				    					</xs:complexType>
+			    					</xs:element>
+			    				</xs:sequence>
+	    					</xs:complexType>
+	    				</xs:element>
+	    			</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+	 	</xs:sequence>
+    </xs:complexType>
+
+
+
+
+
 	 
 </xs:schema>
