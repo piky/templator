@@ -144,7 +144,24 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/*/template">
      
 	     <xsl:copy>
+	     	<xsl:copy-of select="./name"/>
+	     	<xsl:copy-of select="./classes"/>
+	     	<description>
+					<xsl:value-of select="./description"/>
+					<xsl:if test="./documentation/overview and ./documentation/overview != ''">&#10;Overview: <xsl:value-of select="./documentation/overview"/><xsl:text>&#10;</xsl:text></xsl:if>
+					<xsl:if test="./metrics/*/mib"><xsl:text>&#10;MIBs used:&#10;</xsl:text></xsl:if>
+					<xsl:for-each select="distinct-values(./metrics/*/mib)">
+					    <xsl:value-of select="."/><xsl:text>&#10;</xsl:text>
+					</xsl:for-each>
+					<xsl:if test="./documentation/issues/issue"><xsl:text>&#10;Known Issues:&#10;</xsl:text></xsl:if>
+					<xsl:for-each select="./documentation/issues/issue">
+					  <xsl:for-each select="*">
+					    <xsl:value-of select="local-name()"/> : <xsl:value-of select="."/><xsl:text>&#10;</xsl:text>
+					  </xsl:for-each>  
+					</xsl:for-each>
+			</description>
 			<xsl:apply-templates select="node()|@*"/>
+
 			<macros>
 				<xsl:for-each select="./classes">
 		     		<xsl:variable name="template_class" select="./class"/>
@@ -213,6 +230,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       
 </xsl:template>
 
+<xsl:template match="template/description"/><!-- leave it empty, as this part defined explicitly-->
+<xsl:template match="template/name"/><!-- leave it empty, as this part defined explicitly-->
+<xsl:template match="template/classes"/><!-- leave it empty, as this part defined explicitly-->
 <xsl:template match="macros"/><!-- leave it empty -->
 <xsl:template match="template/templates"/><!-- leave it empty -->
 
@@ -257,7 +277,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				
 				<xsl:copy-of select="ref"></xsl:copy-of>
 				<xsl:copy-of select="vendorDescription"></xsl:copy-of>
-				<xsl:copy-of select="$metric/description"></xsl:copy-of>
+				<description>
+							<xsl:value-of select="if (mib) then (concat('MIB: ',concat(mib,'&#10;'))) else ()"/>
+							<xsl:value-of select="if (vendorDescription) then (concat(concat('',vendorDescription),'&#10;')) else (concat(concat('',$metric/description),'&#10;'))"/>
+							<xsl:value-of select="if (ref) then (concat('Reference: ',concat(ref,'&#10;'))) else ()"/>
+				</description>
+				
 				<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
 				<xsl:choose>
 					<xsl:when test="$metric/inventory_link and not(discoveryRule)">
