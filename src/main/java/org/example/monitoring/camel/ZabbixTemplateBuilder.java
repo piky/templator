@@ -52,6 +52,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
 					//"direct:snmpv1",
+					"direct:docs",
 					"direct:snmpv2"
 					);
 	    
@@ -100,7 +101,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    
 	    
 	    from("direct:html")
-	    	.to("xslt:templates/doc_templates/to_html.xsl")
+	    	.to("xslt:templates/doc_templates/to_html_from_merged.xsl")
 	    	.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}.html"))
 	    	.to("file:bin/out/docs")
 	    ;
