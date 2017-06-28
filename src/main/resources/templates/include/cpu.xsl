@@ -18,7 +18,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
-					<expression>{<xsl:value-of select="../../name"/>:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
 	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>High CPU utilization (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Загрузка ЦПУ слишком велика (<xsl:value-of select="$nowRU" />)</name>
 	                <url/>
