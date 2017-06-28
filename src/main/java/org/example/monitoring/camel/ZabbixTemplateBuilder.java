@@ -34,7 +34,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    .to("file:bin/merged")
 	    .to("validator:templates/metrics.xsd")
 	    .to("xslt:templates/to_metrics_strip_imported_metrics.xsl?saxon=true")
-		.multicast().parallelProcessing().to("direct:RU", "direct:EN");
+		.multicast().parallelProcessing().
+			to(
+			//"direct:RU",
+			"direct:EN"
+			);
   
     from("direct:RU")
 	    .filter().xpath("//node()[@lang='RU']")
@@ -45,7 +49,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     from("direct:EN")
 	    .log("Going to do English template")
 		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
-		.to("log:result?level=DEBUG").multicast().parallelProcessing().to("direct:snmpv1", "direct:snmpv2");
+		.to("log:result?level=DEBUG").multicast().parallelProcessing().
+			to(
+					//"direct:snmpv1",
+					"direct:snmpv2"
+					);
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
     from("direct:snmpv1")
@@ -81,6 +89,20 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.to("validator:templates/zabbix_export_3.2.xsd")
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
-	    .end();
+	    .end()
+	    .to("direct:docs");
+	    
+	    from("direct:docs")
+	    	.to("direct:html")
+	    	//.to("direct:csv")
+	    	//.to("direct:docuwiki")
+	    ;
+	    
+	    
+	    from("direct:html")
+	    	.to("xslt:templates/doc_templates/to_html.xsl")
+	    	.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}.html"))
+	    	.to("file:bin/out/docs")
+	    ;
   } 
 }
