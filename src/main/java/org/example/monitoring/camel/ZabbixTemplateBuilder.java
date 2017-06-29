@@ -59,22 +59,23 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
     from("direct:snmpv1")
     	 .filter().xpath("//classes[class='SNMPv1']")
-    	.setHeader("snmp_item_type", simple("1", String.class))
-    	.setHeader("template_suffix", simple("SNMPv1", String.class))
-    	.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
+     	.setHeader("snmp_item_type", simple("1", String.class))
+     	.setHeader("template_suffix", simple("SNMPv1", String.class))
     	.to("direct:zabbix_export");
     
     
     from("direct:snmpv2")
     	.filter().xpath("//classes[class='SNMPv2']")	
-	    .setHeader("snmp_item_type", simple("4", String.class))
+		.setHeader("snmp_item_type", simple("4", String.class))
 	    .setHeader("template_suffix", simple("SNMPv2", String.class))
-		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
 		.to("direct:zabbix_export");
     
-    from("direct:zabbix_export")
-		//with lang.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
-		.setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
+    from("direct:zabbix_export")	
+		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
+
+    //with lang.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
+		.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix}"))) //w/o lang
+		
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		
 		

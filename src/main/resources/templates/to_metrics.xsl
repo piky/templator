@@ -181,7 +181,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			         	</xsl:for-each>
 	         	</xsl:for-each>
     		</macros>
-    	<!-- add template name with _SNMP_PLACEHOLDER at the end to make dependency dynamic -->
+    	<!-- add template name with _SNMPvX at the end to make dependency dynamic -->
     	<templates>
     		<!-- copy from templates first -->
     		<xsl:copy-of copy-namespaces="no" select="templates/template"/>
@@ -197,25 +197,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces'">
 							<template>
-				        		<name>Template SNMP Interfaces_SNMP_PLACEHOLDER</name>
+				        		<name>Template SNMP Interfaces_SNMPvX</name>
 							</template>
 							
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces Simple'">
 							
 							<template>
-				        		<name>Template SNMP Interfaces Simple_SNMP_PLACEHOLDER</name>
+				        		<name>Template SNMP Interfaces Simple_SNMPvX</name>
 							</template>
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces EtherLike Extension'">
 							
 							<template>
-				        		<name>Template SNMP EtherLike-MIB_SNMP_PLACEHOLDER</name>
+				        		<name>Template SNMP EtherLike-MIB_SNMPvX</name>
 							</template>
 					</xsl:when>
 					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
-				        		<name>Template SNMP Generic_SNMP_PLACEHOLDER</name>
+				        		<name>Template SNMP Generic_SNMPvX</name>
 							</template>
 <!-- 							<template>
 				        		<name>Template ICMP Ping</name>

@@ -20,7 +20,7 @@
 
 <xsl:template match="/*/template/name">
 	<xsl:copy> <!--  hardcode for non SNMP templates (currently only ICMP) -->
-		<xsl:copy-of select="if (contains(./text(),'ICMP')) then (./text()) else concat(.,'_SNMP_PLACEHOLDER')"/>
+		<xsl:copy-of select="if (contains(./text(),'ICMP')) then (./text()) else concat(.,'_SNMPvX')"/>
 	</xsl:copy>
 </xsl:template>
 
