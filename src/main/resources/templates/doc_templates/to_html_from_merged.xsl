@@ -3,7 +3,7 @@
 <!--  zabbix template as an output -->
 <xsl:output method="html" indent="yes"/>
 
-<xsl:param name="lang" select="EN"/> <!-- EN as defaults -->
+<xsl:param name="lang">EN</xsl:param> <!-- EN as defaults -->
 
 <xsl:variable name="template_deps_interfaces" as="node()">
 	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_interfaces.xml')"/>
@@ -197,10 +197,10 @@
     <tr>
       <td><xsl:value-of select="./group"/></td>
       <td><xsl:value-of select="./discoveryRule"/></td>
-      <td><xsl:value-of select="./name"/></td>
+      <td><xsl:value-of select="./name[@lang=$lang or not(@lang)]"/></td>
       <td><xsl:value-of select="./snmpObject"/></td>
       <td><xsl:value-of select="./oid"/></td>
-      <td><xsl:value-of select="./description"/></td>
+      <td><xsl:value-of select="./description[@lang=$lang or not(@lang)]"/></td>
       <td><xsl:value-of select="./documentation"/></td>
       <td><xsl:value-of select="./itemType"/></td>
     </tr>
@@ -223,8 +223,8 @@
 
     <xsl:for-each select="$triggers/*">
     <tr>
-      <td><xsl:value-of select="./name"/></td>
-      <td><xsl:value-of select="./description"/></td>
+      <td><xsl:value-of select="./name[@lang=$lang or not(@lang)]"/></td>
+      <td><xsl:value-of select="./description[@lang=$lang or not(@lang)]"/></td>
       <td style="font-size:0.8em"><xsl:value-of select="./expression"/></td>
       <td style="font-size:0.8em"><xsl:value-of select="./recovery_expression"/></td>
       <td><xsl:value-of select="./documentation"/></td>

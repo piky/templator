@@ -37,6 +37,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.multicast().parallelProcessing().
 			to(
 			//"direct:RU",
+			"direct:docs",
 			"direct:EN"
 			);
   
@@ -52,7 +53,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
 					//"direct:snmpv1",
-					"direct:docs",
 					"direct:snmpv2"
 					);
 	    
