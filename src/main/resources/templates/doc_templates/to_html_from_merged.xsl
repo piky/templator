@@ -7,6 +7,12 @@
 
 <xsl:template match="/">
 <html>
+	<header>
+		<style>
+			td { white-space:pre-line ;}
+			 p { white-space:pre;}
+		</style>
+	</header>
 	<body>
 		<xsl:apply-templates select="child::*/template"/>
 	</body>
