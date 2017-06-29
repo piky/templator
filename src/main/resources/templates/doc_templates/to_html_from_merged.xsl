@@ -5,6 +5,31 @@
 
 <xsl:param name="lang" select="EN"/> <!-- EN as defaults -->
 
+<xsl:variable name="template_deps_interfaces" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_interfaces.xml')"/>
+</xsl:variable>
+
+<xsl:variable name="template_deps_interfaces_simple" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_interfaces_simple.xml')"/>
+</xsl:variable>
+
+<xsl:variable name="template_deps_ether_like" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_ether_like.xml')"/>
+</xsl:variable>
+
+<xsl:variable name="template_deps_system_snmp" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_system_snmp.xml')"/>
+</xsl:variable>
+
+<xsl:variable name="template_deps_host_resources" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_host_resources.xml')"/>
+</xsl:variable>
+
+<xsl:variable name="template_deps_entity_sensors" as="node()">
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_entity_sensors.xml')"/>
+</xsl:variable>
+
+
 <xsl:template match="/">
 <html>
 	<header>
@@ -35,16 +60,54 @@
 		<h2>Discovery rules</h2>
 		<xsl:variable name="discoveryTable">
 			<xsl:copy-of select="./discoveryRules/discoveryRule"/>
+			<xsl:if  test="./classes/class[text()='Interfaces']">
+				<xsl:copy-of select="$template_deps_interfaces//discoveryRules/discoveryRule"/>
+			</xsl:if>
+			<xsl:if  test="./classes/class[text()='Interfaces Simple']">
+				<xsl:copy-of select="$template_deps_interfaces_simple//discoveryRules/discoveryRule"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='Interfaces EtherLike Extension']">
+				<xsl:copy-of select="$template_deps_ether_like//discoveryRules/discoveryRule"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='SNMP Device']">
+				<xsl:copy-of select="$template_deps_system_snmp//discoveryRules/discoveryRule"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template HOST-RESOURCES-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_host_resources//discoveryRules/discoveryRule"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template ENTITY-SENSORS-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_entity_sensors//discoveryRules/discoveryRule"/>
+			</xsl:if>			
+							
 		</xsl:variable>
 		<xsl:call-template name="discoveryTable" >
 			<xsl:with-param name="discoveryTable" select="$discoveryTable"/>
-		</xsl:call-template>
-				
-		
-		
+		</xsl:call-template> 
+
 		<h2>Items</h2>
 		<xsl:variable name="items">
 			<xsl:copy-of select="./metrics/*"/>
+			<xsl:if  test="./classes/class[text()='Interfaces']">
+				<xsl:copy-of select="$template_deps_interfaces//metrics/*"/>
+			</xsl:if>
+			<xsl:if  test="./classes/class[text()='Interfaces Simple']">
+				<xsl:copy-of select="$template_deps_interfaces_simple//metrics/*"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='Interfaces EtherLike Extension']">
+				<xsl:copy-of select="$template_deps_ether_like//metrics/*"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='SNMP Device']">
+				<xsl:copy-of select="$template_deps_system_snmp//metrics/*"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template HOST-RESOURCES-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_host_resources//metrics/*"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template ENTITY-SENSORS-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_entity_sensors//metrics/*"/>
+			</xsl:if>			
+			
+		
+			
 		</xsl:variable>
 		<xsl:call-template name="itemsTable">
 			<xsl:with-param name="items" select="$items"/>
@@ -54,6 +117,25 @@
 		<h2>Triggers</h2>
 		<xsl:variable name="triggers">
 			<xsl:copy-of select="./metrics/*/triggers/trigger"/>
+			<xsl:if  test="./classes/class[text()='Interfaces']">
+				<xsl:copy-of select="$template_deps_interfaces//metrics/*/triggers/trigger"/>
+			</xsl:if>
+			<xsl:if  test="./classes/class[text()='Interfaces Simple']">
+				<xsl:copy-of select="$template_deps_interfaces_simple//metrics/*/triggers/trigger"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='Interfaces EtherLike Extension']">
+				<xsl:copy-of select="$template_deps_ether_like//metrics/*/triggers/trigger"/>
+			</xsl:if>
+			<xsl:if test="./classes/class[text()='SNMP Device']">
+				<xsl:copy-of select="$template_deps_system_snmp//metrics/*/triggers/trigger"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template HOST-RESOURCES-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_host_resources//metrics/*/triggers/trigger"/>
+			</xsl:if>
+			<xsl:if test="./templates/template[name='Template ENTITY-SENSORS-MIB_SNMP_PLACEHOLDER']">
+				<xsl:copy-of select="$template_deps_entity_sensors//metrics/*/triggers/trigger"/>
+			</xsl:if>				
+			
 		</xsl:variable>
 		<xsl:call-template name="triggersTable" >
 			<xsl:with-param name="triggers" select="$triggers"/>
@@ -80,7 +162,6 @@
   <xsl:param name="discoveryTable"/>
   <table border="1">
     <tr bgcolor="#9acd32">
-
       <th>Name</th>
       <th>Key</th>
       <th>SNMP OID</th>
@@ -135,6 +216,7 @@
       <th>Name</th>
       <th>Description</th>
       <th>Expression</th>
+      <th>Recovery Expression</th>
       <th>Documentation</th>
       <th>Severity</th>
     </tr>
@@ -143,7 +225,8 @@
     <tr>
       <td><xsl:value-of select="./name"/></td>
       <td><xsl:value-of select="./description"/></td>
-      <td><xsl:value-of select="./expression"/></td>
+      <td style="font-size:0.8em"><xsl:value-of select="./expression"/></td>
+      <td style="font-size:0.8em"><xsl:value-of select="./recovery_expression"/></td>
       <td><xsl:value-of select="./documentation"/></td>
       <xsl:choose>
       <xsl:when test="./priority = 0">
