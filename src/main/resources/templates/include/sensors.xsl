@@ -244,7 +244,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>psu.critical</id>
-					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$PSU_CRIT_STATUS}</expression>
+					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
 	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: авария (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>3</priority>
@@ -315,7 +315,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<id>fan.critical</id>
-					<expression>{TEMPLATE_NAME:METRIC.last(0)}={$FAN_CRIT_STATUS}</expression>
+					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state (<xsl:value-of select="$nowEN" />)</name>
 	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой (<xsl:value-of select="$nowRU" />)</name>
 	                <priority>3</priority>
