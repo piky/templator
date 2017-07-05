@@ -13,36 +13,25 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<update><xsl:copy-of select="$update3min"/></update>
+			<update><xsl:copy-of select="$update1min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<triggers>
 				<trigger>
 				    <documentation>This trigger expression works as follows:
-1. Can be triggered from linkDown trap
-2. Can be triggered if ifOperStatus = 2
-3. TRIGGER.VALUE wrappers and avg(1s) are used to make sure that only metrics with actual values are used to determine proper  trigger's condition.
-4. {$IFCONTROL:"{#IFNAME}"}=1 - user can redefine Context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.
+1. Can be triggered if ifOperStatus = 2
+2. {$IFCONTROL:"{#IFNAME}"}=1 - user can redefine Context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.
 if IFNAME not available - use SNMPINDEX (IFINDEX))
-5. {TEMPLATE_NAME:METRIC.diff()}=1) - trigger fires only ifOperStatus ever was up(1) before. (do not fire ethernal off interfaces.)
-6. if ifAdminStatus is not up. then the trigger will not fire. 
-WARNING. if closed manually - won't fire again on next poll. because of .diff
+3. {TEMPLATE_NAME:METRIC.diff()}=1) - trigger fires only ifOperStatus ever was up(1) before. (do not fire ethernal off interfaces.)
+WARNING. if closed manually - won't fire again on next poll. because of .diff. Thats why manually closing it is disabled.
 </documentation>
 				    <id>if.down</id>
-					<!-- will not expand MACRO in SNMPINDEX inside str function in 3.2, only in 3.4-->
-					<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TRIGGER.VALUE}=0 and (
-({TEMPLATE_NAME:METRIC.avg(1s)}=2 and {TEMPLATE_NAME:METRIC.diff()}=1) or
-({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
-{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.3",1s)}=1)))</expression>
-					<recovery_expression>{$IFCONTROL:"{#IFNAME}"}=0 or ({TRIGGER.VALUE}=1 and (
-{TEMPLATE_NAME:METRIC.avg(1s)}=1 or
-({TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str("  .1.3.6.1.2.1.2.2.1.1           type=2  value=INTEGER: {#SNMPINDEX}",1s)}=1 and
-{TEMPLATE_NAME:snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"].str(".1.3.6.1.6.3.1.1.5.4",1s)}=1)))</recovery_expression>
+					<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)</expression>
 					<manual_close>0</manual_close>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> is down</name>1
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> is down</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/> недоступен</name>
 	                <url/>
 	                <priority>3</priority>
-	                <description lang="EN">linkDown</description>
+	                <description lang="EN">Interface is down</description>
 	                <description lang="RU">интерфейс недоступен</description>
               	    <tags>
 	                	<tag>

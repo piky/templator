@@ -21,22 +21,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<triggers>
 				<trigger>
-				    <documentation>This trigger expression work as follows:
-1. Can be triggered from coldStart trap (either perl script or snmptt)
-2. Can be triggered if uptime metric is too low (less then 10 minutes)
-3. TRIGGER.VALUE wrappers and avg(1s), str(x,1s) are used to make sure that only metrics with actual values are used to determine proper  trigger's condition.</documentation>
 				    <id>uptime.restarted</id>
-					<expression>{TRIGGER.VALUE}=0 and ({TEMPLATE_NAME:METRIC.avg(1s)}&lt;10m or
-{TEMPLATE_NAME:snmptrap.fallback.str(".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.1",1s)}=1 or
-{TEMPLATE_NAME:snmptrap.fallback.str("coldStart",1s)}=1)</expression>
-					<recovery_expression>{TRIGGER.VALUE}=1 and ({TEMPLATE_NAME:METRIC.avg(1s)}&gt;10m)</recovery_expression>
+					<expression>{TEMPLATE_NAME:METRIC.last()}&lt;10m</expression>
 					<manual_close>1</manual_close>
 	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
 	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
 	                <url/>
 	                <priority>2</priority>
-	                <description lang="EN">The device uptime is less then 10 minutes or SNMP trap(coldStart) received</description>
-	                <description lang="RU">Аптайм устройства менее 10 минут или был получен SNMP trap(coldStart)</description>
+	                <description lang="EN">The device uptime is less then 10 minutes</description>
+	                <description lang="RU">Аптайм устройства менее 10 минут</description>
 	                <dependsOn>
 	                	<dependency>nosnmp</dependency>
 	               	</dependsOn>
