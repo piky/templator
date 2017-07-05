@@ -22,8 +22,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 						<trigger>
 						    <id>health.disaster</id>
 							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-			                <name lang="EN">System is in unrecoverable state! (<xsl:value-of select="$nowEN"/>)</name>
-			                <name lang="RU">Статус системы: сбой (<xsl:value-of select="$nowRU"/>)</name>
+			                <name lang="EN">System is in unrecoverable state!</name>
+			                <name lang="RU">Статус системы: сбой</name>
 			                <priority>4</priority>
 			                <description lang="EN">Please check the device for faults</description>
 			                <description lang="RU">Проверьте устройство</description>
@@ -37,8 +37,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 						<id>health.critical</id>
 						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-		                <name lang="EN">System status is in critical state (<xsl:value-of select="$nowEN"/>)</name>
-		                <name lang="RU">Статус системы: авария (<xsl:value-of select="$nowRU"/>)</name>
+		                <name lang="EN">System status is in critical state</name>
+		                <name lang="RU">Статус системы: авария</name>
 		                <priority>4</priority>
 		                <description lang="EN">Please check the device for errors</description>
 		                <description lang="RU">Проверьте устройство</description>
@@ -57,8 +57,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 					    <id>health.warning</id>
 						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-		                <name lang="EN">System status is in warning state (<xsl:value-of select="$nowEN"/>)</name>
-		                <name lang="RU">Статус системы: предупреждение (<xsl:value-of select="$nowRU"/>)</name>
+		                <name lang="EN">System status is in warning state</name>
+		                <name lang="RU">Статус системы: предупреждение</name>
 		                <priority>2</priority>
 		                <description lang="EN">Please check the device for warnings</description>
 		                <description lang="RU">Проверьте устройство</description>

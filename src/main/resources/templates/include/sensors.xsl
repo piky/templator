@@ -51,14 +51,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<!-- AND
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
 							</recovery_expression>
-							<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
-	                		<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
+							<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
+	                		<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 														
 						</xsl:when>
 						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
 						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
-						<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
-	                	<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
+						<name lang="EN"><xsl:value-of select="alarmObject" /> temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
+	                	<name lang="RU">[<xsl:value-of select="alarmObject" />] Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 						</xsl:otherwise>
 					</xsl:choose>	                
 	                
@@ -121,13 +121,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<!-- AND
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
 							</recovery_expression>
-							<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)({ITEM.VALUE2})</name>
-	                		<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)({ITEM.VALUE2})</name>
+							<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
+	                		<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
 						</xsl:when>
 						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
 						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
-						<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowEN" />)</name>
-	                	<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"} (<xsl:value-of select="$nowRU" />)</name>						
+						<name lang="EN"><xsl:value-of select="alarmObject"/> temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
+	                	<name lang="RU">[<xsl:value-of select="alarmObject"/>] Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>						
 						</xsl:otherwise>
 					</xsl:choose>
 					
@@ -157,8 +157,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <id>tempLow</id>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
 					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
-	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"} (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN"><xsl:value-of select="alarmObject" /> temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject" />] Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <url />
 	                <priority>3</priority>
 	                <description />
@@ -245,8 +245,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<id>psu.critical</id>
 					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: авария (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Power supply is in critical state</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус блока питания: авария</name>
 	                <priority>3</priority>
 	                <description lang="EN">Please check the power supply unit for errors</description>
 	                <description lang="RU">Проверьте блок питания</description>
@@ -316,8 +316,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<id>fan.critical</id>
 					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN"><xsl:value-of select="alarmObject"/> fan is in critical state</name>
+	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: сбой</name>
 	                <priority>3</priority>
 	                <description lang="EN">Please check the fan unit</description>
 	                <description lang="RU">Проверьте вентилятор</description>

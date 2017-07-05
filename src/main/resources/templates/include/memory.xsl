@@ -174,8 +174,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$MEMORY_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ (<xsl:value-of select="$nowRU" />)</name>
+	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization</name>
+	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description/>

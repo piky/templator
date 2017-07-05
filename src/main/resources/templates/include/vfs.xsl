@@ -165,8 +165,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 						<id>storageCrit</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места</name>
 		                <url/>
 		                <priority>3</priority>
 		                <description/>
@@ -190,8 +190,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 						<id>storageWarn</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low (utilized by {ITEM.VALUE1})</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места (использовано: {ITEM.VALUE1})</name>
+		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low</name>
+		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description/>

@@ -75,8 +75,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
-	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> might have been replaced (new serial number:{ITEM.VALUE1})</name>
-	                <name lang="RU">Возможно замена <xsl:value-of select="if (alarmObject!='') then alarmObject else 'устройства'" /> (новый серийный номер:{ITEM.VALUE1})</name>
+	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> might have been replaced (new serial number received)</name>
+	                <name lang="RU">Возможно замена <xsl:value-of select="if (alarmObject!='') then alarmObject else 'устройства'" /> (получен новый серийный номер)</name>
 	                <url/>
 	                <priority>1</priority>
 	                <description lang="EN"><xsl:value-of select="if (alarmObject!='') then alarmObject else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
@@ -126,8 +126,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
-	                <name lang="EN">Firmware has changed: (new:{ITEM.VALUE1})</name>
-	                <name lang="RU">Версия прошивки изменилась: (сейчас:{ITEM.VALUE1})</name>
+	                <name lang="EN">Firmware has changed</name>
+	                <name lang="RU">Версия прошивки изменилась</name>
 	                <url/>
 	                <priority>1</priority>
 	                <description lang="EN">Firmware version has changed. Ack to close</description>
