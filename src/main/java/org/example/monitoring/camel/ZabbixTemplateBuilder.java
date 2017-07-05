@@ -36,7 +36,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    .to("xslt:templates/to_metrics_strip_imported_metrics.xsl?saxon=true")
 		.multicast().parallelProcessing().
 			to(
-			//"direct:RU",
+			"direct:RU",
 			"direct:docs",
 			"direct:EN"
 			);
@@ -52,7 +52,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
-					//"direct:snmpv1",
+					"direct:snmpv1",
 					"direct:snmpv2"
 					);
 	    
@@ -92,7 +92,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
 	    .end()
-	    .to("direct:docs");
+	    .to(
+	    		"direct:local_tmon",
+	    		"direct:docs")
+	    ;
 	    
 	    from("direct:docs")
 	    	.to("direct:html")
