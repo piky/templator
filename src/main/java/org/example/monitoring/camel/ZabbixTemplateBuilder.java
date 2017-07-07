@@ -1,5 +1,6 @@
 package org.example.monitoring.camel;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +9,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
  
   @Override
   public void configure() throws Exception {
-    from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
+	errorHandler(deadLetterChannel("seda:errors"));
+	
+	from("seda:errors")
+		.log("Error: ${file:name}: ${exception.message}");
+	  
+	from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
 	    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
     
