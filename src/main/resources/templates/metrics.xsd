@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/zbx_template_new/" targetNamespace="http://www.example.org/zbx_template_new/">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+xmlns:tns="zabbix.com/zbx_template_pack" 
+targetNamespace="zabbix.com/zbx_template_pack"
+elementFormDefault="qualified">
     <element name="root" type="tns:rootType"/>
     <complexType name="templateType">
     	 <all>
