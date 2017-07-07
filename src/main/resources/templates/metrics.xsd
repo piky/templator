@@ -479,6 +479,7 @@
         <enumeration value="Interfaces Simple"/>
         <enumeration value="Interfaces EtherLike Extension"/>
         
+        <enumeration value="Module"/>
         <enumeration value="HOST-RESOURCES-MIB"/>
         <enumeration value="ENTITY-SENSORS-MIB"/>
         <enumeration value="ENTITY-MIB"/>

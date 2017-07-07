@@ -57,7 +57,8 @@
 		            <xsl:when test="child::*/template/classes[class='OS']"><name>Templates/OS</name></xsl:when>
 		            <xsl:when test="child::*/template/classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
 		            <xsl:when test="child::*/template/classes[class='Server']"><name>Templates/Server</name></xsl:when>
-		            <xsl:otherwise><name>Templates/Dependencies</name></xsl:otherwise>
+		            <xsl:when test="child::*/template/classes[class='Module']"><name>Templates/Modules</name></xsl:when>
+		            <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 	            </xsl:choose>
 	        </group>
 		</groups>    
@@ -87,7 +88,8 @@
 				            <xsl:when test="./classes[class='OS']"><name>Templates/OS</name></xsl:when>
 				            <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
 				            <xsl:when test="./classes[class='Server']"><name>Templates/Server</name></xsl:when>
-				            <xsl:otherwise><name>Templates/Dependencies</name></xsl:otherwise>
+				            <xsl:when test="./classes[class='Module']"><name>Templates/Modules</name></xsl:when>
+				            <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 			            </xsl:choose>
 			        </group>
 				</groups>
