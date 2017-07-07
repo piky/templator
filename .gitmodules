@@ -1,0 +1,3 @@
+[submodule "bin"]
+	path = bin
+	url = https://github.com/v-zhuravlev/zbx_template_pack.git

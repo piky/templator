@@ -6,7 +6,7 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:param name="zbx_ver" select="3.2"/>
-<xsl:variable name="snmp_port">{$SNMP_PORT}</xsl:variable>
+<xsl:variable name="snmp_port"></xsl:variable> <!-- if empty than default port from host SNMP interface are going to be used -->
 <xsl:param name="discoveryDelay">3600</xsl:param>
 
 <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
