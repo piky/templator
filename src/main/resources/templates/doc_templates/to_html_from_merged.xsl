@@ -6,27 +6,27 @@
 <xsl:param name="lang">EN</xsl:param> <!-- EN as defaults -->
 
 <xsl:variable name="template_deps_interfaces" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_interfaces.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_interfaces.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_interfaces_simple" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_interfaces_simple.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_interfaces_simple.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_ether_like" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_ether_like.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_ether_like.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_system_snmp" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_system_snmp.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_system_snmp.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_host_resources" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_host_resources.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_host_resources.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_entity_sensors" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_deps_entity_sensors.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_entity_sensors.xml')"/>
 </xsl:variable>
 
 
