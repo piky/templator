@@ -30,3 +30,5 @@ examples/
 .transformations/
 .project
 .classpath
+.idea/
+zbx_templates_pack.iml
