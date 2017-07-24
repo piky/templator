@@ -258,7 +258,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 						</xsl:when>
 						<xsl:when test="$metric/expressionFormula">
 							<snmpObject><xsl:value-of select="$metricKey"/></snmpObject>
-							<xsl:copy-of select="$metric/expressionFormula"></xsl:copy-of>
+							<xsl:copy-of select="$metric/expressionFormula"/>
 							<itemType>calculated</itemType>
 						</xsl:when>
 						<xsl:otherwise>
@@ -305,7 +305,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:otherwise>
 				</xsl:choose>
 				
-				<xsl:copy-of select="$metric/units"></xsl:copy-of>
+				<xsl:copy-of select="$metric/units"/>
 				
 				<xsl:choose>
 					<xsl:when test="$metric/update">
