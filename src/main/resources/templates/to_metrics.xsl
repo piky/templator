@@ -269,15 +269,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 						</xsl:otherwise>
 					</xsl:choose>
 				
-				<xsl:copy-of select="ref"></xsl:copy-of>
-				<xsl:copy-of select="vendorDescription"></xsl:copy-of>
+				<xsl:copy-of select="ref"/>
+				<xsl:copy-of select="vendorDescription"/>
 				<description>
 							<xsl:value-of select="if (mib) then (concat('MIB: ',concat(mib,'&#10;'))) else ()"/>
 							<xsl:value-of select="if (vendorDescription) then (concat(concat('',vendorDescription),'&#10;')) else (concat(concat('',$metric/description),'&#10;'))"/>
 							<xsl:value-of select="if (ref) then (concat('Reference: ',concat(ref,'&#10;'))) else ()"/>
 				</description>
 				
-				<xsl:copy-of select="$metric/logFormat"></xsl:copy-of>
+				<xsl:copy-of select="$metric/logFormat"/>
 				<xsl:choose>
 					<xsl:when test="$metric/inventory_link and not(discoveryRule)">
 						<inventory_link><xsl:value-of select="$metric/inventory_link"/></inventory_link>
@@ -338,7 +338,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					</xsl:otherwise>
 				</xsl:choose>
 				<alarmObject><xsl:value-of select="./alarmObject"/></alarmObject>
-				<xsl:copy-of select="./discoveryRule"></xsl:copy-of>
+				<xsl:copy-of select="./discoveryRule"/>
 				<xsl:if test="$metric/triggers/trigger">
 					<triggers>
 						<xsl:for-each select="$metric/triggers/*">
@@ -372,20 +372,20 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		<xsl:param name="trigger"/>
 		<xsl:param name="metricKey"/>
 			<trigger>
-					<xsl:copy-of select="$trigger/documentation"></xsl:copy-of>
-					<xsl:copy-of select="$trigger/id"></xsl:copy-of>
+					<xsl:copy-of select="$trigger/documentation"/>
+					<xsl:copy-of select="$trigger/id"/>
 					<!-- <xsl:copy-of select="$trigger/expression"></xsl:copy-of> -->
 					<expression><xsl:value-of select="replace($trigger/expression, 'METRIC', $metricKey)"/></expression>
 					<recovery_expression><xsl:value-of select="replace($trigger/recovery_expression, 'METRIC', $metricKey)"/></recovery_expression>
-		            <xsl:copy-of select="$trigger/recovery_mode"></xsl:copy-of>
-		            <xsl:copy-of select="$trigger/manual_close"></xsl:copy-of>
 					<xsl:copy-of select="$trigger/name"></xsl:copy-of>
-					<xsl:copy-of select="$trigger/url"></xsl:copy-of>
-					<xsl:copy-of select="$trigger/priority"></xsl:copy-of>
-					<xsl:copy-of select="$trigger/description"></xsl:copy-of>
-					<xsl:copy-of select="$trigger/dependsOn"></xsl:copy-of>
+		            <xsl:copy-of select="$trigger/recovery_mode"/>
+		            <xsl:copy-of select="$trigger/manual_close"/>
+					<xsl:copy-of select="$trigger/url"/>
+					<xsl:copy-of select="$trigger/priority"/>
+					<xsl:copy-of select="$trigger/description"/>
+					<xsl:copy-of select="$trigger/dependsOn"/>
 	                <tags>
-	                	<xsl:copy-of select="$trigger/tags/tag"></xsl:copy-of>
+	                	<xsl:copy-of select="$trigger/tags/tag"/>
 		                <tag><tag>Host</tag><value>{HOST.HOST}</value></tag>
 	                </tags>
 			</trigger>
