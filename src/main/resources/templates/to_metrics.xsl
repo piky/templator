@@ -105,7 +105,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="value_maps">
 	<value_maps>
-		<xsl:copy-of copy-namespaces="no" select="node()|@*"></xsl:copy-of>
+		<xsl:copy-of copy-namespaces="no" select="node()|@*"/>
 	</value_maps>
 </xsl:template>
 
@@ -234,6 +234,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- This block describes basic metric structure. Call it from each metric below-->
 <xsl:template name="defaultMetricBlock">
 		<xsl:param name="metric"/>
+		<xsl:variable name="alarmObject" select="alarmObject"/>
 		<xsl:choose>
 			<xsl:when test="imported=true()"> <!-- means imported -->
 				<xsl:copy-of select="child::node()"/>
@@ -245,11 +246,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
 				</xsl:choose>
 				</xsl:variable>
-				<documentation><xsl:value-of select="documentation" /></documentation>
-				<xsl:copy-of select="$metric/name"></xsl:copy-of>
-				<xsl:copy-of select="$metric/group"></xsl:copy-of>
-		
-				
+				<documentation><xsl:value-of select="documentation"/></documentation>
+				<xsl:apply-templates select="$metric/name" mode="formatter" >
+					<xsl:with-param name="alarmObject" select="alarmObject"/>
+				</xsl:apply-templates>
+
+
+				<xsl:copy-of select="$metric/group"/>
+
+
 				
 					<xsl:choose>
 						<xsl:when test="itemType">
@@ -345,9 +350,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			    			<xsl:call-template name="defaultTriggerBlock">
 								<xsl:with-param name="trigger" select="."/>
 								<xsl:with-param name="metricKey" select="$metricKey"/>
+								<xsl:with-param name="alarmObject" select="$alarmObject"/>
 				    		</xsl:call-template>            
 						</xsl:for-each> 
-						
 					</triggers>
 				</xsl:if>
 				<xsl:if test="$metric/graphs/graph">
@@ -356,6 +361,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<xsl:call-template name="defaultGraphBlock">
 								<xsl:with-param name="graph" select="."/>
 								<xsl:with-param name="metric" select="$metric"/>
+								<xsl:with-param name="alarmObject" select="$alarmObject"/>
 				    		</xsl:call-template>         
 						</xsl:for-each> 
 					</graphs>
@@ -367,19 +373,31 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 </xsl:template>
 
+
+<xsl:template match="*/name" mode="formatter">
+	<xsl:param name="alarmObject"/>
+	<xsl:copy>
+		<xsl:if test="@lang"><xsl:attribute name="lang" select="@lang"/></xsl:if>
+		<xsl:value-of select="if ($alarmObject!='') then concat('[',$alarmObject,'] ') else ()"/><xsl:value-of select="."/>
+	</xsl:copy>
+</xsl:template>
+
 <!-- This block describes basic trigger structure. Call it from each trigger in metrics below-->
 <xsl:template name="defaultTriggerBlock">
 		<xsl:param name="trigger"/>
 		<xsl:param name="metricKey"/>
+		<xsl:param name="alarmObject"/>
 			<trigger>
 					<xsl:copy-of select="$trigger/documentation"/>
 					<xsl:copy-of select="$trigger/id"/>
 					<!-- <xsl:copy-of select="$trigger/expression"></xsl:copy-of> -->
 					<expression><xsl:value-of select="replace($trigger/expression, 'METRIC', $metricKey)"/></expression>
 					<recovery_expression><xsl:value-of select="replace($trigger/recovery_expression, 'METRIC', $metricKey)"/></recovery_expression>
-					<xsl:copy-of select="$trigger/name"></xsl:copy-of>
 		            <xsl:copy-of select="$trigger/recovery_mode"/>
 		            <xsl:copy-of select="$trigger/manual_close"/>
+					<xsl:apply-templates select="$trigger/name" mode="formatter" >
+						<xsl:with-param name="alarmObject" select="$alarmObject"/>
+					</xsl:apply-templates>
 					<xsl:copy-of select="$trigger/url"/>
 					<xsl:copy-of select="$trigger/priority"/>
 					<xsl:copy-of select="$trigger/description"/>
@@ -412,8 +430,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template name="defaultGraphBlock">
 		<xsl:param name="graph"/>
 		<xsl:param name="metric"/>
+		<xsl:param name="alarmObject"/>
 		<graph>
-			<xsl:copy-of select="$graph/name"/>
+			<xsl:apply-templates select="$graph/name" mode="formatter" >
+				<xsl:with-param name="alarmObject" select="$alarmObject"/>
+			</xsl:apply-templates>
             <width>900</width>
             <height>200</height>
          	<xsl:choose>

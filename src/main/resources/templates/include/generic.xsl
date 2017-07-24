@@ -24,8 +24,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <id>uptime.restarted</id>
 					<expression>{TEMPLATE_NAME:METRIC.last()}&lt;10m</expression>
 					<manual_close>1</manual_close>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> The {HOST.NAME} has just been  restarted</name>
-	                <name lang="RU"><xsl:value-of select="alarmObject"/>{HOST.NAME} был только что перезагружен</name>
+	                <name lang="EN">The {HOST.NAME} has just been  restarted</name>
+	                <name lang="RU">{HOST.NAME} был только что перезагружен</name>
 	                <url/>
 	                <priority>2</priority>
 	                <description lang="EN">The device uptime is less then 10 minutes</description>

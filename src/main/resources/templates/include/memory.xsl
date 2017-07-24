@@ -70,7 +70,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vm.memory.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Used memory</name>
+			<name>Used memory</name>
 			<group>Memory</group>
 			<units>B</units>
 			<description>Used memory in Bytes</description>
@@ -97,7 +97,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vm.memory.free">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Available memory</name> <!--  Available as in zabbix agent templates -->
+			<name>Available memory</name> <!--  Available as in zabbix agent templates -->
 			<group>Memory</group>
 			<update><xsl:value-of select="$update3min"/></update>
 			<units>B</units>
@@ -118,7 +118,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vm.memory.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Total memory</name>
+			<name>Total memory</name>
 			<group>Memory</group>
 			<description>Total memory in Bytes</description>
 			<units>B</units>
@@ -147,7 +147,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Memory utilization</name>
+			<name>Memory utilization</name>
 			<group>Memory</group>
 			<description>Memory utilization in %</description>
 			<units>%</units>
@@ -174,8 +174,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<triggers>
 				<trigger>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$MEMORY_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>High memory utilization</name>
-	                <name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject"/>] </xsl:if>Мало свободной памяти ОЗУ</name>
+	                <name lang="EN">High memory utilization</name>
+	                <name lang="RU">Мало свободной памяти ОЗУ</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description/>
@@ -199,7 +199,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			</triggers>
 			<graphs>
 				<graph>
-					<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Memory utilization</name>
+					<name>Memory utilization</name>
 					<yaxismin>0</yaxismin>
 					<yaxismax>100</yaxismax>
 					<graphItems>

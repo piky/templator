@@ -9,8 +9,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	 
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>CPU utilization</name>
-			<name lang="RU"><xsl:if test="alarmObject != ''">[<xsl:value-of select="alarmObject" />] </xsl:if>Загрузка процессора</name>
+			<name lang="EN">CPU utilization</name>
+			<name lang="RU">Загрузка процессора</name>
 			<group>CPU</group>
 			<description>CPU utilization in %</description>
 			<units>%</units>
@@ -19,8 +19,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
-	                <name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>High CPU utilization</name>
-	                <name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Загрузка ЦПУ слишком велика</name>
+					<name lang="EN">High CPU utilization</name>
+					<name lang="RU">Высокая загрузка процессора</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description />
@@ -43,7 +43,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			</triggers>
 			<graphs>
 				<graph>
-					<name><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>CPU utilization</name>
+					<name>CPU utilization</name>
 					<yaxismin>0</yaxismin>
 					<yaxismax>100</yaxismax>
 					<graphItems>

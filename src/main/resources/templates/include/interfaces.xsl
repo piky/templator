@@ -8,8 +8,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/net.if.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>operational status</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>текущий статус</name>
+			<name lang="EN">operational status</name>
+			<name lang="RU">текущий статус</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -27,8 +27,8 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 				    <id>if.down</id>
 					<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)</expression>
 					<manual_close>0</manual_close>
-	                <name lang="EN"><xsl:value-of select="alarmObject"/> is down</name>
-	                <name lang="RU"><xsl:value-of select="alarmObject"/> недоступен</name>
+	                <name lang="EN">is down</name>
+	                <name lang="RU">недоступен</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description lang="EN">Interface is down</description>
@@ -43,20 +43,20 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 			</triggers>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 <xsl:template match="template/metrics/net.if.in">
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>bits in</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Трафик входящий</name>
+			<name lang="EN">bits in</name>
+			<name lang="RU">Трафик входящий</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
@@ -76,8 +76,8 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 {TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
 						<recovery_expression/>
 						<manual_close>1</manual_close>
-		                <name lang="EN"><xsl:value-of select="alarmObject"/> high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
-		                <name lang="RU"><xsl:value-of select="alarmObject"/> сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="EN">high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="RU">сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN"></description>
@@ -95,10 +95,10 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 					</xsl:when>
 					<xsl:otherwise><xsl:message terminate="yes">Please check net.if.speed and net.if.out</xsl:message></xsl:otherwise>
 				</xsl:choose>
-			</triggers>			
+			</triggers>
 			<graphs>
 				<graph>
-					<name><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>traffic</name>
+					<name>traffic</name>
 					<graphItems>
 						<item>
 							<drawtype>gradient</drawtype>
@@ -135,12 +135,12 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 			</graphs>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 
@@ -148,23 +148,23 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>bits out</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Трафик исходящий</name>
+			<name lang="EN">bits out</name>
+			<name lang="RU">Трафик исходящий</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update3min"/></update>
 			<valueType><xsl:copy-of select="$valueTypeInt"/></valueType>
 			<units>bps</units>
-			<triggers/>		
+			<triggers/>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 
@@ -172,8 +172,8 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	<xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>errors in</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Ошибки входящие</name>
+			<name lang="EN">errors in</name>
+			<name lang="RU">Ошибки входящие</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
@@ -191,8 +191,8 @@ or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERR
 						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
 and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2</recovery_expression>
 						<manual_close>1</manual_close>
-		                <name lang="EN"><xsl:value-of select="alarmObject"/> high error rate</name>
-		                <name lang="RU"><xsl:value-of select="alarmObject"/> большое количество ошибок</name>
+		                <name lang="EN">high error rate</name>
+		                <name lang="RU">большое количество ошибок</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN"></description>
@@ -213,19 +213,19 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			</triggers>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 <xsl:template match="template/metrics/net.if.out.errors">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>errors out</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Ошибки исходящие</name>
+			<name lang="EN">errors out</name>
+			<name lang="RU">Ошибки исходящие</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
@@ -234,12 +234,12 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			<triggers/>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 
@@ -258,7 +258,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			<valueType><xsl:copy-of select="$valueTypeLog"/></valueType>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
@@ -271,8 +271,8 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.in.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>packets discarded in</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Пакетов отброшено (входящих)</name>
+			<name lang="EN">packets discarded in</name>
+			<name lang="RU">Пакетов отброшено (входящих)</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
@@ -281,19 +281,19 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			<triggers/>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 <xsl:template match="template/metrics/net.if.out.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>packets discarded out</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Пакетов отброшено (исходящих)</name>
+			<name lang="EN">packets discarded out</name>
+			<name lang="RU">Пакетов отброшено (исходящих)</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
@@ -302,12 +302,12 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			<triggers/>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 
@@ -315,8 +315,8 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>speed</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Скорость</name>
+			<name lang="EN">speed</name>
+			<name lang="RU">Скорость</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -332,18 +332,18 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 						    <id>if.speed.not_max</id>
 							<expression>{TEMPLATE_NAME:METRIC.change()}&lt;0 and {TEMPLATE_NAME:METRIC.last()}&gt;0
 and (
-{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=6 or 
-{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=7 or 
-{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=11 or 
-{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=62 or 
-{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=69 or 
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=6 or
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=7 or
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=11 or
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=62 or
+{TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=69 or
 {TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=117
 )
 </expression>
 							<recovery_expression>{TEMPLATE_NAME:METRIC.change()}&gt;0 and {TEMPLATE_NAME:METRIC.prev()}&gt;0</recovery_expression>>
 							<manual_close>1</manual_close>
-			                <name lang="EN"><xsl:value-of select="alarmObject"/> of type Ethernet has changed to lower speed than it was before</name>
-			                <name lang="RU"><xsl:value-of select="alarmObject"/> перешел на более низкую скорость, чем был ранее</name>
+			                <name lang="EN">of type Ethernet has changed to lower speed than it was before</name>
+			                <name lang="RU">перешел на более низкую скорость, чем был ранее</name>
 			                <url/>
 			                <priority>1</priority>
 			                <description>This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Ack to close.</description>
@@ -359,23 +359,23 @@ and (
 						</trigger>
 					</xsl:when>
 					<xsl:otherwise><xsl:message>Please check the availability of net.if.type</xsl:message></xsl:otherwise>
-				</xsl:choose>	
+				</xsl:choose>
 			</triggers>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 <xsl:template match="template/metrics/net.if.type">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>type</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Тип</name>
+			<name lang="EN">type</name>
+			<name lang="RU">Тип</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -384,20 +384,20 @@ and (
 			<triggers/>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
 	    </xsl:call-template>
-    </xsl:copy>	
+    </xsl:copy>
 </xsl:template>
 
 
 <xsl:template match="template/metrics/net.if.duplex">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('',concat(alarmObject,' ')) else ()"/>duplex status</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Статус duplex</name>
+			<name lang="EN">duplex status</name>
+			<name lang="RU">Статус duplex</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -410,8 +410,8 @@ and (
 						<expression>{TEMPLATE_NAME:METRIC.last()}=2</expression>
 						<recovery_expression/>
 						<manual_close>1</manual_close>
-		                <name lang="EN"><xsl:value-of select="alarmObject"/> is in half-duplex mode</name>
-		                <name lang="RU"><xsl:value-of select="alarmObject"/> в режиме half-duplex</name>
+		                <name lang="EN">is in half-duplex mode</name>
+		                <name lang="RU">в режиме half-duplex</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description>Please check autonegotiation settings and cabling</description>

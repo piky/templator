@@ -58,8 +58,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/system.hw.serialnumber">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Hardware serial number</name>
-			<name lang="RU"><xsl:value-of select="if (alarmObject!='') then concat('[',concat(alarmObject,'] ')) else ()"/>Серийный номер</name>
+			<name lang="EN">Hardware serial number</name>
+			<name lang="RU">Серийный номер</name>
 			<group>Inventory</group>
 			<xsl:if test="not(alarmObject) and not(discoveryRule)">
 				<zabbixKey>system.hw.serialnumber</zabbixKey>

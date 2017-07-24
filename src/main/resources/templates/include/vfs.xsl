@@ -10,7 +10,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.units">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Storage units</name>
+			<name>Storage units</name>
 			<group>Internal Items</group>
 			<history><xsl:value-of select="$history7days"/></history>
 			<trends><xsl:value-of select="$trends0days"/></trends>
@@ -27,7 +27,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.units.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Used storage in units</name>
+			<name>Used storage in units</name>
 			<group>Internal Items</group>
 			<description>Used storage in units</description>
 			<units>units</units>
@@ -47,7 +47,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.units.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Total space in units</name>
+			<name>Total space in units</name>
 			<group>Internal Items</group>
 			<description>Total space in units</description>
 			<history><xsl:value-of select="$history7days"/></history>
@@ -67,7 +67,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.used">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Used space</name>
+			<name>Used space</name>
 			<group>Storage</group>
 			<description>Used storage in Bytes</description>
 			<xsl:choose>
@@ -93,7 +93,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.free">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Free space</name>
+			<name>Free space</name>
 			<group>Storage</group>
 			<units>B</units>
 		</metric>
@@ -111,7 +111,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.total">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Total space</name>
+			<name>Total space</name>
 			<group>Storage</group>
 			<description>Total space in Bytes</description>			
 			<xsl:choose>
@@ -138,7 +138,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/vfs.fs.pused">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name>[<xsl:value-of select="alarmObject"/>] Storage utilization</name>
+			<name>Storage utilization</name>
 			<group>Storage</group>
 			<description>Storage utilization in % for <xsl:value-of select="alarmObject"/></description>			
 			<xsl:choose>
@@ -165,8 +165,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 						<id>storageCrit</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места</name>
+		                <name lang="EN">Free disk space is low</name>
+		                <name lang="RU">Мало свободного места</name>
 		                <url/>
 		                <priority>3</priority>
 		                <description/>
@@ -190,8 +190,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<trigger>
 						<id>storageWarn</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
-		                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Free disk space is low</name>
-		                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Мало свободного места</name>
+		                <name lang="EN">Free disk space is low</name>
+		                <name lang="RU">Мало свободного места</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description/>
