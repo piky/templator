@@ -174,9 +174,10 @@
                       						</xs:complexType>
                       					</xs:element>
                       					<xs:element type="xs:string" name="host_prototypes" />
+										<xs:element type="xs:string" name="jmx_endpoint"/>
                       				</xs:sequence>
                       			</xs:complexType>
-                      		</xs:element>
+                      		</xs:element>
                       	</xs:sequence>
                       </xs:complexType>
                     </xs:element>
@@ -378,6 +379,7 @@
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>
+								  <xs:element type="xs:string" name="jmx_endpoint"/>
                               </xs:sequence>
                             </xs:complexType>
 

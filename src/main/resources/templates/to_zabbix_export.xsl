@@ -179,6 +179,7 @@
 	                    	<xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>
 	                    </graph_prototypes>
 	                    <host_prototypes/>
+						<xsl:if test="$zbx_ver = 3.4"><jmx_endpoint/></xsl:if>
                 	</discovery_rule>
 </xsl:template>
 
@@ -400,6 +401,7 @@
 	    									</step>
 							</xsl:for-each>
 						</preprocessing>
+						<jmx_endpoint/>
 	                    </xsl:if>
 
 </xsl:template>
