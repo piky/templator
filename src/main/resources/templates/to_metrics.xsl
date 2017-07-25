@@ -378,7 +378,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:param name="alarmObject"/>
 	<xsl:copy>
 		<xsl:if test="@lang"><xsl:attribute name="lang" select="@lang"/></xsl:if>
-		<xsl:value-of select="if ($alarmObject!='') then concat('[',$alarmObject,'] ') else ()"/><xsl:value-of select="."/>
+		<xsl:value-of select="if ($alarmObject!='') then concat($alarmObject,': ') else ()"/><xsl:value-of select="."/>
 	</xsl:copy>
 </xsl:template>
 
