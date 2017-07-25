@@ -23,12 +23,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
  			</update>
 			<triggers>
 				<trigger>
-				    <!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
+				    <documentation>Using recovery expression... Temperature has to drop 3 points less than threshold level  ({$TEMP_WARN}-3)</documentation>
 				    <id>tempWarn</id>
 
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-3</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
@@ -86,12 +86,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                		</tags>
 				</trigger>
 				<trigger>
-					<!-- <documentation>Using recovery expression... Temperature has to drop 5 points less than threshold level  ({$TEMP_WARN}-5)</documentation>  -->
+					<documentation>Using recovery expression... Temperature has to drop 3 points less than threshold level  ({$TEMP_WARN}-3)</documentation>
 					<id>tempCrit</id>
 					
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
-					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-5</xsl:variable>
+					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-3</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					
@@ -153,10 +153,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	                </tags>
 				</trigger>
 				<trigger>
-				    <!-- <documentation>Using recovery expression... Temperature has to be 5 points more than threshold level  ({$TEMP_CRIT_LOW}+5)</documentation>  -->
+				    <documentation>Using recovery expression... Temperature has to be 3 points more than threshold level  ({$TEMP_CRIT_LOW}+3)</documentation>
 				    <id>tempLow</id>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
-					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
+					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+3</recovery_expression>
 	                <name lang="EN">Temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <name lang="RU">Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <url />
