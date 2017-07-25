@@ -8,8 +8,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="template/metrics/net.if.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">operational status</name>
-			<name lang="RU">текущий статус</name>
+			<name lang="EN">Interface operational status</name>
+			<name lang="RU">текущий статус интерфейса</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -27,8 +27,8 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 				    <id>if.down</id>
 					<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)</expression>
 					<manual_close>0</manual_close>
-	                <name lang="EN">is down</name>
-	                <name lang="RU">недоступен</name>
+	                <name lang="EN">Interface is down</name>
+	                <name lang="RU">Интерфейс недоступен</name>
 	                <url/>
 	                <priority>3</priority>
 	                <description lang="EN">Interface is down</description>
@@ -55,7 +55,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">bits in</name>
+			<name lang="EN">Bits in</name>
 			<name lang="RU">Трафик входящий</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
@@ -76,8 +76,8 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 {TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
 						<recovery_expression/>
 						<manual_close>1</manual_close>
-		                <name lang="EN">high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
-		                <name lang="RU">сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="EN">Interface high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="RU">Интерфейс сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN"></description>
@@ -148,7 +148,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">bits out</name>
+			<name lang="EN">Bits out</name>
 			<name lang="RU">Трафик исходящий</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
@@ -172,7 +172,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	<xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">errors in</name>
+			<name lang="EN">Errors in</name>
 			<name lang="RU">Ошибки входящие</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
@@ -191,8 +191,8 @@ or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERR
 						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
 and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2</recovery_expression>
 						<manual_close>1</manual_close>
-		                <name lang="EN">high error rate</name>
-		                <name lang="RU">большое количество ошибок</name>
+		                <name lang="EN">Interface high error rate</name>
+		                <name lang="RU">Большое количество ошибок интерфейса</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description lang="EN"></description>
@@ -224,7 +224,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.out.errors">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">errors out</name>
+			<name lang="EN">Errors out</name>
 			<name lang="RU">Ошибки исходящие</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
@@ -271,7 +271,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.in.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">packets discarded in</name>
+			<name lang="EN">Packets discarded in</name>
 			<name lang="RU">Пакетов отброшено (входящих)</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
@@ -292,7 +292,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.out.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">packets discarded out</name>
+			<name lang="EN">Packets discarded out</name>
 			<name lang="RU">Пакетов отброшено (исходящих)</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
@@ -315,7 +315,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">speed</name>
+			<name lang="EN">Speed</name>
 			<name lang="RU">Скорость</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
@@ -342,8 +342,8 @@ and (
 </expression>
 							<recovery_expression>{TEMPLATE_NAME:METRIC.change()}&gt;0 and {TEMPLATE_NAME:METRIC.prev()}&gt;0</recovery_expression>>
 							<manual_close>1</manual_close>
-			                <name lang="EN">of type Ethernet has changed to lower speed than it was before</name>
-			                <name lang="RU">перешел на более низкую скорость, чем был ранее</name>
+			                <name lang="EN">Interface of type Ethernet has changed to lower speed than it was before</name>
+			                <name lang="RU">Интерфейс перешел на более низкую скорость, чем был ранее</name>
 			                <url/>
 			                <priority>1</priority>
 			                <description>This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Ack to close.</description>
@@ -374,8 +374,8 @@ and (
 <xsl:template match="template/metrics/net.if.type">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">type</name>
-			<name lang="RU">Тип</name>
+			<name lang="EN">Interface type</name>
+			<name lang="RU">Тип интерфейса</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -396,8 +396,8 @@ and (
 <xsl:template match="template/metrics/net.if.duplex">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">duplex status</name>
-			<name lang="RU">Статус duplex</name>
+			<name lang="EN">Interface duplex status</name>
+			<name lang="RU">Duplex статус интерфейса</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -410,8 +410,8 @@ and (
 						<expression>{TEMPLATE_NAME:METRIC.last()}=2</expression>
 						<recovery_expression/>
 						<manual_close>1</manual_close>
-		                <name lang="EN">is in half-duplex mode</name>
-		                <name lang="RU">в режиме half-duplex</name>
+		                <name lang="EN">Interface is in half-duplex mode</name>
+		                <name lang="RU">Интерфейс в режиме half-duplex</name>
 		                <url/>
 		                <priority>2</priority>
 		                <description>Please check autonegotiation settings and cabling</description>
