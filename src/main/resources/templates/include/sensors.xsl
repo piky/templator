@@ -51,13 +51,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<!-- AND
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
 							</recovery_expression>
-							<name lang="EN">temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
+							<name lang="EN">Temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                		<name lang="RU">Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 														
 						</xsl:when>
 						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
 						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
-						<name lang="EN">temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
+						<name lang="EN">Temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                	<name lang="RU">Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 						</xsl:otherwise>
 					</xsl:choose>	                
@@ -121,12 +121,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 							<!-- AND
 							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS} -->
 							</recovery_expression>
-							<name lang="EN">temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
+							<name lang="EN">Temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
 	                		<name lang="RU">Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
 						</xsl:when>
 						<xsl:otherwise><expression><xsl:value-of select="$expression"/></expression>
 						<recovery_expression><xsl:value-of select="$recovery_expression"/></recovery_expression>
-						<name lang="EN">temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
+						<name lang="EN">Temperature is above critical threshold: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
 	                	<name lang="RU">Температура очень высокая: >{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</name>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -157,7 +157,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 				    <id>tempLow</id>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</expression>
 					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+5</recovery_expression>
-	                <name lang="EN">temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
+	                <name lang="EN">Temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <name lang="RU">Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <url />
 	                <priority>3</priority>

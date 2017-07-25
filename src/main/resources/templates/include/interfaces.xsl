@@ -9,7 +9,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name lang="EN">Interface operational status</name>
-			<name lang="RU">текущий статус интерфейса</name>
+			<name lang="RU">Текущий статус интерфейса</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
@@ -98,7 +98,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 			</triggers>
 			<graphs>
 				<graph>
-					<name>traffic</name>
+					<name>Interface traffic</name>
 					<graphItems>
 						<item>
 							<drawtype>gradient</drawtype>
