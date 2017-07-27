@@ -159,9 +159,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 					<recovery_expression>{TEMPLATE_NAME:METRIC.min(5m)}&gt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}+3</recovery_expression>
 	                <name lang="EN">Temperature is too low: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                <name lang="RU">Температура слишком низкая: &lt;{$TEMP_CRIT_LOW:"<xsl:value-of select="alarmObjectType" />"}</name>
-	                <url />
+	                <url/>
 	                <priority>3</priority>
-	                <description />
+	                <description/>
 	               	<tags>	                
 	               		<tag>
 		                	<tag>Alarm.object.type</tag>
