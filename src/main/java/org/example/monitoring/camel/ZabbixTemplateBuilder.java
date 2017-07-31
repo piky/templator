@@ -81,6 +81,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
     //with lang.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
 		.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix}"))) //w/o lang
+		.setBody(body().regexReplaceAll(" xmlns=\".+\"", simple(""))) //remove xmlns="" declaration
 		
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		

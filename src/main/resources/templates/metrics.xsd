@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema targetNamespace="http://www.example.org/zbx_template_new/"
 		   xmlns:tns="http://www.example.org/zbx_template_new/"
-		   attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		   elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="root" type="tns:rootType"/>
     <xs:complexType name="templateType">
     	 <xs:all>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xpath-default-namespace="http://www.example.org/zbx_template_new/"
+				xmlns="http://www.example.org/zbx_template_new/">
 
-<xsl:output method="xml" indent="yes"/>
+
+<xsl:output method="xml" indent="yes" />
 
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
@@ -14,8 +17,6 @@
   <entry key="multiplier">1</entry>
   <entry key="delta_per_second">10</entry> <!-- delta per second -->
 </xsl:variable>
-
-
 
 
  <xsl:variable name="item_type"> <!-- zabbix item types, replace with zabbix ints -->
@@ -49,7 +50,7 @@
  -->
 <xsl:template match="/">
 	<zabbix_export>
-	    <version><xsl:value-of select="$zbx_ver"></xsl:value-of></version>
+		<version><xsl:value-of select="$zbx_ver"/></version>
 	    <date>2015-12-30T14:41:30Z</date>
 		<groups>
 	        <group>
@@ -63,7 +64,7 @@
 	        </group>
 		</groups>    
 	    <templates>
-				 <xsl:apply-templates select="child::*/template"></xsl:apply-templates>  
+				 <xsl:apply-templates select="child::*/template"/>
 		</templates>
 		<graphs>
 			<xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
@@ -75,6 +76,7 @@
 				<xsl:copy-of copy-namespaces="no" select="child::*/value_maps/*"/>
 		</value_maps>
 	</zabbix_export>
+
 </xsl:template>
 
 <xsl:template match="template">
