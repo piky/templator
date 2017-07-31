@@ -2,6 +2,7 @@ package org.example.monitoring.camel;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.builder.xml.Namespaces;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +11,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
   @Override
   public void configure() throws Exception {
 	errorHandler(deadLetterChannel("seda:errors"));
-	
+
+	  Namespaces ns = new Namespaces("z", "http://www.example.org/zbx_template_new/");
+
+
 	from("seda:errors")
 		.log("Error: ${file:name}: ${exception.message}");
 	  
@@ -20,19 +24,19 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     
     from("direct:zbx3.2")
     		//.filter().xpath("//node()[@zbx_ver = 3.4]") //if there are nodes with zbx_ver flags
-    		.log("Going to do 3.2 template")
+    	//	.log("Going to do 3.2 template")
     		//strip metrics marked with zbx_ver not 3.2
 	    	.setHeader("zbx_ver", simple("3.2", Double.class)).to("xslt:templates/to_metrics_zbx_ver.xsl?saxon=true")
 	    	.to("direct:merge");
     
     from("direct:zbx3.4")
     	//.filter().xpath("//node()[@zbx_ver ='3.4']") // only if there are attributes zbx_ver=3.4
-    	.log("Going to do 3.4 template")
+    	//.log("Going to do 3.4 template")
     	.setHeader("zbx_ver", simple("3.4", Double.class)).to("xslt:templates/to_metrics_zbx_ver.xsl?saxon=true")
 		.to("direct:merge");
     
     from("direct:merge")
-    	.setHeader("template_ver", simple("0.9", String.class))
+    	.setHeader("template_ver", simple("0.10", String.class))
     	.to("xslt:templates/to_metrics_add_name_placeholder.xsl?saxon=true") //will add _SNMP_PLACEHOLDER and generator ver
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
@@ -48,13 +52,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 			);
   
     from("direct:RU")
-	    .filter().xpath("//node()[@lang='RU']")
-	    .log("Going to do Russian template")
+	    //.filter().xpath("//node()[@lang='RU']")
+	    //.log("Going to do Russian template")
 		.setHeader("lang", simple("RU", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().to("direct:snmpv1", "direct:snmpv2");
 	    
     from("direct:EN")
-	    .log("Going to do English template")
+	    //.log("Going to do English template")
 		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
@@ -64,16 +68,18 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
     from("direct:snmpv1")
-    	 .filter().xpath("//classes[class='SNMPv1']")
-     	.setHeader("snmp_item_type", simple("1", String.class))
-     	.setHeader("template_suffix", simple("SNMPv1", String.class))
-    	.to("direct:zabbix_export");
+    	 .filter().xpath("//z:classes[z:class='SNMPv1']",ns)
+			.setHeader("snmp_item_type", simple("1", String.class))
+			.setHeader("template_suffix", simple("SNMPv1", String.class))
+		 	.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
+    	 	.to("direct:zabbix_export");
     
     
     from("direct:snmpv2")
-    	.filter().xpath("//classes[class='SNMPv2']")	
+		.filter().xpath("//z:classes[z:class='SNMPv2']",ns)
 		.setHeader("snmp_item_type", simple("4", String.class))
 	    .setHeader("template_suffix", simple("SNMPv2", String.class))
+		.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 		.to("direct:zabbix_export");
     
     from("direct:zabbix_export")	
