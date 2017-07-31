@@ -223,10 +223,9 @@
 						<xs:element name="device" minOccurs="0" maxOccurs="unbounded">
 							<xs:complexType>
 								<xs:sequence>
-									<xs:element name="name" minOccurs="0" maxOccurs="unbounded"
-										type="xs:string" />
-									<xs:element name="version" minOccurs="0" maxOccurs="unbounded"
-										type="xs:string" />
+									<xs:element name="name" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+									<xs:element name="version" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+									<xs:element name="oid" minOccurs="0" maxOccurs="1" type="xs:string" />
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>

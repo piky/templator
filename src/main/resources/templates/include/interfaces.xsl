@@ -34,7 +34,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	                <url/>
 	                <priority>3</priority>
 	                <description lang="EN">Interface is down</description>
-	                <description lang="RU">интерфейс недоступен</description>
+	                <description lang="RU">Интерфейс недоступен</description>
               	    <tags>
 	                	<tag>
 			 				<tag>Alarm.type</tag>
@@ -398,8 +398,8 @@ and (
 <xsl:template match="template/metrics/net.if.duplex">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Interface duplex status</name>
-			<name lang="RU">Duplex статус интерфейса</name>
+			<name lang="EN">Duplex status</name>
+			<name lang="RU">Duplex-статус интерфейса</name>
 			<group>Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>

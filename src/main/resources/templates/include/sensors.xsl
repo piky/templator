@@ -40,12 +40,11 @@
 						 	 and ../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]
 						 	"><!-- if discoveryRules match or both doesn't have discoveryRule -->
 						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
-							
+
 							<expression><xsl:value-of select="$expression"/>
-							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]">
-							or
-							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}
-							</xsl:if></expression>
+<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]">
+or
+{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}</xsl:if></expression>
 							
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>
@@ -108,14 +107,12 @@
 						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
 							
 							<expression><xsl:value-of select="$expression"/>
-							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')]">
-							or
-							{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}
-							</xsl:if>
-							<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_DISASTER_STATUS')]">
-								or
-								{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_DISASTER_STATUS}
-							</xsl:if></expression>
+<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')]">
+or
+{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_CRIT_STATUS}</xsl:if>
+<xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_DISASTER_STATUS')]">
+or
+{<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_DISASTER_STATUS}</xsl:if></expression>
 							
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>

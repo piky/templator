@@ -316,7 +316,7 @@
 						<xsl:copy-of select="$metric/update"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<update><xsl:copy-of select="$updateDefault" /></update>
+						<update><xsl:copy-of select="$updateDefault"/></update>
 					</xsl:otherwise>
 				</xsl:choose> 
 				
@@ -325,7 +325,7 @@
 						<xsl:copy-of select="$metric/valueType"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<valueType><xsl:copy-of select="$valueType" /></valueType>
+						<valueType><xsl:copy-of select="$valueType"/></valueType>
 					</xsl:otherwise>
 				</xsl:choose> 
 				
