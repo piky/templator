@@ -15,6 +15,7 @@
 			<description>CPU utilization in %</description>
 			<units>%</units>
 			<update><xsl:value-of select="$update3min"/></update>
+			<valueType><xsl:value-of select="$valueTypeFloat"/></valueType>
 			<triggers>
 				<trigger>
 					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
