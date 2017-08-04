@@ -52,17 +52,7 @@
 	<zabbix_export>
 		<version><xsl:value-of select="$zbx_ver"/></version>
 	    <date>2015-12-30T14:41:30Z</date>
-		<groups>
-	        <group>
-	            <xsl:choose>
-		            <xsl:when test="child::*/template/classes[class='OS']"><name>Templates/OS</name></xsl:when>
-		            <xsl:when test="child::*/template/classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
-		            <xsl:when test="child::*/template/classes[class='Server']"><name>Templates/Server</name></xsl:when>
-		            <xsl:when test="child::*/template/classes[class='Module']"><name>Templates/Modules</name></xsl:when>
-		            <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
-	            </xsl:choose>
-	        </group>
-		</groups>    
+		<groups/> <!-- will populate in the next xslt -->
 	    <templates>
 				 <xsl:apply-templates select="child::*/template"/>
 		</templates>

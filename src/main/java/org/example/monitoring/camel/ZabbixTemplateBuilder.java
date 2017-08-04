@@ -84,11 +84,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     
     from("direct:zabbix_export")	
 		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
-
+		.to("xslt:templates/to_zabbix_export_create_groups.xsl?saxon=true")
     //with lang.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
+
 		.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix}"))) //w/o lang
 		.setBody(body().regexReplaceAll(" xmlns=\".+\"", simple(""))) //remove xmlns="" declaration
-		
+
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		
 		
