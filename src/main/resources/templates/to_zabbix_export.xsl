@@ -284,7 +284,7 @@
 
 <xsl:template name="itemTemplate">
 	<xsl:variable name="itemType" select="./itemType"/>
-	<name><xsl:value-of select="./name"></xsl:value-of></name>
+	<name><xsl:value-of select="./name"/></name>
 	                    <type><xsl:value-of select="$item_type/entry[@key=$itemType]"/></type>
                         <xsl:choose>
 						  <xsl:when test="./itemType eq 'snmp'">
@@ -304,24 +304,24 @@
 							  </xsl:otherwise>
 							</xsl:choose>
 						</xsl:if>
-						<snmp_oid><xsl:value-of select="./oid"></xsl:value-of></snmp_oid>
-						<key><xsl:value-of select="./snmpObject"></xsl:value-of></key>
-	                    <delay><xsl:value-of select="./update"></xsl:value-of></delay>
+						<snmp_oid><xsl:value-of select="./oid"/></snmp_oid>
+						<key><xsl:value-of select="./snmpObject"/></key>
+	                    <delay><xsl:value-of select="./update"/></delay>
 						<xsl:choose>
 						  <xsl:when test="$zbx_ver = 3.4"> <!--  in seconds -->
-						    <history><xsl:value-of select="./history"></xsl:value-of>d</history>
-	                    	<trends><xsl:value-of select="./trends"></xsl:value-of>d</trends>
+						    <history><xsl:value-of select="./history"/>d</history>
+	                    	<trends><xsl:value-of select="./trends"/>d</trends>
 						  </xsl:when>
 					      <xsl:otherwise> <!--  before 3.4 its in days -->
-							<history><xsl:value-of select="./history"></xsl:value-of></history>
-	                    	<trends><xsl:value-of select="./trends"></xsl:value-of></trends>
+							<history><xsl:value-of select="./history"/></history>
+	                    	<trends><xsl:value-of select="./trends"/></trends>
 						  </xsl:otherwise>
 						</xsl:choose>
 
 	                    <status>0</status>
-	                    <value_type><xsl:value-of select="./valueType"></xsl:value-of></value_type>
+	                    <value_type><xsl:value-of select="./valueType"/></value_type>
 	                    <allowed_hosts/>
-	                    <units><xsl:value-of select="./units"></xsl:value-of></units>
+	                    <units><xsl:value-of select="./units"/></units>
 						<xsl:if test="$zbx_ver=3.2">
 	                		<xsl:choose>
 							  <xsl:when test="./preprocessing/step[type eq 'delta_per_second']">
@@ -350,7 +350,7 @@
 							</xsl:choose>
 						</xsl:if>
 	                    <xsl:if test="$zbx_ver = 3.2"><delay_flex/></xsl:if>
-	                    <params><xsl:value-of select="./expressionFormula"></xsl:value-of></params>
+	                    <params><xsl:value-of select="./expressionFormula"/></params>
 	                    <ipmi_sensor/>
 	                    <xsl:if test="$zbx_ver = 3.2"><data_type>0</data_type></xsl:if>
 	                    <authtype>0</authtype>
