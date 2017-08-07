@@ -14,7 +14,7 @@
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name>Device uptime</name>
-			<group>General</group>
+			<group>Status</group>
 			<description>The time since the network management portion of the system was last re-initialized.<xsl:value-of select="alarmObject"/></description>
 			<units>uptime</units>
 			<zabbixKey>system.uptime</zabbixKey>
@@ -191,7 +191,7 @@
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name>SNMP availability</name>
-			<group>General</group>
+			<group>Status</group>
 			<zabbixKey>zabbix[host,snmp,available]</zabbixKey>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
