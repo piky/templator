@@ -190,28 +190,28 @@
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces'">
 							<template>
-				        		<name>Template SNMP Interfaces_SNMPvX</name>
+				        		<name>Template Module Interfaces_SNMPvX</name>
 							</template>
 							
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces Simple'">
 							
 							<template>
-				        		<name>Template SNMP Interfaces Simple_SNMPvX</name>
+				        		<name>Template Module Interfaces Simple_SNMPvX</name>
 							</template>
 					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces EtherLike Extension'">
 							
 							<template>
-				        		<name>Template SNMP EtherLike-MIB_SNMPvX</name>
+				        		<name>Template Module EtherLike-MIB_SNMPvX</name>
 							</template>
 					</xsl:when>
 					<xsl:when test="$template_class = 'SNMP Device'">
 							<template>
-				        		<name>Template SNMP Generic_SNMPvX</name>
+				        		<name>Template Module Generic_SNMPvX</name>
 							</template>
 <!-- 							<template>
-				        		<name>Template ICMP Ping</name>
+				        		<name>Template Module ICMP Ping</name>
 							</template>	 -->
 					</xsl:when>
 				</xsl:choose>

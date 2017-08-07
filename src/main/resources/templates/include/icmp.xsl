@@ -59,8 +59,9 @@
 			<units>%</units>
 			<triggers>
 				<trigger>
+					<documentation>{TEMPLATE_NAME:METRIC.min(5m)}&lt;100 - go back to normal if 100% loss (So this problem is not visible if recovering from NOPING)</documentation>
 					<id>icmppingloss</id>
-					<expression>{TEMPLATE_NAME:METRIC.min(5m)}>{$ICMP_LOSS_WARN}</expression>
+					<expression>{TEMPLATE_NAME:METRIC.min(5m)}>{$ICMP_LOSS_WARN} and {TEMPLATE_NAME:METRIC.min(5m)}&lt;100</expression>
 	                <name lang="EN">High ICMP ping loss</name>
 	                <name lang="RU">Потеря пакетов ICMP ping</name>
 	                <priority>2</priority>

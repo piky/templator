@@ -9,6 +9,7 @@
 <xsl:variable name="community">{$SNMP_COMMUNITY}</xsl:variable>
 <xsl:param name="snmp_item_type" select="4"/>
 <xsl:param name="zbx_ver" select="3.2"/>
+<xsl:param name="lang" select="undef"/>
 <xsl:variable name="snmp_port"></xsl:variable> <!-- if empty than default port from host SNMP interface are going to be used -->
 <xsl:param name="discoveryDelay">3600</xsl:param>
 
@@ -77,9 +78,9 @@
 				<groups>
 			        <group>
 			            <xsl:choose>
-				            <xsl:when test="./classes[class='OS']"><name>Templates/OS</name></xsl:when>
+				            <xsl:when test="./classes[class='OS']"><name>Templates/Operating Systems</name></xsl:when>
 				            <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
-				            <xsl:when test="./classes[class='Server']"><name>Templates/Server</name></xsl:when>
+				            <xsl:when test="./classes[class='Server']"><name>Templates/Servers Hardware</name></xsl:when>
 				            <xsl:when test="./classes[class='Module']"><name>Templates/Modules</name></xsl:when>
 				            <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 			            </xsl:choose>
@@ -208,15 +209,21 @@
 						<xsl:variable name="trigger_id" select="."/>
 									<dependency>
 									<xsl:choose>
-										<xsl:when test="../global = true()"> <!-- search in other templates (but templates must in the same file) -->
-   										<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-   										<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-   										<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+										<xsl:when test="../global = true()"> <!-- search in other templates (other merge files (refactor this!!!) -->
+											<xsl:variable name="module" select="doc('file:bin/merged/template_module_*.xml')"></xsl:variable>
+   											<name><xsl:value-of select="$module//metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name[@lang=$lang or not(@lang)]"/></name>
+   											<expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   											<recovery_expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
   										</xsl:when>
+										<!--<xsl:when test="../global = true()"> &lt;!&ndash; search in other templates (but templates must in the same file) &ndash;&gt;
+											<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
+											<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+											<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+										</xsl:when>-->
   										<xsl:otherwise>
   											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-   										<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-   										<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+   											<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   											<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
   										</xsl:otherwise>
  									</xsl:choose>
 						</dependency>

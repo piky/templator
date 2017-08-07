@@ -55,7 +55,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    //.filter().xpath("//node()[@lang='RU']")
 	    //.log("Going to do Russian template")
 		.setHeader("lang", simple("RU", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
-		.to("log:result?level=DEBUG").multicast().parallelProcessing().to("direct:snmpv1", "direct:snmpv2");
+		.to("log:result?level=DEBUG").multicast().parallelProcessing()
+			  .to(
+					  "direct:snmpv1",
+					  "direct:snmpv2",
+					  "direct:icmp"
+			  );
 	    
     from("direct:EN")
 	    //.log("Going to do English template")
@@ -63,7 +68,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
 					"direct:snmpv1",
-					"direct:snmpv2"
+					"direct:snmpv2",
+					"direct:icmp"
 					);
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
@@ -81,6 +87,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    .setHeader("template_suffix", simple("SNMPv2", String.class))
 		.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 		.to("direct:zabbix_export");
+
+	  from("direct:icmp")
+			  .filter().xpath("//z:classes[z:class='ICMP']",ns)
+/*
+			  .setHeader("snmp_item_type", simple("4", String.class))*/
+/*			  .setHeader("template_suffix", simple("ICMP", String.class))*/
+			  .log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ICMP")
+			  .to("direct:zabbix_export");
     
     from("direct:zabbix_export")	
 		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
