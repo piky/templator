@@ -242,6 +242,7 @@
 				<xsl:variable name="metricKey">
 				<xsl:choose>
 					<xsl:when test="$metric/zabbixKey"><xsl:value-of select="$metric/zabbixKey"/></xsl:when>
+					<xsl:when test="zabbixKey"><xsl:value-of select="zabbixKey"/></xsl:when>
 					<xsl:otherwise><xsl:value-of select="name()"/>[<xsl:value-of select="snmpObject"/>]</xsl:otherwise>
 				</xsl:choose>
 				</xsl:variable>
