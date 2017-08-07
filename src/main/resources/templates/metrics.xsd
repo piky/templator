@@ -126,6 +126,12 @@
 		    					<xs:element name="icmppingloss" type="tns:metricType"/>
 		    					<xs:element name="icmppingsec" type="tns:metricType"/>
 		    				</xs:sequence>
+							<xs:sequence> <!-- Template Remote Service (NTP,SMTP, SSH,Telnet) LDAP etc) -->
+								<xs:choice maxOccurs="unbounded">
+									<xs:element name="net.tcp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+									<xs:element name="net.udp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+								</xs:choice>
+							</xs:sequence>
 							<xs:sequence> <!-- Template Fault and System Info -->
 				    			<xs:element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 								<xs:element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
@@ -474,7 +480,8 @@
         <xs:enumeration value="General"/>
         
         <xs:enumeration value="ICMP"/>
-        
+		<xs:enumeration value="Remote Service"/>
+
         <xs:enumeration value="Interfaces"/>
         <xs:enumeration value="Interfaces Simple"/>
         <xs:enumeration value="Interfaces EtherLike Extension"/>

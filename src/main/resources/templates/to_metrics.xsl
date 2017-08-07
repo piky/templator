@@ -516,7 +516,7 @@
 <xsl:include href="include/generic.xsl"/>
 <xsl:include href="include/icmp.xsl"/>
 <xsl:include href="include/inventory.xsl"/>
-
+<xsl:include href="include/remote_service.xsl"/>
 <xsl:include href="include/interfaces.xsl"/>
 
 </xsl:stylesheet>
