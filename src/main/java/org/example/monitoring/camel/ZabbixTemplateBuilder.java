@@ -54,22 +54,19 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
     from("direct:RU")
 	    //.filter().xpath("//node()[@lang='RU']")
 	    //.log("Going to do Russian template")
-		.setHeader("lang", simple("RU", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
-		.to("log:result?level=DEBUG").multicast().parallelProcessing()
-			  .to(
-					  "direct:snmpv1",
-					  "direct:snmpv2",
-					  "direct:icmp"
-			  );
+		.setHeader("lang", simple("RU", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true").to("direct:multicaster");
+
 	    
     from("direct:EN")
-	    //.log("Going to do English template")
-		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true")
-		.to("log:result?level=DEBUG").multicast().parallelProcessing().
+		.setHeader("lang", simple("EN", String.class)).to("xslt:templates/to_metrics_lang.xsl?saxon=true").to("direct:multicaster");
+
+	from("direct:multicaster")
+			.to("log:result?level=DEBUG").multicast().parallelProcessing().
 			to(
 					"direct:snmpv1",
 					"direct:snmpv2",
-					"direct:icmp"
+					"direct:icmp",
+					"direct:remote_service"
 					);
 	    
     //zabbix types: 4- snmpv2, 1-snmpv2 <xsl:variable name="snmp_item_type">4</xsl:variable>
@@ -94,6 +91,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 			  .setHeader("snmp_item_type", simple("4", String.class))*/
 /*			  .setHeader("template_suffix", simple("ICMP", String.class))*/
 			  .log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ICMP")
+			  .to("direct:zabbix_export");
+
+	  from("direct:remote_service")
+			  .filter().xpath("//z:classes[z:class='Remote Service']",ns)
+			  .log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for Remote Service")
 			  .to("direct:zabbix_export");
     
     from("direct:zabbix_export")	
