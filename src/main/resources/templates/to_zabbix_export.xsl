@@ -404,12 +404,14 @@
         <xsl:when test="./not (discoveryRule)">
 				<item>
   					<xsl:call-template name="itemTemplate"/>
+					<xsl:if test="$zbx_ver = 3.4"><master_item/></xsl:if>
   				</item>        
 		</xsl:when>
         <xsl:otherwise>
         		<item_prototype>
         			<xsl:call-template name="itemTemplate"/>
 					<application_prototypes/>
+					<xsl:if test="$zbx_ver = 3.4"><master_item_prototype/></xsl:if>
 				</item_prototype>
         </xsl:otherwise>
       </xsl:choose>

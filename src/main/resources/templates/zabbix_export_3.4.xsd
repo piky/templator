@@ -56,7 +56,7 @@
                     <xs:element name="items">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="item" type="itemObj" maxOccurs="unbounded" minOccurs="0"/>
+                          <xs:element name="item" type="itemNonProtoObj" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
@@ -404,13 +404,25 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+			    <xs:element type="xs:string" name="master_item_prototype"/>
 	      </xs:sequence>
 	    </xs:extension>
 	  </xs:complexContent>
-   </xs:complexType> 
+   </xs:complexType>
 
 
-<xs:simpleType name="itemType">
+	<xs:complexType name="itemNonProtoObj">
+		<xs:complexContent>
+			<xs:extension base="itemObj">
+				<xs:sequence>
+					<xs:element type="xs:string" name="master_item"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<xs:simpleType name="itemType">
 	<!--     Type of the item. 
 	Possible values: 
 	0 - Zabbix agent; 
