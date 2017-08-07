@@ -18,8 +18,8 @@
 
 
 <xsl:template match="/*/template/name">
-	<xsl:copy> <!--  hardcode for non SNMP templates (currently only ICMP) -->
-		<xsl:copy-of select="if (contains(./text(),'ICMP')) then (./text()) else concat(.,'_SNMPvX')"/>
+	<xsl:copy> <!--  hardcode for non SNMP templates (currently only ICMP) ancestor:: -->
+		<xsl:copy-of select="if (ancestor::*/classes/class[text()='SNMPv2' or text()='SNMPv1' or text()='SNMPv3']) then concat(.,'_SNMPvX') else (./text())"/>
 	</xsl:copy>
 </xsl:template>
 
