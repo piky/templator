@@ -26,11 +26,11 @@
 				    <id>uptime.restarted</id>
 					<expression>{TEMPLATE_NAME:METRIC.last()}&lt;10m</expression>
 					<manual_close>1</manual_close>
-	                <name lang="EN">The {HOST.NAME} has just been  restarted</name>
+	                <name lang="EN">{HOST.NAME} has been restarted</name>
 	                <name lang="RU">{HOST.NAME} был только что перезагружен</name>
 	                <url/>
 	                <priority>2</priority>
-	                <description lang="EN">The device uptime is less then 10 minutes</description>
+	                <description lang="EN">The device uptime is less than 10 minutes</description>
 	                <description lang="RU">Аптайм устройства менее 10 минут</description>
 	                <dependsOn>
 	                	<dependency>nosnmp</dependency>

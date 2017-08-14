@@ -26,7 +26,6 @@
 				<trigger>
 				    <documentation>Using recovery expression... Temperature has to drop 3 points less than threshold level  ({$TEMP_WARN}-3)</documentation>
 				    <id>tempWarn</id>
-
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
 					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-3</xsl:variable>
@@ -45,7 +44,6 @@
 <xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]">
 or
 {<xsl:value-of select="../../name"/>:<xsl:value-of select="$statusMetricKey"/>.last(0)}={$TEMP_WARN_STATUS}</xsl:if></expression>
-							
 							<recovery_expression>
 							<xsl:value-of select="$recovery_expression"/>
 							<!-- AND
@@ -60,9 +58,7 @@ or
 						<name lang="EN">Temperature is above warning threshold: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 	                	<name lang="RU">Температура выше нормы: >{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</name>
 						</xsl:otherwise>
-					</xsl:choose>	                
-	                
-	                
+					</xsl:choose>
 	                <url/>
 	                <priority>2</priority>
 	                <description>This trigger uses temperature sensor values as well as temperature sensor status if available</description>

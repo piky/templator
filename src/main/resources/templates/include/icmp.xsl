@@ -100,7 +100,7 @@
 				<trigger>
 					<id>icmppingsec</id>
 					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$ICMP_RESPONSE_TIME_WARN}</expression>
-	                <name>High response time</name>
+	                <name>High ICMP ping response time</name>
 	                <priority>2</priority>
 	                <dependsOn>
 	                	<dependency>noping</dependency>

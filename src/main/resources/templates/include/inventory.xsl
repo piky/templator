@@ -76,7 +76,7 @@
 					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
 					<recovery_mode>2</recovery_mode>
 					<manual_close>1</manual_close>
-	                <name lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> might have been replaced (new serial number received)</name>
+	                <name lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> has been replaced (new serial number received)</name>
 	                <name lang="RU">Возможно замена <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" /> (получен новый серийный номер)</name>
 	                <url/>
 	                <priority>1</priority>

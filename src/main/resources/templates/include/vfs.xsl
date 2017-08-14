@@ -166,7 +166,7 @@
 					<trigger>
 						<id>storageCrit</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}</expression>
-		                <name lang="EN">Free disk space is low</name>
+		                <name lang="EN">Disk space is critically low</name>
 		                <name lang="RU">Мало свободного места</name>
 		                <url/>
 		                <priority>3</priority>
@@ -191,7 +191,7 @@
 					<trigger>
 						<id>storageWarn</id>
 						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}</expression>
-		                <name lang="EN">Free disk space is low</name>
+		                <name lang="EN">Disk space is low</name>
 		                <name lang="RU">Мало свободного места</name>
 		                <url/>
 		                <priority>2</priority>

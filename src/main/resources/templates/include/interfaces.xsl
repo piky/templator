@@ -10,9 +10,9 @@
 <xsl:template match="template/metrics/net.if.status">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Interface operational status</name>
+			<name lang="EN">Operational status</name>
 			<name lang="RU">Текущий статус интерфейса</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1min"/></update>
@@ -29,7 +29,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 				    <id>if.down</id>
 					<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)</expression>
 					<manual_close>0</manual_close>
-	                <name lang="EN">Interface is down</name>
+	                <name lang="EN">Link down</name>
 	                <name lang="RU">Интерфейс недоступен</name>
 	                <url/>
 	                <priority>3</priority>
@@ -57,9 +57,9 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Bits in</name>
-			<name lang="RU">Трафик входящий</name>
-			<group>Interfaces</group>
+			<name lang="EN">Bits received</name>
+			<name lang="RU">Бит получено</name>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update3min"/></update>
@@ -72,13 +72,14 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 					<xsl:variable name="speedMetricKey"><xsl:value-of select="ancestor::metrics/net.if.speed/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.speed/snmpObject"/>]</xsl:variable>
 					<xsl:variable name="outMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out/snmpObject"/>]</xsl:variable>
 					<trigger>
-					    <documentation/>
+					    <documentation>This trigger uses 3% hysteresis</documentation>>
 					    <id>if.util_high</id>
-						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
-{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(5m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
-						<recovery_expression/>
+						<expression>{TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
+{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
+						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
+{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</recovery_expression>
 						<manual_close>1</manual_close>
-		                <name lang="EN">Interface high bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
+		                <name lang="EN">High bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
 		                <name lang="RU">Интерфейс сильно загружен >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
 		                <url/>
 		                <priority>2</priority>
@@ -100,7 +101,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 			</triggers>
 			<graphs>
 				<graph>
-					<name>Interface traffic</name>
+					<name>Network traffic</name>
 					<graphItems>
 						<item>
 							<drawtype>gradient</drawtype>
@@ -150,9 +151,9 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	 <xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Bits out</name>
-			<name lang="RU">Трафик исходящий</name>
-			<group>Interfaces</group>
+			<name lang="EN">Bits sent</name>
+			<name lang="RU">Бит отправлено</name>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$historyDefault"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update3min"/></update>
@@ -174,9 +175,9 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 	<xsl:variable name="discoveryRule" select="discoveryRule"/>
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Errors in</name>
-			<name lang="RU">Ошибки входящие</name>
-			<group>Interfaces</group>
+			<name lang="EN">Inbound packets with errors</name>
+			<name lang="RU">Входящих пакетов с ошибками</name>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -193,7 +194,7 @@ or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERR
 						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
 and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2</recovery_expression>
 						<manual_close>1</manual_close>
-		                <name lang="EN">Interface high error rate</name>
+		                <name lang="EN">High error rate</name>
 		                <name lang="RU">Большое количество ошибок интерфейса</name>
 		                <url/>
 		                <priority>2</priority>
@@ -226,9 +227,9 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.out.errors">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Errors out</name>
-			<name lang="RU">Ошибки исходящие</name>
-			<group>Interfaces</group>
+			<name lang="EN">Outbound packets with errors</name>
+			<name lang="RU">Исходящих пакетов с ошибками</name>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -250,7 +251,7 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 		<metric>
 			<name lang="EN">SNMP traps (interfaces)</name>
 			<name lang="RU">SNMP traps (интерфейсы)</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<logFormat>hh:mm:sszyyyy/MM/dd</logFormat>
 			<description>Item is used to collect all SNMP traps matched for interfaces</description>
 			<zabbixKey>snmptrap[".1.3.6.1.6.3.1.1.4.1.0         type=6  value=OID: .1.3.6.1.6.3.1.1.5.[3-4]"]</zabbixKey><!-- link up or linkdown -->
@@ -273,9 +274,9 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.in.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Packets discarded in</name>
+			<name lang="EN">Inbound packets discarded</name>
 			<name lang="RU">Пакетов отброшено (входящих)</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -294,9 +295,9 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 <xsl:template match="template/metrics/net.if.out.discards">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Packets discarded out</name>
+			<name lang="EN">Outbound packets discarded</name>
 			<name lang="RU">Пакетов отброшено (исходящих)</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trendsDefault"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -318,8 +319,8 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
 			<name lang="EN">Speed</name>
-			<name lang="RU">Скорость</name>
-			<group>Interfaces</group>
+			<name lang="RU">Пропускная способность</name>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -327,10 +328,15 @@ and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF
 			<units>bps</units>
 			<triggers>
 				<xsl:choose>
-					<xsl:when test="ancestor::metrics/net.if.type[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.type[not(discoveryRule)] and not(discoveryRule))">
+					<xsl:when test="(ancestor::metrics/net.if.type[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.type[not(discoveryRule)] and not(discoveryRule)))
+					or
+					ancestor::metrics/net.if.status[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.status[not(discoveryRule)] and not(discoveryRule))">
 						<xsl:variable name="typeMetricKey"><xsl:value-of select="ancestor::metrics/net.if.type/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.type/snmpObject"/>]</xsl:variable>
+						<xsl:variable name="statusMetricKey"><xsl:value-of select="ancestor::metrics/net.if.status/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.status/snmpObject"/>]</xsl:variable>
 						<trigger>
-							<documentation>Might be problems with Mikrotik</documentation>
+							<documentation>Might be problems with Mikrotik. Also checked:
+- That type is Ethernet
+- That interfaces is not in down status (issue on HP Procurve)</documentation>
 						    <id>if.speed.not_max</id>
 							<expression>{TEMPLATE_NAME:METRIC.change()}&lt;0 and {TEMPLATE_NAME:METRIC.last()}&gt;0
 and (
@@ -341,10 +347,13 @@ and (
 {TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=69 or
 {TEMPLATE_NAME:<xsl:value-of select="$typeMetricKey"/>.last()}=117
 )
+and
+({TEMPLATE_NAME:<xsl:value-of select="$statusMetricKey"/>.last()}&lt;&gt;2)
 </expression>
-							<recovery_expression>{TEMPLATE_NAME:METRIC.change()}&gt;0 and {TEMPLATE_NAME:METRIC.prev()}&gt;0</recovery_expression>>
+							<recovery_expression>({TEMPLATE_NAME:METRIC.change()}&gt;0 and {TEMPLATE_NAME:METRIC.prev()}&gt;0) or
+({TEMPLATE_NAME:<xsl:value-of select="$statusMetricKey"/>.last()}=2)</recovery_expression>>
 							<manual_close>1</manual_close>
-			                <name lang="EN">Interface of type Ethernet has changed to lower speed than it was before</name>
+			                <name lang="EN">Ethernet has changed to lower speed than it was before</name>
 			                <name lang="RU">Интерфейс перешел на более низкую скорость, чем был ранее</name>
 			                <url/>
 			                <priority>1</priority>
@@ -378,7 +387,7 @@ and (
 		<metric>
 			<name lang="EN">Interface type</name>
 			<name lang="RU">Тип интерфейса</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1hour"/></update>
@@ -400,7 +409,7 @@ and (
 		<metric>
 			<name lang="EN">Duplex status</name>
 			<name lang="RU">Duplex-статус интерфейса</name>
-			<group>Interfaces</group>
+			<group>Network Interfaces</group>
 			<history><xsl:copy-of select="$history7days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update5min"/></update>
@@ -412,7 +421,7 @@ and (
 						<expression>{TEMPLATE_NAME:METRIC.last()}=2</expression>
 						<recovery_expression/>
 						<manual_close>1</manual_close>
-		                <name lang="EN">Interface is in half-duplex mode</name>
+		                <name lang="EN">In half-duplex mode</name>
 		                <name lang="RU">Интерфейс в режиме half-duplex</name>
 		                <url/>
 		                <priority>2</priority>

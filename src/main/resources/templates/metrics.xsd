@@ -440,7 +440,7 @@
 		<xs:enumeration value="General"/>
         <xs:enumeration value="Inventory"/>
         
-        <xs:enumeration value="Interfaces"/> <!-- Network interfaces -->
+        <xs:enumeration value="Network Interfaces"/> <!-- Network interfaces -->
         
         <xs:enumeration value="Internal Items"/><!-- place items used in calculated items only -->
         
