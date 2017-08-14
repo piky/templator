@@ -200,6 +200,12 @@
 				        		<name>Template Module Interfaces Simple_SNMPvX</name>
 							</template>
 					</xsl:when>
+					<xsl:when test="$template_class = 'Interfaces Win'">
+
+						<template>
+							<name>Template Module Interfaces Windows_SNMPvX</name>
+						</template>
+					</xsl:when>
 					<xsl:when test="$template_class = 'Interfaces EtherLike Extension'">
 							
 							<template>

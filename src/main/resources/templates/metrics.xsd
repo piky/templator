@@ -484,6 +484,7 @@
 
         <xs:enumeration value="Interfaces"/>
         <xs:enumeration value="Interfaces Simple"/>
+		<xs:enumeration value="Interfaces Win"/>
         <xs:enumeration value="Interfaces EtherLike Extension"/>
         
         <xs:enumeration value="Module"/>
