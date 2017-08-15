@@ -80,7 +80,7 @@
         </IF-MIB>
         <IF-MIB_Simple>
         	<IFCONTROL><value>1</value></IFCONTROL>
-        	<IF_UTIL_MAX><value>90</value></IF_UTIL_MAX>
+        	<IF_UTIL_MAX><value>95</value></IF_UTIL_MAX>
         	<IF_ERRORS_WARN><value>2</value></IF_ERRORS_WARN>
         </IF-MIB_Simple>
         <ICMP>
