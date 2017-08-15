@@ -315,9 +315,9 @@
 						<key><xsl:value-of select="./snmpObject"/></key>
 	                    <delay><xsl:value-of select="./update"/></delay>
 						<xsl:choose>
-						  <xsl:when test="$zbx_ver = 3.4"> <!--  in seconds -->
-						    <history><xsl:value-of select="./history"/>d</history>
-	                    	<trends><xsl:value-of select="./trends"/>d</trends>
+						  <xsl:when test="$zbx_ver = 3.4"><!--  in seconds -->
+						    <history><xsl:value-of select="if (./history = 7) then ('1w') else(concat(./history,'d'))"/></history>
+							<trends><xsl:value-of select="if (./trends = 7) then ('1w') else(concat(./trends,'d'))"/></trends>
 						  </xsl:when>
 					      <xsl:otherwise> <!--  before 3.4 its in days -->
 							<history><xsl:value-of select="./history"/></history>
