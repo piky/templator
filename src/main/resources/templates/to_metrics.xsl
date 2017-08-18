@@ -144,13 +144,13 @@
 					<xsl:if test="./documentation/overview and ./documentation/overview != ''">&#10;Overview: <xsl:value-of select="./documentation/overview"/><xsl:text>&#10;</xsl:text></xsl:if>
 					<xsl:if test="./metrics/*/mib"><xsl:text>&#10;MIBs used:&#10;</xsl:text></xsl:if>
 					<xsl:for-each select="distinct-values(./metrics/*/mib)">
-					    <xsl:value-of select="."/><xsl:text>&#10;</xsl:text>
+					    <xsl:value-of select="."/><xsl:if test="position() != last()"><xsl:text>&#10;</xsl:text></xsl:if>
 					</xsl:for-each>
 					<xsl:if test="./documentation/issues/issue"><xsl:text>&#10;Known Issues:&#10;</xsl:text></xsl:if>
 					<xsl:for-each select="./documentation/issues/issue">
 					  <xsl:for-each select="*">
-					    <xsl:value-of select="local-name()"/> : <xsl:value-of select="."/><xsl:text>&#10;</xsl:text>
-					  </xsl:for-each>  
+					    <xsl:value-of select="local-name()"/> : <xsl:value-of select="."/><xsl:if test="position() != last()"><xsl:text>&#10;</xsl:text></xsl:if>
+					  </xsl:for-each>
 					</xsl:for-each>
 			</description>
 			<xsl:apply-templates select="node()|@*"/>

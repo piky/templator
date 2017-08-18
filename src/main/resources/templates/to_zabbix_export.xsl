@@ -74,7 +74,7 @@
 			<template>
 	    		<template><xsl:value-of select="./name"/></template>
 				<name><xsl:value-of select="./name"/></name>
-				<description><xsl:value-of select="./description"/></description>
+				<description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
 				<groups>
 			        <group>
 			            <xsl:choose>
@@ -161,7 +161,7 @@
 							<lifetime>30</lifetime> <!-- in days -->
 						  </xsl:otherwise>
 						</xsl:choose>
-	                    <description><xsl:value-of select="./description"/></description>
+	                    <description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
 	                    <item_prototypes>
 	                        <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"/>
 	                    </item_prototypes>
@@ -196,7 +196,7 @@
                          <url><xsl:value-of select="./url"/></url>
                          <status>0</status>
                          <priority><xsl:value-of select="./priority"/></priority>
-                         <description><xsl:value-of select="./description"/></description>
+                         <description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
                          <type>0</type>
                          <manual_close>
 					<xsl:choose>
@@ -366,7 +366,7 @@
 	                    <publickey/>
 	                    <privatekey/>
 	                    <port><xsl:copy-of select="$snmp_port"/></port>
-						<description><xsl:value-of select="./description"/></description>
+						<description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
 						<xsl:choose>
 						  <xsl:when test="./inventory_link != ''">
 						    <inventory_link><xsl:value-of select="./inventory_link"/></inventory_link>
