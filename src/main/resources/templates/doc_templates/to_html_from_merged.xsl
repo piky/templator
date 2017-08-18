@@ -75,10 +75,10 @@
 			<xsl:if test="./classes/class[text()='SNMP Device']">
 				<xsl:copy-of select="$template_deps_system_snmp//discoveryRules/discoveryRule"/>
 			</xsl:if>
-			<xsl:if test="./templates/template[name='Template HOST-RESOURCES-MIB_SNMPvX']">
+			<xsl:if test="./templates/template[name='Template Module HOST-RESOURCES-MIB_SNMPvX']">
 				<xsl:copy-of select="$template_deps_host_resources//discoveryRules/discoveryRule"/>
 			</xsl:if>
-			<xsl:if test="./templates/template[name='Template ENTITY-SENSORS-MIB_SNMPvX']">
+			<xsl:if test="./templates/template[name='Template Module ENTITY-SENSORS-MIB_SNMPvX']">
 				<xsl:copy-of select="$template_deps_entity_sensors//discoveryRules/discoveryRule"/>
 			</xsl:if>			
 							
@@ -102,10 +102,10 @@
 			<xsl:if test="./classes/class[text()='SNMP Device']">
 				<xsl:copy-of select="$template_deps_system_snmp//metrics/*"/>
 			</xsl:if>
-			<xsl:if test="./templates/template[name='Template HOST-RESOURCES-MIB_SNMPvX']">
+			<xsl:if test="./templates/template[name='Template Module HOST-RESOURCES-MIB_SNMPvX']">
 				<xsl:copy-of select="$template_deps_host_resources//metrics/*"/>
 			</xsl:if>
-			<xsl:if test="./templates/template[name='Template ENTITY-SENSORS-MIB_SNMPvX']">
+			<xsl:if test="./templates/template[name='Template Module ENTITY-SENSORS-MIB_SNMPvX']">
 				<xsl:copy-of select="$template_deps_entity_sensors//metrics/*"/>
 			</xsl:if>			
 			

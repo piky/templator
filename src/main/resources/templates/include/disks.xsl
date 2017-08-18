@@ -131,7 +131,7 @@
 					<trigger>
 					    <id>disk.notok</id>
 						<expression>{TEMPLATE_NAME:METRIC.str({$DISK_OK_STATUS})}=0 and 
-						{TEMPLATE_NAME:METRIC.str("")}=0</expression>
+{TEMPLATE_NAME:METRIC.str("")}=0</expression>
 		                <name lang="EN">Physical disk is not in OK state</name>
 		                <name lang="RU">Статус физического диска не норма</name>
 		                <url/>
