@@ -72,11 +72,14 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 					<xsl:variable name="speedMetricKey"><xsl:value-of select="ancestor::metrics/net.if.speed/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.speed/snmpObject"/>]</xsl:variable>
 					<xsl:variable name="outMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out/snmpObject"/>]</xsl:variable>
 					<trigger>
-					    <documentation>This trigger uses 3% hysteresis</documentation>>
+					    <documentation>- This trigger uses 3% hysteresis
+- Additionally added 'and net.if.speed[*].last()>0' in order to fix ZBX-12688</documentation>
 					    <id>if.util_high</id>
-						<expression>{TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
-{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</expression>
-						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
+						<expression>({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
+{TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}) and
+{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}&gt;0
+</expression>
+						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} and
 {TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</recovery_expression>
 						<manual_close>1</manual_close>
 		                <name lang="EN">High bandwidth usage >{$IF_UTIL_MAX:"{#IFNAME}"}%</name>
