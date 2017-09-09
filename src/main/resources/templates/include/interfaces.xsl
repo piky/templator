@@ -77,8 +77,7 @@ WARNING. if closed manually - won't fire again on next poll. because of .diff. T
 					    <id>if.util_high</id>
 						<expression>({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
 {TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}) and
-{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}&gt;0
-</expression>
+{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}&gt;0</expression>
 						<recovery_expression>{TEMPLATE_NAME:METRIC.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} and
 {TEMPLATE_NAME:<xsl:value-of select="$outMetricKey"/>.avg(15m)}&lt;(({$IF_UTIL_MAX:"{#IFNAME}"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()}</recovery_expression>
 						<manual_close>1</manual_close>
