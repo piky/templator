@@ -21,7 +21,7 @@
 </xsl:variable>
 
 <xsl:variable name="template_deps_system_snmp" as="node()">
-	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_system_snmp.xml')"/>
+	<xsl:copy-of select="document('file:///C:/Temp/repos/eclipse_workspace/zbx_templates_pack/bin/merged/template_module_generic_snmp.xml')"/>
 </xsl:variable>
 
 <xsl:variable name="template_deps_host_resources" as="node()">
