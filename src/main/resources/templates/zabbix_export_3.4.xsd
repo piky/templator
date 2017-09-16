@@ -154,7 +154,7 @@
                       							<xs:sequence>
                       								<xs:element
                       									name="item_prototype"
-                      									maxOccurs="unbounded" minOccurs="0" type="itemProtoObj"/>
+                      										maxOccurs="unbounded" minOccurs="1" type="itemProtoObj"/> <!-- there must be at least one item_prototype, or its misconfigartion otherwise-->
                       							</xs:sequence>
                       						</xs:complexType>
                       					</xs:element>
