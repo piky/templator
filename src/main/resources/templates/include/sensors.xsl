@@ -13,7 +13,7 @@
 			<name lang="RU">Температура</name>
 			<group>Temperature</group>
 			<description>Temperature readings of testpoint: <xsl:value-of select="alarmObject"/></description>
-			<units>°С</units>
+			<units>°C</units>
 			<valueType><xsl:copy-of select="$valueTypeFloat"/></valueType>
 			<update>
 				<!-- TODO: make this feature global -->
