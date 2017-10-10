@@ -449,7 +449,23 @@ or
     </xsl:copy>
 </xsl:template>
 
+<xsl:template match="template/metrics/sensor.fan.speed.percentage">
+	<xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Fan speed, %</name>
+			<name lang="RU">Скорость вращения вентилятора, %</name>
+			<group>Fans</group>
+			<units>%</units>
+			<triggers/>
+		</metric>
+	</xsl:variable>
 
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+			<xsl:with-param name="metric" select="$metric"/>
+		</xsl:call-template>
+	</xsl:copy>
+</xsl:template>
 
 
 <xsl:template match="template/metrics/sensor.fan.speed">
