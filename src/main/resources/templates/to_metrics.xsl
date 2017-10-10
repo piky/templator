@@ -338,8 +338,8 @@
 				</xsl:choose> 
 				
 				
-				<valueMap><xsl:value-of select="valueMap" /></valueMap>
-				<multiplier><xsl:value-of select="multiplier" /></multiplier>
+				<valueMap><xsl:value-of select="valueMap"/></valueMap>
+				<multiplier><xsl:value-of select="multiplier"/></multiplier>
 				
 				<xsl:choose>
 					<xsl:when test="preprocessing">
