@@ -428,13 +428,25 @@
 	       <xs:maxInclusive value="17"/>
     </xs:restriction>
    </xs:simpleType>
-   
+
 			<xs:complexType name="triggerObj">
 				<xs:sequence>
-					<xs:element type="xs:string" name="expression" />
+					<xs:element name="expression">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
 					<xs:element type="xs:int" name="recovery_mode" />
 					<xs:element type="xs:string" name="recovery_expression" />
-					<xs:element type="xs:string" name="name" />
+					<xs:element name="name">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
 					<xs:element type="xs:int" name="correlation_mode" />
 					<xs:element type="xs:string" name="correlation_tag" />
 					<xs:element type="xs:string" name="url" />
@@ -450,8 +462,8 @@
 									<xs:complexType>
 										<xs:sequence>
 											<xs:element type="xs:string" name="name" />
-											<xs:element type="xs:string" name="expression" />
-											<xs:element type="xs:string" name="recovery_expression" />
+											<xs:element type="xs:string" name="expression"/>
+											<xs:element type="xs:string" name="recovery_expression"/>
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>
