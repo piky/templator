@@ -236,30 +236,36 @@ or
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
-				<trigger>
-					<id>psu.crit</id>
-					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-	                <name lang="EN">Power supply is in critical state</name>
-	                <name lang="RU">Статус блока питания: авария</name>
-	                <priority>3</priority>
-	                <description lang="EN">Please check the power supply unit for errors</description>
-	                <description lang="RU">Проверьте блок питания</description>
-	               	<tags>
-						<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-			 				</tag>
-			 				<tag>
-				 				<tag>Alarm.type</tag>
-				                <value>PSU_FAIL</value>
-							</tag>
-	               	</tags>
-				</trigger>
+				<!-- there should be at least FAN_CRIT or FAN_OK status -->
+				<xsl:if test="not(../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')])">
+					<xsl:message terminate="yes">Error: provide at least macro for PSU_CRIT_STATUS or PSU_OK_STATUS</xsl:message>
+				</xsl:if>
+				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">
+					<trigger>
+						<id>psu.crit</id>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
+						<name lang="EN">Power supply is in critical state</name>
+						<name lang="RU">Статус блока питания: авария</name>
+						<priority>3</priority>
+						<description lang="EN">Please check the power supply unit for errors</description>
+						<description lang="RU">Проверьте блок питания</description>
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+											<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+											<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+									</xsl:call-template>
+								</value>
+								</tag>
+								<tag>
+									<tag>Alarm.type</tag>
+									<value>PSU_FAIL</value>
+								</tag>
+						</tags>
+					</trigger>
+				</xsl:if>
 				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_WARN_STATUS')]">
 					<trigger>
 						<id>psu.warn</id>
@@ -278,7 +284,7 @@ or
 								<value>
 									<xsl:call-template name="tagAlarmObjectType">
 										<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-										<xsl:with-param name="alarmObjectDefault">Fan</xsl:with-param>
+										<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
 									</xsl:call-template>
 								</value>
 							</tag>
@@ -289,33 +295,40 @@ or
 						</tags>
 					</trigger>
 				</xsl:if>
-<!-- 				<trigger>
-					<id>psu.notok</id>
-					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;&gt;{$PSU_OK_STATUS}</expression>
-	                <name lang="EN">Power supply status: (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">Статус блока питания: (<xsl:value-of select="$nowRU" />)</name>
-	                <priority>1</priority>
-	                <description lang="EN">Please check the power supply unit</description>
-	                <description lang="RU">Проверьте блок питания</description>
-	                <dependsOn>
-	                	<dependency>psu.critical</dependency>
-	               	</dependsOn>
-	               	<tags>
-						<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-						         		<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-						</tag>
-	               	</tags>
-				</trigger>	 -->			
+				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')]">
+					<trigger>
+						<id>psu.notok</id>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<name lang="EN">Power supply is not in normal state</name>
+						<name lang="RU">Статус блока питания: не норма</name>
+						<priority>1</priority>
+						<description lang="EN">Please check the power supply unit for errors</description>
+						<description lang="RU">Проверьте блок питания</description>
+						<dependsOn>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]"><dependency>psu.crit</dependency></xsl:if>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_WARN_STATUS')]"><dependency>psu.warn</dependency></xsl:if>
+						</dependsOn>
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+										<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+										<xsl:with-param name="alarmObjectDefault">PSU</xsl:with-param>
+									</xsl:call-template>
+								</value>
+							</tag>
+							<tag>
+								<tag>Alarm.type</tag>
+								<value>PSU_NOTOK</value>
+							</tag>
+						</tags>
+					</trigger>
+				</xsl:if>
 			</triggers>
 		</metric>
     </xsl:variable>
-				
+
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
 				<xsl:with-param name="metric" select="$metric" />
@@ -336,34 +349,40 @@ or
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
-				<trigger>
-					<id>fan.crit</id>
-					<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
-	                <name lang="EN">Fan is in critical state</name>
-	                <name lang="RU">Статус вентилятора: сбой</name>
-	                <priority>3</priority>
-	                <description lang="EN">Please check the fan unit</description>
-	                <description lang="RU">Проверьте вентилятор</description>
-	               	<tags>
-						<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-						         		<xsl:with-param name="alarmObjectDefault">Fan</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-						</tag>
-						<tag>
-				 				<tag>Alarm.type</tag>
-				                <value>FAN_FAIL</value>
-						</tag>
-	               	</tags>
-				</trigger>
+				<!-- there should be at least FAN_CRIT or FAN_OK status -->
+				<xsl:if test="not(../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')])">
+					<xsl:message terminate="yes">Error: provide at least macro for FAN_CRIT_STATUS or FAN_OK_STATUS</xsl:message>
+				</xsl:if>
+				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">
+					<trigger>
+						<id>fan.crit</id>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<name lang="EN">Fan is in critical state</name>
+						<name lang="RU">Статус вентилятора: сбой</name>
+						<priority>3</priority>
+						<description lang="EN">Please check the fan unit</description>
+						<description lang="RU">Проверьте вентилятор</description>
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+											<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+											<xsl:with-param name="alarmObjectDefault">Fan</xsl:with-param>
+									</xsl:call-template>
+								</value>
+							</tag>
+							<tag>
+									<tag>Alarm.type</tag>
+									<value>FAN_FAIL</value>
+							</tag>
+						</tags>
+					</trigger>
+				</xsl:if>
 				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]">
 					<trigger>
 						<id>fan.warn</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
+						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
 						<name lang="EN">Fan is in warning state</name>
 						<name lang="RU">Статус вентилятора: предупреждение</name>
 						<priority>2</priority>
@@ -389,36 +408,43 @@ or
 						</tags>
 					</trigger>
 				</xsl:if>
-<!-- 				<trigger>
-					<id>fan.notok</id>
-					<expression>{TEMPLATE_NAME:METRIC.last(0)}&lt;&gt;{$FAN_OK_STATUS}</expression>
-	                <name lang="EN">[<xsl:value-of select="alarmObject"/>] Fan status: (<xsl:value-of select="$nowEN" />)</name>
-	                <name lang="RU">[<xsl:value-of select="alarmObject"/>] Статус вентилятора: (<xsl:value-of select="$nowRU" />)</name>
-	                <priority>1</priority>
-	                <description lang="EN">Please check the fan unit</description>
-	                <description lang="RU">Проверьте вентилятор</description>
-	                <dependsOn>
-	                	<dependency>fan.critical</dependency>
-	               	</dependsOn>
-	               	<tags>
-						<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
-						         		<xsl:with-param name="alarmObjectDefault">FAN</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-						</tag>
-	               	</tags>
-				</trigger>	 -->
+				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')]">
+					<trigger>
+							<id>fan.notok</id>
+							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+							<name lang="EN">Fan is not in normal state</name>
+							<name lang="RU">Статус вентилятора: не норма</name>
+							<priority>1</priority>
+							<description lang="EN">Please check the fan unit</description>
+							<description lang="RU">Проверьте вентилятор</description>
+							<dependsOn>
+								<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]"><dependency>fan.crit</dependency></xsl:if>
+								<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]"><dependency>fan.warn</dependency></xsl:if>
+							</dependsOn>
+							<tags>
+								<tag>
+									<tag>Alarm.object.type</tag>
+									<value>
+										<xsl:call-template name="tagAlarmObjectType">
+											<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+											<xsl:with-param name="alarmObjectDefault">Fan</xsl:with-param>
+										</xsl:call-template>
+									</value>
+								</tag>
+								<tag>
+									<tag>Alarm.type</tag>
+									<value>FAN_NOTOK</value>
+								</tag>
+							</tags>
+					</trigger>
+				</xsl:if>
 			</triggers>
 		</metric>
     </xsl:variable>
 				
 	<xsl:copy>
 		<xsl:call-template name="defaultMetricBlock">
-				<xsl:with-param name="metric" select="$metric" />
+				<xsl:with-param name="metric" select="$metric"/>
 	    </xsl:call-template>
     </xsl:copy>
 </xsl:template>
