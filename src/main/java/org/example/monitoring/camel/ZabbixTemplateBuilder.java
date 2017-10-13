@@ -1,6 +1,8 @@
 package org.example.monitoring.camel;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.springframework.stereotype.Component;
@@ -10,14 +12,22 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
  
   @Override
   public void configure() throws Exception {
-	errorHandler(deadLetterChannel("seda:errors"));
+	errorHandler(deadLetterChannel("direct:errors"));
 
 	  Namespaces ns = new Namespaces("z", "http://www.example.org/zbx_template_new/");
+	  Processor xslt_logger = new XsltLogger();
 
+	from("direct:errors")
+			.process(new Processor() {
+				@Override
+				public void process(Exchange exchange) throws Exception {
 
-	from("seda:errors")
-		.log("Error: ${file:name}: ${exception.message}");
-	  
+					Exception error = exchange.getProperty(Exchange.XSLT_ERROR, Exception.class);
+					exchange.getOut().setHeader("XSLT_ERROR",error.getMessage().toString());
+				}
+			})
+			.log(LoggingLevel.WARN,"Error:  ${file:name}: ${header.XSLT_ERROR}");
+
 	from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
 	    .multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
