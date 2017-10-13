@@ -30,7 +30,6 @@
     </xsl:copy>	
 </xsl:template>
 
-
 <xsl:template match="template/metrics/system.hw.model">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>

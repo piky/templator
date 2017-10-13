@@ -8,9 +8,6 @@
 <xsl:param name="lang" select="undef"/>
 
 
-<!-- 
-
- -->
 <xsl:template match="node()|@*">
    <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -22,20 +19,16 @@
 
 <xsl:template match="//trigger/description">
 	<description>
-		<xsl:copy-of select="@*|b/@*" /> <!-- copy all attributes, including lang -->
-
+		<xsl:copy-of select="@*|b/@*"/> <!-- copy all attributes, including lang -->
 		<xsl:choose>
 			<xsl:when test="@lang='RU'">
-				<xsl:value-of  select="concat('Последнее значение: {ITEM.LASTVALUE1}.&#10;',.)"/>
+				<xsl:value-of select="concat('Последнее значение: {ITEM.LASTVALUE1}.&#10;',.)"/>
 			</xsl:when>
-			<xsl:otherwise >
-				<xsl:value-of  select="concat('Last value: {ITEM.LASTVALUE1}.&#10;',.)"/>
+			<xsl:otherwise>
+				<xsl:value-of select="concat('Last value: {ITEM.LASTVALUE1}.&#10;',.)"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-		
 	</description>
-    <!--    -->
 </xsl:template>
 
 </xsl:stylesheet>

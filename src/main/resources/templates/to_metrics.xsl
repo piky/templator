@@ -72,7 +72,6 @@
         </Fault>
         <General>
         	<SNMP_TIMEOUT><value>3m</value></SNMP_TIMEOUT>
-        	
         </General>
         <IF-MIB>
         	<IFCONTROL><value>1</value></IFCONTROL>
@@ -397,7 +396,6 @@
 			<trigger>
 					<xsl:copy-of select="$trigger/documentation"/>
 					<xsl:copy-of select="$trigger/id"/>
-					<!-- <xsl:copy-of select="$trigger/expression"></xsl:copy-of> -->
 					<expression><xsl:value-of select="replace($trigger/expression, 'METRIC', $metricKey)"/></expression>
 					<recovery_expression><xsl:value-of select="replace($trigger/recovery_expression, 'METRIC', $metricKey)"/></recovery_expression>
 		            <xsl:copy-of select="$trigger/recovery_mode"/>
@@ -527,4 +525,3 @@
 <xsl:include href="include/interfaces.xsl"/>
 
 </xsl:stylesheet>
-

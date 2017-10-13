@@ -15,7 +15,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	errorHandler(deadLetterChannel("direct:errors"));
 
 	  Namespaces ns = new Namespaces("z", "http://www.example.org/zbx_template_new/");
-	  Processor xslt_logger = new XsltLogger();
 
 	from("direct:errors")
 			.process(new Processor() {

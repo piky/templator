@@ -270,7 +270,6 @@
 		     <xsl:copy-of copy-namespaces="no" select="ymin_item_1"/>
 		     <xsl:copy-of copy-namespaces="no" select="ymax_item_1"/>
 		     <xsl:copy-of copy-namespaces="no" select="graph_items"/>
-
 </xsl:template>
 
 <xsl:template match="metrics/*/graphs/graph">
