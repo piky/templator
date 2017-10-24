@@ -180,8 +180,9 @@
 		<xsl:variable name="template_name" select="../../../../name"/>
 		<xsl:variable name="metric_name" select="../../name"/>
 		<xsl:variable name="metric_alarm_object" select="../../alarmObject"/>
+		<xsl:variable name="disc_name" select="../../discoveryRule"/>
 
-					<expression><xsl:value-of select="replace(./expression,'TEMPLATE_NAME',$template_name)"/></expression>
+				<expression><xsl:value-of select="replace(./expression,'TEMPLATE_NAME',$template_name)"/></expression>
 				<recovery_mode>
 					<xsl:choose>
 		  				<xsl:when test="./recovery_expression != ''">1</xsl:when>
@@ -189,7 +190,7 @@
 	      				<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</recovery_mode>
-                        	<recovery_expression><xsl:value-of select="replace(./recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+				<recovery_expression><xsl:value-of select="replace(./recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
 				<name><xsl:value-of select="./name"/></name>
 				<correlation_mode>0</correlation_mode>
                         	<correlation_tag/>
@@ -207,23 +208,23 @@
                          <dependencies>
             					<xsl:for-each select="./dependsOn/dependency">
 						<xsl:variable name="trigger_id" select="."/>
-									<dependency>
+						<dependency>
 									<xsl:choose>
 										<xsl:when test="../global = true()"> <!-- search in other templates (other merge files (refactor this!!!) -->
 											<xsl:variable name="module" select="doc('file:bin/merged/template_module_icmp_ping.xml')"></xsl:variable>
-   											<name><xsl:value-of select="$module//metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name[@lang=$lang or not(@lang)]"/></name>
-   											<expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-   											<recovery_expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+   											<name><xsl:value-of select="$module//metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/name[@lang=$lang or not(@lang)]"/></name>
+   											<expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   											<recovery_expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
   										</xsl:when>
 										<!--<xsl:when test="../global = true()"> &lt;!&ndash; search in other templates (but templates must in the same file) &ndash;&gt;
-											<name><xsl:value-of select="//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-											<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-											<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+											<name><xsl:value-of select="//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/name"/></name>
+											<expression><xsl:value-of select="replace(//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+											<recovery_expression><xsl:value-of select="replace(//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
 										</xsl:when>-->
   										<xsl:otherwise>
-  											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/name"/></name>
-   											<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
-   											<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject=$metric_alarm_object ]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
+  											<name><xsl:value-of select="//template[name=$template_name]/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/name"/></name>
+   											<expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
+   											<recovery_expression><xsl:value-of select="replace(//template[name=$template_name]/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
   										</xsl:otherwise>
  									</xsl:choose>
 						</dependency>
