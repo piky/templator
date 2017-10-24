@@ -321,15 +321,19 @@
 						<update><xsl:copy-of select="$updateDefault"/></update>
 					</xsl:otherwise>
 				</xsl:choose> 
-				
+
+				<!-- if defined in in file, if else defined in xsl template, otherwise: use valueType=3-->
 				<xsl:choose>
+					<xsl:when test="valueType">
+						<xsl:copy-of select="valueType"/>
+					</xsl:when>
 					<xsl:when test="$metric/valueType">
 						<xsl:copy-of select="$metric/valueType"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<valueType><xsl:copy-of select="$valueType"/></valueType>
 					</xsl:otherwise>
-				</xsl:choose> 
+				</xsl:choose>
 				
 				
 				<valueMap><xsl:value-of select="valueMap"/></valueMap>
@@ -505,7 +509,88 @@
 		</graph>
 </xsl:template>
 
- 
+
+<!-- triggers prototypes -->
+
+<xsl:variable name="proto_t_sn_changed" as="element()">
+	<trigger>
+		<id>sn.changed</id>
+		<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
+		<recovery_mode>2</recovery_mode>
+		<manual_close>1</manual_close>
+		<name lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> has been replaced (new serial number received)</name>
+		<name lang="RU">Возможно замена <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" /> (получен новый серийный номер)</name>
+		<url/>
+		<priority>1</priority>
+		<description lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
+		<description lang="RU">Изменился серийный номер <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" />. Подтвердите и закройте.</description>
+		<tags>
+			<tag>
+				<tag>Alarm.type</tag>
+				<value>SN_CHANGE</value>
+			</tag>
+			<tag>
+				<tag>Alarm.object.type</tag>
+				<value>
+					<xsl:call-template name="tagAlarmObjectType">
+						<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
+						<xsl:with-param name="alarmObjectDefault">Device</xsl:with-param>
+					</xsl:call-template>
+				</value>
+			</tag>
+		</tags>
+	</trigger>
+</xsl:variable>
+
+<xsl:template name="proto_t_sn_changed">
+	<xsl:param name="defaultAlarmObjectType"/>
+	<xsl:param name="id"/>
+	<trigger>
+		<id><xsl:value-of select="$id"/></id>
+		<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
+		<recovery_mode>2</recovery_mode>
+		<manual_close>1</manual_close>
+		<name lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> has been replaced (new serial number received)</name>
+		<name lang="RU">Возможно замена <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" /> (получен новый серийный номер)</name>
+		<url/>
+		<priority>1</priority>
+		<description lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
+		<description lang="RU">Изменился серийный номер <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" />. Подтвердите и закройте.</description>
+		<tags>
+			<tag>
+				<tag>Alarm.type</tag>
+				<value>SN_CHANGE</value>
+			</tag>
+			<tag>
+				<tag>Alarm.object.type</tag>
+				<value>
+					<xsl:call-template name="tagAlarmObjectType">
+						<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+						<xsl:with-param name="alarmObjectDefault" select="$defaultAlarmObjectType"/>
+					</xsl:call-template>
+				</value>
+			</tag>
+		</tags>
+	</trigger>
+</xsl:template>
+
+<xsl:template name="proto_t_simple_status_e">
+	<xsl:param name="macro"/>
+	<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),$macro)]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+</xsl:template>
+
+<xsl:template name="proto_t_simple_status_notok_e">
+	<xsl:param name="macro"/>
+	<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),$macro)]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+</xsl:template>
+
+
+<xsl:template name="tags">
+	<xsl:param name="macro"/>
+	<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),$macro)]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+</xsl:template>
+
+<!-- trigger protos end -->
 
 <xsl:include href="include/cpu.xsl"/>
 <xsl:include href="include/memory.xsl"/>

@@ -234,15 +234,19 @@ or
 			<update><xsl:copy-of select="$update3min"/></update>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
-				<xsl:if test="not(../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')])">
+				<xsl:if test="not(../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')])
+and not(imported[contains(text(),'true')])">
 					<xsl:message terminate="yes">Error: provide at least macro for PSU_CRIT_STATUS or PSU_OK_STATUS</xsl:message>
 				</xsl:if>
 				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">
 					<trigger>
 						<id>psu.crit</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_e">
+								<xsl:with-param name="macro">PSU_CRIT_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
 						<name lang="EN">Power supply is in critical state</name>
 						<name lang="RU">Статус блока питания: авария</name>
 						<priority>3</priority>
@@ -268,7 +272,11 @@ or
 				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_WARN_STATUS')]">
 					<trigger>
 						<id>psu.warn</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_e">
+								<xsl:with-param name="macro">PSU_WARN_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
 						<name lang="EN">Power supply is in warning state</name>
 						<name lang="RU">Статус блока питания: предупреждение</name>
 						<priority>2</priority>
@@ -297,7 +305,11 @@ or
 				<xsl:if test="../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')]">
 					<trigger>
 						<id>psu.notok</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'PSU_OK_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_notok_e">
+								<xsl:with-param name="macro">PSU_OK_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
 						<name lang="EN">Power supply is not in normal state</name>
 						<name lang="RU">Статус блока питания: не норма</name>
 						<priority>1</priority>
@@ -346,16 +358,20 @@ or
 			<update><xsl:copy-of select="$update3min"/></update>
 			<history><xsl:copy-of select="$history14days"/></history>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
-			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<triggers>
 				<!-- there should be at least FAN_CRIT or FAN_OK status -->
-				<xsl:if test="not(../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')])">
+				<xsl:if test="not(../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]) and not(../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')])
+and not(imported[contains(text(),'true')])">
 					<xsl:message terminate="yes">Error: provide at least macro for FAN_CRIT_STATUS or FAN_OK_STATUS</xsl:message>
 				</xsl:if>
 				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">
 					<trigger>
 						<id>fan.crit</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_e">
+								<xsl:with-param name="macro">FAN_CRIT_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
 						<name lang="EN">Fan is in critical state</name>
 						<name lang="RU">Статус вентилятора: сбой</name>
 						<priority>3</priority>
@@ -381,7 +397,11 @@ or
 				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]">
 					<trigger>
 						<id>fan.warn</id>
-						<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,eq)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_e">
+								<xsl:with-param name="macro">FAN_WARN_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
 						<name lang="EN">Fan is in warning state</name>
 						<name lang="RU">Статус вентилятора: предупреждение</name>
 						<priority>2</priority>
@@ -410,7 +430,11 @@ or
 				<xsl:if test="../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')]">
 					<trigger>
 							<id>fan.notok</id>
-							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'FAN_OK_STATUS')]">{TEMPLATE_NAME:METRIC.count(#1,<xsl:value-of select="."/>,ne)}=1<xsl:value-of select="if (position()=last()) then () else (' or ')"/></xsl:for-each></expression>
+							<expression>
+								<xsl:call-template name="proto_t_simple_status_notok_e">
+									<xsl:with-param name="macro">FAN_OK_STATUS</xsl:with-param>
+								</xsl:call-template>
+							</expression>
 							<name lang="EN">Fan is not in normal state</name>
 							<name lang="RU">Статус вентилятора: не норма</name>
 							<priority>1</priority>

@@ -347,6 +347,7 @@
 					    <xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					    <xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
 					    <xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					</xs:choice>
 			 	</xs:sequence>
 			 	
@@ -370,7 +371,7 @@
 					    <xs:element name="units" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 					    <xs:element name="update" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
 					    <xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
-					    <xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+					    <xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					    <xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					    <xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					    <xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
@@ -434,7 +435,7 @@
         <xs:enumeration value="Temperature"/>
         <xs:enumeration value="Status"/>
         <xs:enumeration value="Disk Arrays"/>
-        <xs:enumeration value="Disks"/>
+        <xs:enumeration value="Physical Disks"/>
         <xs:enumeration value="Power Supply"/>
         <xs:enumeration value="Fans"/>
         
