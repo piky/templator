@@ -227,13 +227,97 @@
     </xsl:copy>
 </xsl:template>
 
+<xsl:template match="template/metrics/system.hw.physicaldisk.smart_status">
+	<xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Physical disk S.M.A.R.T. status</name>
+			<name lang="RU">S.M.A.R.T. статус диска</name>
+			<group>Physical Disks</group>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update3min"/></update>
+			<triggers>
+				<xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'DISK_SMART_OK_STATUS')])
+and not(imported[contains(text(),'true')])">">
+					<xsl:message terminate="yes">Error: provide at least macro for DISK_SMART_FAIL_STATUS or DIKS_SMART_OK_STATUS</xsl:message>
+				</xsl:if>
+				<xsl:if test="../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]">
+					<trigger>
+						<id>disk_smart.fail</id>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_e">
+								<xsl:with-param name="macro">DISK_SMART_FAIL_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
+						<name lang="EN">Physical disk S.M.A.R.T. failed</name>
+						<name lang="RU">Статус S.M.A.R.T. физического диска: сбой</name>
+						<url/>
+						<priority>4</priority>
+						<description lang="EN">Disk probably requires replacement.</description>
+						<description lang="RU">Возможно требуется замена диска.</description>
+						<dependsOn>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
+						</dependsOn>
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+										<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+										<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
+									</xsl:call-template>
+								</value>
+							</tag>
+						</tags>
+					</trigger>
+				</xsl:if>
+				<xsl:if test="../../macros/macro/macro[contains(text(),'DIKS_SMART_OK_STATUS')]">
+					<trigger>
+						<id>disk_smart.notok</id>
+						<expression>
+							<xsl:call-template name="proto_t_simple_status_notok_e">
+								<xsl:with-param name="macro">DIKS_SMART_OK_STATUS</xsl:with-param>
+							</xsl:call-template>
+						</expression>
+						<name lang="EN">Physical disk S.M.A.R.T. status is not in OK state</name>
+						<name lang="RU">Статус S.M.A.R.T. физического диска не норма</name>
+						<url/>
+						<priority>3</priority>
+						<description lang="EN">Disk probably requires replacement.</description>
+						<description lang="RU">Возможно требуется замена диска.</description>
+						<dependsOn>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'DISK_OK_STATUS')]"><dependency>disk.notok</dependency></xsl:if>
+							<xsl:if test="../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]"><dependency>disk_smart.fail</dependency></xsl:if>
+						</dependsOn>
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+										<xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+										<xsl:with-param name="alarmObjectDefault">Disk</xsl:with-param>
+									</xsl:call-template>
+								</value>
+							</tag>
+						</tags>
+					</trigger>
+				</xsl:if>
+			</triggers>
+		</metric>
+	</xsl:variable>
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+			<xsl:with-param name="metric" select="$metric" />
+		</xsl:call-template>
+	</xsl:copy>
+</xsl:template>
 
 <xsl:template match="template/metrics/system.hw.physicaldisk.serialnumber">
 	 <xsl:variable name="metric" as="element()*">
 		<metric>
-			<name lang="EN">Physical Disk Serial Number</name>
+			<name lang="EN">Physical disk serial number</name>
 			<name lang="RU">Серийный номер физического диска</name>
-			<group>Disks</group>
+			<group>Physical Disks</group>
 			<trends><xsl:copy-of select="$trends0days"/></trends>
 			<update><xsl:copy-of select="$update1day"/></update>
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
@@ -252,6 +336,47 @@
 	    </xsl:call-template>
     </xsl:copy>
 </xsl:template>
+
+<xsl:template match="template/metrics/system.hw.physicaldisk.model">
+	<xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Physical disk model name</name>
+			<name lang="RU">Модель физического диска</name>
+			<group>Physical Disks</group>
+			<history><xsl:copy-of select="$history14days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1hour"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		</metric>
+	</xsl:variable>
+
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+			<xsl:with-param name="metric" select="$metric" />
+		</xsl:call-template>
+	</xsl:copy>
+</xsl:template>
+
+<xsl:template match="template/metrics/system.hw.physicaldisk.part_number">
+	<xsl:variable name="metric" as="element()*">
+		<metric>
+			<name lang="EN">Physical disk part number</name>
+			<name lang="RU">Код производителя диска</name>
+			<group>Physical Disks</group>
+			<history><xsl:copy-of select="$history14days"/></history>
+			<trends><xsl:copy-of select="$trends0days"/></trends>
+			<update><xsl:copy-of select="$update1hour"/></update>
+			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
+		</metric>
+	</xsl:variable>
+
+	<xsl:copy>
+		<xsl:call-template name="defaultMetricBlock">
+			<xsl:with-param name="metric" select="$metric" />
+		</xsl:call-template>
+	</xsl:copy>
+</xsl:template>
+
 
 </xsl:stylesheet>
 
