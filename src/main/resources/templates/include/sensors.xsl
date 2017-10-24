@@ -3,8 +3,6 @@
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xpath-default-namespace="http://www.example.org/zbx_template_new/"
 				xmlns="http://www.example.org/zbx_template_new/">
-<xsl:output method="xml" indent="yes"/>
-
 
 <xsl:template match="template/metrics/sensor.temp.value">
 	 <xsl:variable name="metric" as="element()*">
