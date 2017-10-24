@@ -3,67 +3,65 @@
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xpath-default-namespace="http://www.example.org/zbx_template_new/"
 				xmlns="http://www.example.org/zbx_template_new/">
-<xsl:output method="xml" indent="yes"/>
+	<xsl:template match="template/metrics/system.cpu.util">
 
-<xsl:template match="template/metrics/system.cpu.util">
-	 
-	 <xsl:variable name="metric" as="element()*">
-		 <metric>
-			<name lang="EN">CPU utilization</name>
-			<name lang="RU">Загрузка процессора</name>
-			<group>CPU</group>
-			<description>CPU utilization in %</description>
-			<units>%</units>
-			<update><xsl:value-of select="$update3min"/></update>
-			<valueType><xsl:value-of select="$valueTypeFloat"/></valueType>
-			<triggers>
-				<trigger>
-					<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
-					<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
-					<name lang="EN">High CPU utilization</name>
-					<name lang="RU">Высокая загрузка процессора</name>
-	                <url/>
-	                <priority>3</priority>
-	                <description />
-	                <tags>
-	                	<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
-						         		<xsl:with-param name="alarmObjectDefault">CPU</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-	 					</tag>
-						<tag>
-		                	<tag>Alarm.type</tag>
-			                <value>CPU_UTIL_HIGH</value>
-	 					</tag>	 					
-	                </tags>
-				</trigger>
-			</triggers>
-			<graphs>
-				<graph>
-					<name>CPU utilization</name>
-					<yaxismin>0</yaxismin>
-					<yaxismax>100</yaxismax>
-					<graphItems>
-						<item>
-							<drawtype>gradient</drawtype>
-							<name>system.cpu.util</name>
-						</item>
-					</graphItems>
-				</graph>
-			</graphs>
-		</metric>
-    </xsl:variable>
-	
-	<xsl:copy>
-		<xsl:call-template name="defaultMetricBlock">
-			<xsl:with-param name="metric" select="$metric" />
-	    </xsl:call-template>
-    </xsl:copy>
-</xsl:template>
+		<xsl:variable name="metric" as="element()*">
+			<metric>
+				<name lang="EN">CPU utilization</name>
+				<name lang="RU">Загрузка процессора</name>
+				<group>CPU</group>
+				<description>CPU utilization in %</description>
+				<units>%</units>
+				<update><xsl:value-of select="$update3min"/></update>
+				<valueType><xsl:value-of select="$valueTypeFloat"/></valueType>
+				<triggers>
+					<trigger>
+						<documentation>If alarmObject is defined, it's added to trigger name.</documentation>
+						<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$CPU_UTIL_MAX}</expression>
+						<name lang="EN">High CPU utilization</name>
+						<name lang="RU">Высокая загрузка процессора</name>
+						<url/>
+						<priority>3</priority>
+						<description />
+						<tags>
+							<tag>
+								<tag>Alarm.object.type</tag>
+								<value>
+									<xsl:call-template name="tagAlarmObjectType">
+										<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
+										<xsl:with-param name="alarmObjectDefault">CPU</xsl:with-param>
+									</xsl:call-template>
+								</value>
+							</tag>
+							<tag>
+								<tag>Alarm.type</tag>
+								<value>CPU_UTIL_HIGH</value>
+							</tag>
+						</tags>
+					</trigger>
+				</triggers>
+				<graphs>
+					<graph>
+						<name>CPU utilization</name>
+						<yaxismin>0</yaxismin>
+						<yaxismax>100</yaxismax>
+						<graphItems>
+							<item>
+								<drawtype>gradient</drawtype>
+								<name>system.cpu.util</name>
+							</item>
+						</graphItems>
+					</graph>
+				</graphs>
+			</metric>
+		</xsl:variable>
+
+		<xsl:copy>
+			<xsl:call-template name="defaultMetricBlock">
+				<xsl:with-param name="metric" select="$metric" />
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
 
 </xsl:stylesheet>
 

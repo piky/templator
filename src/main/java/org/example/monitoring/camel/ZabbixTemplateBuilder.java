@@ -50,6 +50,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 	    .to("xslt:templates/to_metrics.xsl?saxon=true")
 	    .to("xslt:templates/to_metrics_add_trigger_desc.xsl?saxon=true") // adds Default trigger description. See inside 
 	    .to("xslt:templates/to_metrics_update_graph_items.xsl?saxon=true")
+		.to("xslt:templates/to_metrics_strip_whitespace.xsl?saxon=true")// trim whitespace on some multiline nodes
 	    .to("file:bin/merged")
 	    .to("validator:templates/metrics.xsd")
 	    .to("xslt:templates/to_metrics_strip_imported_metrics.xsl?saxon=true")

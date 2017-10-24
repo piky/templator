@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xpath-default-namespace="http://www.example.org/zbx_template_new/" xmlns="http://www.example.org/zbx_template_new/">
 
-<xsl:output method="xml" indent="yes"/>
-<xsl:strip-space elements="*"/>
-
+<xsl:output method="xml"/>
 
 <xsl:variable name="historyDefault">30</xsl:variable>
 <xsl:variable name="history30days">30</xsl:variable>
@@ -20,9 +18,6 @@
 <xsl:variable name="update1hour">3600</xsl:variable>
 <xsl:variable name="update4hours">14400</xsl:variable> 
 <xsl:variable name="update1day">86400</xsl:variable>
-
-
-
 
 <xsl:variable name="valueType">3</xsl:variable>
 <xsl:variable name="valueTypeFloat">0</xsl:variable>

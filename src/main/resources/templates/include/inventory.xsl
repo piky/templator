@@ -3,7 +3,6 @@
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 				xpath-default-namespace="http://www.example.org/zbx_template_new/"
 				xmlns="http://www.example.org/zbx_template_new/">
-<xsl:output method="xml" indent="yes"/>
 
 <!-- inventory -->
 
@@ -70,33 +69,10 @@
 			<valueType><xsl:copy-of select="$valueTypeChar"/></valueType>
 			<inventory_link>8</inventory_link> <!-- serial_noa-->
 			<triggers>
-				<trigger>
-				    <id>sn.changed</id>
-					<expression>{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0</expression>
-					<recovery_mode>2</recovery_mode>
-					<manual_close>1</manual_close>
-	                <name lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> has been replaced (new serial number received)</name>
-	                <name lang="RU">Возможно замена <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" /> (получен новый серийный номер)</name>
-	                <url/>
-	                <priority>1</priority>
-	                <description lang="EN"><xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else $defaultAlarmObjectType" /> serial number has changed. Ack to close</description>
-	                <description lang="RU">Изменился серийный номер <xsl:value-of select="if (alarmObjectType!='') then alarmObjectType else 'устройства'" />. Подтвердите и закройте.</description>
-	                <tags>
-	                	<tag>
-			 				<tag>Alarm.type</tag>
-			                <value>SN_CHANGE</value>
-						</tag>
-						<tag>
-		                	<tag>Alarm.object.type</tag>
-			                <value>
-			             		<xsl:call-template name="tagAlarmObjectType">
-						         		<xsl:with-param name="alarmObjectType" select="alarmObjectType" />
-						         		<xsl:with-param name="alarmObjectDefault">Device</xsl:with-param>
-			 					</xsl:call-template>
-			 				</value>
-	 					</tag>
-					</tags>
-				</trigger>
+				<xsl:call-template name="proto_t_sn_changed">
+					<xsl:with-param name="id">sn.changed</xsl:with-param>
+					<xsl:with-param name="defaultAlarmObjectType">Device</xsl:with-param>
+				</xsl:call-template>
 			</triggers>		
 		</metric>
     </xsl:variable>
