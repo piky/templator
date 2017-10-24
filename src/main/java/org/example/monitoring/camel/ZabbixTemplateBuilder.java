@@ -16,16 +16,23 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 	  Namespaces ns = new Namespaces("z", "http://www.example.org/zbx_template_new/");
 
-	from("direct:errors")
-			.process(new Processor() {
-				@Override
-				public void process(Exchange exchange) throws Exception {
+	  //catch XSLT terminations
+	onException(net.sf.saxon.expr.instruct.TerminationException.class)
+		  .process(new Processor() {
+			  @Override
+			  public void process(Exchange exchange) throws Exception {
 
-					Exception error = exchange.getProperty(Exchange.XSLT_ERROR, Exception.class);
-					exchange.getOut().setHeader("XSLT_ERROR",error.getMessage().toString());
-				}
-			})
-			.log(LoggingLevel.WARN,"Error:  ${file:name}: ${header.XSLT_ERROR}");
+				  Exception error = exchange.getProperty(Exchange.XSLT_ERROR, Exception.class);
+				  exchange.getOut().setHeader("XSLT_ERROR",error.getMessage().toString());
+			  }
+		  })
+		  .log(LoggingLevel.WARN,"Error:  ${file:name}: ${header.XSLT_ERROR}");
+
+	//other errors
+	from("direct:errors")
+			.log(LoggingLevel.WARN,"Error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
+
+
 
 	from("file:bin/in?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
