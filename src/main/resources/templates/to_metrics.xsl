@@ -379,7 +379,7 @@
 
 </xsl:template>
 
-
+<!-- appends alarmObject to every name -->
 <xsl:template match="*/name" mode="formatter">
 	<xsl:param name="alarmObject"/>
 	<xsl:copy>

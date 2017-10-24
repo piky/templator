@@ -24,7 +24,7 @@
  			</update>
 			<triggers>
 				<trigger>
-				    <documentation>Using recovery expression... Temperature has to drop 3 points less than threshold level  ({$TEMP_WARN}-3)</documentation>
+				    <documentation>Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)</documentation>
 				    <id>tempWarn</id>
 					<!-- if sensor.temp.status is defined and is within same discovery rule with system.temp.value then add it TO trigger:-->
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
