@@ -2,35 +2,35 @@
 <xs:schema targetNamespace="http://www.example.org/zbx_template_new/"
 		   xmlns:tns="http://www.example.org/zbx_template_new/"
 		   elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="root" type="tns:rootType"/>
-    <xs:complexType name="templateType">
-    	 <xs:all>
-    		<xs:element name="classes" maxOccurs="1" minOccurs="1">
-    			<xs:complexType>
-    				<xs:sequence>
-    					<xs:element type="tns:templateClass" name="class" maxOccurs="unbounded"/>
-    				</xs:sequence>
-    			</xs:complexType>
-    		</xs:element>
-    		<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
-    		<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0"/>
-    		<xs:element name="documentation" type="tns:documentationType" maxOccurs="1" minOccurs="0"/>
-    		<xs:element name="sysObjectID" type="xs:string"/>
-    		<xs:element name="discoveryRules" minOccurs="0" maxOccurs="1">
+	<xs:element name="root" type="tns:rootType"/>
+	<xs:complexType name="templateType">
+		<xs:all>
+			<xs:element name="classes" maxOccurs="1" minOccurs="1">
 				<xs:complexType>
-	    			 <xs:sequence>
-	    				<xs:element name="discoveryRule" maxOccurs="unbounded" minOccurs="0">
+					<xs:sequence>
+						<xs:element type="tns:templateClass" name="class" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="documentation" type="tns:documentationType" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="sysObjectID" type="xs:string"/>
+			<xs:element name="discoveryRules" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="discoveryRule" maxOccurs="unbounded" minOccurs="0">
 							<xs:complexType>
-				    			 <xs:all>
-				    				<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
-				    				<xs:element name="key" type="xs:string" maxOccurs="1" minOccurs="1"/>
-				    				<xs:element name="snmp_oid" type="xs:string" maxOccurs="1" minOccurs="1"/>
-				    				<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0"/>
-				    				<xs:element name="filter" minOccurs="0" maxOccurs="1">
-				    					<xs:complexType>
-				    						<xs:sequence>
-				    							<xs:element name="evaltype" type="xs:byte"/>
-												<xs:element name="formula" type="xs:string"/>				    							
+								<xs:all>
+									<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="key" type="xs:string" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="snmp_oid" type="xs:string" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0"/>
+									<xs:element name="filter" minOccurs="0" maxOccurs="1">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="evaltype" type="xs:byte"/>
+												<xs:element name="formula" type="xs:string"/>
 												<xs:element name="conditions">
 													<xs:complexType>
 														<xs:sequence>
@@ -47,165 +47,165 @@
 														</xs:sequence>
 													</xs:complexType>
 												</xs:element>
-				    						</xs:sequence>
-				    					</xs:complexType>
-				    				</xs:element>
-				    			</xs:all>
-			    			</xs:complexType>	    				
-	    				</xs:element>
-	    			</xs:sequence>
-    			</xs:complexType>    		
-    		</xs:element>
-    		<xs:element name="metrics">
-    			<xs:complexType>
-	    			 	<xs:choice maxOccurs="unbounded">
-	    			 		<xs:sequence><!-- Template HOST-RESOURCES -->
-									<xs:choice minOccurs="0">
-									  <xs:sequence>
-									    <xs:element name="vm.memory.units" type="tns:metricType"/>
-									    <xs:element name="vm.memory.units.used" type="tns:metricType"/>
-								        <xs:element name="vm.memory.units.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-										<xs:element name="vm.memory.used" type="tns:metricType"/>
-								        <xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									</xs:choice>
-					    			 
-					    			<xs:choice minOccurs="0" maxOccurs="1">
-									  <xs:sequence>
-									    <xs:element name="vfs.fs.units" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-									    <xs:element name="vfs.fs.units.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-								        <xs:element name="vfs.fs.units.total" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-										<xs:element name="vfs.fs.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-								        <xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									  <!-- as a free part of FAULT (not HOST-RESOURCES) -->
-									  <xs:sequence>
-									    <xs:element name="vfs.fs.used" type="tns:metricType"/>
-									    <xs:element name="vfs.fs.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								        <xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									  <xs:sequence>
-									    <xs:element name="vfs.fs.free" type="tns:metricType"/>
-								        <xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									</xs:choice>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="metrics">
+				<xs:complexType>
+					<xs:choice maxOccurs="unbounded">
+						<xs:sequence><!-- Template HOST-RESOURCES -->
+							<xs:choice minOccurs="0">
+								<xs:sequence>
+									<xs:element name="vm.memory.units" type="tns:metricType"/>
+									<xs:element name="vm.memory.units.used" type="tns:metricType"/>
+									<xs:element name="vm.memory.units.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<xs:element name="vm.memory.used" type="tns:metricType"/>
+									<xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+							</xs:choice>
 
-					    			<xs:element name="vfs.fs.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-					    			 
-		    				</xs:sequence>
-	    			 		<xs:sequence><!-- Template Performance CPU-->
-				    				<xs:element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-				    				<xs:element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-		    				</xs:sequence>
-		    				<xs:sequence><!-- Template Performance Memory-->
-									<xs:choice minOccurs="0">
-									  <xs:sequence>
-									    <xs:element name="vm.memory.used" type="tns:metricType"/>
-									    <xs:element name="vm.memory.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								        <xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									  <xs:sequence>
-									    <xs:element name="vm.memory.free" type="tns:metricType"/>
-								        <xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									  </xs:sequence>
-									</xs:choice>
-					    			<xs:element name="vm.memory.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-		    				</xs:sequence>
-		    				<xs:sequence> <!-- Template General and System Info -->
-		    					<xs:element name="system.uptime" type="tns:metricType"/>
-		    					<xs:element name="snmptrap.fallback" type="tns:metricType"/>
-		    					<xs:element name="system.location" type="tns:metricType"/>
-		    					<xs:element name="system.contact" type="tns:metricType"/>
-		    					<xs:element name="system.objectid" type="tns:metricType"/>
-		    					<xs:element name="system.name" type="tns:metricType"/>
-		    					<xs:element name="system.descr" type="tns:metricType"/>
-		    					<xs:element name="zabbix.snmp.available" type="tns:metricType"/>
-		    				</xs:sequence>
-							<xs:sequence> <!-- Template ICMP -->
-		    					<xs:element name="icmpping" type="tns:metricType"/>
-		    					<xs:element name="icmppingloss" type="tns:metricType"/>
-		    					<xs:element name="icmppingsec" type="tns:metricType"/>
-		    				</xs:sequence>
-							<xs:sequence> <!-- Template Remote Service (NTP,SMTP, SSH,Telnet) LDAP etc) -->
-								<xs:choice maxOccurs="unbounded">
-									<xs:element name="net.tcp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
-									<xs:element name="net.udp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
-								</xs:choice>
-							</xs:sequence>
-							<xs:sequence> <!-- Template Fault and System Info -->
-				    			<xs:element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
-								<xs:element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<xs:element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>								
-								<xs:choice maxOccurs="unbounded">
-									<xs:element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="sensor.fan.speed" type="tns:metricType" maxOccurs="1" minOccurs="0"/> <!--rpm -->
-									<xs:element name="sensor.fan.speed.percentage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								</xs:choice>
-		    				</xs:sequence>
-							<xs:sequence> <!-- Template Fault (Disks) -->
-								<!-- array controllers -->
-								<xs:element name="system.hw.diskarray.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<!-- physical disks -->
-								<xs:element name="system.hw.physicaldisk.status" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
-								<xs:choice maxOccurs="unbounded">
-									<xs:element name="system.hw.physicaldisk.serialnumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="system.hw.physicaldisk.smart_status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="system.hw.physicaldisk.part_number" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-									<xs:element name="system.hw.physicaldisk.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								</xs:choice>
-		    				</xs:sequence>
-		    				
-							<xs:sequence> <!-- Template Fault (Power Supply) -->
-								<xs:element name="psVoltage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<xs:element name="psStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-		    				</xs:sequence>
-		    				
-							<xs:sequence> <!-- Template Inventory -->
-				    			<xs:choice maxOccurs="unbounded">
-				    				<xs:element name="system.sw.os" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<xs:element name="system.hw.version" type="tns:metricType" maxOccurs="1" minOccurs="0"/><!-- revision -->
-				    				<xs:element name="system.hw.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<xs:element name="system.hw.label" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    				<xs:element name="system.hw.serialnumber" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
-				    				<xs:element name="system.hw.firmware" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-				    			</xs:choice>
-		    				</xs:sequence>
-		    				
-							<xs:sequence> <!-- Template Network Interfaces -->
-				    				<xs:element name="net.if.status" type="tns:metricType"/>
-				    				<xs:element name="net.if.in" type="tns:metricType"/>
-				    				<xs:element name="net.if.out" type="tns:metricType"/>
-				    				<xs:element name="net.if.in.errors" type="tns:metricType"/>
-				    				<xs:element name="net.if.out.errors" type="tns:metricType"/>
-				    				<xs:choice maxOccurs="unbounded">
-				    					<xs:element name="net.if.in.discards" type="tns:metricType"/>
-				    					<xs:element name="net.if.out.discards" type="tns:metricType"/>
-				    				    <xs:element name="net.if.speed" type="tns:metricType"/>
-				    					<xs:element name="net.if.type" type="tns:metricType"/>
-				    					<xs:element name="net.if.traps" type="tns:metricType"/>
-				    				</xs:choice>
-		    				</xs:sequence>
-		    				
-							<xs:sequence> <!-- Template Network Interfaces Ethernet -->
-			    					<xs:element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
-		    				</xs:sequence>		    				
-	    				</xs:choice>
-    			</xs:complexType>
-    		</xs:element>
-    		<xs:element name="templates" minOccurs="0" type="tns:templateDependencies"/>
-    		<xs:element name="macros" minOccurs="0" type="tns:macros"/>
-    	</xs:all>
-    </xs:complexType>
-    
+							<xs:choice minOccurs="0" maxOccurs="1">
+								<xs:sequence>
+									<xs:element name="vfs.fs.units" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="vfs.fs.units.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="vfs.fs.units.total" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="vfs.fs.used" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+									<xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+								<!-- as a free part of FAULT (not HOST-RESOURCES) -->
+								<xs:sequence>
+									<xs:element name="vfs.fs.used" type="tns:metricType"/>
+									<xs:element name="vfs.fs.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+								<xs:sequence>
+									<xs:element name="vfs.fs.free" type="tns:metricType"/>
+									<xs:element name="vfs.fs.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+							</xs:choice>
+
+							<xs:element name="vfs.fs.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+
+						</xs:sequence>
+						<xs:sequence><!-- Template Performance CPU-->
+							<xs:element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+							<xs:element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+						</xs:sequence>
+						<xs:sequence><!-- Template Performance Memory-->
+							<xs:choice minOccurs="0">
+								<xs:sequence>
+									<xs:element name="vm.memory.used" type="tns:metricType"/>
+									<xs:element name="vm.memory.free" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+									<xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+								<xs:sequence>
+									<xs:element name="vm.memory.free" type="tns:metricType"/>
+									<xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								</xs:sequence>
+							</xs:choice>
+							<xs:element name="vm.memory.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+						</xs:sequence>
+						<xs:sequence> <!-- Template General and System Info -->
+							<xs:element name="system.uptime" type="tns:metricType"/>
+							<xs:element name="snmptrap.fallback" type="tns:metricType"/>
+							<xs:element name="system.location" type="tns:metricType"/>
+							<xs:element name="system.contact" type="tns:metricType"/>
+							<xs:element name="system.objectid" type="tns:metricType"/>
+							<xs:element name="system.name" type="tns:metricType"/>
+							<xs:element name="system.descr" type="tns:metricType"/>
+							<xs:element name="zabbix.snmp.available" type="tns:metricType"/>
+						</xs:sequence>
+						<xs:sequence> <!-- Template ICMP -->
+							<xs:element name="icmpping" type="tns:metricType"/>
+							<xs:element name="icmppingloss" type="tns:metricType"/>
+							<xs:element name="icmppingsec" type="tns:metricType"/>
+						</xs:sequence>
+						<xs:sequence> <!-- Template Remote Service (NTP,SMTP, SSH,Telnet) LDAP etc) -->
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="net.tcp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+								<xs:element name="net.udp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+							</xs:choice>
+						</xs:sequence>
+						<xs:sequence> <!-- Template Fault and System Info -->
+							<xs:element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
+							<xs:element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="sensor.fan.speed" type="tns:metricType" maxOccurs="1" minOccurs="0"/> <!--rpm -->
+								<xs:element name="sensor.fan.speed.percentage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							</xs:choice>
+						</xs:sequence>
+						<xs:sequence> <!-- Template Fault (Disks) -->
+							<!-- array controllers -->
+							<xs:element name="system.hw.diskarray.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<!-- physical disks -->
+							<xs:element name="system.hw.physicaldisk.status" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="system.hw.physicaldisk.serialnumber" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.smart_status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.part_number" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							</xs:choice>
+						</xs:sequence>
+
+						<xs:sequence> <!-- Template Fault (Power Supply) -->
+							<xs:element name="psVoltage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="psStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+						</xs:sequence>
+
+						<xs:sequence> <!-- Template Inventory -->
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="system.sw.os" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.version" type="tns:metricType" maxOccurs="1" minOccurs="0"/><!-- revision -->
+								<xs:element name="system.hw.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.label" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.serialnumber" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
+								<xs:element name="system.hw.firmware" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							</xs:choice>
+						</xs:sequence>
+
+						<xs:sequence> <!-- Template Network Interfaces -->
+							<xs:element name="net.if.status" type="tns:metricType"/>
+							<xs:element name="net.if.in" type="tns:metricType"/>
+							<xs:element name="net.if.out" type="tns:metricType"/>
+							<xs:element name="net.if.in.errors" type="tns:metricType"/>
+							<xs:element name="net.if.out.errors" type="tns:metricType"/>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="net.if.in.discards" type="tns:metricType"/>
+								<xs:element name="net.if.out.discards" type="tns:metricType"/>
+								<xs:element name="net.if.speed" type="tns:metricType"/>
+								<xs:element name="net.if.type" type="tns:metricType"/>
+								<xs:element name="net.if.traps" type="tns:metricType"/>
+							</xs:choice>
+						</xs:sequence>
+
+						<xs:sequence> <!-- Template Network Interfaces Ethernet -->
+							<xs:element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="templates" minOccurs="0" type="tns:templateDependencies"/>
+			<xs:element name="macros" minOccurs="0" type="tns:macros"/>
+		</xs:all>
+	</xs:complexType>
+
 	<xs:complexType name="rootType">
-    	 <xs:sequence>
-    		<xs:element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
-    		<xs:element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
-    	 </xs:sequence>
-    </xs:complexType>
+		<xs:sequence>
+			<xs:element name="template" type="tns:templateType" maxOccurs="unbounded" minOccurs="1"/>
+			<xs:element name="value_maps" type="tns:valueMapsType" maxOccurs="1" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
 
 	<xs:complexType name="documentationType">
 		<xs:choice maxOccurs="unbounded">
@@ -213,24 +213,24 @@
 			<xs:element name="issues" maxOccurs="unbounded" minOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
-								<xs:element name="issue" minOccurs="0" maxOccurs="unbounded">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:element name="description" type="xs:string" />
-											<xs:element name="version"
+						<xs:element name="issue" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="description" type="xs:string" />
+									<xs:element name="version"
 												type="xs:string" />
-											<xs:element name="device"
+									<xs:element name="device"
 												type="xs:string" />
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="device_setup" maxOccurs="1" minOccurs="1"
-				type="xs:string" />
+						type="xs:string" />
 			<xs:element name="known_devices" maxOccurs="unbounded"
-				minOccurs="1">
+						minOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="device" minOccurs="0" maxOccurs="unbounded">
@@ -246,79 +246,79 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:choice>
-	</xs:complexType>    
-    
-		<xs:complexType name="templateDependencies">
+	</xs:complexType>
+
+	<xs:complexType name="templateDependencies">
+		<xs:sequence>
+			<xs:element name="template" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
 					<xs:sequence>
-	    				<xs:element name="template" minOccurs="0" maxOccurs="unbounded">
-	    					<xs:complexType>
-	    						<xs:sequence>
-	    							<xs:element name="name" type="xs:string"/>
-	    						</xs:sequence>
-	    					</xs:complexType>
-	    				</xs:element>
-	    			</xs:sequence>
-		</xs:complexType>
-		
-		 	<xs:complexType name="macros">
-	    			<xs:sequence>
-	    				<xs:element name="macro" minOccurs="0" maxOccurs="unbounded">
-	    					<xs:complexType>
-	    						<xs:sequence>
-	    							<xs:element name="macro" type="xs:string"/>
-	    							<xs:element name="value" type="xs:string"/>
-	    						</xs:sequence>
-	    					</xs:complexType>
-	    				</xs:element>
-	    			</xs:sequence>
-    		</xs:complexType>
-    		
- 			<xs:complexType name="tags">
-	    			<xs:sequence>
-	    				<xs:element name="tag" minOccurs="0" maxOccurs="unbounded">
-	    					<xs:complexType>
-	    						<xs:sequence>
-	    							<xs:element name="tag" type="xs:string"/>
-	    							<xs:element name="value" type="xs:string"/>
-	    						</xs:sequence>
-	    					</xs:complexType>
-	    				</xs:element>
-	    			</xs:sequence>
-    		</xs:complexType>
-    		
-    		
-    		 <xs:complexType name="preprocessing">
-	    			<xs:sequence>
-	    				<xs:element name="step" minOccurs="0" maxOccurs="unbounded">
-	    					<xs:complexType>
-	    						<xs:sequence>
-	    							<xs:element name="type">
-	    							    <xs:simpleType>
-								       	 	<xs:restriction base="xs:string">
-										        <xs:enumeration value="regex"/>
-										        <xs:enumeration value="delta"/>
-										        <xs:enumeration value="delta_per_second"/>
-										        <xs:enumeration value="multiplier"/>
-								    		</xs:restriction>
-							       	 	</xs:simpleType>
-							       	</xs:element>
-	    							<xs:element name="params" type="xs:string"/>
-	    						</xs:sequence>
-	    					</xs:complexType>
-	    				</xs:element>
-	    			</xs:sequence>
-    		</xs:complexType>
-    
-    
-    <xs:complexType name="metricType">
-		
+						<xs:element name="name" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="macros">
+		<xs:sequence>
+			<xs:element name="macro" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="macro" type="xs:string"/>
+						<xs:element name="value" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="tags">
+		<xs:sequence>
+			<xs:element name="tag" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="tag" type="xs:string"/>
+						<xs:element name="value" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="preprocessing">
+		<xs:sequence>
+			<xs:element name="step" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="regex"/>
+									<xs:enumeration value="delta"/>
+									<xs:enumeration value="delta_per_second"/>
+									<xs:enumeration value="multiplier"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="params" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="metricType">
+
 		<xs:sequence>
 			<xs:choice>
 				<xs:sequence> <!-- in file metric source -->
 					<xs:element name="vendorDocumentation" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:choice>
 						<xs:sequence>
-							
+
 							<xs:element name="imported" type="xs:boolean" maxOccurs="1" minOccurs="1">
 								<xs:annotation>
 									<xs:documentation>mark metrics that are to be included</xs:documentation>
@@ -330,8 +330,8 @@
 								<xs:annotation>
 									<xs:documentation>SNMP oid</xs:documentation>
 								</xs:annotation></xs:element>
-						    <xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
-						    <xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>	
+							<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
+							<xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						</xs:sequence>
 						<xs:sequence>
 							<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
@@ -344,69 +344,69 @@
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
 						<xs:element name="zabbixKey" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
-					    <xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
-					    <xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
-					    <xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
-					    <xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+						<xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
 						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					</xs:choice>
-			 	</xs:sequence>
-			 	
-			 	<xs:sequence> <!--  full metric after merge -->
+				</xs:sequence>
+
+				<xs:sequence> <!--  full metric after merge -->
 					<xs:element name="documentation" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/> <!-- in to_metrics only -->
-			 		<xs:element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
-			 		<xs:element name="oid" type="xs:string" maxOccurs="1" minOccurs="0"/>
+					<xs:element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
+					<xs:element name="oid" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
-					<xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>	
+					<xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="expressionFormula" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
 						<xs:element name="zabbixKey" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
 						<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
-					    <xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="history" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="trends" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="units" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="update" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
-					    <xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
-					    <xs:element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-					    <xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
-					    <xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
-					    <xs:element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
-					    	<xs:complexType>
-					    		<xs:sequence>
-					    			<xs:element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
-					    		</xs:sequence>
-					    	</xs:complexType>
-				    	</xs:element>
-		    	<xs:element name="graphs" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
-			    	<xs:complexType>
-			    		<xs:sequence>
-			    			<xs:element name="graph" type="tns:graphType" maxOccurs="unbounded" minOccurs="0"/>
-			    		</xs:sequence>
-			    	</xs:complexType>
-		    	</xs:element>
+						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+						<xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="history" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="trends" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="units" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="update" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
+						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+						<xs:element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="graphs" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="graph" type="tns:graphType" maxOccurs="unbounded" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
 					</xs:choice>
-			 	</xs:sequence>
-		 	</xs:choice>
-	 	</xs:sequence>
-	 	<xs:attribute name="zbx_ver" type="xs:string" use="optional"/>
-    </xs:complexType>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="zbx_ver" type="xs:string" use="optional"/>
+	</xs:complexType>
 
-    <xs:complexType name="trigger">
+	<xs:complexType name="trigger">
 		<xs:sequence>
 			<xs:element name="documentation" maxOccurs="1" minOccurs="0"/>
 			<xs:element name="id" type="xs:string" maxOccurs="1" minOccurs="0"/>
@@ -414,163 +414,163 @@
 			<xs:element name="recovery_expression" type="xs:string" maxOccurs="1" minOccurs="0"/>
 			<xs:element name="recovery_mode" type="xs:byte" maxOccurs="1" minOccurs="0"/>
 			<xs:element name="manual_close" type="xs:byte" maxOccurs="1" minOccurs="0"/>
-	 		<xs:element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
-		    <xs:element name="url" type="xs:string" maxOccurs="1" minOccurs="0"/>
-		  	<xs:element name="priority" type="xs:byte" maxOccurs="1" minOccurs="1"/>
-		  	<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
-		  	<xs:element name="dependsOn" maxOccurs="1" minOccurs="0">
-		  		<xs:complexType>
-		  			<xs:sequence>
-		  				<xs:element name="dependency" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-		  				<xs:element name="global" type="xs:boolean" maxOccurs="unbounded" minOccurs="0"/> <!-- use global for triggers dependencies between templates (templates must be in the same file though)-->
-		  			</xs:sequence>
-		  		</xs:complexType>
-		  	</xs:element>
+			<xs:element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
+			<xs:element name="url" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="priority" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+			<xs:element name="dependsOn" maxOccurs="1" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="dependency" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+						<xs:element name="global" type="xs:boolean" maxOccurs="unbounded" minOccurs="0"/> <!-- use global for triggers dependencies between templates (templates must be in the same file though)-->
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="tags" minOccurs="0" type="tns:tags"/>
-	 	</xs:sequence>
-    </xs:complexType>    
-
-                    
-    
-<xs:simpleType name="groupList">
-    <xs:restriction base="xs:string">
-        <xs:enumeration value="CPU"/>
-        <xs:enumeration value="Memory"/>
-        <xs:enumeration value="Storage"/>
-        
-        <xs:enumeration value="Temperature"/>
-        <xs:enumeration value="Status"/>
-        <xs:enumeration value="Disk Arrays"/>
-        <xs:enumeration value="Physical Disks"/>
-        <xs:enumeration value="Power Supply"/>
-        <xs:enumeration value="Fans"/>
-        
-		<xs:enumeration value="General"/>
-        <xs:enumeration value="Inventory"/>
-        
-        <xs:enumeration value="Network Interfaces"/> <!-- Network interfaces -->
-        
-        <xs:enumeration value="Internal Items"/><!-- place items used in calculated items only -->
-        
-    </xs:restriction>
-</xs:simpleType>
+		</xs:sequence>
+	</xs:complexType>
 
 
 
-<xs:simpleType name="itemTypeList">
-    <xs:restriction base="xs:string">
-        <xs:enumeration value="snmp"/>
-        <xs:enumeration value="internal"/>
-        <xs:enumeration value="zabbix_agent"/>
-        <xs:enumeration value="snmptrap"/>
-        <xs:enumeration value="calculated"/>
-        <xs:enumeration value="simple"/>
-    </xs:restriction>
-</xs:simpleType>
+	<xs:simpleType name="groupList">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CPU"/>
+			<xs:enumeration value="Memory"/>
+			<xs:enumeration value="Storage"/>
 
-<xs:simpleType name="drawTypeList">
-    <xs:restriction base="xs:string">
-        <xs:enumeration value="gradient"/>
-        <xs:enumeration value="line"/>
-        <xs:enumeration value="filled_region"/>
-        <xs:enumeration value="dot"/>
-        <xs:enumeration value="dashed_line"/>
-        <xs:enumeration value="bold_line"/>
-    </xs:restriction>
-</xs:simpleType>
+			<xs:enumeration value="Temperature"/>
+			<xs:enumeration value="Status"/>
+			<xs:enumeration value="Disk Arrays"/>
+			<xs:enumeration value="Physical Disks"/>
+			<xs:enumeration value="Power Supply"/>
+			<xs:enumeration value="Fans"/>
 
-<xs:simpleType name="templateClass">
-    <xs:restriction base="xs:string">
-        <xs:enumeration value="Performance"/>
-        <xs:enumeration value="Fault"/>
-        <xs:enumeration value="Inventory"/>
-        
-        <xs:enumeration value="General"/>
-        
-        <xs:enumeration value="ICMP"/>
-		<xs:enumeration value="Remote Service"/>
+			<xs:enumeration value="General"/>
+			<xs:enumeration value="Inventory"/>
 
-        <xs:enumeration value="Interfaces"/>
-        <xs:enumeration value="Interfaces Simple"/>
-		<xs:enumeration value="Interfaces Win"/>
-        <xs:enumeration value="Interfaces EtherLike Extension"/>
-        
-        <xs:enumeration value="Module"/>
-        <xs:enumeration value="HOST-RESOURCES-MIB"/>
-        <xs:enumeration value="ENTITY-SENSORS-MIB"/>
-        <xs:enumeration value="ENTITY-MIB"/>
-        <xs:enumeration value="IF-MIB"/>
-        <xs:enumeration value="IF-MIB_Simple"/>
-        <xs:enumeration value="EtherLike-MIB"/>
-        
-        <xs:enumeration value="Network"/>
-        <xs:enumeration value="Server"/>
-        <xs:enumeration value="OS"/>
-        
-        <xs:enumeration value="SNMP Device"/>
-        <xs:enumeration value="SNMPv1"/>
-        <xs:enumeration value="SNMPv2"/>
-        <xs:enumeration value="SNMPv3"/>
-        
-        
-        
-    </xs:restriction>
-</xs:simpleType>
+			<xs:enumeration value="Network Interfaces"/> <!-- Network interfaces -->
 
-<xs:complexType name="valueMapsType">
-	<xs:sequence>
-		<xs:element name="value_map" maxOccurs="unbounded">
-			<xs:complexType>
-				<xs:sequence>
-					<xs:element name="name"/>
-					<xs:element name="mappings">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="mapping" maxOccurs="unbounded">
-									<xs:complexType>
-									<xs:sequence>
-										<xs:element name="value" type="xs:string"/>
-										<xs:element name="newvalue" type="xs:string"/>
-									</xs:sequence>
-									</xs:complexType>		
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-				</xs:sequence>	
-			</xs:complexType>
-		</xs:element>
-	</xs:sequence>
-</xs:complexType>
+			<xs:enumeration value="Internal Items"/><!-- place items used in calculated items only -->
 
-<!-- lang proto -->
-  <xs:complexType name="langString">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-       	 <xs:attribute name="lang" default="EN">
-       	 	<xs:simpleType>
-	       	 	<xs:restriction base="xs:string">
-			        <xs:enumeration value="EN"/>
-			        <xs:enumeration value="RU"/>
-	    		</xs:restriction>
-       	 	</xs:simpleType>
-       	 </xs:attribute>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-
-  <xs:simpleType name="inventory_link">
-	
-    	<xs:restriction base="xs:int">
-    		<xs:minInclusive value="1"/>
-    		<xs:maxInclusive value="70"/>
-    	</xs:restriction>
-
-  </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
 
 
 
-<xs:complexType name="graphType">
+	<xs:simpleType name="itemTypeList">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="snmp"/>
+			<xs:enumeration value="internal"/>
+			<xs:enumeration value="zabbix_agent"/>
+			<xs:enumeration value="snmptrap"/>
+			<xs:enumeration value="calculated"/>
+			<xs:enumeration value="simple"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="drawTypeList">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="gradient"/>
+			<xs:enumeration value="line"/>
+			<xs:enumeration value="filled_region"/>
+			<xs:enumeration value="dot"/>
+			<xs:enumeration value="dashed_line"/>
+			<xs:enumeration value="bold_line"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="templateClass">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Performance"/>
+			<xs:enumeration value="Fault"/>
+			<xs:enumeration value="Inventory"/>
+
+			<xs:enumeration value="General"/>
+
+			<xs:enumeration value="ICMP"/>
+			<xs:enumeration value="Remote Service"/>
+
+			<xs:enumeration value="Interfaces"/>
+			<xs:enumeration value="Interfaces Simple"/>
+			<xs:enumeration value="Interfaces Win"/>
+			<xs:enumeration value="Interfaces EtherLike Extension"/>
+
+			<xs:enumeration value="Module"/>
+			<xs:enumeration value="HOST-RESOURCES-MIB"/>
+			<xs:enumeration value="ENTITY-SENSORS-MIB"/>
+			<xs:enumeration value="ENTITY-MIB"/>
+			<xs:enumeration value="IF-MIB"/>
+			<xs:enumeration value="IF-MIB_Simple"/>
+			<xs:enumeration value="EtherLike-MIB"/>
+
+			<xs:enumeration value="Network"/>
+			<xs:enumeration value="Server"/>
+			<xs:enumeration value="OS"/>
+
+			<xs:enumeration value="SNMP Device"/>
+			<xs:enumeration value="SNMPv1"/>
+			<xs:enumeration value="SNMPv2"/>
+			<xs:enumeration value="SNMPv3"/>
+
+
+
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="valueMapsType">
+		<xs:sequence>
+			<xs:element name="value_map" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name"/>
+						<xs:element name="mappings">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="mapping" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="value" type="xs:string"/>
+												<xs:element name="newvalue" type="xs:string"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- lang proto -->
+	<xs:complexType name="langString">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="lang" default="EN">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="EN"/>
+							<xs:enumeration value="RU"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="inventory_link">
+
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="70"/>
+		</xs:restriction>
+
+	</xs:simpleType>
+
+
+
+	<xs:complexType name="graphType">
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="width" type="xs:integer" maxOccurs="1" minOccurs="1"/>
@@ -591,109 +591,109 @@
 			<xs:element name="graph_items">
 				<xs:complexType>
 					<xs:sequence>
-	    				<xs:element name="graph_item" minOccurs="1" maxOccurs="unbounded">
-	    					<xs:complexType>
-	    						<xs:sequence>
-	    							<xs:element name="sortorder" type="xs:byte"/>
-	    							<xs:element name="drawtype" type="xs:byte"/>
-	    							<xs:element name="color" type="xs:string"/>
-	    							<xs:element name="yaxisside" type="xs:string"/>
-	    							<xs:element name="calc_fnc" type="xs:byte"/>
-	    							<xs:element name="type" type="xs:byte"/>
-			    					<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
-				    					<xs:complexType>
-				    						<xs:sequence>
-				    							<xs:element name="host" type="xs:string"/>
-				    							<xs:element name="key" type="xs:string"/>
-				    						</xs:sequence>
-				    					</xs:complexType>
-			    					</xs:element>
-			    				</xs:sequence>
-	    					</xs:complexType>
-	    				</xs:element>
-	    			</xs:sequence>
+						<xs:element name="graph_item" minOccurs="1" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="sortorder" type="xs:byte"/>
+									<xs:element name="drawtype" type="xs:byte"/>
+									<xs:element name="color" type="xs:string"/>
+									<xs:element name="yaxisside" type="xs:string"/>
+									<xs:element name="calc_fnc" type="xs:byte"/>
+									<xs:element name="type" type="xs:byte"/>
+									<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="host" type="xs:string"/>
+												<xs:element name="key" type="xs:string"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 
-	 	</xs:choice>
-    </xs:complexType>
+		</xs:choice>
+	</xs:complexType>
 
 
-    
-    
 
-<!-- host inventory (for inventory link) 
-ID	Property	Type	Description
-4	alias	string	Alias.
-11	asset_tag	string	Asset tag.
-28	chassis	string	Chassis.
-23	contact	string	Contact person.
-32	contract_number	string	Contract number.
-47	date_hw_decomm	string	HW decommissioning date.
-46	date_hw_expiry	string	HW maintenance expiry date.
-45	date_hw_install	string	HW installation date.
-44	date_hw_purchase	string	HW purchase date.
-34	deployment_status	string	Deployment status.
-14	hardware	string	Hardware.
-15	hardware_full	string	Detailed hardware.
-39	host_netmask	string	Host subnet mask.
-38	host_networks	string	Host networks.
-40	host_router	string	Host router.
-30	hw_arch	string	HW architecture.
-33	installer_name	string	Installer name.
-24	location	string	Location.
-25	location_lat	string	Location latitude.
-26	location_lon	string	Location longitude.
-12	macaddress_a	string	MAC address A.
-13	macaddress_b	string	MAC address B.
-29	model	string	Model.
-3	name	string	Name.
-27	notes	string	Notes.
-41	oob_ip	string	OOB IP address.
-42	oob_netmask	string	OOB host subnet mask.
-43	oob_router	string	OOB router.
-5	os	string	OS name.
-6	os_full	string	Detailed OS name.
-7	os_short	string	Short OS name.
-61	poc_1_cell	string	Primary POC mobile number.
-58	poc_1_email	string	Primary email.
-57	poc_1_name	string	Primary POC name.
-63	poc_1_notes	string	Primary POC notes.
-59	poc_1_phone_a	string	Primary POC phone A.
-60	poc_1_phone_b	string	Primary POC phone B.
-62	poc_1_screen	string	Primary POC screen name.
-68	poc_2_cell	string	Secondary POC mobile number.
-65	poc_2_email	string	Secondary POC email.
-64	poc_2_name	string	Secondary POC name.
-70	poc_2_notes	string	Secondary POC notes.
-66	poc_2_phone_a	string	Secondary POC phone A.
-67	poc_2_phone_b	string	Secondary POC phone B.
-69	poc_2_screen	string	Secondary POC screen name.
-8	serialno_a	string	Serial number A.
-9	serialno_b	string	Serial number B.
-48	site_address_a	string	Site address A.
-49	site_address_b	string	Site address B.
-50	site_address_c	string	Site address C.
-51	site_city	string	Site city.
-53	site_country	string	Site country.
-56	site_notes	string	Site notes.
-55	site_rack	string	Site rack location.
-52	site_state	string	Site state.
-54	site_zip	string	Site ZIP/postal code.
-16	software	string	Software.
-18	software_app_a	string	Software application A.
-19	software_app_b	string	Software application B.
-20	software_app_c	string	Software application C.
-21	software_app_d	string	Software application D.
-22	software_app_e	string	Software application E.
-17	software_full	string	Software details.
-10	tag	string	Tag.
-1	type	string	Type.
-2	type_full	string	Type details.
-35	url_a	string	URL A.
-36	url_b	string	URL B.
-37	url_c	string	URL C.
-31	vendor	string	Vendor.
--->
+
+
+	<!-- host inventory (for inventory link)
+    ID	Property	Type	Description
+    4	alias	string	Alias.
+    11	asset_tag	string	Asset tag.
+    28	chassis	string	Chassis.
+    23	contact	string	Contact person.
+    32	contract_number	string	Contract number.
+    47	date_hw_decomm	string	HW decommissioning date.
+    46	date_hw_expiry	string	HW maintenance expiry date.
+    45	date_hw_install	string	HW installation date.
+    44	date_hw_purchase	string	HW purchase date.
+    34	deployment_status	string	Deployment status.
+    14	hardware	string	Hardware.
+    15	hardware_full	string	Detailed hardware.
+    39	host_netmask	string	Host subnet mask.
+    38	host_networks	string	Host networks.
+    40	host_router	string	Host router.
+    30	hw_arch	string	HW architecture.
+    33	installer_name	string	Installer name.
+    24	location	string	Location.
+    25	location_lat	string	Location latitude.
+    26	location_lon	string	Location longitude.
+    12	macaddress_a	string	MAC address A.
+    13	macaddress_b	string	MAC address B.
+    29	model	string	Model.
+    3	name	string	Name.
+    27	notes	string	Notes.
+    41	oob_ip	string	OOB IP address.
+    42	oob_netmask	string	OOB host subnet mask.
+    43	oob_router	string	OOB router.
+    5	os	string	OS name.
+    6	os_full	string	Detailed OS name.
+    7	os_short	string	Short OS name.
+    61	poc_1_cell	string	Primary POC mobile number.
+    58	poc_1_email	string	Primary email.
+    57	poc_1_name	string	Primary POC name.
+    63	poc_1_notes	string	Primary POC notes.
+    59	poc_1_phone_a	string	Primary POC phone A.
+    60	poc_1_phone_b	string	Primary POC phone B.
+    62	poc_1_screen	string	Primary POC screen name.
+    68	poc_2_cell	string	Secondary POC mobile number.
+    65	poc_2_email	string	Secondary POC email.
+    64	poc_2_name	string	Secondary POC name.
+    70	poc_2_notes	string	Secondary POC notes.
+    66	poc_2_phone_a	string	Secondary POC phone A.
+    67	poc_2_phone_b	string	Secondary POC phone B.
+    69	poc_2_screen	string	Secondary POC screen name.
+    8	serialno_a	string	Serial number A.
+    9	serialno_b	string	Serial number B.
+    48	site_address_a	string	Site address A.
+    49	site_address_b	string	Site address B.
+    50	site_address_c	string	Site address C.
+    51	site_city	string	Site city.
+    53	site_country	string	Site country.
+    56	site_notes	string	Site notes.
+    55	site_rack	string	Site rack location.
+    52	site_state	string	Site state.
+    54	site_zip	string	Site ZIP/postal code.
+    16	software	string	Software.
+    18	software_app_a	string	Software application A.
+    19	software_app_b	string	Software application B.
+    20	software_app_c	string	Software application C.
+    21	software_app_d	string	Software application D.
+    22	software_app_e	string	Software application E.
+    17	software_full	string	Software details.
+    10	tag	string	Tag.
+    1	type	string	Type.
+    2	type_full	string	Type details.
+    35	url_a	string	URL A.
+    36	url_b	string	URL B.
+    37	url_c	string	URL C.
+    31	vendor	string	Vendor.
+    -->
 
 </xs:schema>
