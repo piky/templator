@@ -28,15 +28,14 @@
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}</xsl:variable>
 					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:"<xsl:value-of select="alarmObjectType" />"}-3</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
+					<xsl:variable name="metric_alarm_object" select="alarmObject"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
 					<xsl:choose>
 						 <xsl:when test="
-						 	(../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and
-						 	 not(discoveryRule))
-						 	 )
+						 	(../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))])
 						 	 and ../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]
 						 	"><!-- if discoveryRules match or both doesn't have discoveryRule -->
-						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
+						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))]/name()"/>[<xsl:value-of select="../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))]/snmpObject"/>]</xsl:variable>
 
 							<expression><xsl:value-of select="$expression"/>
 <xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_WARN_STATUS')]">
@@ -87,19 +86,17 @@ or
 					<xsl:variable name="expression">{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType"/>"}</xsl:variable>
 					<xsl:variable name="recovery_expression">{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:"<xsl:value-of select="alarmObjectType" />"}-3</xsl:variable>
 					<xsl:variable name="discoveryRule" select="discoveryRule"/>
+					<xsl:variable name="metric_alarm_object" select="alarmObject"/>
 					<!-- Careful, since recovery expression will work only if simple expression is ALSO FALSE. So no point to define STATUS in recovery. -->
-					
 					<xsl:choose>
-						 <xsl:when test="
-						 	(../sensor.temp.status[discoveryRule = $discoveryRule] or (../sensor.temp.status[not(discoveryRule)] and
-						 	 not(discoveryRule))
-						 	 )
+						<xsl:when test="
+						 	(../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))])
 						 	 and (
 						 	 ../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')] or
 						 	 ../../macros/macro/macro[contains(text(),'TEMP_DISASTER_STATUS')])
 						 "><!-- if discoveryRules match or both doesn't have discoveryRule -->
-						 <xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status/name()"/>[<xsl:value-of select="../sensor.temp.status/snmpObject"/>]</xsl:variable>
-							
+							<xsl:variable name="statusMetricKey"><xsl:value-of select="../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))]/name()"/>[<xsl:value-of select="../sensor.temp.status[alarmObject = $metric_alarm_object and (discoveryRule=$discoveryRule or (not(discoveryRule) and not($discoveryRule = '')))]/snmpObject"/>]</xsl:variable>
+
 							<expression><xsl:value-of select="$expression"/>
 <xsl:if test="../../macros/macro/macro[contains(text(),'TEMP_CRIT_STATUS')]">
 or
