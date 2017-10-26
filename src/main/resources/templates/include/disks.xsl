@@ -413,7 +413,7 @@ and not(imported[contains(text(),'true')])">">
                 <update><xsl:copy-of select="$update3min"/></update>
                 <triggers>
                     <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'DISK_OK_STATUS')])">
-                        <xsl:message terminate="yes">Error: provide at least macro for DISK_FAIL_STATUS or DIKS_OK_STATUS</xsl:message>
+                        <xsl:message terminate="yes">Error: provide at least macro for DISK_FAIL_STATUS or DISK_OK_STATUS</xsl:message>
                     </xsl:if>
                     <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]">
                         <trigger>
@@ -836,7 +836,7 @@ and not(imported[contains(text(),'true')])">">
                                     <xsl:with-param name="macro">VDISK_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
-                            <name lang="EN">Virtual vdisk is in warning state</name>
+                            <name lang="EN">Virtual disk is in warning state</name>
                             <name lang="RU">Статус виртуального диска: предупреждение</name>
                             <priority>3</priority>
                             <description lang="EN">Please check virtual disk for warnings or errors</description>
