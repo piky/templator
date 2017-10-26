@@ -163,6 +163,15 @@
                                 <xs:element name="system.hw.physicaldisk.power_on_hours" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
                                 <xs:element name="system.hw.physicaldisk.media_type" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							</xs:choice>
+                            <!-- virtual disks -->
+                            <xs:choice maxOccurs="unbounded">
+                                <xs:element name="system.hw.virtualdisk.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.virtualdisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.virtualdisk.layout" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.virtualdisk.readpolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.virtualdisk.writepolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.virtualdisk.state" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                            </xs:choice>
 						</xs:sequence>
 
 						<xs:sequence> <!-- Template Fault (Power Supply) -->
@@ -449,6 +458,7 @@
 			<xs:enumeration value="Status"/>
 			<xs:enumeration value="Disk Arrays"/>
 			<xs:enumeration value="Physical Disks"/>
+            <xs:enumeration value="Virtual Disks"/>
 			<xs:enumeration value="Power Supply"/>
 			<xs:enumeration value="Fans"/>
 

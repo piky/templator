@@ -664,12 +664,16 @@ and not(imported[contains(text(),'true')])">">
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="template/metrics/system.hw.physicaldisk.size">
+    <xsl:template match="template/metrics/system.hw.physicaldisk.size | template/metrics/system.hw.virtualdisk.size">
         <xsl:variable name="metric" as="element()*">
             <metric>
-                <name lang="EN">Physical disk size</name>
+                <name lang="EN">Disk size</name>
                 <name lang="RU">Размер диска</name>
-                <group>Physical Disks</group>
+                <group><xsl:value-of select="if (name() = 'system.hw.physicaldisk.size')
+                                                then ('Physical Disks')
+                                             else if (name() = 'system.hw.virtualdisk.size')
+                                                then ('Virtual Disks')
+                                             else ()"/></group>
                 <history><xsl:copy-of select="$history14days"/></history>
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <update><xsl:copy-of select="$update1hour"/></update>
@@ -718,10 +722,182 @@ and not(imported[contains(text(),'true')])">">
 
         <xsl:copy>
             <xsl:call-template name="defaultMetricBlock">
-                <xsl:with-param name="metric" select="$metric" />
+                <xsl:with-param name="metric" select="$metric"/>
             </xsl:call-template>
         </xsl:copy>
     </xsl:template>
+
+    <xsl:template match="template/metrics/system.hw.virtualdisk.layout">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Layout type</name>
+                <name lang="RU">Конфигурация</name>
+                <group>Virtual Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trendsDefault"/></trends>
+                <update><xsl:copy-of select="$update1hour"/></update>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric"/>
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="template/metrics/system.hw.virtualdisk.readpolicy | template/metrics/system.hw.virtualdisk.writepolicy">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN"><xsl:value-of select="if (name() = 'system.hw.virtualdisk.readpolicy')
+                                                then ('Read policy')
+                                             else if (name() = 'system.hw.virtualdisk.writepolicy')
+                                                then ('Write policy')
+                                             else ()"/></name>
+                <group>Virtual Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trendsDefault"/></trends>
+                <update><xsl:copy-of select="$update1hour"/></update>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric"/>
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="template/metrics/system.hw.virtualdisk.state">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Current state</name>
+                <name lang="RU">Текущее состояние</name>
+                <group>Virtual Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trendsDefault"/></trends>
+                <update><xsl:copy-of select="$update3min"/></update>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric"/>
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+
+    <xsl:template match="template/metrics/system.hw.virtualdisk.status">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Status</name>
+                <name lang="RU">Текущий статус</name>
+                <group>Virtual Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trendsDefault"/></trends>
+                <update><xsl:copy-of select="$update3min"/></update>
+                <triggers>
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'VDISK_OK_STATUS')])">
+                        <xsl:message terminate="yes">Error: provide at least macro for VDISK_FAIL_STATUS or VDISK_OK_STATUS</xsl:message>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]">
+                        <trigger>
+                            <id>vdisk.fail</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">VDISK_FAIL_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Virtual disk failed</name>
+                            <name lang="RU">Статус виртуального диска: сбой</name>
+                            <url/>
+                            <priority>4</priority>
+                            <description lang="EN">Please check virtual disk for warnings or errors</description>
+                            <description lang="RU">Проверьте диск</description>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Virtual disk</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_WARN_STATUS')]">
+                        <trigger>
+                            <id>vdisk.warn</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">VDISK_WARN_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Virtual vdisk is in warning state</name>
+                            <name lang="RU">Статус виртуального диска: предупреждение</name>
+                            <priority>3</priority>
+                            <description lang="EN">Please check virtual disk for warnings or errors</description>
+                            <description lang="RU">Проверьте диск</description>
+                            <dependsOn>
+                                <dependency>vdisk.fail</dependency>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Virtual disk</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_OK_STATUS')]">
+                        <trigger>
+                            <id>vdisk.notok</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_notok_e">
+                                    <xsl:with-param name="macro">VDISK_OK_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Virtual disk is not in OK state</name>
+                            <name lang="RU">Статус виртуального диска не норма</name>
+                            <priority>2</priority>
+                            <description lang="EN">Please check virtualdisk for warnings or errors</description>
+                            <description lang="RU">Проверьте диск</description>
+                            <dependsOn>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]"><dependency>vdisk.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_WARN_STATUS')]"><dependency>vdisk.warn</dependency></xsl:if>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Virtual disk</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                </triggers>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric"/>
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
 
 </xsl:stylesheet>
 
