@@ -4,6 +4,239 @@
                 xpath-default-namespace="http://www.example.org/zbx_template_new/"
                 xmlns="http://www.example.org/zbx_template_new/">
 
+    <xsl:template match="template/metrics/system.hw.diskarray.cache.status">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Disk array cache controller status</name>
+                <name lang="RU">Статус кэша контроллера дискового массива</name>
+                <group>Disk Arrays</group>
+                <history><xsl:copy-of select="$history7days"/></history>
+                <trends><xsl:copy-of select="$trends0days"/></trends>
+                <valueType><xsl:value-of select="if (valueType!='') then valueType else $valueTypeInt"/></valueType>
+                <triggers>
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_OK_STATUS')])
+and not(imported[contains(text(),'true')])">">
+                        <xsl:message terminate="yes">Error: provide at least macro for DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS , DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:message>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.crit</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_CRIT_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller is in critical state!</name>
+                            <name lang="RU">Статус контроллера дискового массива: авария</name>
+                            <url/>
+                            <priority>3</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_WARN_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.warn</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_WARN_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller is in warning state</name>
+                            <name lang="RU">Статус кэша контроллера дискового массива: предупреждение</name>
+                            <url/>
+                            <priority>2</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <dependsOn>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_OK_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.notok</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_notok_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_OK_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller is not in optimal state</name>
+                            <name lang="RU">Статус кэша контроллера дискового массива не норма</name>
+                            <url/>
+                            <priority>2</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <dependsOn>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_WARN_STATUS')]"><dependency>diskarray.cache.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                </triggers>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric" />
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+
+    <xsl:template match="template/metrics/system.hw.diskarray.cache.battery.status">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Disk array cache controller battery status</name>
+                <name lang="RU">Статус батарейки кэша контроллера дискового массива</name>
+                <group>Disk Arrays</group>
+                <history><xsl:copy-of select="$history7days"/></history>
+                <trends><xsl:copy-of select="$trends0days"/></trends>
+                <valueType><xsl:value-of select="if (valueType!='') then valueType else $valueTypeInt"/></valueType>
+                <triggers>
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_OK_STATUS')])
+and not(imported[contains(text(),'true')])">">
+                        <xsl:message terminate="yes">Error: provide at least macro for DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS , DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:message>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.battery.crit</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller battery is in critical state!</name>
+                            <name lang="RU">Статус батарейки кэша контроллера дискового массива: авария</name>
+                            <url/>
+                            <priority>3</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.battery.warn</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_WARN_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller battery is in warning state</name>
+                            <name lang="RU">Статус батарейки кэша контроллера дискового массива: предупреждение</name>
+                            <url/>
+                            <priority>2</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <dependsOn>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_OK_STATUS')]">
+                        <trigger>
+                            <id>diskarray.cache.battery.notok</id>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_notok_e">
+                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
+                            <name lang="EN">Disk array cache controller battery is not in optimal state</name>
+                            <name lang="RU">Статус батарейки кэша контроллера дискового массива не норма</name>
+                            <url/>
+                            <priority>2</priority>
+                            <description lang="EN">Please check the device for faults</description>
+                            <description lang="RU">Проверьте устройство</description>
+                            <dependsOn>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]"><dependency>diskarray.cache.battery.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
+                            </dependsOn>
+                            <tags>
+                                <tag>
+                                    <tag>Alarm.object.type</tag>
+                                    <value>
+                                        <xsl:call-template name="tagAlarmObjectType">
+                                            <xsl:with-param name="alarmObjectType" select="alarmObjectType"/>
+                                            <xsl:with-param name="alarmObjectDefault">Disk Array</xsl:with-param>
+                                        </xsl:call-template>
+                                    </value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </xsl:if>
+                </triggers>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric" />
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+
+
     <xsl:template match="template/metrics/system.hw.diskarray.status">
         <xsl:variable name="metric" as="element()*">
             <metric>
@@ -431,6 +664,64 @@ and not(imported[contains(text(),'true')])">">
         </xsl:copy>
     </xsl:template>
 
+    <xsl:template match="template/metrics/system.hw.physicaldisk.size">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Physical disk size</name>
+                <name lang="RU">Размер диска</name>
+                <group>Physical Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trends0days"/></trends>
+                <update><xsl:copy-of select="$update1hour"/></update>
+                <units>B</units>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric" />
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="template/metrics/system.hw.physicaldisk.media_type">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Physical disk media type</name>
+                <name lang="RU">Тип диска</name>
+                <group>Physical Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trends0days"/></trends>
+                <update><xsl:copy-of select="$update1hour"/></update>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric" />
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="template/metrics/system.hw.physicaldisk.power_on_hours">
+        <xsl:variable name="metric" as="element()*">
+            <metric>
+                <name lang="EN">Physical disk power on hours</name>
+                <name lang="RU">Количество часов включенным</name>
+                <group>Physical Disks</group>
+                <history><xsl:copy-of select="$history14days"/></history>
+                <trends><xsl:copy-of select="$trendsDefault"/></trends>
+                <update><xsl:copy-of select="$update1hour"/></update>
+                <units>s</units>
+            </metric>
+        </xsl:variable>
+
+        <xsl:copy>
+            <xsl:call-template name="defaultMetricBlock">
+                <xsl:with-param name="metric" select="$metric" />
+            </xsl:call-template>
+        </xsl:copy>
+    </xsl:template>
 
 </xsl:stylesheet>
 

@@ -147,7 +147,11 @@
 						<xs:sequence> <!-- Template Fault (Disks) -->
 							<!-- array controllers -->
 							<xs:element name="system.hw.diskarray.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-							<xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							<xs:choice maxOccurs="unbounded">
+                                <xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.diskarray.cache.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.diskarray.cache.battery.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                            </xs:choice>
 							<!-- physical disks -->
 							<xs:element name="system.hw.physicaldisk.status" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 							<xs:choice maxOccurs="unbounded">
@@ -155,6 +159,9 @@
 								<xs:element name="system.hw.physicaldisk.smart_status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.physicaldisk.part_number" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.physicaldisk.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.physicaldisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.physicaldisk.power_on_hours" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+                                <xs:element name="system.hw.physicaldisk.media_type" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							</xs:choice>
 						</xs:sequence>
 
