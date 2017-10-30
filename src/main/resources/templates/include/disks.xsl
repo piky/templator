@@ -14,17 +14,17 @@
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <valueType><xsl:value-of select="if (valueType!='') then valueType else $valueTypeInt"/></valueType>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')])
-				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_OK_STATUS')])
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_CRIT_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_OK_STATUS')])
 and not(imported[contains(text(),'true')])">">
                         <xsl:message terminate="yes">Error: provide at least macro for DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS , DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_CRIT_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.crit</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_CRIT_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_CRIT_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller is in critical state!</name>
@@ -47,12 +47,12 @@ and not(imported[contains(text(),'true')])">">
                         </trigger>
                     </xsl:if>
 
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_WARN_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_WARN_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.warn</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_WARN_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller is in warning state</name>
@@ -62,7 +62,7 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -77,12 +77,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_OK_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller is not in optimal state</name>
@@ -92,8 +92,8 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_WARN_STATUS')]"><dependency>diskarray.cache.warn</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_WARN_STATUS')]"><dependency>diskarray.cache.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CRIT_STATUS')]"><dependency>diskarray.cache.crit</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -130,17 +130,17 @@ and not(imported[contains(text(),'true')])">">
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <valueType><xsl:value-of select="if (valueType!='') then valueType else $valueTypeInt"/></valueType>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')])
-				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_OK_STATUS')])
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_OK_STATUS')])
 and not(imported[contains(text(),'true')])">">
                         <xsl:message terminate="yes">Error: provide at least macro for DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS , DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.battery.crit</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller battery is in critical state!</name>
@@ -163,12 +163,12 @@ and not(imported[contains(text(),'true')])">">
                         </trigger>
                     </xsl:if>
 
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.battery.warn</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_WARN_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_BATTERY_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller battery is in warning state</name>
@@ -178,7 +178,7 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -193,12 +193,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_OK_STATUS')]">
                         <trigger>
                             <id>diskarray.cache.battery.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CACHE_BATTERY_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array cache controller battery is not in optimal state</name>
@@ -208,8 +208,8 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]"><dependency>diskarray.cache.battery.warn</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_WARN_STATUS')]"><dependency>diskarray.cache.battery.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS')]"><dependency>diskarray.cache.battery.crit</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -247,18 +247,18 @@ and not(imported[contains(text(),'true')])">">
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <valueType><xsl:value-of select="if (valueType!='') then valueType else $valueTypeInt"/></valueType>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_FAIL_STATUS')])
-				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')])
-				and not(../../macros/macro/macro[contains(text(),'DISK_ARRAY_OK_STATUS')])
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_FAIL_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CRIT_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'$DISK_ARRAY_OK_STATUS')])
 and not(imported[contains(text(),'true')])">">
                         <xsl:message terminate="yes">Error: provide at least macro for DISK_ARRAY_FAIL_STATUS or DISK_ARRAY_CRIT_STATUS , DISK_ARRAY_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_FAIL_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_FAIL_STATUS')]">
                         <trigger>
                             <id>disk_array.fail</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_FAIL_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_FAIL_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array controller is in unrecoverable state!</name>
@@ -280,12 +280,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CRIT_STATUS')]">
                         <trigger>
                             <id>disk_array.crit</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_CRIT_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_CRIT_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array controller is in critical state</name>
@@ -295,7 +295,7 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -310,12 +310,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_WARN_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_WARN_STATUS')]">
                         <trigger>
                             <id>disk_array.warn</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_WARN_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array controller is in warning state</name>
@@ -325,8 +325,8 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')]"><dependency>disk_array.crit</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CRIT_STATUS')]"><dependency>disk_array.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -341,12 +341,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_OK_STATUS')]">
                         <trigger>
                             <id>disk_array.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">DISK_ARRAY_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_ARRAY_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Disk array controller is not in optimal state</name>
@@ -356,9 +356,9 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check the device for faults</description>
                             <description lang="RU">Проверьте устройство</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_WARN_STATUS')]"><dependency>disk_array.warn</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_CRIT_STATUS')]"><dependency>disk_array.crit</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_WARN_STATUS')]"><dependency>disk_array.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_CRIT_STATUS')]"><dependency>disk_array.crit</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_ARRAY_FAIL_STATUS')]"><dependency>disk_array.fail</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -412,15 +412,15 @@ and not(imported[contains(text(),'true')])">">
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <update><xsl:copy-of select="$update3min"/></update>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'DISK_OK_STATUS')])">
-                        <xsl:message terminate="yes">Error: provide at least macro for DISK_FAIL_STATUS or DISK_OK_STATUS</xsl:message>
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$DISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'$DISK_OK_STATUS')])">
+                        <xsl:message terminate="yes">Error: provide at least macro for $DISK_FAIL_STATUS or $DISK_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_FAIL_STATUS')]">
                         <trigger>
                             <id>disk.fail</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_FAIL_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_FAIL_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Physical disk failed</name>
@@ -442,12 +442,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_WARN_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_WARN_STATUS')]">
                         <trigger>
                             <id>disk.warn</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_WARN_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Physical disk is in warning state</name>
@@ -472,12 +472,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_OK_STATUS')]">
                         <trigger>
                             <id>disk.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">DISK_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Physical disk is not in OK state</name>
@@ -487,8 +487,8 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check physical disk for warnings or errors</description>
                             <description lang="RU">Проверьте диск</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_WARN_STATUS')]"><dependency>disk.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_WARN_STATUS')]"><dependency>disk.warn</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -523,16 +523,16 @@ and not(imported[contains(text(),'true')])">">
                 <trends><xsl:copy-of select="$trends0days"/></trends>
                 <update><xsl:copy-of select="$update3min"/></update>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'DISK_SMART_OK_STATUS')])
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$DISK_SMART_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'$DISK_SMART_OK_STATUS')])
 and not(imported[contains(text(),'true')])">">
-                        <xsl:message terminate="yes">Error: provide at least macro for DISK_SMART_FAIL_STATUS or DIKS_SMART_OK_STATUS</xsl:message>
+                        <xsl:message terminate="yes">Error: provide at least macro for DISK_SMART_FAIL_STATUS or DISK_SMART_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_SMART_FAIL_STATUS')]">
                         <trigger>
                             <id>disk_smart.fail</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">DISK_SMART_FAIL_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_SMART_FAIL_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Physical disk S.M.A.R.T. failed</name>
@@ -542,7 +542,7 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Disk probably requires replacement.</description>
                             <description lang="RU">Возможно требуется замена диска.</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -557,12 +557,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'DIKS_SMART_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_SMART_OK_STATUS')]">
                         <trigger>
                             <id>disk_smart.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">DIKS_SMART_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$DISK_SMART_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Physical disk S.M.A.R.T. status is not in OK state</name>
@@ -572,9 +572,9 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Disk probably requires replacement.</description>
                             <description lang="RU">Возможно требуется замена диска.</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_OK_STATUS')]"><dependency>disk.notok</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'DISK_SMART_FAIL_STATUS')]"><dependency>disk_smart.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_FAIL_STATUS')]"><dependency>disk.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_OK_STATUS')]"><dependency>disk.notok</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$DISK_SMART_FAIL_STATUS')]"><dependency>disk_smart.fail</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
@@ -798,15 +798,15 @@ and not(imported[contains(text(),'true')])">">
                 <trends><xsl:copy-of select="$trendsDefault"/></trends>
                 <update><xsl:copy-of select="$update3min"/></update>
                 <triggers>
-                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'VDISK_OK_STATUS')])">
+                    <xsl:if test="not(../../macros/macro/macro[contains(text(),'$VDISK_FAIL_STATUS')]) and not(../../macros/macro/macro[contains(text(),'$VDISK_OK_STATUS')])">
                         <xsl:message terminate="yes">Error: provide at least macro for VDISK_FAIL_STATUS or VDISK_OK_STATUS</xsl:message>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$VDISK_FAIL_STATUS')]">
                         <trigger>
                             <id>vdisk.fail</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">VDISK_FAIL_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$VDISK_FAIL_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Virtual disk failed</name>
@@ -828,12 +828,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_WARN_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$VDISK_WARN_STATUS')]">
                         <trigger>
                             <id>vdisk.warn</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_e">
-                                    <xsl:with-param name="macro">VDISK_WARN_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$VDISK_WARN_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Virtual disk is in warning state</name>
@@ -857,12 +857,12 @@ and not(imported[contains(text(),'true')])">">
                             </tags>
                         </trigger>
                     </xsl:if>
-                    <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_OK_STATUS')]">
+                    <xsl:if test="../../macros/macro/macro[contains(text(),'$VDISK_OK_STATUS')]">
                         <trigger>
                             <id>vdisk.notok</id>
                             <expression>
                                 <xsl:call-template name="proto_t_simple_status_notok_e">
-                                    <xsl:with-param name="macro">VDISK_OK_STATUS</xsl:with-param>
+                                    <xsl:with-param name="macro">$VDISK_OK_STATUS</xsl:with-param>
                                 </xsl:call-template>
                             </expression>
                             <name lang="EN">Virtual disk is not in OK state</name>
@@ -871,8 +871,8 @@ and not(imported[contains(text(),'true')])">">
                             <description lang="EN">Please check virtualdisk for warnings or errors</description>
                             <description lang="RU">Проверьте диск</description>
                             <dependsOn>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_FAIL_STATUS')]"><dependency>vdisk.fail</dependency></xsl:if>
-                                <xsl:if test="../../macros/macro/macro[contains(text(),'VDISK_WARN_STATUS')]"><dependency>vdisk.warn</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$VDISK_FAIL_STATUS')]"><dependency>vdisk.fail</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$VDISK_WARN_STATUS')]"><dependency>vdisk.warn</dependency></xsl:if>
                             </dependsOn>
                             <tags>
                                 <tag>
