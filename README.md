@@ -41,3 +41,41 @@ chmod u+x zabbix-template-generator-0.5.jar
 ```  
 
 
+## Generator usage
+
+# in-files
+
+Classes magic.
+```xml
+<classes>
+  	  	<class>Fault</class>
+  	  	<class>Inventory</class>
+  	  	<class>Server</class>
+  	  	<class>SNMP Device</class>
+  	  	<class>SNMPv2</class>
+</classes>
+```
+SNMP Device - Attaches Template Module Generic SNMPvx (and ping template)  
+SNMPv2 - v2 version of SNMP generated  
+Fault, Inventory, Performance - what Macros would be attached.
+Interfaces EtherLike Extension - to link Etherlike template
+
+Documentation: 
+```
+	  <documentation>
+	  	<overview></overview>
+	  	<issues>
+	  		<issue>
+	  			<description>D-Link reports missing PSU as fail(4)</description>
+	  			<version>Firmware: 	1.73R008,hardware revision:	B1</version>
+	  			<device>DGS-3420-26SC Gigabit Ethernet Switch</device>
+	  		</issue>  	  			  		  		
+	  	</issues>
+	  </documentation>
+```
+
+
+
+
+Value maps:  
+if SNMP, use raw value maps provided by the vendor. You can change 'camelCase' to 'Camel case' though.
