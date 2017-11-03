@@ -211,7 +211,7 @@
                 <dependency>
                     <xsl:choose>
                         <xsl:when test="../global = true()"> <!-- search in other templates (other merge files (refactor this!!!) -->
-                            <xsl:variable name="module" select="doc('file:bin/merged/template_module_icmp_ping.xml')"></xsl:variable>
+                            <xsl:variable name="module" select="doc('file:bin/merged/00template_module_icmp_ping.xml')"></xsl:variable>
                             <name><xsl:value-of select="$module//metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/name[@lang=$lang or not(@lang)]"/></name>
                             <expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/expression,'TEMPLATE_NAME',$template_name)"/></expression>
                             <recovery_expression><xsl:value-of select="replace($module//template/metrics/*[alarmObject = $metric_alarm_object and (discoveryRule=$disc_name or (not(discoveryRule) and not($disc_name = '')))]/triggers/trigger[id=$trigger_id]/recovery_expression,'TEMPLATE_NAME',$template_name)"/></recovery_expression>
