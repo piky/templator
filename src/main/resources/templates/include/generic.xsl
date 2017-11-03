@@ -14,7 +14,6 @@
 				<group>Status</group>
 				<description>The time since the network management portion of the system was last re-initialized.<xsl:value-of select="alarmObject"/></description>
 				<units>uptime</units>
-				<zabbixKey>system.uptime</zabbixKey>
 				<update><xsl:copy-of select="$update30s"/></update>
 				<history><xsl:copy-of select="$history14days"/></history>
 				<trends><xsl:copy-of select="$trends0days"/></trends>
