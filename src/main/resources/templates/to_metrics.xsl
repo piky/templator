@@ -7,8 +7,8 @@
     <xsl:variable name="history30days">30d</xsl:variable>
     <xsl:variable name="history14days">2w</xsl:variable>
     <xsl:variable name="history7days">1w</xsl:variable>
-    <xsl:variable name="trendsDefault">1y</xsl:variable>
-    <xsl:variable name="trends365days">1y</xsl:variable>
+    <xsl:variable name="trendsDefault">365d</xsl:variable>
+    <xsl:variable name="trends365days">365d</xsl:variable>
     <xsl:variable name="trends0days">0</xsl:variable>
     <xsl:variable name="updateDefault">5m</xsl:variable>
     <xsl:variable name="update30s">30s</xsl:variable>

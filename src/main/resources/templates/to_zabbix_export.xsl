@@ -428,7 +428,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template name="time_suffix_to_seconds">
         <xsl:param name="time"/>
         <xsl:choose>
@@ -455,8 +455,6 @@
                 <xsl:choose>
                     <xsl:when test="ends-with($time,'d')"><xsl:value-of select="number(substring-before($time,'d'))"/></xsl:when>
                     <xsl:when test="ends-with($time,'w')"><xsl:value-of select="number(substring-before($time,'w'))*7"/></xsl:when>
-                    <xsl:when test="ends-with($time,'m')"><xsl:value-of select="number(substring-before($time,'m'))*30"/></xsl:when>
-                    <xsl:when test="ends-with($time,'y')"><xsl:value-of select="number(substring-before($time,'y'))*365"/></xsl:when>
                     <xsl:otherwise><xsl:value-of select="$time"/></xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
