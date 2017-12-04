@@ -11,7 +11,7 @@
     <xsl:param name="zbx_ver" select="3.2"/>
     <xsl:param name="lang" select="undef"/>
     <xsl:variable name="snmp_port"></xsl:variable> <!-- if empty than default port from host SNMP interface are going to be used -->
-    <xsl:param name="discoveryDelay">3600</xsl:param>
+    <xsl:param name="discoveryDelay">1h</xsl:param>
 
     <xsl:variable name="step_map"> <!-- preprocessing step types, replace with zabbix ints -->
         <entry key="regex">5</entry>
@@ -121,7 +121,11 @@
             <snmp_community><xsl:copy-of select="$community"/></snmp_community>
             <snmp_oid><xsl:value-of select="./snmp_oid"/></snmp_oid>
             <key><xsl:value-of select="./key"/></key>
-            <delay><xsl:value-of select="$discoveryDelay"/></delay>
+            <delay>
+                <xsl:call-template name="time_suffix_to_seconds">
+                    <xsl:with-param name="time" select="$discoveryDelay"/>
+                </xsl:call-template>
+            </delay>
             <status>0</status>
             <allowed_hosts/>
             <snmpv3_contextname/>
@@ -153,14 +157,11 @@
                     </filter>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:choose>
-                <xsl:when test="$zbx_ver = 3.4">
-                    <lifetime>30d</lifetime> <!-- 30days-->
-                </xsl:when>
-                <xsl:otherwise>
-                    <lifetime>30</lifetime> <!-- in days -->
-                </xsl:otherwise>
-            </xsl:choose>
+            <lifetime>
+                <xsl:call-template name="time_suffix_to_days">
+                    <xsl:with-param name="time">30d</xsl:with-param>
+                </xsl:call-template>
+            </lifetime>
             <description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
             <item_prototypes>
                 <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"/>
@@ -313,17 +314,21 @@
         </xsl:if>
         <snmp_oid><xsl:value-of select="./oid"/></snmp_oid>
         <key><xsl:value-of select="./snmpObject"/></key>
-        <delay><xsl:value-of select="./update"/></delay>
-        <xsl:choose>
-            <xsl:when test="$zbx_ver = 3.4"><!--  in seconds -->
-                <history><xsl:value-of select="if (./history = 7) then ('1w') else(concat(./history,'d'))"/></history>
-                <trends><xsl:value-of select="if (./trends = 7) then ('1w') else(concat(./trends,'d'))"/></trends>
-            </xsl:when>
-            <xsl:otherwise> <!--  before 3.4 its in days -->
-                <history><xsl:value-of select="./history"/></history>
-                <trends><xsl:value-of select="./trends"/></trends>
-            </xsl:otherwise>
-        </xsl:choose>
+        <delay>
+            <xsl:call-template name="time_suffix_to_seconds">
+                <xsl:with-param name="time" select="./update"/>
+            </xsl:call-template>
+        </delay>
+        <history>
+            <xsl:call-template name="time_suffix_to_days">
+                <xsl:with-param name="time" select="./history"/>
+            </xsl:call-template>
+        </history>
+        <trends>
+            <xsl:call-template name="time_suffix_to_days">
+                <xsl:with-param name="time" select="./trends"/>
+            </xsl:call-template>
+        </trends>
 
         <status>0</status>
         <value_type><xsl:value-of select="./valueType"/></value_type>
@@ -420,6 +425,44 @@
                     <application_prototypes/>
                     <xsl:if test="$zbx_ver = 3.4"><master_item_prototype/></xsl:if>
                 </item_prototype>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="time_suffix_to_seconds">
+        <xsl:param name="time"/>
+        <xsl:choose>
+            <xsl:when test="$zbx_ver=3.2">
+                <xsl:choose>
+                    <xsl:when test="ends-with($time,'s')"><xsl:value-of select="number(substring-before($time,'s'))"/></xsl:when>
+                    <xsl:when test="ends-with($time,'m')"><xsl:value-of select="number(substring-before($time,'m'))*60"/></xsl:when>
+                    <xsl:when test="ends-with($time,'h')"><xsl:value-of select="number(substring-before($time,'h'))*3600"/></xsl:when>
+                    <xsl:when test="ends-with($time,'d')"><xsl:value-of select="number(substring-before($time,'d'))*86400"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$time"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <!--as is-->
+                <xsl:value-of select="if (matches($time,'[a-zA-Z]$')) then ($time) else (concat($time,'s'))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="time_suffix_to_days">
+        <xsl:param name="time"/>
+        <xsl:choose>
+            <xsl:when test="$zbx_ver=3.2">
+                <xsl:choose>
+                    <xsl:when test="ends-with($time,'d')"><xsl:value-of select="number(substring-before($time,'d'))"/></xsl:when>
+                    <xsl:when test="ends-with($time,'w')"><xsl:value-of select="number(substring-before($time,'w'))*7"/></xsl:when>
+                    <xsl:when test="ends-with($time,'m')"><xsl:value-of select="number(substring-before($time,'m'))*30"/></xsl:when>
+                    <xsl:when test="ends-with($time,'y')"><xsl:value-of select="number(substring-before($time,'y'))*365"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$time"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <!--as is, but add 'd' if no suffix-->
+                <xsl:value-of select="if (matches($time,'[a-zA-Z]$')) then ($time) else (concat($time,'d'))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

@@ -3,21 +3,21 @@
 
     <xsl:output method="xml"/>
 
-    <xsl:variable name="historyDefault">30</xsl:variable>
-    <xsl:variable name="history30days">30</xsl:variable>
-    <xsl:variable name="history14days">14</xsl:variable>
-    <xsl:variable name="history7days">7</xsl:variable>
-    <xsl:variable name="trendsDefault">365</xsl:variable>
-    <xsl:variable name="trends365days">365</xsl:variable>
+    <xsl:variable name="historyDefault">30d</xsl:variable>
+    <xsl:variable name="history30days">30d</xsl:variable>
+    <xsl:variable name="history14days">2w</xsl:variable>
+    <xsl:variable name="history7days">1w</xsl:variable>
+    <xsl:variable name="trendsDefault">1y</xsl:variable>
+    <xsl:variable name="trends365days">1y</xsl:variable>
     <xsl:variable name="trends0days">0</xsl:variable>
-    <xsl:variable name="updateDefault">300</xsl:variable>
-    <xsl:variable name="update30s">30</xsl:variable>
-    <xsl:variable name="update1min">60</xsl:variable>
-    <xsl:variable name="update3min">180</xsl:variable>
-    <xsl:variable name="update5min">300</xsl:variable>
-    <xsl:variable name="update1hour">3600</xsl:variable>
-    <xsl:variable name="update4hours">14400</xsl:variable>
-    <xsl:variable name="update1day">86400</xsl:variable>
+    <xsl:variable name="updateDefault">5m</xsl:variable>
+    <xsl:variable name="update30s">30s</xsl:variable>
+    <xsl:variable name="update1min">1m</xsl:variable>
+    <xsl:variable name="update3min">3m</xsl:variable>
+    <xsl:variable name="update5min">5m</xsl:variable>
+    <xsl:variable name="update1hour">1h</xsl:variable>
+    <xsl:variable name="update4hours">4h</xsl:variable>
+    <xsl:variable name="update1day">1d</xsl:variable>
 
     <xsl:variable name="valueType">3</xsl:variable>
     <xsl:variable name="valueTypeFloat">0</xsl:variable>
@@ -109,7 +109,7 @@
         <xsl:param name="updateMultiplier"/>
         <xsl:param name="default"/>
         <xsl:if test="$updateMultiplier">
-            <xsl:value-of select="$updateMultiplier * $default" />
+            <xsl:value-of select="concat(number(replace($default,'[a-zA-Z]+',''))*$updateMultiplier,replace($default,'[0-9]+',''))"/>
         </xsl:if>
         <xsl:if test="not($updateMultiplier)">
             <xsl:value-of select="$default" />
