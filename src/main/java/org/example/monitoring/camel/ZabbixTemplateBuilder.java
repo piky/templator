@@ -136,6 +136,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 			.otherwise()
 			    .log("Unknown zbx_ver provided")
 	    .end()
+		.multicast().parallelProcessing()
 	    .to(
 	    		"direct:local_tmon",
 				"direct:svn",
