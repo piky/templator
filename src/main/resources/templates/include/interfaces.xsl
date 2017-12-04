@@ -68,7 +68,7 @@
 							<xsl:variable name="speedMetricKey"><xsl:value-of select="ancestor::metrics/net.if.speed/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.speed/snmpObject"/>]</xsl:variable>
 							<xsl:variable name="outMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out/snmpObject"/>]</xsl:variable>
 							<trigger>
-								<documentation>- This trigger uses 3% hysteresis
+								<documentation>- This trigger uses 3% hysteresis (WARNING: do not change {$IF_UTIL_MAX:"{#IFNAME}"} below or equal to 3%
 									- Additionally added 'and net.if.speed[*].last()>0' in order to fix ZBX-12688</documentation>
 								<id>if.util_high</id>
 								<expression>({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:"{#IFNAME}"}/100)*{TEMPLATE_NAME:<xsl:value-of select="$speedMetricKey"/>.last()} or
@@ -185,19 +185,19 @@
 						<xsl:when test="ancestor::metrics/net.if.out.errors[discoveryRule=$discoveryRule] or (ancestor::metrics/net.if.out.errors[not(discoveryRule)] and not(discoveryRule))">
 							<xsl:variable name="outErrorsMetricKey"><xsl:value-of select="ancestor::metrics/net.if.out.errors/name()"/>[<xsl:value-of select="ancestor::metrics/net.if.out.errors/snmpObject"/>]</xsl:variable>
 							<trigger>
-								<documentation/>
+								<documentation>Recovers when below 80% of {$IF_ERRORS_WARN:"{#IFNAME}"} (see ZBX-13128)</documentation>
 								<id>if.errors</id>
 								<expression>{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}
 									or {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}>{$IF_ERRORS_WARN:"{#IFNAME}"}</expression>
-								<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2
-									and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}-2</recovery_expression>
+								<recovery_expression>{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}*0.8
+									and {TEMPLATE_NAME:<xsl:value-of select="$outErrorsMetricKey"/>.avg(5m)}&lt;{$IF_ERRORS_WARN:"{#IFNAME}"}*0.8</recovery_expression>
 								<manual_close>1</manual_close>
 								<name lang="EN">High error rate</name>
 								<name lang="RU">Большое количество ошибок интерфейса</name>
 								<url/>
 								<priority>2</priority>
-								<description lang="EN"></description>
-								<description lang="RU"></description>
+								<description lang="EN">Recovers when below 80% of {$IF_ERRORS_WARN:"{#IFNAME}"} threshold</description>
+								<description lang="RU">Восстановление когда ниже 80% от значения {$IF_ERRORS_WARN:"{#IFNAME}"}</description>
 								<dependsOn>
 									<dependency>if.down</dependency>
 								</dependsOn>
