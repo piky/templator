@@ -173,7 +173,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
         //local only
         from("direct:local_tmon")
             .setBody(body().regexReplaceAll("_SNMP_PLACEHOLDER", simple(" ${in.headers.template_suffix}"))) //w/o lang
-            .setBody(body().regexReplaceAll("<delay>([0-9]+)</delay>", "<delay>90</delay>")) //replace delay
+            .setBody(body().regexReplaceAll("<delay>([0-9a-zA-Z]+)</delay>", "<delay>90</delay>")) //replace delay
             .choice()
                 .when(header("zbx_ver").isEqualTo("3.4"))
                     .setHeader("CamelOverruleFileName",
