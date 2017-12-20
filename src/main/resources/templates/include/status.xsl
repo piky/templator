@@ -15,10 +15,19 @@
 				<history><xsl:copy-of select="$history14days"/></history>
 				<trends><xsl:copy-of select="$trends0days"/></trends>
 				<triggers>
-					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
+					<xsl:if test="not(../../macros/macro/macro[contains(text(),'$HEALTH_DISASTER_STATUS')])
+				and not(../../macros/macro/macro[contains(text(),'$HEALTH_CRIT_STATUS')])
+and not(imported[contains(text(),'true')])">">
+						<xsl:message terminate="yes">Error: provide at least macro for HEALTH_DISASTER_STATUS or HEALTH_CRIT_STATUS</xsl:message>
+					</xsl:if>
+					<xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_DISASTER_STATUS')]">
 						<trigger>
 							<id>health.disaster</id>
-							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">$HEALTH_DISASTER_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
 							<name lang="EN">System is in unrecoverable state!</name>
 							<name lang="RU">Статус системы: сбой</name>
 							<priority>4</priority>
@@ -30,17 +39,21 @@
 							</tag></tags>
 						</trigger>
 					</xsl:if>
-					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
+					<xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_CRIT_STATUS')]">
 						<trigger>
 							<id>health.critical</id>
-							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
+                            <expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">$HEALTH_CRIT_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
 							<name lang="EN">System status is in critical state</name>
 							<name lang="RU">Статус системы: авария</name>
 							<priority>4</priority>
 							<description lang="EN">Please check the device for errors</description>
 							<description lang="RU">Проверьте устройство</description>
 							<dependsOn>
-								<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_DISASTER_STATUS')]">
+								<xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_DISASTER_STATUS')]">
 									<dependency>health.disaster</dependency>
 								</xsl:if>
 							</dependsOn>
@@ -50,19 +63,22 @@
 							</tag></tags>
 						</trigger>
 					</xsl:if>
-					<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">
+					<xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_WARN_STATUS')]">
 						<trigger>
 							<id>health.warning</id>
-							<expression><xsl:for-each select="../../macros/macro/macro[contains(text(),'HEALTH_WARN_STATUS')]">{TEMPLATE_NAME:METRIC.last(0)}=<xsl:value-of select="if (position()=last()) then (.) else (concat(.,' or '))"/></xsl:for-each></expression>
+							<expression>
+                                <xsl:call-template name="proto_t_simple_status_e">
+                                    <xsl:with-param name="macro">$HEALTH_WARN_STATUS</xsl:with-param>
+                                </xsl:call-template>
+                            </expression>
 							<name lang="EN">System status is in warning state</name>
 							<name lang="RU">Статус системы: предупреждение</name>
 							<priority>2</priority>
 							<description lang="EN">Please check the device for warnings</description>
 							<description lang="RU">Проверьте устройство</description>
 							<dependsOn>
-								<xsl:if test="../../macros/macro/macro[contains(text(),'HEALTH_CRIT_STATUS')]">
-									<dependency>health.critical</dependency>
-								</xsl:if>
+								<xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_CRIT_STATUS')]"><dependency>health.critical</dependency></xsl:if>
+                                <xsl:if test="../../macros/macro/macro[contains(text(),'$HEALTH_DISASTER_STATUS')]"><dependency>health.disaster</dependency></xsl:if>
 							</dependsOn>
 							<tags><tag>
 								<tag>Alarm.type</tag>
