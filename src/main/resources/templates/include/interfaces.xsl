@@ -20,10 +20,11 @@
 							2. {$IFCONTROL:"{#IFNAME}"}=1 - user can redefine Context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.
 							if IFNAME not available - use SNMPINDEX (IFINDEX))
 							3. {TEMPLATE_NAME:METRIC.diff()}=1) - trigger fires only ifOperStatus ever was up(1) before. (do not fire ethernal off interfaces.)
-							WARNING. if closed manually - won't fire again on next poll. because of .diff. Thats why manually closing it is disabled.
+							WARNING. if closed manually - won't fire again on next poll. because of .diff. Thats why manual_close is disabled.
 						</documentation>
 						<id>if.down</id>
 						<expression>{$IFCONTROL:"{#IFNAME}"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)</expression>
+						<recovery_expression>{TEMPLATE_NAME:METRIC.last()}&lt;&gt;2</recovery_expression>
 						<manual_close>0</manual_close>
 						<name lang="EN">Link down</name>
 						<name lang="RU">Интерфейс недоступен</name>
