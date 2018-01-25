@@ -15,7 +15,6 @@
 			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0"/>
 			<xs:element name="documentation" type="tns:documentationType" maxOccurs="1" minOccurs="0"/>
-			<xs:element name="sysObjectID" type="xs:string"/>
 			<xs:element name="discoveryRules" minOccurs="0" maxOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
