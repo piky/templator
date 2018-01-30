@@ -44,6 +44,9 @@ chmod u+x zabbix-template-generator-0.5.jar
 ## Generator usage
 
 # in-files
+in-files names:  
+use 00, 01 etc for templates that should be imported first  
+
 
 Classes magic.
 ```xml
@@ -79,3 +82,8 @@ Documentation:
 
 Value maps:  
 if SNMP, use raw value maps provided by the vendor. You can change 'camelCase' to 'Camel case' though.
+
+
+## merge
+-  memory magic(TODO)
+-  triggers with expressions prototypes (SICK, TODO)
