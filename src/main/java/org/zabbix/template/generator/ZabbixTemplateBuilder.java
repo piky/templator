@@ -1,4 +1,4 @@
-package org.example.monitoring.camel;
+package org.zabbix.template.generator;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
