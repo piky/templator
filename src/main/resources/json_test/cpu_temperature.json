@@ -1,0 +1,5 @@
+{
+	"prototype":"CPUTemperatureMetric",
+	"oid":".1.123.12.3.2",
+	"snmpObject":"cpuTemp"
+}

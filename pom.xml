@@ -91,12 +91,28 @@
       <artifactId>camel-jaxb</artifactId>
 	   <version>${camel.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson</artifactId>
+	   <version>${camel.version}</version>
+    </dependency>
     
   <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-saxon</artifactId>
 	   <version>${camel.version}</version>
     </dependency>
+    
+   <dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-databind</artifactId>
+</dependency>
+
+	<dependency>
+	    <groupId>com.jayway.jsonpath</groupId>
+	    <artifactId>json-path</artifactId>
+	    <version>2.3.0</version>
+	</dependency>
     
   </dependencies>
       <build>
