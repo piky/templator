@@ -9,7 +9,7 @@ public class Template {
 	private String name;
 	private String description;
 	private Metric metrics[];
-	
+	private DiscoveryRule discoveryRules[];
 	
 	
 	public String getName() {
@@ -24,6 +24,13 @@ public class Template {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public DiscoveryRule[] getDiscoveryRules() {
+		return discoveryRules;
+	}
+	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
+		this.discoveryRules = discoveryRules;
 	}
 	public Metric[] getMetrics() {
 		return metrics;

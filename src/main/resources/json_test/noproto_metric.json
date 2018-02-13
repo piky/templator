@@ -1,0 +1,6 @@
+{
+	"prototype":"Custom.Metric",
+	"name": "Some custom metric here",
+	"oid":".1.123.12.3.2",
+	"snmpObject":"cm"
+}
