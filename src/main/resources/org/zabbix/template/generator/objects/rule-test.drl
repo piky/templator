@@ -1,6 +1,6 @@
-package drl
+package org.zabbix.template.generator.objects
 import com.company.license.Applicant;
-import org.zabbix.template.generator.objects.Metric;
+
 
 rule "Check oid"
 when

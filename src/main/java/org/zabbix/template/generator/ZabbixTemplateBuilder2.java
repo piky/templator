@@ -5,6 +5,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
+import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
@@ -12,16 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.Metric;
 
-import com.company.license.Applicant;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Component
 public class ZabbixTemplateBuilder2 extends RouteBuilder {
 
      
-  @Autowired
-  private KieContainer kContainer;	
+/*  @Autowired
+  private KieContainer kContainer;	*/
   @Override
   public void configure() throws Exception {
 	  
@@ -29,30 +26,13 @@ public class ZabbixTemplateBuilder2 extends RouteBuilder {
 
 	from("file://src/main/resources/json_test?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 	    .log("Loading file: ${in.headers.CamelFileNameOnly}")
-	    .unmarshal().json(JsonLibrary.Jackson,JsonNode.class)
-	    .process(new Processor() {
-			
-			@Override
-			public void process(Exchange exchange) throws Exception {
-				ObjectMapper mapper = new ObjectMapper();
-
-				//get prototype name from json 
-				String protoName = ((JsonNode) exchange.getIn().getBody()).get("prototype").textValue();
-				//get class
-				Class<?> c = ClassChooser.getMetricClass(protoName);
-				//convert from jsonnode to class c
-				Metric out = (Metric) mapper.convertValue( exchange.getIn().getBody(), c );
-				exchange.getIn().setBody(out);
-				
-			}
-		})
-	    //TODO drools. move it
+	    .unmarshal().json(JsonLibrary.Jackson,Metric.class)
 	    .process(new Processor() {
 			 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-		        /*KieServices ks = KieServices.Factory.get();
-		        KieContainer kContainer = ks.getKieClasspathContainer();*/
+		        KieServices ks = KieServices.Factory.get();
+		        KieContainer kContainer = ks.getKieClasspathContainer();
 				StatelessKieSession ksession = kContainer.newStatelessKieSession();
 				
 				AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
@@ -67,10 +47,6 @@ public class ZabbixTemplateBuilder2 extends RouteBuilder {
 				Metric metric = (Metric) exchange.getIn().getBody();
 				
 				ksession.execute(metric);
-				
-				
-				//ksession.execute( Arrays.asList(new Object[] {applicant}));
-
 			}
 
 	    

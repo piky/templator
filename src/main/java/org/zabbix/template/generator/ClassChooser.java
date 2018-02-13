@@ -2,7 +2,7 @@ package org.zabbix.template.generator;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+//TODO : Not used anymore. remove this
 public class ClassChooser {
 	private static String pck = "org.zabbix.template.generator.objects";
 	  public static Class<?> getMetricClass(String prototype){

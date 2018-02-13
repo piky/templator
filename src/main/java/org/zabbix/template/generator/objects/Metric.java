@@ -1,21 +1,34 @@
 package org.zabbix.template.generator.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonIgnoreProperties(value = { "prototype" })
+@JsonDeserialize(using = MetricDeserializer.class)
 public abstract class Metric {
 	//use this field to match to class
 	private String prototype;
 	
 	private String name;
+	private String description;
+	private String vendorDocumentation;
 	private String key;
-	enum type {
+	
+	
+	
+	public enum Type {
 		SNMP, ZabbixAgent, SimpleCheck,//to be extended
 	};
-	
-	enum group {
-		CPU,Memory,Status //to be extended	
+	public enum ValueType {
+		INTEGER,FLOAT,CHAR,TEXT,LOG
 	};
+	private ValueType valueType = ValueType.INTEGER;
+	private Type type; 
+	
+	public enum Group {
+		CPU,Memory,Status,Temperature //to be extended	
+	};
+	private Group group;
 	private  Integer delay = 300;
 	private  Integer history = 90;
 	private  Integer trends = 365;
@@ -29,7 +42,9 @@ public abstract class Metric {
 	private String mib;
 	
 	
-	
+	//Discovery stuff
+	private DiscoveryRule discoveryRule;
+	private String alarmObject;
 	
 	
 	
@@ -45,11 +60,41 @@ public abstract class Metric {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getVendorDocumentation() {
+		return vendorDocumentation;
+	}
+	public void setVendorDocumentation(String vendorDocumentation) {
+		this.vendorDocumentation = vendorDocumentation;
+	}
 	public String getKey() {
 		return key;
 	}
 	public void setKey(String key) {
 		this.key = key;
+	}
+	public Type getType() {
+		return type;
+	}
+	public void setType(Type type) {
+		this.type = type;
+	}
+	public ValueType getValueType() {
+		return valueType;
+	}
+	public void setValueType(ValueType valueType) {
+		this.valueType = valueType;
+	}
+	public Group getGroup() {
+		return group;
+	}
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 	public Integer getDelay() {
 		return delay;
@@ -92,6 +137,18 @@ public abstract class Metric {
 	}
 	public void setMib(String mib) {
 		this.mib = mib;
+	}
+	public DiscoveryRule getDiscoveryRule() {
+		return discoveryRule;
+	}
+	public void setDiscoveryRule(DiscoveryRule discoveryRule) {
+		this.discoveryRule = discoveryRule;
+	}
+	public String getAlarmObject() {
+		return alarmObject;
+	}
+	public void setAlarmObject(String alarmObject) {
+		this.alarmObject = alarmObject;
 	}
 	@Override
 	public int hashCode() {

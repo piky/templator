@@ -1,0 +1,8 @@
+package org.zabbix.template.generator.objects
+
+rule "Test1: you should have both discovery rule with alarmObject"
+when
+	$m : Metric ( discoveryRule != null, alarmObject == null )
+then
+    System.err.println("Please define 'alarmObject' for "+$m);
+end
