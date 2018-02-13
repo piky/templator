@@ -14,12 +14,11 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 	public void configure() throws Exception {
 
 
-
 		from("file://src/main/resources/json_test_template?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 		.log("Loading file: ${in.headers.CamelFileNameOnly}")
 		.unmarshal().json(JsonLibrary.Jackson,Template.class)
-/*		.process(new Processor() {
-			
+		/*		.process(new Processor() {
+
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				JsonNode json= (JsonNode) exchange.getIn().getBody();

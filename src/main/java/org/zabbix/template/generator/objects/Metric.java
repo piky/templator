@@ -47,7 +47,7 @@ public abstract class Metric {
 	private String alarmObject;
 	
 	
-	
+	//Generated down below
 	public String getPrototype() {
 		return prototype;
 	}

@@ -1,21 +1,27 @@
 {
 	"name": "Template test",
-	"description": "this is a description", 
+	"description": "this is a description",
+	"discoveryRules":[
+		{
+			"name":"DiscoveryTest"
+		}
+	
+	], 
 	"metrics": [
 		{
-			"prototype": "CPUTemperatureMetric",
+			"prototype": "cpu.temperature.metric",
 			"type": "SNMP",
 			"group": "Temperature",
 			"oid": ".1.123.12.3.2",
 			"snmpObject": "cpuTemp"
 		},
 		{
-			"prototype": "CPUTemperatureMetric",
+			"prototype": "cpu.temperature.metric",
 			"oid": ".1.123.12.3.3",
 			"snmpObject": "cpuTemp2"
 		},
 		{
-			"prototype": "SystemCpuUtil",
+			"prototype": "System.Cpu.Util",
 			"vendorDocumentation":"Data taken only from raw. Cannot be located in MIB (probably outdated MIB)",
 			"oid": "1.3.6.1.4.1.4526.10.1.1.4.9.0",
 			"mib": "FASTPATH-SWITCHING-MIB",
@@ -26,7 +32,7 @@
 			"discoveryRule": {
 				"name":"DiscoveryTest"
 			},
-			"prototype": "SystemCpuUtil",
+			"prototype": "System.Cpu.Util",
 			"vendorDocumentation":"Data taken only from raw. Cannot be located in MIB (probably outdated MIB)",
 			"oid": "1.3.6.1.4.1.4526.10.1.1.4.9.{#SNMPINDEX}",
 			"mib": "FASTPATH-SWITCHING-MIB",
