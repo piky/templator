@@ -18,7 +18,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		errorHandler(deadLetterChannel("direct:errors"));
 		//catch XSLT terminations
 		onException(org.zabbix.template.generator.objects.MetricNotFoundException.class)
-		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype");
+		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
 		//other errors
 		from("direct:errors")
 		.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");

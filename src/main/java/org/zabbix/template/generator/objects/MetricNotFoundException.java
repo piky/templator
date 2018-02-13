@@ -2,8 +2,8 @@ package org.zabbix.template.generator.objects;
 
 public class MetricNotFoundException extends RuntimeException {
 
-	public MetricNotFoundException(Exception e) {
-
+	public MetricNotFoundException(String m,Throwable t) {
+		super(m, t);
 	}
 
 }

@@ -21,7 +21,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 			try {
 				return Class.forName(pck+"."+fqdn);
 			} catch (ClassNotFoundException e) {
-				throw new MetricNotFoundException(e);
+				throw new MetricNotFoundException("No such class: "+fqdn,e);
 			}
 		 	
 	}
