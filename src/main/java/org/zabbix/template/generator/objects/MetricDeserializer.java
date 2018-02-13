@@ -15,16 +15,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 //http://www.baeldung.com/jackson-deserialization
 public class MetricDeserializer extends StdDeserializer<Metric> { 
 	private static String pck = "org.zabbix.template.generator.objects";
-	public static Class<?> getMetricClass(String prototype){
-		try {
+	public static Class<?> getMetricClass(String prototype) throws MetricNotFoundException{
+		
 			String fqdn = StringUtils.remove(WordUtils.capitalizeFully(prototype,'.'), ".");
-			return Class.forName(pck+"."+fqdn);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}    	
-
+			try {
+				return Class.forName(pck+"."+fqdn);
+			} catch (ClassNotFoundException e) {
+				throw new MetricNotFoundException(e);
+			}
+		 	
+	}
 	public MetricDeserializer() { 
 		this(null); 
 	} 
@@ -43,7 +43,8 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 		//get prototype name from json 
 		String protoName = node.get("prototype").textValue();
 		//get class
-		Class<?> c = getMetricClass(protoName);
+		Class<?> c;
+		c = getMetricClass(protoName); 
 		//convert from jsonnode to class c
 		Metric out = (Metric) mapper.convertValue( node, c );
 
