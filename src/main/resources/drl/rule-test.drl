@@ -1,5 +1,15 @@
 package drl
 import com.company.license.Applicant;
+import org.zabbix.template.generator.objects.Metric;
+
+rule "Check oid"
+when
+      $m : Metric (  snmpObject != null, oid != null )
+then
+    System.err.println("Check oid rule!");
+    $m.setKey("Changed key");
+end
+
 
 rule "Is of valid age"
 when

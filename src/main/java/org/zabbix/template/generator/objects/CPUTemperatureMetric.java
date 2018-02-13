@@ -5,7 +5,7 @@ public class CPUTemperatureMetric extends TemperatureMetric {
 
 	
 	public CPUTemperatureMetric() {
-		this.name = "CPU temperature";
+		this.setName("CPU temperature");
 		
 	}
 

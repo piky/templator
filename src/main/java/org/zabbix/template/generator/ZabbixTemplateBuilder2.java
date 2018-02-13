@@ -59,12 +59,18 @@ public class ZabbixTemplateBuilder2 extends RouteBuilder {
 				ksession.addEventListener(agendaEventListener);
 				/*ksession.addEventListener( new DebugAgendaEventListener() );
 		        ksession.addEventListener( new DebugRuleRuntimeEventListener() );*/
-				Applicant applicant = new Applicant( "Mr John Smith", 16 );
-				System.out.println(applicant.isValid());
+				//Applicant applicant = new Applicant( "Mr John Smith", 16 );
+
 //				System.out.println("Rule found:" + ksession.getKieBase().getRule("drl","Is of valid age"));
-				ksession.execute( applicant );
+				//ksession.execute( applicant );
+				
+				Metric metric = (Metric) exchange.getIn().getBody();
+				
+				ksession.execute(metric);
+				
+				
 				//ksession.execute( Arrays.asList(new Object[] {applicant}));
-				System.out.println(applicant.isValid());
+
 			}
 
 	    
