@@ -20,9 +20,29 @@ public abstract class Metric {
 	public enum Type {
 		SNMP, ZabbixAgent, SimpleCheck,//to be extended
 	};
+	
+	
 	public enum ValueType {
-		INTEGER,FLOAT,CHAR,TEXT,LOG
+		
+		FLOAT(0),
+		CHAR(1),
+		LOG(2),
+		INTEGER(3),
+		TEXT(4);
+		private int zabbixValue;
+		ValueType(int zabbixValue){
+			this.setZabbixValue(zabbixValue);
+		}
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+		
 	};
+	
+
 	private ValueType valueType = ValueType.INTEGER;
 	private Type type; 
 	
