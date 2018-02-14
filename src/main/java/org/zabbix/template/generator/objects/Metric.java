@@ -12,6 +12,7 @@ public abstract class Metric {
 	private String name;
 	private String description;
 	private String vendorDocumentation;
+	private String vendorDescription;
 	private String key;
 	
 	
@@ -26,7 +27,7 @@ public abstract class Metric {
 	private Type type; 
 	
 	public enum Group {
-		CPU,Memory,Status,Temperature //to be extended	
+		CPU,Memory,Status,Temperature,Network_Interfaces //to be extended	
 	};
 	private Group group;
 	private  Integer delay = 300;
@@ -45,7 +46,11 @@ public abstract class Metric {
 	//Discovery stuff
 	private DiscoveryRule discoveryRule;
 	private String alarmObject;
+	private String alarmObjectType;
 	
+	
+	//Preprocessing
+	private PreprocessingStep[] preprocessing;
 	
 	//Generated down below
 	public String getPrototype() {
@@ -71,6 +76,12 @@ public abstract class Metric {
 	}
 	public void setVendorDocumentation(String vendorDocumentation) {
 		this.vendorDocumentation = vendorDocumentation;
+	}
+	public String getVendorDescription() {
+		return vendorDescription;
+	}
+	public void setVendorDescription(String vendorDescription) {
+		this.vendorDescription = vendorDescription;
 	}
 	public String getKey() {
 		return key;
@@ -149,6 +160,18 @@ public abstract class Metric {
 	}
 	public void setAlarmObject(String alarmObject) {
 		this.alarmObject = alarmObject;
+	}
+	public String getAlarmObjectType() {
+		return alarmObjectType;
+	}
+	public void setAlarmObjectType(String alarmObjectType) {
+		this.alarmObjectType = alarmObjectType;
+	}
+	public PreprocessingStep[] getPreprocessing() {
+		return preprocessing;
+	}
+	public void setPreprocessing(PreprocessingStep[] preprocessing) {
+		this.preprocessing = preprocessing;
 	}
 	@Override
 	public int hashCode() {
