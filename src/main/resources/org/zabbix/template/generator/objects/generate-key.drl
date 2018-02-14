@@ -1,0 +1,9 @@
+package org.zabbix.template.generator.objects
+
+rule "Generate metric key for SNMP type"
+when
+	$m : Metric ( key ==null, snmpObject != null, prototype != null)
+then
+    //System.err.println("There is no key for "+$m+"let's generate it...");
+    $m.setKey($m.getPrototype()+"["+$m.getSnmpObject()+"]");
+end

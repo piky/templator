@@ -7,7 +7,6 @@ when
       $m : Metric (  snmpObject != null, oid != null )
 then
     System.err.println("Check oid rule!");
-    $m.setKey("Changed key");
 end
 
 

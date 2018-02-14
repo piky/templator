@@ -1,0 +1,12 @@
+package org.zabbix.template.generator.objects
+global String discoveryRule;
+
+rule "Populate discoveryRule field for metric"
+when
+	$m : Metric ( key ==null, snmpObject != null, prototype != null)
+then
+    //System.err.println("There is no key for "+$m+"let's generate it...");
+    $m.setKey($m.getPrototype()+"["+$m.getSnmpObject()+"]");
+    //set from global
+    $m.setDiscoveryRule(discoveryRule);
+end

@@ -3,7 +3,7 @@ package org.zabbix.template.generator.objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonIgnoreProperties(value = { "prototype" })
+//@JsonIgnoreProperties(value = { "prototype" })
 @JsonDeserialize(using = MetricDeserializer.class)
 public abstract class Metric {
 	//use this field to match to class
@@ -12,6 +12,7 @@ public abstract class Metric {
 	private String name;
 	private String description;
 	private String vendorDocumentation;
+	private String ref;
 	private String vendorDescription;
 	private String key;
 	
@@ -22,7 +23,7 @@ public abstract class Metric {
 	};
 	
 	
-	public enum ValueType {
+	public enum ValueType implements ZabbixValue {
 		
 		FLOAT(0),
 		CHAR(1),
@@ -33,6 +34,7 @@ public abstract class Metric {
 		ValueType(int zabbixValue){
 			this.setZabbixValue(zabbixValue);
 		}
+		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
@@ -64,7 +66,7 @@ public abstract class Metric {
 	
 	
 	//Discovery stuff
-	private DiscoveryRule discoveryRule;
+	private String discoveryRule;
 	private String alarmObject;
 	private String alarmObjectType;
 	
@@ -96,6 +98,12 @@ public abstract class Metric {
 	}
 	public void setVendorDocumentation(String vendorDocumentation) {
 		this.vendorDocumentation = vendorDocumentation;
+	}
+	public String getRef() {
+		return ref;
+	}
+	public void setRef(String ref) {
+		this.ref = ref;
 	}
 	public String getVendorDescription() {
 		return vendorDescription;
@@ -169,10 +177,11 @@ public abstract class Metric {
 	public void setMib(String mib) {
 		this.mib = mib;
 	}
-	public DiscoveryRule getDiscoveryRule() {
+
+	public String getDiscoveryRule() {
 		return discoveryRule;
 	}
-	public void setDiscoveryRule(DiscoveryRule discoveryRule) {
+	public void setDiscoveryRule(String discoveryRule) {
 		this.discoveryRule = discoveryRule;
 	}
 	public String getAlarmObject() {
