@@ -67,7 +67,7 @@
 <#-- m - metric-->
 <#macro item m>
 					        <name>${m.name}</name>
-					        <type>${m.type!'none'}</type>
+					        <type>${m.type.getZabbixValue()!'none'}</type>
 					        <#if m.type == 'SNMP'>
 							<snmp_community>{$SNMP_COMMUNITY}</snmp_community>
 							<#else>
@@ -154,7 +154,7 @@
 					        <preprocessing>
 					        <#list m.preprocessing as p>
 					            <step>
-					                <type>${p.type}</type>
+					                <type>${p.type.getZabbixValue()}</type>
 					                <params>${p.params!''}</params>
 					            </step>
 					        </#list>

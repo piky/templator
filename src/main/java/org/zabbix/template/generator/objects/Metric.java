@@ -18,29 +18,44 @@ public abstract class Metric {
 	
 	
 	
-	public enum Type {
-		SNMP, ZabbixAgent, SimpleCheck,//to be extended
+	public enum Type implements ZabbixValue{
+	    
+		ZABBIX_AGENT(0),
+	    SNMP_V1(1),
+	    ZABBIX_TRAPPER(2),
+	    SIMPLE_CHECK(3),
+	    SNMP_V2(4),
+	    SNMP(4), //!!!!not official mapping 
+	    ZABBIX_INTERNAL(5),
+	    SNMP_V3(6),
+	    ZABBIX_AGENT_ACTIVE(7),
+	    ZABBIX_AGGREGATE(8),
+	    WEB_ITEM(9),
+	    EXTERNAL_CHECK(10),
+	    DATABASE_MONITOR(11),
+	    IPMI_AGENT(12),
+	    SSH_AGENT(13),
+	    TELNET_AGENT(14),
+	    CALCULATED(15),
+	    JMX_AGENT(16),
+	    SNMP_TRAP(17),
+		DEPENDENT_ITEM(18);
+		
+		private int zabbixValue;
+		Type(int zabbixValue){
+			this.setZabbixValue(zabbixValue);
+		}
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
 	};
-/*
-    0 - Zabbix agent;
-    1 - SNMPv1 agent;
-    2 - Zabbix trapper;
-    3 - simple check;
-    4 - SNMPv2 agent;
-    5 - Zabbix internal;
-    6 - SNMPv3 agent;
-    7 - Zabbix agent (active);
-    8 - Zabbix aggregate;
-    9 - web item;
-    10 - external check;
-    11 - database monitor;
-    12 - IPMI agent;
-    13 - SSH agent;
-    14 - TELNET agent;
-    15 - calculated;
-    16 - JMX agent;
-    17 - SNMP trap.
- */
+
+
+
 	
 	public enum ValueType implements ZabbixValue {
 		
