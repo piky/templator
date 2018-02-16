@@ -74,11 +74,14 @@
 							<snmp_community/>
 							</#if>
 							<#if zbx_ver == '3.2'>
-								<#-- <#if preprocessing multiplier exists: <xsl:when test="./preprocessing/step[type eq 'multiplier']"> 
-								<multiplier>1</multiplier>
-								<#else>
-								<multiplier>0</multiplier>
-								</#if> -->
+								<#local multiplier_value = 0>
+								<#list m.preprocessing as p>
+									<#if p.type == 'MULTIPLIER'>
+										<#local multiplier_value = 1>	
+										<#break>
+									</#if>	
+								</#list>
+							<multiplier>${multiplier_value}</multiplier>
 							</#if>
 							<snmp_oid>${m.oid}</snmp_oid>
 					        <key>${m.snmpObject}</key>
@@ -89,18 +92,16 @@
 					        <value_type>${m.valueType.getZabbixValue()}</value_type>
 					        <allowed_hosts/>
 					        <units>${m.units!''}</units>
-					        <#-- 
-					        <xsl:if test="$zbx_ver=3.2">
-					            <xsl:choose>
-					                <xsl:when test="./preprocessing/step[type eq 'delta_per_second']">
-					                    <delta>1</delta>
-					                </xsl:when>
-					                <xsl:otherwise>
-					                    <delta>0</delta>
-					                </xsl:otherwise>
-					            </xsl:choose>
-					        </xsl:if>
-					         -->
+							<#if zbx_ver == '3.2'>
+								<#local delta_value = 0>
+								<#list m.preprocessing as p>
+									<#if p.type == 'DELTA_PER_SECOND'>
+										<#local delta_value = 1>	
+										<#break>
+									</#if>	
+								</#list>
+							<delta>${delta_value}</delta>
+							</#if>					         
 					        <snmpv3_contextname/>
 					        <snmpv3_securityname/>
 					        <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -108,21 +109,20 @@
 					        <snmpv3_authpassphrase/>
 					        <snmpv3_privprotocol>0</snmpv3_privprotocol>
 					        <snmpv3_privpassphrase/>
-					        <#-- 
-					        <xsl:if test="$zbx_ver=3.2">
-					            <xsl:choose>
-					                <xsl:when test="./preprocessing/step[type eq 'multiplier']">
-					                    <formula><xsl:value-of select="./preprocessing/step[type eq 'multiplier']/params"/></formula>
-					                </xsl:when>
-					                <xsl:otherwise>
-					                    <formula>0</formula>
-					                </xsl:otherwise>
-					            </xsl:choose>
-					        </xsl:if>
-					        <xsl:if test="$zbx_ver = 3.2"><delay_flex/></xsl:if>-->
+							<#if zbx_ver == '3.2'>
+								<#local formula_value = 0>
+								<#list m.preprocessing as p>
+									<#if p.type == 'MULTIPLIER'>
+										<#local formula_value = 1>	
+										<#break>
+									</#if>	
+								</#list>
+							<formula>${formula_value}</formula>
+							</#if>							        
+					        <#if zbx_ver = '3.2'><delay_flex/></#if>
 					        <params>${m.expressionFormula!''}</params>
 					        <ipmi_sensor/>
-					        <#-- <xsl:if test="$zbx_ver = 3.2"><data_type>0</data_type></xsl:if>  -->
+					        <#if zbx_ver = '3.2'><data_type>0</data_type></#if>
 					        <authtype>0</authtype>
 					        <username/>
 					        <password/>
