@@ -5,14 +5,17 @@
 <zabbix_export>
 			<version>${zbx_ver}</version>
             <date>2015-12-30T14:41:30Z</date>
-            <groups/> <!-- will populate in the next xslt -->
+			<groups>
+				<group><name>Templates/Test</name></group> <#-- will populate in the next xslt -->
+			</groups>
             <templates>
                   <template>
 	            	  <template>${t.name}</template>
-	            	  <name${t.name}</name>
+	            	  <name>${t.name}</name>
 	                  <description>>${t.description}</description>
-	                  <groups>//TODO
-		                <group>
+	                  <groups>
+	                  	<group><name>Templates/Test</name></group>
+		                <#-- <group>
 		                    <xsl:choose>
 		                        <xsl:when test="./classes[class='OS']"><name>Templates/Operating Systems</name></xsl:when>
 		                        <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
@@ -21,6 +24,7 @@
 		                        <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 		                    </xsl:choose>
 		                </group>
+		                 -->
 		            </groups>
 		            <applications>
 		                <#list distinct_by_key(t.metricsRegistry,'group') as g>
@@ -43,30 +47,34 @@
 	            		</discovery_rule>
 		            	</#list>
 		            </discovery_rules>
-		            <xsl:if test="$zbx_ver=3.4"><httptests/></xsl:if>
-		            <macros>//TODO
+		            <#if zbx_ver = '3.4'><httptests/></#if>
+		            <macros/>
+		            <#-- <macros>//TODO
 		                <xsl:for-each-group select="macros/macro" group-by="macro">
 		                    <macro>
 		                        <macro><xsl:value-of select="./macro"/></macro>
 		                        <value><xsl:value-of select="./value"/></value>
 		                    </macro>
 		                </xsl:for-each-group>
-		            </macros>
-		            //TODO<xsl:copy-of copy-namespaces="no" select="./templates"/><!-- template dependencies block -->
+		            </macros> -->
+		            <templates/>
+		            <#-- //TODO<xsl:copy-of copy-namespaces="no" select="./templates"/><!-- template dependencies block --> 
 		            <screens/>
 		        </template>
             </templates>
-            <graphs>
+            <graphs/>
+            <#-- <graphs>
                 <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
-            </graphs>
-            <triggers>
+            </graphs> -->
+            <triggers/>
+            <#-- <triggers>
                 <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
-            </triggers>
-            <value_maps>
+            </triggers> -->
+            <value_maps/>
+            <#-- <value_maps>
                 <xsl:copy-of copy-namespaces="no" select="child::*/value_maps/*"/>
-            </value_maps>
-        </zabbix_export>	
-</templates>
+            </value_maps> -->
+        </zabbix_export>
 
 <#-- m - metric-->
 <#macro item m>
@@ -122,7 +130,7 @@
 									</#if>	
 								</#list>
 							<formula>${formula_value}</formula>
-							</#if>							        
+							</#if>
 					        <#if zbx_ver = '3.2'><delay_flex/></#if>
 					        <params>${m.expressionFormula!''}</params>
 					        <ipmi_sensor/>
@@ -204,7 +212,11 @@
             <publickey/>
             <privatekey/>
             <port/>
-            <filter/>
+            <filter>
+				<evaltype>0</evaltype>
+                <formula/>
+                <conditions/>
+            </filter>
             <#--  filter!             
             <xsl:choose>
                 <xsl:when test="./filter != ''">
@@ -233,6 +245,7 @@
             <trigger_prototypes/><#--  <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/> -->
             <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
+            <#if zbx_ver = '3.4'><jmx_endpoint/></#if>
  </#macro>
 
 <#--     <xsl:template name="triggerTemplate">
