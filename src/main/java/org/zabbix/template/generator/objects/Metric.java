@@ -21,7 +21,26 @@ public abstract class Metric {
 	public enum Type {
 		SNMP, ZabbixAgent, SimpleCheck,//to be extended
 	};
-	
+/*
+    0 - Zabbix agent;
+    1 - SNMPv1 agent;
+    2 - Zabbix trapper;
+    3 - simple check;
+    4 - SNMPv2 agent;
+    5 - Zabbix internal;
+    6 - SNMPv3 agent;
+    7 - Zabbix agent (active);
+    8 - Zabbix aggregate;
+    9 - web item;
+    10 - external check;
+    11 - database monitor;
+    12 - IPMI agent;
+    13 - SSH agent;
+    14 - TELNET agent;
+    15 - calculated;
+    16 - JMX agent;
+    17 - SNMP trap.
+ */
 	
 	public enum ValueType implements ZabbixValue {
 		
@@ -72,7 +91,7 @@ public abstract class Metric {
 	
 	
 	//Preprocessing
-	private PreprocessingStep[] preprocessing;
+	private PreprocessingStep[] preprocessing = new PreprocessingStep[0];
 	
 	//Generated down below
 	public String getPrototype() {

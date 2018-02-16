@@ -50,7 +50,6 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				ksession.addEventListener(agendaEventListener);
 				
 				
-				 
 				
 				Metric[] metrics = ((Template) exchange.getIn().getBody()).getMetrics();
 				if (metrics != null) {
@@ -63,23 +62,26 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					ksession.execute(Arrays.asList(drule.getMetrics()));
 				}
 				
-				
-				
-/*				for (Metric metric: m) {
-					
-				}
-*/				
 			}
 		})
-		.marshal().json(JsonLibrary.Jackson,true)
-		//.log("${body}")
-		.to("file:src/main/resources/json_test_template/out");
+		.to("direct:zabbix");
 		
-
+		//.marshal().json(JsonLibrary.Jackson,true)
+		//.marshal().jacksonxml(true)
+		//.log("${body}")
+		//.to("file:src/main/resources/json_test_template/out");
+		
 
 		//TODO 
 		//Here should be validation: check that if type snmp than snmpobject defined, for example
 		//Naming restrictions can also be checked for custom metrics
+		
+		//final part convert to zabbix XML		
+		from("direct:zabbix")
+			.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
+			//.log("${body}")
+			.to("file:src/main/resources/ftl/out");;
+
 
 	}
 }

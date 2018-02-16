@@ -8,8 +8,8 @@ public class Template {
 	
 	private String name;
 	private String description;
-	private Metric metrics[];
-	private DiscoveryRule discoveryRules[];
+	private Metric metrics[] = new Metric[0];
+	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];;
 	
 	
 	public String getName() {
