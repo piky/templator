@@ -48,7 +48,14 @@
 		            	</#list>
 		            </discovery_rules>
 		            <#if zbx_ver = '3.4'><httptests/></#if>
-		            <macros/>
+		            <macros>
+		            	<#list t.macros as macro>
+	                    <macro>
+	                        <macro>${macro.macro}</macro>
+	                        <value>${macro.value}</value>
+	                    </macro>
+		            	</#list>
+		            </macros>
 		            <#-- <macros>//TODO
 		                <xsl:for-each-group select="macros/macro" group-by="macro">
 		                    <macro>

@@ -14,7 +14,8 @@ public class Template {
 	private String description;
 	private Metric metrics[] = new Metric[0];
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
-	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];;
+	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
+	private UserMacro macros[] = new UserMacro[0];
 	
 	
 	public String getName() {
@@ -36,6 +37,12 @@ public class Template {
 	}
 	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
 		this.discoveryRules = discoveryRules;
+	}
+	public UserMacro[] getMacros() {
+		return macros;
+	}
+	public void setMacros(UserMacro macros[]) {
+		this.macros = macros;
 	}
 	public Metric[] getMetrics() {
 		return metrics;
