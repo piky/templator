@@ -1,6 +1,7 @@
 <#ftl output_format="XML">
 <#assign t = body>
 <#assign zbx_ver = '3.4'>
+<#assign snmp_community= '{$SNMP_COMMUNITY}'>
 <zabbix_export>
 	
 			<version><xsl:value-of select="$zbx_ver"/></version>
@@ -37,7 +38,11 @@
 		            	</#list>
 		            </items>
 		            <discovery_rules>
-		                <xsl:apply-templates select="discoveryRules"/>
+		                <#list t.discoveryRules as dr>
+		            	<discovery_rule>
+		            		<@discovery_rule dr/>
+	            		</discovery_rule>
+		            	</#list>
 		            </discovery_rules>
 		            <xsl:if test="$zbx_ver=3.4"><httptests/></xsl:if>
 		            <macros>//TODO
@@ -69,7 +74,7 @@
 					        <name>${m.name}</name>
 					        <type>${m.type.getZabbixValue()!'none'}</type>
 					        <#if m.type == 'SNMP'>
-							<snmp_community>{$SNMP_COMMUNITY}</snmp_community>
+							<snmp_community>${snmp_community}</snmp_community>
 							<#else>
 							<snmp_community/>
 							</#if>
@@ -159,24 +164,29 @@
 					            </step>
 					        </#list>
 					        </preprocessing>
-					        <jmx_endpoint/>
 					        </#if>
+				            <#if zbx_ver = '3.4'><jmx_endpoint/></#if>
+				            <#if zbx_ver = '3.4'>
+				            	<#if m.discoveryRule??><#-- item prototype-->
+				            <application_prototypes/>
+				            <master_item_prototype/>
+				            	<#else><#-- normal item -->
+				            <master_item/>
+				            	</#if>
+				            </#if>					        
 </#macro>
 
-
-<#--     <xsl:template match="discoveryRules/*">
-        <xsl:variable name="disc_name" select="./name"/>
-        <discovery_rule>
-            <name><xsl:value-of select="./name"/></name>
-            <type><xsl:copy-of select="$snmp_item_type"/></type>
-            <snmp_community><xsl:copy-of select="$community"/></snmp_community>
-            <snmp_oid><xsl:value-of select="./snmp_oid"/></snmp_oid>
-            <key><xsl:value-of select="./key"/></key>
-            <delay>
-                <xsl:call-template name="time_suffix_to_seconds">
+<#macro discovery_rule dr>
+	
+            <name>${dr.name}</name>
+            <type>4</type><#-- <xsl:copy-of select="$snmp_item_type"/> -->
+            <snmp_community>${snmp_community}</snmp_community>
+            <snmp_oid>${dr.oid}</snmp_oid>
+            <key>${dr.key}</key>
+            <delay>3600</delay>
+            <#--<xsl:call-template name="time_suffix_to_seconds">
                     <xsl:with-param name="time" select="$discoveryDelay"/>
-                </xsl:call-template>
-            </delay>
+                </xsl:call-template>  -->
             <status>0</status>
             <allowed_hosts/>
             <snmpv3_contextname/>
@@ -186,7 +196,7 @@
             <snmpv3_authpassphrase/>
             <snmpv3_privprotocol>0</snmpv3_privprotocol>
             <snmpv3_privpassphrase/>
-            <xsl:if test="$zbx_ver = 3.2"><delay_flex/></xsl:if>
+            <#if zbx_ver = '3.2'><delay_flex/></#if>
             <params/>
             <ipmi_sensor/>
             <authtype>0</authtype>
@@ -194,8 +204,9 @@
             <password/>
             <publickey/>
             <privatekey/>
-            <port><xsl:value-of select="$snmp_port"/></port>
-
+            <port/>
+            <filter/>
+            <#--  filter!             
             <xsl:choose>
                 <xsl:when test="./filter != ''">
                     <xsl:copy-of copy-namespaces="no" select="./filter[name()!='xmlns:tns']"/>
@@ -207,27 +218,24 @@
                         <conditions/>
                     </filter>
                 </xsl:otherwise>
-            </xsl:choose>
-            <lifetime>
-                <xsl:call-template name="time_suffix_to_days">
+            </xsl:choose>-->
+            <lifetime>30d</lifetime>
+            <#-- lifetime: <xsl:call-template name="time_suffix_to_days">
                     <xsl:with-param name="time">30d</xsl:with-param>
-                </xsl:call-template>
-            </lifetime>
-            <description><xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/></description>
+                </xsl:call-template> -->
+            <description></description><#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
-                <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]"/>
+				<#list dr.metrics as m>
+	            	<item_prototype>
+		            	<@item m/>
+            		</item_prototype>
+            	</#list>
             </item_prototypes>
-            <trigger_prototypes>
-                <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/>
-            </trigger_prototypes>
-            <graph_prototypes>
-                <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>
-            </graph_prototypes>
+            <trigger_prototypes/><#--  <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/> -->
+            <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
-            <xsl:if test="$zbx_ver = 3.4"><jmx_endpoint/></xsl:if>
-        </discovery_rule>
-    </xsl:template>
- -->
+ </#macro>
+
 <#--     <xsl:template name="triggerTemplate">
         <xsl:variable name="template_name" select="../../../../name"/>
         <xsl:variable name="metric_name" select="../../name"/>
@@ -352,15 +360,7 @@
         <xsl:choose>
             <xsl:when test="./not (discoveryRule)">
                 <item>
-                    <xsl:call-template name="itemTemplate"/>
-                    <xsl:if test="$zbx_ver = 3.4"><master_item/></xsl:if>
-                </item>
-            </xsl:when>
-            <xsl:otherwise>
-                <item_prototype>
-                    <xsl:call-template name="itemTemplate"/>
-                    <application_prototypes/>
-                    <xsl:if test="$zbx_ver = 3.4"><master_item_prototype/></xsl:if>
+
                 </item_prototype>
             </xsl:otherwise>
         </xsl:choose>
