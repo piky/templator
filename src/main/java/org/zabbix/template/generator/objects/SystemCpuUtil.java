@@ -12,6 +12,8 @@ public class SystemCpuUtil extends PercentageUtilizationMetric {
 		this.setDescription("CPU utilization in %");
 		this.setUnits("%");
 		this.setValueType(ValueType.FLOAT);
+		
+		this.setAlarmObjectType("CPU");
 		/*<update><xsl:value-of select="$update3min"/></update>*/
 		/*<valueType><xsl:value-of select="$valueTypeFloat"/></valueType>*/
 		

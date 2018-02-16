@@ -96,10 +96,10 @@
 							<multiplier>${multiplier_value}</multiplier>
 							</#if>
 							<snmp_oid>${m.oid}</snmp_oid>
-					        <key>${m.snmpObject}</key>
-							<delay>${m.delay}</delay> <#-- <xsl:call-template name="time_suffix_to_seconds"> -->                
-					        <history>${m.history}</history><#-- <xsl:call-template name="time_suffix_to_days">  -->
-					        <trends>${m.trends}</trends><#-- <xsl:call-template name="time_suffix_to_days">  -->
+					        <key>${m.key}</key>
+							<delay>${time_suffix_to_seconds(m.delay)}</delay> <#-- <xsl:call-template name="time_suffix_to_seconds"> -->                
+					        <history>${time_suffix_to_days(m.history)}</history><#-- <xsl:call-template name="time_suffix_to_days">  -->
+					        <trends>${time_suffix_to_days(m.trends)}</trends><#-- <xsl:call-template name="time_suffix_to_days">  -->
 					        <status>0</status>
 					        <value_type>${m.valueType.getZabbixValue()}</value_type>
 					        <allowed_hosts/>
@@ -190,7 +190,7 @@
             <snmp_community>${snmp_community}</snmp_community>
             <snmp_oid>${dr.oid}</snmp_oid>
             <key>${dr.key}</key>
-            <delay>3600</delay>
+            <delay>1h</delay>
             <#--<xsl:call-template name="time_suffix_to_seconds">
                     <xsl:with-param name="time" select="$discoveryDelay"/>
                 </xsl:call-template>  -->
@@ -367,53 +367,38 @@
     </xsl:template>
  -->
 
-<#-- 
-    <xsl:template match="metrics/*">
-        <xsl:choose>
-            <xsl:when test="./not (discoveryRule)">
-                <item>
-
-                </item_prototype>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <xsl:template name="time_suffix_to_seconds">
-        <xsl:param name="time"/>
-        <xsl:choose>
-            <xsl:when test="$zbx_ver=3.2">
-                <xsl:choose>
-                    <xsl:when test="ends-with($time,'s')"><xsl:value-of select="number(substring-before($time,'s'))"/></xsl:when>
-                    <xsl:when test="ends-with($time,'m')"><xsl:value-of select="number(substring-before($time,'m'))*60"/></xsl:when>
-                    <xsl:when test="ends-with($time,'h')"><xsl:value-of select="number(substring-before($time,'h'))*3600"/></xsl:when>
-                    <xsl:when test="ends-with($time,'d')"><xsl:value-of select="number(substring-before($time,'d'))*86400"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$time"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <!--as is
-                <xsl:value-of select="if (matches($time,'[a-zA-Z]$')) then ($time) else (concat($time,'s'))"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <xsl:template name="time_suffix_to_days">
-        <xsl:param name="time"/>
-        <xsl:choose>
-            <xsl:when test="$zbx_ver=3.2">
-                <xsl:choose>
-                    <xsl:when test="ends-with($time,'d')"><xsl:value-of select="number(substring-before($time,'d'))"/></xsl:when>
-                    <xsl:when test="ends-with($time,'w')"><xsl:value-of select="number(substring-before($time,'w'))*7"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="$time"/></xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <!--as is, but add 'd' if no suffix
-                <xsl:value-of select="if (matches($time,'[a-zA-Z]$')) then ($time) else (concat($time,'d'))"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
- -->   
+ <#function time_suffix_to_seconds time>
+ 	<#if zbx_ver='3.2'>
+ 		<#if time?ends_with('s')><#return time?keep_before('s')>
+ 		<#elseif time?ends_with('m')><#return (time?keep_before('m')?number)*60>
+ 		<#elseif time?ends_with('h')><#return (time?keep_before('h')?number)*3600>
+ 		<#elseif time?ends_with('d')><#return (time?keep_before('d')?number)*86400>
+ 		<#else><#return time>
+ 		</#if>
+ 	<#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
+		<#if time?matches('[0-9]+','r')>
+			<#return time+'s'>
+		<#else>
+			<#return time>
+		</#if>
+ 	</#if>
+ </#function>
+ 
+ <#function time_suffix_to_days time>
+ 	<#if zbx_ver='3.2'>
+ 		<#if time?ends_with('d')><#return time?keep_before('d')>
+ 		<#elseif time?ends_with('w')><#return (time?keep_before('w')?number)*7>
+ 		<#else><#return time>
+ 		</#if>
+ 	<#else> <#-- 3.4 --><#--as is, but add 'd' if no suffix-->
+		<#if time?matches('[0-9]+','r')>
+			<#return time+'d'>
+		<#else>
+			<#return time>
+		</#if>
+ 	</#if>
+ </#function>
+ 
  <#-- This function get a list of objects and the key of this object. Then it returns list(unique set) of values of this key-->
  <#function distinct_by_key list key>
  	<#local dlist = {}>
