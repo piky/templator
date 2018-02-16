@@ -3,8 +3,7 @@
 <#assign zbx_ver = '3.4'>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
 <zabbix_export>
-	
-			<version><xsl:value-of select="$zbx_ver"/></version>
+			<version>${zbx_ver}</version>
             <date>2015-12-30T14:41:30Z</date>
             <groups/> <!-- will populate in the next xslt -->
             <templates>
