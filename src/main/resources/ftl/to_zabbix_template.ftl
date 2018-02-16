@@ -23,12 +23,12 @@
 		                    </xsl:choose>
 		                </group>
 		            </groups>
-		            <applications>//TODO
-		                <xsl:for-each select="distinct-values(metrics//group)">
-		                    <application>
-		                        <name><xsl:value-of select="."/></name>
-		                    </application>
-		                </xsl:for-each>
+		            <applications>
+		                <#list distinct_by_key(t.metricsRegistry,'group') as g>
+		                <application>
+	                		<name>${g}</name>
+	                	</application>
+		                </#list>
 		            </applications>
 		            <items>
 		            	<#list t.metrics as m>
@@ -402,3 +402,11 @@
         </xsl:choose>
     </xsl:template>
  -->   
+ <#-- This function get a list of objects and the key of this object. Then it returns list(unique set) of values of this key-->
+ <#function distinct_by_key list key>
+ 	<#local dlist = {}>
+	<#list list as le>
+		<#local dlist = dlist + {le[key]:le[key]}>
+	</#list>
+	<#return dlist?values>
+ </#function>
