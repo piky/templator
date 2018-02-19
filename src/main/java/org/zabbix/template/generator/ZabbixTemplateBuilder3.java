@@ -11,7 +11,8 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.StatelessKieSession;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.Agenda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,8 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				//kie
 		        KieServices ks = KieServices.Factory.get();
 		        KieContainer kContainer = ks.getKieClasspathContainer();
-				StatelessKieSession ksession = kContainer.newStatelessKieSession();
+				KieSession ksession = kContainer.newKieSession();
+				ksession.setGlobal("logger", logger);
 				
 				AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
 				ksession.addEventListener(agendaEventListener);
@@ -56,14 +58,35 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				
 				Metric[] metrics = ((Template) exchange.getIn().getBody()).getMetrics();
 				if (metrics != null) {
-					ksession.execute(Arrays.asList(metrics));
+					ksession.insert(Arrays.asList(metrics));
+					//ksession.execute(Arrays.asList(metrics));
+					for (Metric m: metrics) {
+						ksession.insert(m);
+					}
+					//ksession.dispose();
 				}
 				
 				DiscoveryRule[] drules = ((Template) exchange.getIn().getBody()).getDiscoveryRules();
 				for (DiscoveryRule drule: drules) {
-					ksession.setGlobal("discoveryRule", drule.getName());
-					ksession.execute(Arrays.asList(drule.getMetrics()));
+					//ksession.setGlobal("discoveryRule", drule.getName());
+					//ksession.execute(Arrays.asList(drule.getMetrics()));
+					for (Metric m: drule.getMetrics()) {
+						m.setDiscoveryRule(drule.getName());
+						ksession.insert(m);
+						
+					}
+					//ksession.insert(Arrays.asList(drule.getMetrics()));
 				}
+				Agenda agenda = ksession.getAgenda();
+				//last agendaGroup will evaluate first...
+				agenda.getAgendaGroup( "validate" ).setFocus();
+				agenda.getAgendaGroup( "populate" ).setFocus();
+				
+				
+				logger.warn("hello");
+				ksession.fireAllRules();
+				ksession.dispose();
+
 				
 			}
 		})

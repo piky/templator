@@ -1,0 +1,26 @@
+package org.zabbix.template.generator.objects
+global org.slf4j.Logger logger;
+
+
+
+rule "Rule 1: automatically add type=SNMP if type is not populated"
+	agenda-group "populate"
+when
+	$m : Metric (type == null, snmpObject !=null, oid != null )
+then
+    logger.info("Adding type=SNMP for "+$m);
+    modify($m) { setType(Metric.Type.SNMP) };
+end
+
+
+
+rule "Rule 2: Generate metric key for SNMP type"
+	agenda-group "populate"
+when
+	$m : Metric ( key == null, snmpObject != null, prototype != null)
+then
+    logger.debug("There is no key for "+$m+" so let's generate it...");
+    modify( $m ) { 
+    		setKey( $m.getPrototype()+"["+$m.getSnmpObject()+"]")
+    	};
+end

@@ -1,0 +1,20 @@
+package org.zabbix.template.generator.objects
+global org.slf4j.Logger logger;
+
+
+rule "Validation rule 1: you should have both discoveryRule and alarmObject defined"
+	agenda-group "validate"
+when
+	$m : Metric (discoveryRule != null, alarmObject == null )
+then
+    logger.error("Please define 'alarmObject' for "+$m);
+end
+
+
+rule "Validation rule 2: check key"
+	agenda-group "validate"
+when
+	$m : Metric (key == null)
+then
+    logger.error("There is no 'key' for "+$m);
+end
