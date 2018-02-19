@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.DiscoveryRule;
+import org.zabbix.template.generator.objects.InputJSON;
 import org.zabbix.template.generator.objects.Metric;
 import org.zabbix.template.generator.objects.Template;
 
@@ -40,73 +41,72 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 		from("file://src/main/resources/json_test_template?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
 		.log("Loading file: ${in.headers.CamelFileNameOnly}")
-		.unmarshal().json(JsonLibrary.Jackson,Template.class)
+		.unmarshal().json(JsonLibrary.Jackson,InputJSON.class)
 		.process(new Processor() {
-			
+
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				//kie
-		        KieServices ks = KieServices.Factory.get();
-		        KieContainer kContainer = ks.getKieClasspathContainer();
+				KieServices ks = KieServices.Factory.get();
+				KieContainer kContainer = ks.getKieClasspathContainer();
 				KieSession ksession = kContainer.newKieSession();
 				ksession.setGlobal("logger", logger);
-				
+
 				AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
 				ksession.addEventListener(agendaEventListener);
-				
-				
-				
-				Metric[] metrics = ((Template) exchange.getIn().getBody()).getMetrics();
-				if (metrics != null) {
-					ksession.insert(Arrays.asList(metrics));
-					//ksession.execute(Arrays.asList(metrics));
-					for (Metric m: metrics) {
-						ksession.insert(m);
-					}
-					//ksession.dispose();
-				}
-				
-				DiscoveryRule[] drules = ((Template) exchange.getIn().getBody()).getDiscoveryRules();
-				for (DiscoveryRule drule: drules) {
-					//ksession.setGlobal("discoveryRule", drule.getName());
-					//ksession.execute(Arrays.asList(drule.getMetrics()));
-					for (Metric m: drule.getMetrics()) {
-						m.setDiscoveryRule(drule.getName());
-						ksession.insert(m);
-						
-					}
-					//ksession.insert(Arrays.asList(drule.getMetrics()));
-				}
-				Agenda agenda = ksession.getAgenda();
-				//last agendaGroup will evaluate first...
-				agenda.getAgendaGroup( "validate" ).setFocus();
-				agenda.getAgendaGroup( "populate" ).setFocus();
-				
-				
-				logger.warn("hello");
-				ksession.fireAllRules();
-				ksession.dispose();
 
-				
+
+				Template[] templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
+				for (Template t: templates) {
+					Metric[] metrics = t.getMetrics();
+					if (metrics != null) {
+						ksession.insert(Arrays.asList(metrics));
+						for (Metric m: metrics) {
+							ksession.insert(m);
+						}
+					}
+
+					DiscoveryRule[] drules = t.getDiscoveryRules();
+					for (DiscoveryRule drule: drules) {
+						for (Metric m: drule.getMetrics()) {
+							m.setDiscoveryRule(drule.getName());
+							ksession.insert(m);
+
+						}
+						//ksession.insert(Arrays.asList(drule.getMetrics()));
+					}
+					Agenda agenda = ksession.getAgenda();
+					//last agendaGroup will evaluate first...
+					agenda.getAgendaGroup( "validate" ).setFocus();
+					agenda.getAgendaGroup( "populate" ).setFocus();
+
+					ksession.fireAllRules();
+					ksession.dispose();					
+
+				}
+
+
+
+
 			}
 		})
 		.to("direct:zabbix");
-		
+
 		//.marshal().json(JsonLibrary.Jackson,true)
 		//.marshal().jacksonxml(true)
 		//.log("${body}")
 		//.to("file:src/main/resources/json_test_template/out");
-		
+
 
 		//TODO 
 		//Here should be validation: check that if type snmp than snmpobject defined, for example
 		//Naming restrictions can also be checked for custom metrics
-		
+
 		//final part convert to zabbix XML		
 		from("direct:zabbix")
-			.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
-			//.log("${body}")
-			.to("file:src/main/resources/ftl/out");;
+		.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
+		//.log("${body}")
+		.to("file:src/main/resources/ftl/out");;
 
 
 	}
