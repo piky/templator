@@ -220,23 +220,25 @@
             <privatekey/>
             <port/>
             <filter>
-				<evaltype>0</evaltype>
+            <#if dr.filter??>
+            	<evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
+            	<formula>${dr.filter.formula!''}</formula>
+            	<conditions>
+            	<#list dr.filter.conditions as cond>
+            		<condition>
+            			<macro>${cond.macro}</macro>
+            			<value>${cond.value}</value>
+            			<operator>${cond.operator}</operator>
+						<formulaid>${cond.formulaid!''}</formulaid>
+            		</condition>
+            	</#list>
+            	</conditions>
+            <#else>
+            	<evaltype>0</evaltype>
                 <formula/>
                 <conditions/>
+            </#if>
             </filter>
-            <#--  filter!             
-            <xsl:choose>
-                <xsl:when test="./filter != ''">
-                    <xsl:copy-of copy-namespaces="no" select="./filter[name()!='xmlns:tns']"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
-                </xsl:otherwise>
-            </xsl:choose>-->
             <lifetime>30d</lifetime>
             <#-- lifetime: <xsl:call-template name="time_suffix_to_days">
                     <xsl:with-param name="time">30d</xsl:with-param>

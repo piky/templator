@@ -6,6 +6,7 @@ public class DiscoveryRule {
 	private String key;
 	private String description;
 	private Metric metrics[];
+	private Filter filter;
 
 	public String getName() {
 		return name;
@@ -45,5 +46,13 @@ public class DiscoveryRule {
 
 	public void setMetrics(Metric metrics[]) {
 		this.metrics = metrics;
+	}
+
+	public Filter getFilter() {
+		return filter;
+	}
+
+	public void setFilter(Filter filter) {
+		this.filter = filter;
 	}
 }
