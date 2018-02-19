@@ -12,6 +12,8 @@ import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.Metric;
@@ -20,6 +22,7 @@ import org.zabbix.template.generator.objects.Template;
 @Component
 public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 	@Override
 	public void configure() throws Exception {
