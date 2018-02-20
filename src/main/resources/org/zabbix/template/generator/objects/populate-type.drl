@@ -24,3 +24,15 @@ then
     		setKey( $m.getPrototype()+"["+$m.getSnmpObject()+"]")
     	};
 end
+
+
+rule "Rule 3: prefix Name with alarmObject"
+	agenda-group "populate"
+when
+	$m : Metric ( alarmObject != null)
+then
+    logger.debug("Changing name to 'alarmObject: $m.name' for "+$m);
+    modify( $m ) { 
+    		setName( $m.getAlarmObject() + ": " + $m.getName() )
+    	};
+end
