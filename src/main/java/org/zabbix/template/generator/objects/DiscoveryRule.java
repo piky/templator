@@ -5,7 +5,7 @@ public class DiscoveryRule {
 	private String oid;
 	private String key;
 	private String description;
-	private Metric metrics[];
+	private Metric metrics[] = new Metric[0];
 	private Filter filter;
 
 	public String getName() {
