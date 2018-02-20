@@ -1,24 +1,26 @@
 package org.zabbix.template.generator.objects;
 
+import java.util.ArrayList;
+
 public class InputJSON {
 
-	private Template[] templates;
-	private ValueMap[] valueMaps;
+	private ArrayList<Template> templates;
+	private ArrayList<ValueMap> valueMaps;
 	
 
-	public Template[] getTemplates() {
+	public ArrayList<Template> getTemplates() {
 		return templates;
 	}
 
-	public void setTemplates(Template[] templates) {
+	public void setTemplates(ArrayList<Template> templates) {
 		this.templates = templates;
 	}
 
-	public ValueMap[] getValueMaps() {
+	public ArrayList<ValueMap> getValueMaps() {
 		return valueMaps;
 	}
 
-	public void setValueMaps(ValueMap[] valueMaps) {
+	public void setValueMaps(ArrayList<ValueMap> valueMaps) {
 		this.valueMaps = valueMaps;
 	}
 }

@@ -1,0 +1,7 @@
+{
+	"prototype":"sensor.temp.value",
+	"name":"Temperature",
+	"description":"Temperature readings of testpoint: <xsl:value-of select=\"alarmObject\"/>",
+	"valueType":"FLOAT",
+	"group":"Temperature"
+}

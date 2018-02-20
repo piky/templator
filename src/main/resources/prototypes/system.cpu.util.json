@@ -1,0 +1,8 @@
+{
+	"prototype":"system.cpu.util",
+	"name":"CPU utilization",
+	"description":"CPU utilization in %",
+	"valueType":"FLOAT",
+	"group":"CPU",
+	"units":"%"
+}

@@ -1,0 +1,29 @@
+[
+	{
+		"prototype": "vm.memory.used",
+		"name": "Memory used",
+		"description": "Used memory in Bytes",
+		"group": "Memory",
+		"units": "B"
+	},
+	{
+		"prototype": "vm.memory.free",
+		"name": "Available memory",
+		"group": "Memory",
+		"units": "B"
+	},
+	{
+		"prototype": "vm.memory.total",
+		"name": "Total memory",
+		"group": "Memory",
+		"units": "B"
+	},
+	{
+		"prototype": "vm.memory.pused",
+		"name": "Memory utilization",
+		"group": "Memory",
+		"units": "%",
+		"description": "Memory utilization in %"
+	}
+
+]
