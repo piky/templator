@@ -1,5 +1,4 @@
 <#ftl output_format="XML">
-<#assign t = body>
 <#assign zbx_ver = '3.4'>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
 <zabbix_export>
@@ -9,10 +8,11 @@
 				<group><name>Templates/Test</name></group> <#-- will populate in the next xslt -->
 			</groups>
             <templates>
+            	<#list body.templates as t>
                   <template>
 	            	  <template>${t.name}</template>
 	            	  <name>${t.name}</name>
-	                  <description>>${t.description}</description>
+	                  <description>${t.description}</description>
 	                  <groups>
 	                  	<group><name>Templates/Test</name></group>
 		                <#-- <group>
@@ -47,12 +47,14 @@
 	            		</discovery_rule>
 		            	</#list>
 		            </discovery_rules>
-		            <#if zbx_ver = '3.4'><httptests/></#if>
+		            <#if zbx_ver = '3.4'>
+		            <httptests/>
+		            </#if>
 		            <macros>
 		            	<#list t.macros as macro>
 	                    <macro>
-	                        <macro>${macro.macro}</macro>
-	                        <value>${macro.value}</value>
+	                        ${xml_wrap(macro.macro,'macro')}
+	                        ${xml_wrap(macro.value,'value')}
 	                    </macro>
 		            	</#list>
 		            </macros>
@@ -68,6 +70,7 @@
 		            <#-- //TODO<xsl:copy-of copy-namespaces="no" select="./templates"/><!-- template dependencies block --> 
 		            <screens/>
 		        </template>
+		      </#list>
             </templates>
             <graphs/>
             <#-- <graphs>
@@ -77,10 +80,21 @@
             <#-- <triggers>
                 <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
             </triggers> -->
-            <value_maps/>
-            <#-- <value_maps>
-                <xsl:copy-of copy-namespaces="no" select="child::*/value_maps/*"/>
-            </value_maps> -->
+            <value_maps>
+            <#list body.valueMaps as vm>
+                <value_map>
+                	<name>${vm.name}</name>
+                	<mappings>
+                		<#list vm.mappings as mapping>
+                		<mapping>
+                			<value>${mapping.value}</value>
+                			<newvalue>${mapping.newValue}</newvalue>
+                		</mapping>
+                		</#list>
+                	</mappings>
+                </value_map>
+            </#list>
+            </value_maps>
         </zabbix_export>
 
 <#-- m - metric-->
@@ -104,9 +118,9 @@
 							</#if>
 							<snmp_oid>${m.oid}</snmp_oid>
 					        <key>${m.key}</key>
-							<delay>${time_suffix_to_seconds(m.delay)}</delay> <#-- <xsl:call-template name="time_suffix_to_seconds"> -->                
-					        <history>${time_suffix_to_days(m.history)}</history><#-- <xsl:call-template name="time_suffix_to_days">  -->
-					        <trends>${time_suffix_to_days(m.trends)}</trends><#-- <xsl:call-template name="time_suffix_to_days">  -->
+							<delay>${time_suffix_to_seconds(m.delay)}</delay>
+					        <history>${time_suffix_to_days(m.history)}</history>
+					        <trends>${time_suffix_to_days(m.trends)}</trends>
 					        <status>0</status>
 					        <value_type>${m.valueType.getZabbixValue()}</value_type>
 					        <allowed_hosts/>
@@ -138,10 +152,14 @@
 								</#list>
 							<formula>${formula_value}</formula>
 							</#if>
-					        <#if zbx_ver = '3.2'><delay_flex/></#if>
-					        <params>${m.expressionFormula!''}</params>
+					        <#if zbx_ver = '3.2'>
+					        <delay_flex/>
+					        </#if>
+					        ${xml_wrap(m.expressionFormula!'','params')}
 					        <ipmi_sensor/>
-					        <#if zbx_ver = '3.2'><data_type>0</data_type></#if>
+					        <#if zbx_ver = '3.2'>
+					        <data_type>0</data_type>
+					        </#if>
 					        <authtype>0</authtype>
 					        <username/>
 					        <password/>
@@ -151,25 +169,23 @@
 					        <description></description><#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
 					        <inventory_link>${m.inventoryLink!0}</inventory_link>
 					        <applications>
-					        <#-- change group to array in Java?<#list m.group>
-					        	<application>
-					                <name>${g}</name>
-					            </application>
-					        </#list> -->
+					        <#-- change group to array in Java? -->
+					        <#list [m.group] as g>
+				        	<application>
+				                <name>${g}</name>
+				            </application>
+					        </#list>
 					        </applications>
+					        <#if m.valueMap??>
 					        <valuemap>
-					        <#-- 
-					            <xsl:choose>
-					                <xsl:when test="./valueMap != ''">
-					                    <name>
-					                        <xsl:value-of select="./valueMap"/>
-					                    </name>
-					                </xsl:when>
-					            </xsl:choose>
-					         -->
+								<name>${m.valueMap}</name>
 					        </valuemap>
-					        <logtimefmt>${m.logtimefmt!''}</logtimefmt>
+					        <#else>
+					        <valuemap/>
+					        </#if>
+					        ${xml_wrap(m.logtimefmt!'','logtimefmt')}
 					        <#if zbx_ver == '3.4'>
+					        <#if m.preprocessing??>
 					        <preprocessing>
 					        <#list m.preprocessing as p>
 					            <step>
@@ -178,8 +194,13 @@
 					            </step>
 					        </#list>
 					        </preprocessing>
+					        <#else>
+					        <preprocessing/>
 					        </#if>
-				            <#if zbx_ver = '3.4'><jmx_endpoint/></#if>
+					        </#if>
+				            <#if zbx_ver = '3.4'>
+				            <jmx_endpoint/>
+				            </#if>
 				            <#if zbx_ver = '3.4'>
 				            	<#if m.discoveryRule??><#-- item prototype-->
 				            <application_prototypes/>
@@ -210,7 +231,9 @@
             <snmpv3_authpassphrase/>
             <snmpv3_privprotocol>0</snmpv3_privprotocol>
             <snmpv3_privpassphrase/>
-            <#if zbx_ver = '3.2'><delay_flex/></#if>
+            <#if zbx_ver = '3.2'>
+            <delay_flex/>
+            </#if>
             <params/>
             <ipmi_sensor/>
             <authtype>0</authtype>
@@ -254,7 +277,9 @@
             <trigger_prototypes/><#--  <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/> -->
             <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
-            <#if zbx_ver = '3.4'><jmx_endpoint/></#if>
+            <#if zbx_ver = '3.4'>
+            <jmx_endpoint/>
+            </#if>
  </#macro>
 
 <#--     <xsl:template name="triggerTemplate">
@@ -415,4 +440,14 @@
 		<#local dlist = dlist + {le[key]:le[key]}>
 	</#list>
 	<#return dlist?values>
+ </#function>
+ 
+
+ <#function xml_wrap var tag>
+ 	<#if var != ''>
+ 	<#local string><${tag}>${var}</${tag}></#local>
+ 	<#else>
+ 	<#local string><${tag}/></#local>
+ 	</#if>
+ 	<#return string>
  </#function>

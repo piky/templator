@@ -104,9 +104,12 @@ public abstract class Metric {
 	private String alarmObject;
 	private String alarmObjectType;
 	
+	//valuemap
+	private String valueMap;
+	
 	
 	//Preprocessing
-	private PreprocessingStep[] preprocessing = new PreprocessingStep[0];
+	private PreprocessingStep[] preprocessing;
 	
 	//Generated down below
 	public String getPrototype() {
@@ -229,6 +232,12 @@ public abstract class Metric {
 	}
 	public void setAlarmObjectType(String alarmObjectType) {
 		this.alarmObjectType = alarmObjectType;
+	}
+	public String getValueMap() {
+		return valueMap;
+	}
+	public void setValueMap(String valueMap) {
+		this.valueMap = valueMap;
 	}
 	public PreprocessingStep[] getPreprocessing() {
 		return preprocessing;
