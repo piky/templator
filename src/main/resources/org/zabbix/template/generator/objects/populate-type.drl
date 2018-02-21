@@ -36,3 +36,63 @@ then
     		setName( $m.getAlarmObject() + ": " + $m.getName() )
     	};
 end
+
+
+rule "Rule 4: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( prototype == 'vm.memory.pused')
+	$m_used: Metric ( prototype == 'vm.memory.used')
+	$m_total: Metric ( prototype == 'vm.memory.total')
+then
+    logger.info("There are vm.memory.total and vm.memory.used found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+
+rule "Rule 5: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( prototype == 'vm.memory.pused')
+	$m_used: Metric ( prototype == 'vm.memory.units.used')
+	$m_total: Metric ( prototype == 'vm.memory.units.total')
+then
+    logger.info("There are vm.memory.units.total and vm.memory.units.used found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+rule "Rule 6: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( prototype == 'vm.memory.pused')
+	$m_free: Metric ( prototype == 'vm.memory.free')
+	$m_total: Metric ( prototype == 'vm.memory.total')
+then
+    logger.info("There are vm.memory.total and vm.memory.free found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+
+rule "Rule 7: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( prototype == 'vm.memory.pused')
+	$m_free: Metric ( prototype == 'vm.memory.free')
+	$m_used: Metric ( prototype == 'vm.memory.used')
+then
+    logger.info("There are vm.memory.used and vm.memory.free found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
+	};
+end
+

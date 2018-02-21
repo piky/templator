@@ -15,6 +15,7 @@ public abstract class Metric {
 	private String vendorDescription;
 	private String key;
 	
+	private String expressionFormula;
 	
 	
 	public enum Type implements ZabbixValue{
@@ -134,6 +135,12 @@ public abstract class Metric {
 	}
 	public void setVendorDocumentation(String vendorDocumentation) {
 		this.vendorDocumentation = vendorDocumentation;
+	}
+	public String getExpressionFormula() {
+		return expressionFormula;
+	}
+	public void setExpressionFormula(String expressionFormula) {
+		this.expressionFormula = expressionFormula;
 	}
 	public String getRef() {
 		return ref;

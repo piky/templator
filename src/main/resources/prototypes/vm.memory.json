@@ -32,6 +32,7 @@
 		"prototype": "vm.memory.pused",
 		"name": "Memory utilization",
 		"group": "Memory",
+		"valueType":"FLOAT",
 		"units": "%",
 		"description": "Memory utilization in %",
 		"delay":"3m",
