@@ -1,12 +1,15 @@
 package org.zabbix.template.generator;
 
 
+import java.text.Format;
 import java.util.ArrayList;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jackson.JacksonDataFormat;
+
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
@@ -22,6 +25,9 @@ import org.zabbix.template.generator.objects.Metric;
 import org.zabbix.template.generator.objects.Template;
 import org.zabbix.template.generator.objects.ValueMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 
 
 @Component
@@ -29,10 +35,14 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+	 
+	
+
 	@Override
 	public void configure() throws Exception {
 		errorHandler(deadLetterChannel("direct:errors"));
-		
+		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+		JacksonDataFormat dataformat = new JacksonDataFormat(mapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
 		//TODO improve error handling
 		onException(org.zabbix.template.generator.objects.MetricNotFoundException.class)
@@ -42,9 +52,15 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
 
 
-		from("file://src/main/resources/json_test_template?noop=true&delay=30000&idempotentKey=${file:name}-${file:modified}")
+		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.log("Loading file: ${in.headers.CamelFileNameOnly}")
-		.unmarshal().json(JsonLibrary.Jackson,InputJSON.class)
+		.unmarshal(dataformat)
+/*		.marshal().json(JsonLibrary.Jackson,true)
+		.log("${body}");
+		
+		from("direct:stub")*/
+		
+		//.unmarshal().json(JsonLibrary.Jackson,InputJSON.class)
 		.process(new Processor() {
 
 			@Override
