@@ -1,7 +1,7 @@
 package org.zabbix.template.generator;
 
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
@@ -20,6 +20,9 @@ import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.InputJSON;
 import org.zabbix.template.generator.objects.Metric;
 import org.zabbix.template.generator.objects.Template;
+import org.zabbix.template.generator.objects.ValueMap;
+
+
 
 @Component
 public class ZabbixTemplateBuilder3 extends RouteBuilder {
@@ -56,11 +59,18 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				ksession.addEventListener(agendaEventListener);
 
 
-				Template[] templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
+				ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
+				
+				ksession.insert((InputJSON) exchange.getIn().getBody());
+				//insert valueMaps into Drools
+				
+				//valueMaps.forEach((vm)->ksession.insert(vm));
+
+				ArrayList<Template> templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
 				for (Template t: templates) {
 					Metric[] metrics = t.getMetrics();
+					ksession.insert(t);
 					if (metrics != null) {
-						ksession.insert(Arrays.asList(metrics));
 						for (Metric m: metrics) {
 							ksession.insert(m);
 						}
@@ -73,7 +83,6 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 							ksession.insert(m);
 
 						}
-						//ksession.insert(Arrays.asList(drule.getMetrics()));
 					}
 					Agenda agenda = ksession.getAgenda();
 					//last agendaGroup will evaluate first...

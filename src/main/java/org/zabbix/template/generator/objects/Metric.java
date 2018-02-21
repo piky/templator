@@ -1,9 +1,8 @@
 package org.zabbix.template.generator.objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-//@JsonIgnoreProperties(value = { "prototype" })
 @JsonDeserialize(using = MetricDeserializer.class)
 public abstract class Metric {
 	//use this field to match to class
@@ -83,12 +82,12 @@ public abstract class Metric {
 	private Type type; 
 	
 	public enum Group {
-		CPU,Memory,Status,Temperature,Network_Interfaces //to be extended	
+		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory //to be extended	
 	};
 	private Group group;
-	private  Integer delay = 300;
-	private  Integer history = 90;
-	private  Integer trends = 365;
+	private  String delay = "5m";
+	private  String history = "7d";
+	private  String trends = "365d";
 	
 	private  String units;
 	
@@ -172,22 +171,22 @@ public abstract class Metric {
 	public void setGroup(Group group) {
 		this.group = group;
 	}
-	public Integer getDelay() {
+	public String getDelay() {
 		return delay;
 	}
-	public void setDelay(Integer delay) {
+	public void setDelay(String delay) {
 		this.delay = delay;
 	}
-	public Integer getHistory() {
+	public String getHistory() {
 		return history;
 	}
-	public void setHistory(Integer history) {
+	public void setHistory(String history) {
 		this.history = history;
 	}
-	public Integer getTrends() {
+	public String getTrends() {
 		return trends;
 	}
-	public void setTrends(Integer trends) {
+	public void setTrends(String trends) {
 		this.trends = trends;
 	}
 	public String getUnits() {

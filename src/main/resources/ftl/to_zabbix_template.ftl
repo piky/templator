@@ -108,12 +108,14 @@
 							</#if>
 							<#if zbx_ver == '3.2'>
 								<#local multiplier_value = 0>
+							<#if m.preprocessing??>								
 								<#list m.preprocessing as p>
 									<#if p.type == 'MULTIPLIER'>
 										<#local multiplier_value = 1>	
 										<#break>
 									</#if>	
 								</#list>
+							</#if>
 							<multiplier>${multiplier_value}</multiplier>
 							</#if>
 							<snmp_oid>${m.oid}</snmp_oid>
@@ -124,15 +126,17 @@
 					        <status>0</status>
 					        <value_type>${m.valueType.getZabbixValue()}</value_type>
 					        <allowed_hosts/>
-					        <units>${m.units!''}</units>
+					        ${xml_wrap(m.units!'','units')}
 							<#if zbx_ver == '3.2'>
 								<#local delta_value = 0>
+							<#if m.preprocessing??>
 								<#list m.preprocessing as p>
 									<#if p.type == 'DELTA_PER_SECOND'>
 										<#local delta_value = 1>	
 										<#break>
 									</#if>	
 								</#list>
+							</#if>
 							<delta>${delta_value}</delta>
 							</#if>					         
 					        <snmpv3_contextname/>
@@ -144,12 +148,14 @@
 					        <snmpv3_privpassphrase/>
 							<#if zbx_ver == '3.2'>
 								<#local formula_value = 0>
+							<#if m.preprocessing??>
 								<#list m.preprocessing as p>
 									<#if p.type == 'MULTIPLIER'>
 										<#local formula_value = 1>	
 										<#break>
 									</#if>	
 								</#list>
+							</#if>
 							<formula>${formula_value}</formula>
 							</#if>
 					        <#if zbx_ver = '3.2'>
@@ -404,9 +410,9 @@
  <#function time_suffix_to_seconds time>
  	<#if zbx_ver='3.2'>
  		<#if time?ends_with('s')><#return time?keep_before('s')>
- 		<#elseif time?ends_with('m')><#return (time?keep_before('m')?number)*60>
- 		<#elseif time?ends_with('h')><#return (time?keep_before('h')?number)*3600>
- 		<#elseif time?ends_with('d')><#return (time?keep_before('d')?number)*86400>
+ 		<#elseif time?ends_with('m')><#return ((time?keep_before('m')?number)*60)?c>
+ 		<#elseif time?ends_with('h')><#return ((time?keep_before('h')?number)*3600)?c>
+ 		<#elseif time?ends_with('d')><#return ((time?keep_before('d')?number)*86400)?c>
  		<#else><#return time>
  		</#if>
  	<#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
@@ -421,7 +427,7 @@
  <#function time_suffix_to_days time>
  	<#if zbx_ver='3.2'>
  		<#if time?ends_with('d')><#return time?keep_before('d')>
- 		<#elseif time?ends_with('w')><#return (time?keep_before('w')?number)*7>
+ 		<#elseif time?ends_with('w')><#return ((time?keep_before('w')?number)*7)?c>
  		<#else><#return time>
  		</#if>
  	<#else> <#-- 3.4 --><#--as is, but add 'd' if no suffix-->

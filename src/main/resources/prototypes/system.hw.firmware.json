@@ -1,0 +1,10 @@
+{
+	"prototype":"system.hw.firmware",
+	"key":"system.hw.firmware",
+	"name":"Firmware version",
+	"valueType":"CHAR",
+	"group":"Inventory",
+	"delay":"1h",
+	"history":"2w",
+	"trends":"0"	
+}

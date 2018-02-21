@@ -1,29 +1,42 @@
 [
 	{
 		"prototype": "vm.memory.used",
-		"name": "Memory used",
+		"name": "Used memory",
 		"description": "Used memory in Bytes",
 		"group": "Memory",
-		"units": "B"
+		"units": "B",
+		"delay":"3m",
+		"history":"30d",
+		"trends":"365d"
 	},
 	{
 		"prototype": "vm.memory.free",
 		"name": "Available memory",
 		"group": "Memory",
-		"units": "B"
+		"units": "B",
+		"delay":"3m",
+		"history":"30d",
+		"trends":"365d"
 	},
 	{
 		"prototype": "vm.memory.total",
 		"name": "Total memory",
 		"group": "Memory",
-		"units": "B"
+		"units": "B",
+		"delay":"3m",
+		"history":"30d",
+		"trends":"365d"		
+		
 	},
 	{
 		"prototype": "vm.memory.pused",
 		"name": "Memory utilization",
 		"group": "Memory",
 		"units": "%",
-		"description": "Memory utilization in %"
+		"description": "Memory utilization in %",
+		"delay":"3m",
+		"history":"30d",
+		"trends":"365d"
 	}
 
 ]
