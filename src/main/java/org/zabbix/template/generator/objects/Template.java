@@ -12,11 +12,17 @@ public class Template {
 	
 	private String name;
 	private String description;
+	private ArrayList<TemplateClass> classes= new ArrayList<TemplateClass>(0);
+	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
 	private Metric metrics[] = new Metric[0];
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
-	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
+	
 	private UserMacro macros[] = new UserMacro[0];
 	
+	
+	public enum TemplateClass {
+		OS,SERVER,NETWORK,MODULE
+	}
 	
 	public String getName() {
 		return name;
@@ -32,6 +38,18 @@ public class Template {
 		this.description = description;
 	}
 	
+	/**
+	 * @return the classes
+	 */
+	public ArrayList<TemplateClass> getClasses() {
+		return classes;
+	}
+	/**
+	 * @param classes the classes to set
+	 */
+	public void setClasses(ArrayList<TemplateClass> classes) {
+		this.classes = classes;
+	}
 	public DiscoveryRule[] getDiscoveryRules() {
 		return discoveryRules;
 	}

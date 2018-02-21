@@ -17,6 +17,8 @@ public abstract class Metric {
 	
 	private String expressionFormula;
 	
+	private String inventoryLink;
+	
 	
 	public enum Type implements ZabbixValue{
 	    
@@ -141,6 +143,12 @@ public abstract class Metric {
 	}
 	public void setExpressionFormula(String expressionFormula) {
 		this.expressionFormula = expressionFormula;
+	}
+	public String getInventoryLink() {
+		return inventoryLink;
+	}
+	public void setInventoryLink(String inventoryLink) {
+		this.inventoryLink = inventoryLink;
 	}
 	public String getRef() {
 		return ref;

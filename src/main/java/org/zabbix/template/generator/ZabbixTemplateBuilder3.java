@@ -41,8 +41,10 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		errorHandler(deadLetterChannel("direct:errors"));
+		
+		//generate jackson mapper
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-		JacksonDataFormat dataformat = new JacksonDataFormat(mapper,InputJSON.class);
+		JacksonDataFormat yamlJackson = new JacksonDataFormat(mapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
 		//TODO improve error handling
 		onException(org.zabbix.template.generator.objects.MetricNotFoundException.class)
@@ -52,9 +54,9 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
 
 
-		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
+		from("file:bin/in/json?noop=true&delay=300&idempotentKey=${file:name}-${file:modified}")
 		.log("Loading file: ${in.headers.CamelFileNameOnly}")
-		.unmarshal(dataformat)
+		.unmarshal(yamlJackson)
 /*		.marshal().json(JsonLibrary.Jackson,true)
 		.log("${body}");
 		

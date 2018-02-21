@@ -13,19 +13,9 @@
 	            	  <template>${t.name}</template>
 	            	  <name>${t.name}</name>
 	                  <description>${t.description}</description>
-	                  <groups>
-	                  	<group><name>Templates/Test</name></group>
-		                <#-- <group>
-		                    <xsl:choose>
-		                        <xsl:when test="./classes[class='OS']"><name>Templates/Operating Systems</name></xsl:when>
-		                        <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
-		                        <xsl:when test="./classes[class='Server']"><name>Templates/Servers Hardware</name></xsl:when>
-		                        <xsl:when test="./classes[class='Module']"><name>Templates/Modules</name></xsl:when>
-		                        <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
-		                    </xsl:choose>
-		                </group>
-		                 -->
-		            </groups>
+						<groups>
+							<@generate_groups t.classes/>
+		            	</groups>
 		            <applications>
 		                <#list distinct_by_key(t.metricsRegistry,'group') as g>
 		                <application>
@@ -118,7 +108,7 @@
 							</#if>
 							<multiplier>${multiplier_value}</multiplier>
 							</#if>
-							<snmp_oid>${m.oid}</snmp_oid>
+							${xml_wrap(m.oid!'','snmp_oid')}
 					        <key>${m.key}</key>
 							<delay>${time_suffix_to_seconds(m.delay)}</delay>
 					        <history>${time_suffix_to_days(m.history)}</history>
@@ -251,7 +241,7 @@
             <filter>
             <#if dr.filter??>
             	<evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
-            	<formula>${dr.filter.formula!''}</formula>
+            	${xml_wrap(dr.filter.formula!'','formula')}
             	<conditions>
             	<#list dr.filter.conditions as cond>
             		<condition>
@@ -268,11 +258,8 @@
                 <conditions/>
             </#if>
             </filter>
-            <lifetime>30d</lifetime>
-            <#-- lifetime: <xsl:call-template name="time_suffix_to_days">
-                    <xsl:with-param name="time">30d</xsl:with-param>
-                </xsl:call-template> -->
-            <description></description><#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
+            <lifetime>${time_suffix_to_days('30d')}</lifetime>
+            ${xml_wrap(dr.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
 				<#list dr.metrics as m>
 	            	<item_prototype>
@@ -406,6 +393,39 @@
 
     </xsl:template>
  -->
+
+<#macro generate_groups groups_list>
+						<#list groups_list as g>
+	                  		<#switch g>
+							  <#case 'OS'>
+							<group>
+								<name>Templates/Operating Systems</name>
+							</group>
+							    <#break>
+							  <#case 'NETWORK'>
+							<group>
+								<name>Templates/Network Devices</name>
+							</group>
+							    <#break>
+							  <#case 'SERVER'>
+							<group>
+								<name>Templates/Servers Hardware</name>
+							</group>
+							    <#break>
+							  <#case 'MODULE'>
+							<group>
+								<name>Templates/Module</name>
+							</group>
+							    <#break>							    
+							  <#default>
+							</#switch>
+						<#else>
+							<group>
+								<name>Templates/Module</name>
+							</group>
+	                  	</#list>
+</#macro>
+
 
  <#function time_suffix_to_seconds time>
  	<#if zbx_ver='3.2'>
