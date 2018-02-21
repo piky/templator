@@ -172,7 +172,7 @@
 					        <publickey/>
 					        <privatekey/>
 					        <port/>
-					        <description></description><#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
+					        ${xml_wrap(m.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
 					        <inventory_link>${m.inventoryLink!0}</inventory_link>
 					        <applications>
 					        <#-- change group to array in Java? -->
@@ -451,7 +451,7 @@
 
  <#function xml_wrap var tag>
  	<#if var != ''>
- 	<#local string><${tag}>${var}</${tag}></#local>
+ 	<#local string><${tag}>${var?trim}</${tag}></#local>
  	<#else>
  	<#local string><${tag}/></#local>
  	</#if>

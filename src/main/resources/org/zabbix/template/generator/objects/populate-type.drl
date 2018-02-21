@@ -96,3 +96,50 @@ then
 	};
 end
 
+rule "Rule 8: purge original description(description)"
+	agenda-group "populate"
+	salience 101
+when
+	$m : Metric (vendorDescription != null || mib != null || ref != null)
+then
+    logger.info("Generating description(description) for "+$m);
+    modify( $m ) { 
+    		setDescription("")
+    	};
+end
+
+rule "Rule 9: generate each item description(mib)"
+	agenda-group "populate"
+	salience 100
+when
+	$m : Metric (mib != null)
+then
+    logger.info("Generating description(mib) for "+$m);
+    modify( $m ) { 
+    		setDescription( $m.getDescription() + "\nMIB: " + $m.getMib() )
+    	};
+end
+
+rule "Rule 10: generate each item description"
+	agenda-group "populate"
+	salience 99
+when
+	$m : Metric (vendorDescription != null)
+then
+    logger.info("Generating description(vendorDescription) for "+$m);
+    modify( $m ) { 
+    		setDescription( $m.getDescription() + "\n" + $m.getVendorDescription() )
+    	};
+end
+
+rule "Rule 11: generate each item description"
+	agenda-group "populate"
+	salience 98
+when
+	$m : Metric (ref != null)
+then
+    logger.info("Generating description(ref) for "+$m);
+    modify( $m ) { 
+    		setDescription( $m.getDescription() + "\n" + $m.getRef() )
+    	};
+end
