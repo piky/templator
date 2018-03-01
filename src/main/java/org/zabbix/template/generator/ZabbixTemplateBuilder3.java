@@ -126,7 +126,6 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		//.log("${body}")
 		//.to("file:src/main/resources/json_test_template/out");
 
-
 		//TODO 
 		//Here should be validation: check that if type snmp than snmpobject defined, for example
 		//Naming restrictions can also be checked for custom metrics
@@ -134,7 +133,8 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		//final part convert to zabbix XML		
 		from("direct:zabbix")
 		.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
-		//.log("${body}")
+		.to("xslt:templates/indent.xsl?saxon=true")
+		
 		.to("file:src/main/resources/ftl/out");;
 
 

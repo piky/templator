@@ -3,228 +3,252 @@
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-			<version>${zbx_ver}</version>
-            <date>2015-12-30T14:41:30Z</date>
-			<groups>
-				<@generate_groups body.getUniqueTemplateClasses()![]/>
-			</groups>
-            <templates>
-            	<#list body.templates as t>
-                  <template>
-	            	  <template>${t.name}</template>
-	            	  <name>${t.name}</name>
-	                  <description>${t.description}</description>
-						<groups>
-							<@generate_groups t.classes![]/>
-		            	</groups>
-		            <applications>
-		                <#list distinct_by_key(t.metricsRegistry,'group') as g>
-		                <application>
-	                		<name>${g}</name>
-	                	</application>
-		                </#list>
-		            </applications>
-		            <items>
-		            	<#list t.metrics as m>
-		            	<item>
-		            		<@item m/>
-	            		</item>
-		            	</#list>
-		            </items>
-		            <#if (t.discoveryRules?size > 0)>
-		            <discovery_rules>
-		            <#list t.templates as dep>
-						<#list t.discoveryRules as dr>
-		            	<discovery_rule>
-		            		<@discovery_rule dr/>
-	            		</discovery_rule>
-		            	</#list>
-		            </#list>
-		            </discovery_rules>
-		            <#else>
-		            <discovery_rules/>
-		            </#if>		            
-		            <#if zbx_ver = '3.4'>
-		            <httptests/>
-		            </#if>
-		            <#if (t.macros?size > 0)>
-		            <macros>
-		            	<#list t.macros as macro>
-	                    <macro>
-	                        ${xml_wrap(macro.macro,'macro')}
-	                        ${xml_wrap(macro.value,'value')}
-	                    </macro>
-		            	</#list>
-		            </macros>
-		            <#else>
-		            <macros/>
-		            </#if>
-		            <#if (t.templates?size > 0)>
-		            <templates>
-		            <#list t.templates as dep>
-			            <template>
-			               <name>${dep}</name>
-			            </template>
-		            </#list>
-		            </templates>
-		            <#else>
-		            <templates/>
-		            </#if>
-		            <screens/>
-		        </template>
-		      </#list>
-            </templates>
-            <graphs/>
-            <#-- <graphs>
-                <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
-            </graphs> -->
-            <triggers/>
-            <#-- <triggers>
-                <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
-            </triggers> -->
-			<#if (body.valueMaps?size > 0)>
-			<value_maps>
-            <#list body.valueMaps as vm>
-                <value_map>
-                	<name>${vm.name}</name>
-                	<mappings>
-                		<#list vm.mappings as mapping>
-                		<mapping>
-                			<value>${mapping.value}</value>
-                			<newvalue>${mapping.newValue}</newvalue>
-                		</mapping>
-                		</#list>
-                	</mappings>
-                </value_map>
-            </#list>
-            </value_maps>
-            <#else>
-            <value_maps/>
+    <version>${zbx_ver}</version>
+    <date>2015-12-30T14:41:30Z</date>
+    <groups>
+        <@generate_groups body.getUniqueTemplateClasses()![]/>
+    </groups>
+    <templates>
+    <#list body.templates as t>
+        <template>
+            <template>${t.name}</template>
+            <name>${t.name}</name>
+            <description>
+            <#--  we need to finish this off -->
+            <#if t.documentation??>
+            Overview: ${t.documentation.overview!''}${'\n'}
+            <#if t.documentation.issues??>
+                ${'\nKnown Issues:\n'}
+                <#list t.documentation.issues as i>
+                ${i.description!''}
+                ${i.version!''}
+                ${i.device!''}
+                </#list>
+                </#if>
             </#if>
-        </zabbix_export>
+            </description>
+  <#--       <xsl:copy>
+            <description>
+                <xsl:value-of select="./description"/>
+                <xsl:if test="./documentation/overview and ./documentation/overview != ''">&#10;Overview: <xsl:value-of select="./documentation/overview"/><xsl:text>&#10;</xsl:text></xsl:if>
+                <xsl:if test="./documentation/issues/issue"><xsl:text>&#10;Known Issues:&#10;</xsl:text></xsl:if>
+                <xsl:for-each select="./documentation/issues/issue">
+                    <xsl:for-each select="*">
+                        <xsl:value-of select="local-name()"/> : <xsl:value-of select="."/><xsl:if test="position() != last()"><xsl:text>&#10;</xsl:text></xsl:if>
+                    </xsl:for-each>
+                </xsl:for-each>
+            </description>       -->                
+            <groups>
+				<@generate_groups t.classes![]/>
+            </groups>
+            <applications>
+                <#list distinct_by_key(t.metricsRegistry,'group') as g>
+                <application>
+                    <name>${g}</name>
+                </application>
+                </#list>
+            </applications>
+            <items>
+                <#list t.metrics as m>
+                <item>
+                    <@item m/>
+                </item>
+                </#list>
+            </items>
+            <#if (t.discoveryRules?size > 0)>
+            <discovery_rules>
+            <#list t.templates as dep>
+                <#list t.discoveryRules as dr>
+                <discovery_rule>
+                    <@discovery_rule dr/>
+                </discovery_rule>
+                </#list>
+            </#list>
+            </discovery_rules>
+            <#else>
+            <discovery_rules/>
+            </#if>                    
+            <#if zbx_ver = '3.4'>
+            <httptests/>
+            </#if>
+            <#if (t.macros?size > 0)>
+            <macros>
+                <#list t.macros as macro>
+                <macro>
+                    ${xml_wrap(macro.macro,'macro')}
+                    ${xml_wrap(macro.value,'value')}
+                </macro>
+                </#list>
+            </macros>
+            <#else>
+            <macros/>
+            </#if>
+            <#if (t.templates?size > 0)>
+            <templates>
+            <#list t.templates as dep>
+                <template>
+                   <name>${dep}</name>
+                </template>
+            </#list>
+            </templates>
+            <#else>
+            <templates/>
+            </#if>
+            <screens/>
+        </template>
+      </#list>
+    </templates>
+    <graphs/>
+    <#-- <graphs>
+        <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
+    </graphs> -->
+    <triggers/>
+    <#-- <triggers>
+        <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
+    </triggers> -->
+    <#if (body.valueMaps?size > 0)>
+    <value_maps>
+    <#list body.valueMaps as vm>
+        <value_map>
+            <name>${vm.name}</name>
+            <mappings>
+                <#list vm.mappings as mapping>
+                <mapping>
+                    <value>${mapping.value}</value>
+                    <newvalue>${mapping.newValue}</newvalue>
+                </mapping>
+                </#list>
+            </mappings>
+        </value_map>
+    </#list>
+    </value_maps>
+    <#else>
+    <value_maps/>
+    </#if>
+</zabbix_export>
 
 <#-- m - metric-->
 <#macro item m>
-					        <name>${m.name}</name>
-					        <type>${m.type.getZabbixValue()!'none'}</type>
-					        <#if m.type == 'SNMP'>
-							<snmp_community>${snmp_community}</snmp_community>
-							<#else>
-							<snmp_community/>
-							</#if>
-							<#if zbx_ver == '3.2'>
-								<#local multiplier_value = 0>
-							<#if m.preprocessing??>								
-								<#list m.preprocessing as p>
-									<#if p.type == 'MULTIPLIER'>
-										<#local multiplier_value = 1>	
-										<#break>
-									</#if>	
-								</#list>
-							</#if>
-							<multiplier>${multiplier_value}</multiplier>
-							</#if>
-							${xml_wrap(m.oid!'','snmp_oid')}
-					        <key>${m.key}</key>
-							<delay>${time_suffix_to_seconds(m.delay)}</delay>
-					        <history>${time_suffix_to_days(m.history)}</history>
-					        <trends>${time_suffix_to_days(m.trends)}</trends>
-					        <status>0</status>
-					        <value_type>${m.valueType.getZabbixValue()}</value_type>
-					        <allowed_hosts/>
-					        ${xml_wrap(m.units!'','units')}
-							<#if zbx_ver == '3.2'>
-								<#local delta_value = 0>
-							<#if m.preprocessing??>
-								<#list m.preprocessing as p>
-									<#if p.type == 'DELTA_PER_SECOND'>
-										<#local delta_value = 1>	
-										<#break>
-									</#if>	
-								</#list>
-							</#if>
-							<delta>${delta_value}</delta>
-							</#if>					         
-					        <snmpv3_contextname/>
-					        <snmpv3_securityname/>
-					        <snmpv3_securitylevel>0</snmpv3_securitylevel>
-					        <snmpv3_authprotocol>0</snmpv3_authprotocol>
-					        <snmpv3_authpassphrase/>
-					        <snmpv3_privprotocol>0</snmpv3_privprotocol>
-					        <snmpv3_privpassphrase/>
-							<#if zbx_ver == '3.2'>
-								<#local formula_value = 0>
-							<#if m.preprocessing??>
-								<#list m.preprocessing as p>
-									<#if p.type == 'MULTIPLIER'>
-										<#local formula_value = 1>	
-										<#break>
-									</#if>	
-								</#list>
-							</#if>
-							<formula>${formula_value}</formula>
-							</#if>
-					        <#if zbx_ver = '3.2'>
-					        <delay_flex/>
-					        </#if>
-					        ${xml_wrap(m.expressionFormula!'','params')}
-					        <ipmi_sensor/>
-					        <#if zbx_ver = '3.2'>
-					        <data_type>0</data_type>
-					        </#if>
-					        <authtype>0</authtype>
-					        <username/>
-					        <password/>
-					        <publickey/>
-					        <privatekey/>
-					        <port/>
-					        ${xml_wrap(m.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
-					        <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
-					        <applications>
-					        <#-- change group to array in Java? -->
-					        <#list [m.group] as g>
-				        	<application>
-				                <name>${g}</name>
-				            </application>
-					        </#list>
-					        </applications>
-					        <#if m.valueMap??>
-					        <valuemap>
-								<name>${m.valueMap}</name>
-					        </valuemap>
-					        <#else>
-					        <valuemap/>
-					        </#if>
-					        ${xml_wrap(m.logtimefmt!'','logtimefmt')}
-					        <#if zbx_ver == '3.4'>
-					        <#if m.preprocessing??>
-					        <preprocessing>
-					        <#list m.preprocessing as p>
-					            <step>
-					                <type>${p.type.getZabbixValue()}</type>
-					                <params>${p.params!''}</params>
-					            </step>
-					        </#list>
-					        </preprocessing>
-					        <#else>
-					        <preprocessing/>
-					        </#if>
-					        </#if>
-				            <#if zbx_ver = '3.4'>
-				            <jmx_endpoint/>
-				            </#if>
-				            <#if zbx_ver = '3.4'>
-				            	<#if m.discoveryRule??><#-- item prototype-->
-				            <application_prototypes/>
-				            <master_item_prototype/>
-				            	<#else><#-- normal item -->
-				            <master_item/>
-				            	</#if>
-				            </#if>					        
+                    <name>${m.name}</name>
+                    <type>${m.type.getZabbixValue()!'none'}</type>
+                    <#if m.type == 'SNMP'>
+                    <snmp_community>${snmp_community}</snmp_community>
+                    <#else>
+                    <snmp_community/>
+                    </#if>
+                    <#if zbx_ver == '3.2'>
+                        <#local multiplier_value = 0>
+                    <#if m.preprocessing??>                                
+                        <#list m.preprocessing as p>
+                            <#if p.type == 'MULTIPLIER'>
+                                <#local multiplier_value = 1>    
+                                <#break>
+                            </#if>    
+                        </#list>
+                    </#if>
+                    <multiplier>${multiplier_value}</multiplier>
+                    </#if>
+                    ${xml_wrap(m.oid!'','snmp_oid')}
+                    <key>${m.key}</key>
+                    <delay>${time_suffix_to_seconds(m.delay)}</delay>
+                    <history>${time_suffix_to_days(m.history)}</history>
+                    <trends>${time_suffix_to_days(m.trends)}</trends>
+                    <status>0</status>
+                    <value_type>${m.valueType.getZabbixValue()}</value_type>
+                    <allowed_hosts/>
+                    ${xml_wrap(m.units!'','units')}
+                    <#if zbx_ver == '3.2'>
+                        <#local delta_value = 0>
+                    <#if m.preprocessing??>
+                        <#list m.preprocessing as p>
+                            <#if p.type == 'DELTA_PER_SECOND'>
+                                <#local delta_value = 1>    
+                                <#break>
+                            </#if>    
+                        </#list>
+                    </#if>
+                    <delta>${delta_value}</delta>
+                    </#if>                             
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <#if zbx_ver == '3.2'>
+                        <#local formula_value = 0>
+                    <#if m.preprocessing??>
+                        <#list m.preprocessing as p>
+                            <#if p.type == 'MULTIPLIER'>
+                                <#local formula_value = 1>    
+                                <#break>
+                            </#if>    
+                        </#list>
+                    </#if>
+                    <formula>${formula_value}</formula>
+                    </#if>
+                    <#if zbx_ver = '3.2'>
+                    <delay_flex/>
+                    </#if>
+                    ${xml_wrap(m.expressionFormula!'','params')}
+                    <ipmi_sensor/>
+                    <#if zbx_ver = '3.2'>
+                    <data_type>0</data_type>
+                    </#if>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    ${xml_wrap(m.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
+                    <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
+                    <applications>
+                    <#-- change group to array in Java? -->
+                    <#list [m.group] as g>
+                    <application>
+                        <name>${g}</name>
+                    </application>
+                    </#list>
+                    </applications>
+                    <#if m.valueMap??>
+                    <valuemap>
+                        <name>${m.valueMap}</name>
+                    </valuemap>
+                    <#else>
+                    <valuemap/>
+                    </#if>
+                    ${xml_wrap(m.logtimefmt!'','logtimefmt')}
+                    <#if zbx_ver == '3.4'>
+                    <#if m.preprocessing??>
+                    <preprocessing>
+                    <#list m.preprocessing as p>
+                        <step>
+                            <type>${p.type.getZabbixValue()}</type>
+                            <params>${p.params!''}</params>
+                        </step>
+                    </#list>
+                    </preprocessing>
+                    <#else>
+                    <preprocessing/>
+                    </#if>
+                    </#if>
+                    <#if zbx_ver = '3.4'>
+                    <jmx_endpoint/>
+                    </#if>
+                    <#if zbx_ver = '3.4'>
+                        <#if m.discoveryRule??><#-- item prototype-->
+                    <application_prototypes/>
+                    <master_item_prototype/>
+                        <#else><#-- normal item -->
+                    <master_item/>
+                        </#if>
+                    </#if>
 </#macro>
 
 <#macro discovery_rule dr>
-	
+    
             <name>${dr.name}</name>
             <type>4</type><#-- <xsl:copy-of select="$snmp_item_type"/> -->
             <snmp_community>${snmp_community}</snmp_community>
@@ -256,20 +280,20 @@
             <port/>
             <filter>
             <#if dr.filter??>
-            	<evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
-            	${xml_wrap(dr.filter.formula!'','formula')}
-            	<conditions>
-            	<#list dr.filter.conditions as cond>
-            		<condition>
-            			<macro>${cond.macro}</macro>
-            			<value>${cond.value}</value>
-            			<operator>${cond.operator}</operator>
-						<formulaid>${cond.formulaid!''}</formulaid>
-            		</condition>
-            	</#list>
-            	</conditions>
+                <evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
+                ${xml_wrap(dr.filter.formula!'','formula')}
+                <conditions>
+                <#list dr.filter.conditions as cond>
+                    <condition>
+                        <macro>${cond.macro}</macro>
+                        <value>${cond.value}</value>
+                        <operator>${cond.operator}</operator>
+                        <formulaid>${cond.formulaid!''}</formulaid>
+                    </condition>
+                </#list>
+                </conditions>
             <#else>
-            	<evaltype>0</evaltype>
+                <evaltype>0</evaltype>
                 <formula/>
                 <conditions/>
             </#if>
@@ -277,11 +301,11 @@
             <lifetime>${time_suffix_to_days('30d')}</lifetime>
             ${xml_wrap(dr.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
-				<#list dr.metrics as m>
-	            	<item_prototype>
-		            	<@item m/>
-            		</item_prototype>
-            	</#list>
+                <#list dr.metrics as m>
+                    <item_prototype>
+                        <@item m/>
+                    </item_prototype>
+                </#list>
             </item_prototypes>
             <trigger_prototypes/><#--  <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/> -->
             <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
@@ -405,91 +429,83 @@
         </xsl:choose>
     </xsl:template>
 
-    
-
     </xsl:template>
  -->
-
 <#macro generate_groups groups_list>
-						<#list groups_list as g>
-	                  		<#switch g>
-							  <#case 'OS'>
-							<group>
-								<name>Templates/Operating Systems</name>
-							</group>
-							    <#break>
-							  <#case 'NETWORK'>
-							<group>
-								<name>Templates/Network Devices</name>
-							</group>
-							    <#break>
-							  <#case 'SERVER'>
-							<group>
-								<name>Templates/Servers Hardware</name>
-							</group>
-							    <#break>
-							  <#case 'MODULE'>
-							<group>
-								<name>Templates/Module</name>
-							</group>
-							    <#break>							    
-							  <#default>
-							</#switch>
-						<#else>
-							<group>
-								<name>Templates/Module</name>
-							</group>
-	                  	</#list>
+    <#list groups_list as g>
+          <#switch g>
+          <#case 'OS'>
+        <group>
+            <name>Templates/Operating Systems</name>
+        </group>
+            <#break>
+          <#case 'NETWORK'>
+        <group>
+            <name>Templates/Network Devices</name>
+        </group>
+            <#break>
+          <#case 'SERVER'>
+        <group>
+            <name>Templates/Servers Hardware</name>
+        </group>
+            <#break>
+          <#case 'MODULE'>
+        <group>
+            <name>Templates/Module</name>
+        </group>
+            <#break>                                
+          <#default>
+        </#switch>
+    <#else>
+        <group>
+            <name>Templates/Module</name>
+        </group>
+      </#list>
 </#macro>
-
-
  <#function time_suffix_to_seconds time>
- 	<#if zbx_ver='3.2'>
- 		<#if time?ends_with('s')><#return time?keep_before('s')>
- 		<#elseif time?ends_with('m')><#return ((time?keep_before('m')?number)*60)?c>
- 		<#elseif time?ends_with('h')><#return ((time?keep_before('h')?number)*3600)?c>
- 		<#elseif time?ends_with('d')><#return ((time?keep_before('d')?number)*86400)?c>
- 		<#else><#return time>
- 		</#if>
- 	<#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
-		<#if time?matches('[0-9]+','r')>
-			<#return time+'s'>
-		<#else>
-			<#return time>
-		</#if>
- 	</#if>
- </#function>
- 
+     <#if zbx_ver='3.2'>
+         <#if time?ends_with('s')><#return time?keep_before('s')>
+         <#elseif time?ends_with('m')><#return ((time?keep_before('m')?number)*60)?c>
+         <#elseif time?ends_with('h')><#return ((time?keep_before('h')?number)*3600)?c>
+         <#elseif time?ends_with('d')><#return ((time?keep_before('d')?number)*86400)?c>
+         <#else><#return time>
+         </#if>
+     <#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
+        <#if time?matches('[0-9]+','r')>
+            <#return time+'s'>
+        <#else>
+            <#return time>
+        </#if>
+     </#if>
+ </#function> 
  <#function time_suffix_to_days time>
- 	<#if zbx_ver='3.2'>
- 		<#if time?ends_with('d')><#return time?keep_before('d')>
- 		<#elseif time?ends_with('w')><#return ((time?keep_before('w')?number)*7)?c>
- 		<#else><#return time>
- 		</#if>
- 	<#else> <#-- 3.4 --><#--as is, but add 'd' if no suffix-->
-		<#if time?matches('[0-9]+','r')>
-			<#return time+'d'>
-		<#else>
-			<#return time>
-		</#if>
- 	</#if>
+     <#if zbx_ver='3.2'>
+         <#if time?ends_with('d')><#return time?keep_before('d')>
+         <#elseif time?ends_with('w')><#return ((time?keep_before('w')?number)*7)?c>
+         <#else><#return time>
+         </#if>
+     <#else> <#-- 3.4 --><#--as is, but add 'd' if no suffix-->
+        <#if time?matches('[0-9]+','r')>
+            <#return time+'d'>
+        <#else>
+            <#return time>
+        </#if>
+     </#if>
  </#function>
  
  <#-- This function get a list of objects and the key of this object. Then it returns list(unique set) of values of this key-->
  <#function distinct_by_key list key>
- 	<#local dlist = {}>
-	<#list list as le>
-		<#local dlist = dlist + {le[key]:le[key]}>
-	</#list>
-	<#return dlist?values>
+     <#local dlist = {}>
+    <#list list as le>
+        <#local dlist = dlist + {le[key]:le[key]}>
+    </#list>
+    <#return dlist?values>
  </#function>
- 
-
  <#function xml_wrap var tag>
- 	<#if var != ''>
- 	<#local string><${tag}>${var?trim}</${tag}></#local>
- 	<#else>
- 	<#local string><${tag}/></#local>
- 	</#if>
- 	<#return string>
+     <#if var != ''>
+     <#local string><${tag}>${var?trim}</${tag}></#local>
+     <#else>
+     <#local string><${tag}/></#local>
+     </#if>
+     <#return string>
  </#function>
