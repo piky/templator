@@ -6,7 +6,7 @@
 			<version>${zbx_ver}</version>
             <date>2015-12-30T14:41:30Z</date>
 			<groups>
-				<group><name>Templates/Test</name></group> <#-- will populate in the next xslt -->
+				<@generate_groups body.getUniqueTemplateClasses()![]/>
 			</groups>
             <templates>
             	<#list body.templates as t>
@@ -15,7 +15,7 @@
 	            	  <name>${t.name}</name>
 	                  <description>${t.description}</description>
 						<groups>
-							<@generate_groups t.classes/>
+							<@generate_groups t.classes![]/>
 		            	</groups>
 		            <applications>
 		                <#list distinct_by_key(t.metricsRegistry,'group') as g>

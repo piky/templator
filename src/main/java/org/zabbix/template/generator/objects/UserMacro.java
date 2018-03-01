@@ -16,4 +16,13 @@ public class UserMacro {
 		this.value = value;
 	}
 
+	//used in Jackson
+	public UserMacro () {
+	}
+	//used in Drools
+	public UserMacro (String macro, String value) {
+		this.macro = macro;
+		this.value = value;
+	}
+
 }
