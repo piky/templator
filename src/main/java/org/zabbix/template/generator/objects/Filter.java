@@ -9,7 +9,7 @@ public class Filter {
 	public enum EvalType implements ZabbixValue{
 	    
 		AND_OR(0),
-	    AND(0),
+	    AND(1),
 	    OR(2),
 	    CUSTOM_EXPRESSION(3);
 	
