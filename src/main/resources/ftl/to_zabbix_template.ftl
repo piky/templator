@@ -31,16 +31,23 @@
 	            		</item>
 		            	</#list>
 		            </items>
+		            <#if (t.discoveryRules?size > 0)>
 		            <discovery_rules>
-		                <#list t.discoveryRules as dr>
+		            <#list t.templates as dep>
+						<#list t.discoveryRules as dr>
 		            	<discovery_rule>
 		            		<@discovery_rule dr/>
 	            		</discovery_rule>
 		            	</#list>
+		            </#list>
 		            </discovery_rules>
+		            <#else>
+		            <discovery_rules/>
+		            </#if>		            
 		            <#if zbx_ver = '3.4'>
 		            <httptests/>
 		            </#if>
+		            <#if (t.macros?size > 0)>
 		            <macros>
 		            	<#list t.macros as macro>
 	                    <macro>
@@ -49,16 +56,20 @@
 	                    </macro>
 		            	</#list>
 		            </macros>
-		            <#-- <macros>//TODO
-		                <xsl:for-each-group select="macros/macro" group-by="macro">
-		                    <macro>
-		                        <macro><xsl:value-of select="./macro"/></macro>
-		                        <value><xsl:value-of select="./value"/></value>
-		                    </macro>
-		                </xsl:for-each-group>
-		            </macros> -->
+		            <#else>
+		            <macros/>
+		            </#if>
+		            <#if (t.templates?size > 0)>
+		            <templates>
+		            <#list t.templates as dep>
+			            <template>
+			               <name>${dep}</name>
+			            </template>
+		            </#list>
+		            </templates>
+		            <#else>
 		            <templates/>
-		            <#-- //TODO<xsl:copy-of copy-namespaces="no" select="./templates"/><!-- template dependencies block --> 
+		            </#if>
 		            <screens/>
 		        </template>
 		      </#list>

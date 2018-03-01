@@ -1,0 +1,160 @@
+package org.zabbix.template.generator.objects
+
+global org.slf4j.Logger logger;
+
+//Theses rules attaches template dependencies if there are some Classes present in it
+rule "Rule 1: generate dependencies for templates - Template Module Generic"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
+then
+    logger.info("Found SNMP_DEVICE class, attaching template dependency for "+$t);
+    modify($t) {getTemplates().add("Template Module Generic");};
+end
+
+//This rules attaches template dependencies if there are some Classes present in it
+rule "Rule 2: generate dependencies for templates - Template Module Interfaces"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.INTERFACES) from $classes)
+then
+    logger.info("Found INTERFACES class, attaching template dependency for "+$t);
+    modify($t) {getTemplates().add("Template Module Interfaces");};
+end
+
+
+//This rules attaches template dependencies if there are some Classes present in it
+rule "Rule 3: generate dependencies for templates - Template Module Interfaces Simple"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.INTERFACES_SIMPLE) from $classes)
+then
+    logger.info("Found INTERFACES_SIMPLE class, attaching template dependency for "+$t);
+    modify($t) {getTemplates().add("Template Module Interfaces Simple");};
+end
+
+
+
+
+
+//Theses rules adds macros if there are some Classes(or metrics) present in the template
+rule "Rule 4: generate additional macros"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+    exists (Metric(prototype == "system.cpu.util") from $metrics)
+then
+    logger.info("Found system.cpu.util metric, adding additional MACRO...");
+    modify($t) {getMacros().add(new UserMacro("{$CPU_UTIL_MAX}","90"));};
+end
+
+rule "Rule 5: generate additional macros"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+    exists (Metric(prototype == "vm.memory.pused") from $metrics)
+then
+    logger.info("Found vm.memory.pused metric, adding additional MACRO...");
+    modify($t) {getMacros().add(new UserMacro("{$MEMORY_UTIL_MAX}","90"));};
+end
+
+rule "Rule 6: generate additional macros"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+    exists (Metric(prototype == "sensor.temp.value") from $metrics)
+then
+    logger.info("Found sensor.temp.value metric, adding additional MACRO...");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"CPU\"}","75")),
+    	getMacros().add(new UserMacro("{$TEMP_WARN:\"CPU\"}","70")),
+    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"AMBIENT\"}","35")),
+    	getMacros().add(new UserMacro("{$TEMP_WARN:\"AMBIENT\"}","30")),
+    	
+    	getMacros().add(new UserMacro("{$TEMP_CRIT}","60")),
+    	getMacros().add(new UserMacro("{$TEMP_WARN}","50"));
+    	
+    };
+end
+
+rule "Rule 7: generate additional macros (vfs.fs.pused)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+    exists (Metric(prototype == "vfs.fs.pused") from $metrics)
+then
+    logger.info("Found vfs.fs.pused metric, adding additional MACRO...");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","90")),
+    	getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","80"));	
+    };
+end
+
+
+rule "Rule 8: generate additional macros (General class)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.GENERAL) from $classes)
+then
+    logger.info("Found GENERAL class, adding additional MACRO");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$SNMP_TIMEOUT}","3m"));	
+    };
+end
+
+
+rule "Rule 9: generate additional macros (IF_MIB class)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.IF_MIB) from $classes)
+then
+    logger.info("Found IF_MIB class, adding additional MACRO");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
+    	getMacros().add(new UserMacro("{$IF_UTIL_MAX}","90")),
+    	getMacros().add(new UserMacro("{$IF_ERRORS_WARN}","2"));	
+    };
+end
+
+rule "Rule 10: generate additional macros (IF_MIB_SIMPLE class)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.IF_MIB_SIMPLE) from $classes)
+then
+    logger.info("Found IF_MIB_SIMPLE class, adding additional MACRO");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
+    	getMacros().add(new UserMacro("{$IF_UTIL_MAX}","95")),
+    	getMacros().add(new UserMacro("{$IF_ERRORS_WARN}","2"));	
+    };
+end
+
+rule "Rule 11: generate additional macros (ICMP class)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.ICMP) from $classes)
+then
+    logger.info("Found ICMP class, adding additional MACRO");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$ICMP_LOSS_WARN}","20")),
+    	getMacros().add(new UserMacro("{$ICMP_RESPONSE_TIME_WARN}","0.15"));	
+    };
+end

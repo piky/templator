@@ -12,18 +12,15 @@ public class Template {
 	
 	private String name;
 	private String description;
-	private ArrayList<TemplateClass> classes= new ArrayList<TemplateClass>(0);
+	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);
+	
 	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
 	private Metric metrics[] = new Metric[0];
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
+	private TemplateDocumentation documentation;
 	
-	private UserMacro macros[] = new UserMacro[0];
-	
-	
-	public enum TemplateClass {
-		OS,SERVER,NETWORK,MODULE
-	}
-	
+	private ArrayList<UserMacro> macros = new ArrayList<UserMacro>(0);
+	private ArrayList<String> templates = new ArrayList<String>(0);
 	public String getName() {
 		return name;
 	}
@@ -56,11 +53,23 @@ public class Template {
 	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
 		this.discoveryRules = discoveryRules;
 	}
-	public UserMacro[] getMacros() {
+	public ArrayList<UserMacro> getMacros() {
 		return macros;
 	}
-	public void setMacros(UserMacro macros[]) {
+	public void setMacros(ArrayList<UserMacro> macros) {
 		this.macros = macros;
+	}
+	/**
+	 * @return the templates
+	 */
+	public ArrayList<String> getTemplates() {
+		return templates;
+	}
+	/**
+	 * @param templates the templates to set
+	 */
+	public void setTemplates(ArrayList<String> templates) {
+		this.templates = templates;
 	}
 	public Metric[] getMetrics() {
 		return metrics;
@@ -76,6 +85,18 @@ public class Template {
 		this.metricsRegistry = metricsRegistry;
 	}
 	
+	/**
+	 * @return the documentation
+	 */
+	public TemplateDocumentation getDocumentation() {
+		return documentation;
+	}
+	/**
+	 * @param documentation the documentation to set
+	 */
+	public void setDocumentation(TemplateDocumentation documentation) {
+		this.documentation = documentation;
+	}
 	//error prone. Refactor
 	public void constructMetricsRegistry() {
 		//this.metricsRegistry = null;
