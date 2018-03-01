@@ -18,3 +18,15 @@ when
 then
     logger.error("There is no 'key' for "+$m);
 end
+
+/* TODO 
+rule "Validation rule 3: valueMap mentioned in metric should be defined"
+	agenda-group "validate"
+when
+	$m: Metric($vm_name : valueMap != null)
+	$t : InputJSON()
+	ValueMap ( name != $vm_name) from $t.valueMaps 	
+then
+    logger.info("Found value map for "+ $vm_name);
+end
+*/
