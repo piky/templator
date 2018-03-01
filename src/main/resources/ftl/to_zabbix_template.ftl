@@ -1,6 +1,7 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = '3.4'>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
+<?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
 			<version>${zbx_ver}</version>
             <date>2015-12-30T14:41:30Z</date>
