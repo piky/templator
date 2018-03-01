@@ -5,8 +5,8 @@ import java.util.HashSet;
 
 public class InputJSON {
 
-	private ArrayList<Template> templates;
-	private ArrayList<ValueMap> valueMaps;
+	private ArrayList<Template> templates = new ArrayList<Template>(0);
+	private ArrayList<ValueMap> valueMaps = new ArrayList<ValueMap>(0);
 	
 
 	public ArrayList<Template> getTemplates() {

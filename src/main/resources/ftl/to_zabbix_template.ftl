@@ -82,7 +82,8 @@
             <#-- <triggers>
                 <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
             </triggers> -->
-            <value_maps>
+			<#if (body.valueMaps?size > 0)>
+			<value_maps>
             <#list body.valueMaps as vm>
                 <value_map>
                 	<name>${vm.name}</name>
@@ -97,6 +98,9 @@
                 </value_map>
             </#list>
             </value_maps>
+            <#else>
+            <value_maps/>
+            </#if>
         </zabbix_export>
 
 <#-- m - metric-->
