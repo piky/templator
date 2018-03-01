@@ -22,13 +22,13 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 	
 	private HashMap<String,JsonNode> prototypes = PrototypesService.getPrototypes();
 	
-	public static Class<?> getMetricClass(String prototype) throws MetricNotFoundException{
+	public static Class<?> getMetricClass(String prototype) throws MetricPrototypeNotFoundException{
 		
 			String fqdn = StringUtils.remove(WordUtils.capitalizeFully(prototype,'.'), ".");
 			try {
 				return Class.forName(pck+"."+fqdn);
 			} catch (ClassNotFoundException e) {
-				throw new MetricNotFoundException("No such class: "+fqdn,e);
+				throw new MetricPrototypeNotFoundException("No such class: "+fqdn);
 			}
 		 	
 	}
@@ -80,7 +80,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 	
 	@Override
 	public Metric deserialize(JsonParser jp, DeserializationContext ctxt) 
-			throws IOException, JsonProcessingException {
+			throws IOException, JsonProcessingException, MetricPrototypeNotFoundException {
 		JsonNode node = jp.getCodec().readTree(jp);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -89,15 +89,16 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 		String protoName = node.get("prototype").textValue();
 		
 		JsonNode defaultJson = prototypes.get(protoName);
-		Metric defaults = mapper.treeToValue(defaultJson,MetricDefault.class);
+		if (defaultJson != null) {
+			Metric defaults = mapper.treeToValue(defaultJson,MetricDefault.class);
+			ObjectReader updater = mapper.readerForUpdating(defaults);
+			Metric merged = updater.readValue(node);
+			
+			return merged;
 		
-		ObjectReader updater = mapper.readerForUpdating(defaults);
-		Metric merged = updater.readValue(node);
-		
-		return merged;
-		
-		
-
+		} else {
+			throw new MetricPrototypeNotFoundException("There is no such prototype: "+protoName);
+		}
 	}	
 
 

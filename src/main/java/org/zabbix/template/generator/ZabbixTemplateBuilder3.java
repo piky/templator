@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.InputJSON;
 import org.zabbix.template.generator.objects.Metric;
+import org.zabbix.template.generator.objects.MetricPrototypeNotFoundException;
 import org.zabbix.template.generator.objects.Template;
 import org.zabbix.template.generator.objects.ValueMap;
 
@@ -46,8 +47,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 		JacksonDataFormat yamlJackson = new JacksonDataFormat(mapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
-		//TODO improve error handling
-		onException(org.zabbix.template.generator.objects.MetricNotFoundException.class)
+		onException(org.zabbix.template.generator.objects.MetricPrototypeNotFoundException.class)
 		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
 		//other errors
 		from("direct:errors")

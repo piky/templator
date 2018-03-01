@@ -1,0 +1,46 @@
+[
+	{
+		"prototype": "net.if.status",
+		"name": "Operational status",
+		"description": "Used memory in Bytes",
+		"group": "Network_Interfaces",
+		"delay":"1m",
+		"history":"2w",
+		"trends":"0d",
+        "valueType":"INTEGER"
+	},
+	{
+		"prototype": "net.if.in",
+		"name": "Bits received",
+		"group": "Network_Interfaces",
+        "valueType":"INTEGER",
+        "delay":"3m",
+        "history":"30d",
+        "units":"bps"
+	},
+	{
+		"prototype": "net.if.out",
+		"name": "Bits sent",
+		"group": "Network_Interfaces",
+        "delay":"3m",
+        "history":"30d",
+        "valueType":"INTEGER",
+        "units":"bps"
+	},
+	{
+		"prototype": "net.if.in.errors",
+		"name": "Inbound packets with errors",
+		"group": "Network_Interfaces",
+        "delay":"5m",
+        "history":"1w",
+        "valueType":"INTEGER"
+	},
+	{
+		"prototype": "net.if.out.errors",
+		"name": "Outbound packets with errors",
+		"group": "Network_Interfaces",
+        "delay":"5m",
+        "history":"1w",
+        "valueType":"INTEGER"
+	}
+]
