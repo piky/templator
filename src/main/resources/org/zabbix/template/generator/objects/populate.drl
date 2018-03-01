@@ -8,7 +8,7 @@ rule "Rule 1: automatically add type=SNMP if type is not populated"
 when
 	$m : Metric (type == null, snmpObject !=null, oid != null )
 then
-    logger.info("Adding type=SNMP for "+$m);
+    logger.debug("Adding type=SNMP for "+$m);
     modify($m) { setType(Metric.Type.SNMP) };
 end
 
@@ -46,7 +46,7 @@ when
 	$m_used: Metric ( prototype == 'vm.memory.used')
 	$m_total: Metric ( prototype == 'vm.memory.total')
 then
-    logger.info("There are vm.memory.total and vm.memory.used found "+$m);
+    logger.debug("There are vm.memory.total and vm.memory.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -61,7 +61,7 @@ when
 	$m_used: Metric ( prototype == 'vm.memory.units.used')
 	$m_total: Metric ( prototype == 'vm.memory.units.total')
 then
-    logger.info("There are vm.memory.units.total and vm.memory.units.used found "+$m);
+    logger.debug("There are vm.memory.units.total and vm.memory.units.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -75,7 +75,7 @@ when
 	$m_free: Metric ( prototype == 'vm.memory.free')
 	$m_total: Metric ( prototype == 'vm.memory.total')
 then
-    logger.info("There are vm.memory.total and vm.memory.free found "+$m);
+    logger.debug("There are vm.memory.total and vm.memory.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
 	};
@@ -90,7 +90,7 @@ when
 	$m_free: Metric ( prototype == 'vm.memory.free')
 	$m_used: Metric ( prototype == 'vm.memory.used')
 then
-    logger.info("There are vm.memory.used and vm.memory.free found "+$m);
+    logger.debug("There are vm.memory.used and vm.memory.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
 	};
@@ -100,9 +100,9 @@ rule "Rule 8: purge original description(description)"
 	agenda-group "populate"
 	salience 101
 when
-	$m : Metric (vendorDescription != null || mib != null || ref != null)
+	$m : Metric (vendorDescription != null )
 then
-    logger.info("Generating description(description) for "+$m);
+    logger.debug("Generating description(description) for "+$m);
     modify( $m ) { 
     		setDescription("")
     	};
@@ -114,7 +114,7 @@ rule "Rule 9: generate each item description(mib)"
 when
 	$m : Metric (mib != null)
 then
-    logger.info("Generating description(mib) for "+$m);
+    logger.debug("Generating description(mib) for "+$m);
     modify( $m ) { 
     		setDescription( $m.getDescription() + "\nMIB: " + $m.getMib() )
     	};
@@ -126,7 +126,7 @@ rule "Rule 10: generate each item description"
 when
 	$m : Metric (vendorDescription != null)
 then
-    logger.info("Generating description(vendorDescription) for "+$m);
+    logger.debug("Generating description(vendorDescription) for "+$m);
     modify( $m ) { 
     		setDescription( $m.getDescription() + "\n" + $m.getVendorDescription() )
     	};
@@ -138,7 +138,7 @@ rule "Rule 11: generate each item description"
 when
 	$m : Metric (ref != null)
 then
-    logger.info("Generating description(ref) for "+$m);
+    logger.debug("Generating description(ref) for "+$m);
     modify( $m ) { 
     		setDescription( $m.getDescription() + "\n" + $m.getRef() )
     	};
