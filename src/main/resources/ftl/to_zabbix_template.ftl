@@ -163,7 +163,7 @@
 					        <privatekey/>
 					        <port/>
 					        ${xml_wrap(m.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
-					        <inventory_link>${m.inventoryLink!0}</inventory_link>
+					        <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
 					        <applications>
 					        <#-- change group to array in Java? -->
 					        <#list [m.group] as g>
