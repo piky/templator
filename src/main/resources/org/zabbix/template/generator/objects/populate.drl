@@ -144,12 +144,3 @@ then
     	};
 end
 
-rule "Rule 12: generate each trigger description"
-	agenda-group "populate"
-when
-	$m : Metric ($triggers: triggers)
-    $tr: Trigger () from $triggers
-then
-    logger.info("Generating trigger description for "+ $tr);
-    $tr.setDescription( "Last value: {ITEM.LASTVALUE1}." );
-end
