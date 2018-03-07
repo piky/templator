@@ -37,6 +37,17 @@ then
     	};
 end
 
+rule "Rule 3a: generate each trigger name(discovery rules, prefix with alarmObject)"
+	agenda-group "populate"
+	no-loop
+when
+    $m : Metric ($key: key != null, alarmObject != null, $triggers: triggers)
+    $tr: Trigger ($e: expression!=null) from $triggers 
+then
+    logger.info("Generating trigger name for "+ $tr);
+    $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
+end
+
 
 rule "Rule 4: generate vm.memory.pused"
 	agenda-group "populate"

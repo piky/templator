@@ -12,6 +12,44 @@ public class Trigger {
 	private int priority;
 	private String description;
 	private String url;
+	private ManualClose manualClose = ManualClose.NO;
+	private RecoveryMode recoveryMode;
+	public enum ManualClose implements ZabbixValue {
+
+		YES(1),
+		NO(0);
+		private int zabbixValue;
+		ManualClose(int zabbixValue){
+			this.setZabbixValue(zabbixValue);
+		}
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	public enum RecoveryMode implements ZabbixValue {
+
+		EXPRESSION(0),
+		RECOVERY_EXPRESSION(1),
+		NONE(2);
+		private int zabbixValue;
+		RecoveryMode(int zabbixValue){
+			this.setZabbixValue(zabbixValue);
+		}
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};	
 	/**
 	 * @return the prototype
 	 */
@@ -60,5 +98,29 @@ public class Trigger {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+	/**
+	 * @return the manualClose
+	 */
+	public ManualClose getManualClose() {
+		return manualClose;
+	}
+	/**
+	 * @param manualClose the manualClose to set
+	 */
+	public void setManualClose(ManualClose manualClose) {
+		this.manualClose = manualClose;
+	}
+	/**
+	 * @return the recoveryMode
+	 */
+	public RecoveryMode getRecoveryMode() {
+		return recoveryMode;
+	}
+	/**
+	 * @param recoveryMode the recoveryMode to set
+	 */
+	public void setRecoveryMode(RecoveryMode recoveryMode) {
+		this.recoveryMode = recoveryMode;
+	}
+
 }

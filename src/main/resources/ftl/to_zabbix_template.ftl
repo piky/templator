@@ -14,19 +14,36 @@
             <template>${t.name}</template>
             <name>${t.name}</name>
             <description>
-            <#--  we need to finish this off -->
-            <#if t.documentation??>
-            Overview: ${t.documentation.overview!''}${'\n'}
-            <#if t.documentation.issues??>
-                ${'\nKnown Issues:\n'}
-                <#list t.documentation.issues as i>
-                ${i.description!''}
-                ${i.version!''}
-                ${i.device!''}
-                </#list>
-                </#if>
-            </#if>
-            </description>
+${t.description!''}
+<#if t.documentation??>
+<#if t.documentation.overview??>
+Overview: ${t.documentation.overview!''}
+</#if>
+</#if>
+<#assign mibs = t.getUniqueMibs()![]>
+<#if (mibs?size>0)>
+MIBs used:
+<#list mibs as mib>
+${mib}
+</#list>
+</#if>
+<#if t.documentation??>
+<#if t.documentation.issues??>
+Known Issues:
+<#list t.documentation.issues as i>
+<#if i.description??>
+description : ${i.description!''}
+</#if>
+<#if i.version??>
+version : ${i.version!''}
+</#if>
+<#if i.version??>
+device : ${i.device!''}
+</#if>
+</#list>
+</#if>
+</#if>
+</description>
   <#--       <xsl:copy>
             <description>
                 <xsl:value-of select="./description"/>
@@ -57,12 +74,10 @@
             </items>
             <#if (t.discoveryRules?size > 0)>
             <discovery_rules>
-            <#list t.templates as dep>
-                <#list t.discoveryRules as dr>
-                <discovery_rule>
-                    <@discovery_rule dr/>
-                </discovery_rule>
-                </#list>
+	            <#list t.discoveryRules as dr>
+	            <discovery_rule>
+	                <@discovery_rule dr/>
+	            </discovery_rule>
             </#list>
             </discovery_rules>
             <#else>
@@ -113,11 +128,6 @@
             </#list>
         </#list>
 	</triggers>
-    
-    
-    <#-- <triggers>
-        <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
-    </triggers> -->
     <#if (body.valueMaps?size > 0)>
     <value_maps>
     <#list body.valueMaps as vm>
@@ -343,7 +353,7 @@
 	<#if tr.recoveryExpression??>
 		<#local recovery_mode = 1>
 	<#elseif tr.recoveryMode??>
-		<#local recovery_mode = tr.recoveryMode>
+		<#local recovery_mode = tr.recoveryMode.getZabbixValue()>
 	<#else>		
 		<#local recovery_mode = 0>
 	</#if>
@@ -357,7 +367,7 @@
     <priority>${tr.priority!'0'}</priority>
     ${xml_wrap(tr.description!'','description')}
     <type>0</type>
-    <manual_close>0</manual_close>
+    ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
     <dependencies/>
     <tags/>
 	
@@ -480,35 +490,41 @@
     </xsl:template>
  -->
 <#macro generate_groups groups_list>
+    <#local found = false>
     <#list groups_list as g>
           <#switch g>
           <#case 'OS'>
+          <#local found = true>
         <group>
             <name>Templates/Operating Systems</name>
         </group>
             <#break>
           <#case 'NETWORK'>
+          <#local found = true>
         <group>
             <name>Templates/Network Devices</name>
         </group>
             <#break>
           <#case 'SERVER'>
+          <#local found = true>
         <group>
             <name>Templates/Servers Hardware</name>
         </group>
             <#break>
           <#case 'MODULE'>
+          <#local found = true>
         <group>
-            <name>Templates/Module</name>
+            <name>Templates/Modules</name>
         </group>
             <#break>                                
           <#default>
         </#switch>
-    <#else>
+    </#list>
+    <#if found == false>
         <group>
-            <name>Templates/Module</name>
+            <name>Templates/Modules</name>
         </group>
-      </#list>
+	</#if>
 </#macro>
  <#function time_suffix_to_seconds time>
      <#if zbx_ver='3.2'>

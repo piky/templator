@@ -6,5 +6,16 @@
 	"group":"Inventory",
 	"delay":"1h",
 	"history":"2w",
-	"trends":"0"	
+	"trends":"0",
+	"triggers":[
+		{
+			"prototype":"none",
+			"expression":"{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0",
+			"recoveryMode":"NONE",
+			"manualClose":"YES",
+			"name":"Firmware has changed",
+			"description":"Firmware version has changed. Ack to close",
+			"priority":1
+		}
+	]
 }
