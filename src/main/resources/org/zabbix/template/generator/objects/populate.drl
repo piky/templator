@@ -140,6 +140,16 @@ when
 then
     logger.debug("Generating description(ref) for "+$m);
     modify( $m ) { 
-    		setDescription( $m.getDescription() + "\n" + $m.getRef() )
+    		setDescription( $m.getDescription() + "\n" + $m.getRef() );
     	};
+end
+
+rule "Rule 12: generate each trigger description"
+	agenda-group "populate"
+when
+	$m : Metric ($triggers: triggers)
+    $tr: Trigger () from $triggers
+then
+    logger.info("Generating trigger description for "+ $tr);
+    $tr.setDescription( "Last value: {ITEM.LASTVALUE1}." );
 end
