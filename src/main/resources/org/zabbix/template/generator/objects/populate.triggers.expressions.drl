@@ -21,12 +21,32 @@ end
 rule "Rule: generate each trigger recovery expression"
 	agenda-group "populate"
 	no-loop
-when
-    
+when    
     $m : Metric ($key: key != null, $triggers: triggers)
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: recoveryExpression!=null) from $triggers 
 then
-    logger.info("Generating trigger recoverExpression (changing TEMPLATE_NAME:METRIC) for "+ $tr);
-    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    logger.info("Generating trigger recoveryExpression (changing TEMPLATE_NAME:METRIC) for "+ $tr);
+    $tr.setRecoveryExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+end
+
+
+
+//
+rule "Rule: replaces ALARM_OBJECT macro in expressions"
+	agenda-group "populate"
+	no-loop
+when    
+    $m : Metric ($key: key != null, $triggers: triggers, $alarmObject: alarmObject != null)
+    $tr: Trigger () from $triggers 
+then
+    logger.info("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr);
+    if ($tr.getRecoveryExpression() !=null) { 
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("ALARM_OBJECT",$alarmObject));
+    }
+    if ($tr.getDescription() !=null) { 
+    	$tr.setDescription( $tr.getDescription().replaceAll("ALARM_OBJECT",$alarmObject));
+    }
+    $tr.setExpression( $tr.getExpression().replaceAll("ALARM_OBJECT",$alarmObject));
+    $tr.setName( $tr.getName().replaceAll("ALARM_OBJECT",$alarmObject));
 end

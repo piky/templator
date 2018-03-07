@@ -1,4 +1,5 @@
 {
+	
 	"prototype":"sensor.temp.value",
 	"name":"Temperature",
 	"description":"Temperature readings of testpoint: <xsl:value-of select=\"alarmObject\"/>",
@@ -7,5 +8,28 @@
 	"units":"°C",
 	"delay":"3m",
 	"history":"30d",
-	"trends":"365d"
+	"trends":"365d",
+	"triggers":[
+		{
+			"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
+			"prototype": "none",
+			"id":"tempWarn",
+			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:\"ALARM_OBJECT\"}",
+			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:\"ALARM_OBJECT\"}-3",
+			"name":"Temperature is above warning threshold: >\"ALARM_OBJECT\"",
+			"priority":2,
+			"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
+			"dependsOn":["tempCrit"]
+		},
+		{
+			"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
+			"prototype": "none",
+			"id":"tempCrit",
+			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_CRIT:\"ALARM_OBJECT\"}",
+			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:\"ALARM_OBJECT\"}-3",
+			"name":"Temperature is above critical threshold: >\"ALARM_OBJECT\"",
+			"priority":4,
+			"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
+		}		
+	]
 }
