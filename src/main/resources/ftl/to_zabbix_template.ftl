@@ -44,7 +44,7 @@
             <applications>
                 <#list distinct_by_key(t.metricsRegistry,'group') as g>
                 <application>
-                    <name>${g?replace('_',' ')?capitalize}</name>
+                    <name>${g?replace('_',' ')}</name>
                 </application>
                 </#list>
             </applications>
@@ -220,7 +220,7 @@
                     <#-- change group to array in Java? -->
                     <#list [m.group] as g>
                     <application>
-                        <name>${g?replace('_',' ')?capitalize}</name>
+                        <name>${g?replace('_',' ')}</name>
                     </application>
                     </#list>
                     </applications>
