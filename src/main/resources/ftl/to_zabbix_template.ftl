@@ -102,7 +102,19 @@
     <#-- <graphs>
         <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
     </graphs> -->
-    <triggers/>
+    <triggers>
+        <#list body.templates as t>
+        	<#list t.metrics as m>
+        		<#list m.triggers as tr>
+                <trigger>
+                    <@trigger tr/>
+                </trigger>
+                </#list>
+            </#list>
+        </#list>
+	</triggers>
+    
+    
     <#-- <triggers>
         <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/triggers/trigger"/>
     </triggers> -->
@@ -307,13 +319,49 @@
                     </item_prototype>
                 </#list>
             </item_prototypes>
-            <trigger_prototypes/><#--  <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/triggers/trigger"/> -->
+            <trigger_prototypes>
+            	<#list dr.metrics as m>
+            		<#list m.triggers as tr>
+                    <trigger_prototype>
+                        <@trigger tr/>
+                    </trigger_prototype>
+                    </#list>
+                </#list>
+            </trigger_prototypes>
             <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
             <#if zbx_ver = '3.4'>
             <jmx_endpoint/>
             </#if>
  </#macro>
+
+<#-- tr - trigger-->
+<#macro trigger tr>
+	
+	<expression>${tr.expression}</expression>
+	<#local recovery_mode = 0>
+	<#if tr.recoveryExpression??>
+		<#local recovery_mode = 1>
+	<#elseif tr.recoveryMode??>
+		<#local recovery_mode = tr.recoveryMode>
+	<#else>		
+		<#local recovery_mode = 0>
+	</#if>
+	${xml_wrap(recovery_mode!0,'recovery_mode')}
+	${xml_wrap(tr.recoveryExpression!'','recovery_expression')}
+    <name>${tr.name}</name>
+    <correlation_mode>0</correlation_mode>
+    <correlation_tag/>
+    ${xml_wrap(tr.url!'','url')}
+    <status>0</status>
+    <priority>${tr.priority!'0'}</priority>
+    ${xml_wrap(tr.description!'','description')}
+    <type>0</type>
+    <manual_close>0</manual_close>
+    <dependencies/>
+    <tags/>
+	
+</#macro>
 
 <#--     <xsl:template name="triggerTemplate">
         <xsl:variable name="template_name" select="../../../../name"/>
@@ -502,7 +550,7 @@
     <#return dlist?values>
  </#function>
  <#function xml_wrap var tag>
-     <#if var != ''>
+     <#if var?string != ''>
      <#local string><${tag}>${var?trim}</${tag}></#local>
      <#else>
      <#local string><${tag}/></#local>

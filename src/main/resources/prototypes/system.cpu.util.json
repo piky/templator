@@ -7,5 +7,10 @@
 	"units":"%",
 	"delay":"3m",
 	"history":"30d",
-	"trends":"365d"	
+	"trends":"365d"	,
+	"triggers":[
+		{
+			"prototype":"trigger.cpu.high"
+		}
+	]
 }

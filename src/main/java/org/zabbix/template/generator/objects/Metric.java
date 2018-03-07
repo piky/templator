@@ -1,6 +1,8 @@
 package org.zabbix.template.generator.objects;
 
 
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
@@ -199,7 +201,10 @@ public abstract class Metric {
 
 
 	//Preprocessing
-	private PreprocessingStep[] preprocessing;
+	private ArrayList<PreprocessingStep> preprocessing;
+	
+	//Triggers
+	private ArrayList<Trigger> triggers =  new ArrayList<Trigger>(0);;
 
 	//Generated down below
 	public String getPrototype() {
@@ -341,11 +346,30 @@ public abstract class Metric {
 	public void setValueMap(String valueMap) {
 		this.valueMap = valueMap;
 	}
-	public PreprocessingStep[] getPreprocessing() {
+
+	/**
+	 * @return the preprocessing
+	 */
+	public ArrayList<PreprocessingStep> getPreprocessing() {
 		return preprocessing;
 	}
-	public void setPreprocessing(PreprocessingStep[] preprocessing) {
+	/**
+	 * @param preprocessing the preprocessing to set
+	 */
+	public void setPreprocessing(ArrayList<PreprocessingStep> preprocessing) {
 		this.preprocessing = preprocessing;
+	}
+	/**
+	 * @return the triggers
+	 */
+	public ArrayList<Trigger> getTriggers() {
+		return triggers;
+	}
+	/**
+	 * @param triggers the triggers to set
+	 */
+	public void setTriggers(ArrayList<Trigger> triggers) {
+		this.triggers = triggers;
 	}
 	@Override
 	public int hashCode() {
