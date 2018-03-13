@@ -68,9 +68,16 @@ when
 	$m : Metric (mib != null)
 then
     logger.debug("Generating description(mib) for "+$m);
-    modify( $m ) { 
-    		setDescription( $m.getDescription() + "\nMIB: " + $m.getMib() )
-    	};
+	if ($m.getDescription() != null) {
+		modify( $m ) {
+    		setDescription( "MIB: " + $m.getMib()+"\n"+$m.getDescription() )
+	    };
+	}
+	else {
+		modify( $m ) {
+			setDescription( "MIB: " + $m.getMib()+"\n" )
+		};
+	}    	
 end
 
 rule "Rule 10: generate each item description"
@@ -80,9 +87,16 @@ when
 	$m : Metric (vendorDescription != null)
 then
     logger.debug("Generating description(vendorDescription) for "+$m);
-    modify( $m ) { 
+	if ($m.getDescription() != null) {
+		modify( $m ) {
     		setDescription( $m.getDescription() + "\n" + $m.getVendorDescription() )
-    	};
+	    };
+	}
+	else {
+		modify( $m ) {
+			setDescription( $m.getVendorDescription() )
+		};
+	}
 end
 
 rule "Rule 11: generate each item description"
