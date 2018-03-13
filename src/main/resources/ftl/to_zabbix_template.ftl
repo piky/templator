@@ -368,7 +368,15 @@ device : ${i.device!''}
     ${xml_wrap(tr.description!'','description')}
     <type>0</type>
     ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
-    <dependencies/>
+	<dependencies>
+		<#list tr.dependencies as trd>
+		<dependency>
+			${xml_wrap(trd.name!'','name')}
+			${xml_wrap(trd.expression!'','expression')}
+			${xml_wrap(trd.recoveryExpression!'','recovery_expression')}
+		</dependency>
+		</#list>
+    </dependencies>
     <tags/>
 	
 </#macro>

@@ -3,6 +3,9 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*
  * 
@@ -14,13 +17,34 @@ public class Template {
 	private String description;
 	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);
 	
+	@JsonIgnore
+	private ArrayList<String> groups =  new ArrayList<String>(0);//groups would be populated in Drools
+	
 	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
 	private Metric metrics[] = new Metric[0];
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
+	private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
 	
 	private ArrayList<UserMacro> macros = new ArrayList<UserMacro>(0);
 	private ArrayList<String> templates = new ArrayList<String>(0);
+	
+	
+	//this method return a  list of all unique mibs met in the template. This is required for FreeMarker generation of template description 
+	public HashSet<String> getUniqueMibs(){
+		
+		HashSet<String> set = new HashSet<String>(0); 
+		String mib;
+		for (Metric m: this.metricsRegistry) {
+				if ((mib = m.getMib()) != null) {
+					set.add(mib);
+				}
+		}
+		return set;
+	}
+	
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -46,6 +70,12 @@ public class Template {
 	 */
 	public void setClasses(ArrayList<TemplateClass> classes) {
 		this.classes = classes;
+	}
+	public ArrayList<String> getGroups() {
+		return groups;
+	}
+	public void setGroups(ArrayList<String> groups) {
+		this.groups = groups;
 	}
 	public DiscoveryRule[] getDiscoveryRules() {
 		return discoveryRules;

@@ -1,7 +1,7 @@
 package org.zabbix.template.generator;
 
 
-import java.text.Format;
+
 import java.util.ArrayList;
 
 import org.apache.camel.Exchange;
@@ -10,7 +10,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 
-import org.apache.camel.model.dataformat.JsonLibrary;
+
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.InputJSON;
 import org.zabbix.template.generator.objects.Metric;
-import org.zabbix.template.generator.objects.MetricPrototypeNotFoundException;
 import org.zabbix.template.generator.objects.Template;
 import org.zabbix.template.generator.objects.ValueMap;
 
@@ -49,12 +48,13 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		//Catch wrong metric prototypes spelling
 		onException(org.zabbix.template.generator.objects.MetricPrototypeNotFoundException.class)
 		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
+		
 		//other errors
 		from("direct:errors")
 		.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
 
 
-		from("file:bin/in/json?noop=true&delay=300&idempotentKey=${file:name}-${file:modified}")
+		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.log("Loading file: ${in.headers.CamelFileNameOnly}")
 		.unmarshal(yamlJackson)
 /*		.marshal().json(JsonLibrary.Jackson,true)
@@ -97,6 +97,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					DiscoveryRule[] drules = t.getDiscoveryRules();
 					for (DiscoveryRule drule: drules) {
 						for (Metric m: drule.getMetrics()) {
+							
 							m.setDiscoveryRule(drule.getName());
 							ksession.insert(m);
 
@@ -105,12 +106,15 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					Agenda agenda = ksession.getAgenda();
 					//last agendaGroup will evaluate first...
 					agenda.getAgendaGroup( "validate" ).setFocus();
+					//should go after trigger names, expressions, recovery are ready
+					agenda.getAgendaGroup( "populate.trigger.dependencies" ).setFocus();
 					agenda.getAgendaGroup( "populate" ).setFocus();
+					
 
 					//put all metrics into registry. TODO, REFACTOR
 					t.constructMetricsRegistry();
 					ksession.fireAllRules();
-					ksession.dispose();					
+					ksession.dispose();
 
 				}
 
@@ -134,8 +138,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		from("direct:zabbix")
 		.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
 		.to("xslt:templates/indent.xsl?saxon=true")
-		
-		.to("file:src/main/resources/ftl/out");;
+		.to("file:src/main/resources/ftl/out");
 
 
 	}

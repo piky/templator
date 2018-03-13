@@ -18,7 +18,11 @@ public class Trigger {
 	private String url;
 	private ManualClose manualClose = ManualClose.NO;
 	private RecoveryMode recoveryMode;
+	//dependsOn - populate with trigger ids 
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
+	//dependencies - objects to be put onto zabbix_export output
+	private ArrayList<TriggerDependency> dependencies = new ArrayList<TriggerDependency>(0);
+	
 	public enum ManualClose implements ZabbixValue {
 
 		YES(1),
@@ -150,6 +154,12 @@ public class Trigger {
 	}
 	public void setDependsOn(ArrayList<String> dependsOn) {
 		this.dependsOn = dependsOn;
+	}
+	public ArrayList<TriggerDependency> getDependencies() {
+		return dependencies;
+	}
+	public void setDependencies(ArrayList<TriggerDependency> dependencies) {
+		this.dependencies = dependencies;
 	}
 
 }

@@ -6,7 +6,8 @@
 metric.prototype must be in dot notation. Metric subclass - in TitleCase.  
 use camelCase for jsonInput    
 - in discovery filter provide: formulaid in condition
-- arrays must be provided with default value of zero elements.  
+- arrays must be provided with default value of zero elements.
+- use TEMPLATE_NAME:METRIC instead of real trigger keys in expressions/recoveryExpressions    
 
 
 ## Classes 'magic'  
@@ -79,3 +80,6 @@ attach sub templates
 if class = SNMP_DEVICE -> attach SNMP GENERIC
 if class = INTERFACES -> attach SNMP INTERFACES
 if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
+
+### magic 4: SNMPvX
+add to all template names with SNMP items. This gets rewritten to SNMPv2 or SNMPv3. (currently in camel route)  
