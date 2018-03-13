@@ -9,7 +9,7 @@ when
     $m : Metric ($triggers: triggers)
     $tr: Trigger (description==null) from $triggers 
 then
-    logger.info("Generating trigger description for "+ $tr);
+    logger.debug("Generating trigger description for "+ $tr);
     $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.");
 end
 
@@ -20,6 +20,6 @@ when
 	$m : Metric ($triggers: triggers)
     $tr: Trigger (description!=null) from $triggers 
 then
-    logger.info("Generating trigger description for "+ $tr);
+    logger.debug("Generating trigger description for "+ $tr);
     $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
 end

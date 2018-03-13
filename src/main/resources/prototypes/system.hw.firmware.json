@@ -10,7 +10,7 @@
 	"triggers":[
 		{
 			"prototype":"none",
-			"expression":"{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}&gt;0",
+			"expression":"{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}>0",
 			"recoveryMode":"NONE",
 			"manualClose":"YES",
 			"name":"Firmware has changed",

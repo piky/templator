@@ -81,6 +81,7 @@ then
     	getMacros().add(new UserMacro("{$TEMP_WARN:\"AMBIENT\"}","30")),
     	
     	getMacros().add(new UserMacro("{$TEMP_CRIT}","60")),
+    	getMacros().add(new UserMacro("{$TEMP_CRIT_LOW}","5")),
     	getMacros().add(new UserMacro("{$TEMP_WARN}","50"));
     	
     };

@@ -1,0 +1,11 @@
+[
+	{
+		"prototype": "trigger.sn.changed",
+	    "name": "ALARM_OBJECT_TYPE has been replaced (new serial number received)",
+	    "description":"ALARM_OBJECT_TYPE serial number has changed. Ack to close",
+		"expression":"{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}>0",
+		"priority": 1,
+		"manualClose":"YES",
+		"recoveryMode": "NONE"
+	}
+]

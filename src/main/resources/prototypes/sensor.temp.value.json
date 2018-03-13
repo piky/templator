@@ -2,7 +2,7 @@
 	
 	"prototype":"sensor.temp.value",
 	"name":"Temperature",
-	"description":"Temperature readings of testpoint: <xsl:value-of select=\"alarmObject\"/>",
+	"description":"Temperature readings of testpoint: ALARM_OBJECT",
 	"valueType":"FLOAT",
 	"group":"Temperature",
 	"units":"°C",
@@ -14,9 +14,9 @@
 			"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
 			"prototype": "none",
 			"id":"tempWarn",
-			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_WARN:\"ALARM_OBJECT\"}",
-			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_WARN:\"ALARM_OBJECT\"}-3",
-			"name":"Temperature is above warning threshold: >\"ALARM_OBJECT\"",
+			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_WARN:\"ALARM_OBJECT\"}",
+			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_WARN:\"ALARM_OBJECT\"}-3",
+			"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"ALARM_OBJECT\"}",
 			"priority":2,
 			"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
 			"dependsOn":["tempCrit"]
@@ -25,11 +25,20 @@
 			"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
 			"prototype": "none",
 			"id":"tempCrit",
-			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}&gt;{$TEMP_CRIT:\"ALARM_OBJECT\"}",
-			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}&lt;{$TEMP_CRIT:\"ALARM_OBJECT\"}-3",
-			"name":"Temperature is above critical threshold: >\"ALARM_OBJECT\"",
+			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"ALARM_OBJECT\"}",
+			"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"ALARM_OBJECT\"}-3",
+			"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"ALARM_OBJECT\"}",
 			"priority":4,
 			"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
-		}		
+		},
+		{
+			"documentation":"Using recovery expression... Temperature has to be 3 points more than threshold level  ({$TEMP_CRIT_LOW}+3)",
+			"prototype": "none",
+			"id":"tempLow",
+			"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}<{$TEMP_CRIT_LOW:\"ALARM_OBJECT\"}",
+			"recoveryExpression":"{TEMPLATE_NAME:METRIC.min(5m)}>{$TEMP_CRIT_LOW:\"ALARM_OBJECT\"}+3",
+			"name":"Temperature is too low: <{$TEMP_CRIT_LOW:\"ALARM_OBJECT\"}",
+			"priority":3
+		}
 	]
 }
