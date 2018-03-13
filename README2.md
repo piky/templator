@@ -7,7 +7,8 @@ metric.prototype must be in dot notation. Metric subclass - in TitleCase.
 use camelCase for jsonInput    
 - in discovery filter provide: formulaid in condition
 - arrays must be provided with default value of zero elements.
-- use TEMPLATE_NAME:METRIC instead of real trigger keys in expressions/recoveryExpressions    
+- use TEMPLATE_NAME:METRIC instead of real trigger keys in expressions/recoveryExpressions
+- Minimize conditions and complex logic in Freemarker. Do all weird and magic stuff in Drools.      
 
 
 ## Classes 'magic'  
@@ -21,6 +22,7 @@ use camelCase for jsonInput
 ```
 
 ### magic 2  
+
 ```
     <!--  define macros with default values to add into template-->
     <xsl:variable name="MACROS" as="element()*">
@@ -82,4 +84,4 @@ if class = INTERFACES -> attach SNMP INTERFACES
 if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
 
 ### magic 4: SNMPvX
-add to all template names with SNMP items. This gets rewritten to SNMPv2 or SNMPv3. (currently in camel route)  
+add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  

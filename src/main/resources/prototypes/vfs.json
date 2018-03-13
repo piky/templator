@@ -1,0 +1,78 @@
+[
+	{
+		"name": "Storage units",
+		"prototype": "vfs.fs.units",
+		"group": "Internal_Items",
+		"history": "7d",
+		"trends": "0d"
+	},
+	{
+		"name":"Used storage in units",
+		"prototype":"vfs.fs.units.used",
+		"group":"Internal_Items",
+		"description":"Used storage in units",
+		"units":"units",
+		"history":"7d",
+		"trends":"0d"
+	},
+	{
+		"name":"Total space in units",
+		"prototype":"vfs.fs.units.total",
+		"group":"Internal_Items",
+		"description":"Total space in units",
+		"units":"units",
+		"history":"7d",
+		"trends":"0d"
+	},	
+
+	{
+		"prototype": "vfs.fs.used",
+		"name": "Used space",
+		"description": "Used storage in Bytes",
+		"group": "Storage",
+		"history": "30d",
+		"units": "B"
+	},
+	{
+		"prototype": "vfs.fs.total",
+		"name": "Total space",
+		"group": "Storage",
+		"history": "30d",
+		"units": "B",
+		"description": "Total space in Bytes"
+	},
+	
+	{
+		"prototype": "vfs.fs.free",
+		"name": "Free space",
+		"group": "Storage",
+		"history": "30d",
+		"units": "B"
+	},
+	{
+		"prototype": "vfs.fs.pused",
+		"name": "Storage utilization",
+		"group": "Storage",
+		"history": "30d",
+		"valueType": "FLOAT",
+		"units": "%",
+		"description": "Storage utilization in % for ALARM_OBJECT",
+		"triggers": [
+			{
+				"prototype": "none",
+				"id":"storageCrit",
+				"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_CRIT}",
+				"name":"Disk space is critically low",
+				"priority":3
+			},
+			{
+				"prototype": "none",
+				"id":"storageWarn",
+				"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$STORAGE_UTIL_WARN}",
+				"name":"Disk space is low",
+				"priority":2,
+				"dependsOn":["storageCrit"]
+			}
+		]
+	}
+]

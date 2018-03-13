@@ -13,48 +13,7 @@
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
-            <description>${headers.template_ver}
-${t.description!''}
-<#if t.documentation??>
-<#if t.documentation.overview??>
-Overview: ${t.documentation.overview!''}
-</#if>
-</#if>
-<#assign mibs = t.getUniqueMibs()![]>
-<#if (mibs?size>0)>
-MIBs used:
-<#list mibs as mib>
-${mib}
-</#list>
-</#if>
-<#if t.documentation??>
-<#if t.documentation.issues??>
-Known Issues:
-<#list t.documentation.issues as i>
-<#if i.description??>
-description : ${i.description!''}
-</#if>
-<#if i.version??>
-version : ${i.version!''}
-</#if>
-<#if i.version??>
-device : ${i.device!''}
-</#if>
-</#list>
-</#if>
-</#if>
-</description>
-  <#--       <xsl:copy>
-            <description>
-                <xsl:value-of select="./description"/>
-                <xsl:if test="./documentation/overview and ./documentation/overview != ''">&#10;Overview: <xsl:value-of select="./documentation/overview"/><xsl:text>&#10;</xsl:text></xsl:if>
-                <xsl:if test="./documentation/issues/issue"><xsl:text>&#10;Known Issues:&#10;</xsl:text></xsl:if>
-                <xsl:for-each select="./documentation/issues/issue">
-                    <xsl:for-each select="*">
-                        <xsl:value-of select="local-name()"/> : <xsl:value-of select="."/><xsl:if test="position() != last()"><xsl:text>&#10;</xsl:text></xsl:if>
-                    </xsl:for-each>
-                </xsl:for-each>
-            </description>       -->                
+            <description><@generate_template_description t/></description>       
             <groups>
 				<@generate_groups t.classes![]/>
             </groups>
@@ -276,7 +235,7 @@ device : ${i.device!''}
 <#macro discovery_rule dr>
     
             <name>${dr.name}</name>
-            <type>4</type><#-- <xsl:copy-of select="$snmp_item_type"/> -->
+            <type>${headers.snmp_item_type}</type>
             <snmp_community>${snmp_community}</snmp_community>
             <snmp_oid>${dr.oid}</snmp_oid>
             <key>${dr.key}</key>
@@ -538,6 +497,39 @@ device : ${i.device!''}
         </group>
 	</#if>
 </#macro>
+
+<#macro generate_template_description t>
+${t.description!''} version: ${headers.template_ver}
+<#if t.documentation??>
+<#if t.documentation.overview??>
+Overview: ${t.documentation.overview!''}
+</#if>
+</#if>
+<#assign mibs = t.getUniqueMibs()![]>
+<#if (mibs?size>0)>
+MIBs used:
+<#list mibs as mib>
+${mib}
+</#list>
+</#if>
+<#if t.documentation??>
+<#if t.documentation.issues??>
+Known Issues:
+<#list t.documentation.issues as i>
+<#if i.description??>
+description : ${i.description!''}
+</#if>
+<#if i.version??>
+version : ${i.version!''}
+</#if>
+<#if i.version??>
+device : ${i.device!''}
+</#if>
+</#list>
+</#if>
+</#if>
+</#macro>
+
  <#function time_suffix_to_seconds time>
      <#if zbx_ver='3.2'>
          <#if time?ends_with('s')><#return time?keep_before('s')>

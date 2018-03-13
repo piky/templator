@@ -59,7 +59,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.setHeader("lang", simple("EN",String.class))
 				
 		
-		.log("Loading file: ${in.headers.CamelFileNameOnly}")
+		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 		.unmarshal(yamlJackson)
 /*		.marshal().json(JsonLibrary.Jackson,true)
 		.log("${body}");

@@ -15,7 +15,7 @@ then
 end
 
 //Theses rules attaches template dependencies if there are some Classes present in it
-rule "Rule 1a: generate SNMPv suffix for templates of class SNMPv1,SNMPv2,SNMPv3"
+rule "Rule 1a: generate SNMPvX suffix for templates of class SNMPv1,SNMPv2,SNMPv3"
 	agenda-group "populate"
 	no-loop
 	salience 1
@@ -92,11 +92,9 @@ then
     	getMacros().add(new UserMacro("{$TEMP_WARN:\"CPU\"}","70")),
     	getMacros().add(new UserMacro("{$TEMP_CRIT:\"AMBIENT\"}","35")),
     	getMacros().add(new UserMacro("{$TEMP_WARN:\"AMBIENT\"}","30")),
-    	
     	getMacros().add(new UserMacro("{$TEMP_CRIT}","60")),
-    	getMacros().add(new UserMacro("{$TEMP_CRIT_LOW}","5")),
-    	getMacros().add(new UserMacro("{$TEMP_WARN}","50"));
-    	
+    	getMacros().add(new UserMacro("{$TEMP_WARN}","50")),
+    	getMacros().add(new UserMacro("{$TEMP_CRIT_LOW}","5"));
     };
 end
 
@@ -110,7 +108,7 @@ then
     logger.info("Found vfs.fs.pused metric, adding additional MACRO...");
     modify($t) {
     	getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","90")),
-    	getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","80"));	
+    	getMacros().add(new UserMacro("{$STORAGE_UTIL_WARN}","80"));	
     };
 end
 

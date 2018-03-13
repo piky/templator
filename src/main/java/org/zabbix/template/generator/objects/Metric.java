@@ -175,7 +175,7 @@ public abstract class Metric {
 	private Type type; 
 
 	public enum Group {
-		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory //to be extended	
+		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory,Storage //to be extended	
 	};
 	private Group group;
 	private  String delay = "5m";

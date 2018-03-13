@@ -1,6 +1,38 @@
 package org.zabbix.template.generator.objects
 global org.slf4j.Logger logger;
+/*
+METRICS
+*/
+//
+rule "Rule: replaces ALARM_OBJECT macro in metrics"
+	agenda-group "populate"
+	no-loop
+when    
+    $m : Metric ($key: key != null,  $alarmObject: alarmObject != null) 
+then
+    if ($m.getDescription() !=null) { 
+    	$m.setDescription( $m.getDescription().replaceAll("ALARM_OBJECT",$alarmObject));
+    }
+    $m.setName( $m.getName().replaceAll("ALARM_OBJECT",$alarmObject));
+end
 
+rule "Rule: replaces ALARM_OBJECT_TYPE macro in metrics"
+	agenda-group "populate"
+	no-loop
+when    
+    $m : Metric ($key: key != null, $alarmObjectType: alarmObjectType != null) 
+then
+    if ($m.getDescription() !=null) { 
+    	$m.setDescription( $m.getDescription().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    }
+    $m.setName( $m.getName().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+end
+
+
+
+/*
+TRIGGERS
+*/
 //replaces TEMPLATE_NAME:METRIC name
 rule "Rule: generate each trigger expression"
 	agenda-group "populate"
@@ -40,7 +72,7 @@ when
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObject: alarmObject != null)
     $tr: Trigger () from $triggers 
 then
-    logger.info("Generating trigger expression (changing ALARM_OBJECT) for "+ $tr);
+    logger.debug("Generating trigger expression (changing ALARM_OBJECT) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("ALARM_OBJECT",$alarmObject));
     }
@@ -58,7 +90,7 @@ when
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObjectType: alarmObjectType != null)
     $tr: Trigger () from $triggers 
 then
-    logger.info("Generating trigger expression (changing ALARM_OBJECT_TYPE) for "+ $tr);
+    logger.debug("Generating trigger expression (changing ALARM_OBJECT_TYPE) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
     }
