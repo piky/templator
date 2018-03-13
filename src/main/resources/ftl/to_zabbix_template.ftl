@@ -13,7 +13,7 @@
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
-            <description>
+            <description>${headers.template_ver}
 ${t.description!''}
 <#if t.documentation??>
 <#if t.documentation.overview??>
@@ -152,7 +152,11 @@ device : ${i.device!''}
 <#-- m - metric-->
 <#macro item m>
                     <name>${m.name}</name>
+                    <#if m.type == 'SNMP'>
+                    <type>${headers.snmp_item_type}</type>
+                    <#else>
                     <type>${m.type.getZabbixValue()!'none'}</type>
+                    </#if>
                     <#if m.type == 'SNMP'>
                     <snmp_community>${snmp_community}</snmp_community>
                     <#else>

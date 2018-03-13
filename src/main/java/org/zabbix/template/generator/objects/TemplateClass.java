@@ -20,5 +20,6 @@ public enum TemplateClass {
 	INTERFACES,
 	SNMP_DEVICE,
 	SNMP_V1,
-	SNMP_V2;
+	SNMP_V2,
+	SNMP_V3;
 }

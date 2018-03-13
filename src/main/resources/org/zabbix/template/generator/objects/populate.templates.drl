@@ -11,7 +11,20 @@ when
     exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
 then
     logger.info("Found SNMP_DEVICE class, attaching template dependency for "+$t);
-    modify($t) {getTemplates().add("Template Module Generic");};
+    modify($t) {getTemplates().add("Template Module Generic SNMPvX");};
+end
+
+//Theses rules attaches template dependencies if there are some Classes present in it
+rule "Rule 1a: generate SNMPv suffix for templates of class SNMPv1,SNMPv2,SNMPv3"
+	agenda-group "populate"
+	no-loop
+	salience 1
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.SNMP_V1 || this == TemplateClass.SNMP_V2|| this == TemplateClass.SNMP_V3) from $classes)
+then
+    logger.info("Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t);
+    modify($t) {setName($t.getName()+" SNMPvX");};
 end
 
 //This rules attaches template dependencies if there are some Classes present in it
@@ -23,7 +36,7 @@ when
     exists (TemplateClass(this == TemplateClass.INTERFACES) from $classes)
 then
     logger.info("Found INTERFACES class, attaching template dependency for "+$t);
-    modify($t) {getTemplates().add("Template Module Interfaces");};
+    modify($t) {getTemplates().add("Template Module Interfaces SNMPvX");};
 end
 
 
