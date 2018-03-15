@@ -374,16 +374,8 @@
 			${xml_wrap(g.show3d?c,'show_3d')}
 			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
 			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right')}			
-			<#if g.yAxisMin??>
-          	<ymin_type_1>1</ymin_type_1>
-            <#else>
-            <ymin_type_1>0</ymin_type_1>
-            </#if>
-            <#if g.yAxisMax??>
-            <ymax_type_1>1</ymax_type_1>
-            <#else>
-            <ymax_type_1>0</ymax_type_1>
-            </#if>
+			${xml_wrap(g.yMinType.getZabbixValue()?c,'ymin_type_1')}
+			${xml_wrap(g.yMaxType.getZabbixValue()?c,'ymax_type_1')}
 			<#-- ymin type with not implemented--> 
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>

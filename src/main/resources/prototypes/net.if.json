@@ -4,43 +4,97 @@
 		"name": "Operational status",
 		"description": "Used memory in Bytes",
 		"group": "Network_Interfaces",
-		"delay":"1m",
-		"history":"2w",
-		"trends":"0d",
-        "valueType":"INTEGER"
+		"delay": "1m",
+		"history": "2w",
+		"trends": "0d",
+		"valueType": "INTEGER"
 	},
 	{
 		"prototype": "net.if.in",
 		"name": "Bits received",
 		"group": "Network_Interfaces",
-        "valueType":"INTEGER",
-        "delay":"3m",
-        "history":"30d",
-        "units":"bps"
+		"valueType": "INTEGER",
+		"delay": "3m",
+		"history": "30d",
+		"units": "bps",
+		"graphs": [
+			{
+				"name": "Network traffic",
+				"graphItems": [
+					{
+						"drawtype": "GRADIENT_LINE",
+						"name": "net.if.in",
+						"yaxisside": "LEFT"
+					},
+					{
+						"drawtype": "BOLD_LINE",
+						"name": "net.if.out",
+						"yaxisside": "LEFT"
+					},
+					{
+						"drawtype": "LINE",
+						"name": "net.if.out.errors",
+						"yaxisside": "RIGHT"
+					},
+					{
+						"drawtype": "LINE",
+						"name": "net.if.in.errors",
+						"yaxisside": "RIGHT"
+					},
+					{
+						"drawtype": "LINE",
+						"name": "net.if.out.discards",
+						"yaxisside": "RIGHT"
+					},
+					{
+						"drawtype": "LINE",
+						"name": "net.if.in.discards",
+						"yaxisside": "RIGHT"
+					}
+				]
+			}
+		]
 	},
 	{
 		"prototype": "net.if.out",
 		"name": "Bits sent",
 		"group": "Network_Interfaces",
-        "delay":"3m",
-        "history":"30d",
-        "valueType":"INTEGER",
-        "units":"bps"
+		"delay": "3m",
+		"history": "30d",
+		"valueType": "INTEGER",
+		"units": "bps"
 	},
 	{
 		"prototype": "net.if.in.errors",
 		"name": "Inbound packets with errors",
 		"group": "Network_Interfaces",
-        "delay":"5m",
-        "history":"1w",
-        "valueType":"INTEGER"
+		"delay": "5m",
+		"history": "1w",
+		"valueType": "INTEGER"
 	},
 	{
 		"prototype": "net.if.out.errors",
 		"name": "Outbound packets with errors",
 		"group": "Network_Interfaces",
-        "delay":"5m",
-        "history":"1w",
-        "valueType":"INTEGER"
+		"delay": "5m",
+		"history": "1w",
+		"valueType": "INTEGER"
+	},
+	{
+		"prototype": "net.if.in.discards",
+		"name": "Inbound packets discarded",
+		"group": "Network_Interfaces",
+		"delay": "5m",
+		"history": "1w",
+		"valueType": "INTEGER"
+	},
+	{
+		"prototype": "net.if.out.discards",
+		"name": "Outbound packets discarded",
+		"group": "Network_Interfaces",
+		"delay": "5m",
+		"history": "1w",
+		"valueType": "INTEGER"
 	}
+
 ]

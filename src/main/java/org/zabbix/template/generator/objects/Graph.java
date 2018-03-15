@@ -191,6 +191,7 @@ public class Graph {
 	}
 
 	public void setyAxisMax(float yAxisMax) {
+		this.yMaxType = YType.FIXED;
 		this.yAxisMax = yAxisMax;
 	}
 
@@ -199,6 +200,7 @@ public class Graph {
 	}
 
 	public void setyAxisMin(float yAxisMin) {
+		this.yMinType = YType.FIXED;
 		this.yAxisMin = yAxisMin;
 	}
 
