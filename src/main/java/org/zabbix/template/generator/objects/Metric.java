@@ -204,7 +204,9 @@ public abstract class Metric {
 	private ArrayList<PreprocessingStep> preprocessing;
 	
 	//Triggers
-	private ArrayList<Trigger> triggers =  new ArrayList<Trigger>(0);;
+	private ArrayList<Trigger> triggers =  new ArrayList<Trigger>(0);
+	//Graphs
+	private ArrayList<Graph> graphs =  new ArrayList<Graph>(0);
 
 	//Generated down below
 	public String getPrototype() {
@@ -370,6 +372,12 @@ public abstract class Metric {
 	 */
 	public void setTriggers(ArrayList<Trigger> triggers) {
 		this.triggers = triggers;
+	}
+	public ArrayList<Graph> getGraphs() {
+		return graphs;
+	}
+	public void setGraphs(ArrayList<Graph> graphs) {
+		this.graphs = graphs;
 	}
 	@Override
 	public int hashCode() {

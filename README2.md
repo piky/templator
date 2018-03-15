@@ -4,11 +4,12 @@
 
 ## Conventions used  
 metric.prototype must be in dot notation. Metric subclass - in TitleCase.  
-use camelCase for jsonInput    
+use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API)     
 - in discovery filter provide: formulaid in condition
 - arrays must be provided with default value of zero elements.
 - use TEMPLATE_NAME:METRIC instead of real trigger keys in expressions/recoveryExpressions
-- Minimize conditions and complex logic in Freemarker. Do all weird and magic stuff in Drools.      
+- Minimize conditions and complex logic in Freemarker. Do all weird and magic stuff in Drools.
+      
 
 
 ## Classes 'magic'  

@@ -9,11 +9,10 @@ import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.Metric;
 
-@Component
+//@Component
 public class ZabbixTemplateBuilder2 extends RouteBuilder {
 
      

@@ -7,7 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ZabbixTemplateBuilder extends RouteBuilder {
 
   @Override
@@ -126,7 +126,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 
 
-		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))		.to("file:bin/out/")
+		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.CamelFileName.replace('.xml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		.to("file:bin/out/")
 
 		.choice()
 		    .when(header("zbx_ver").isEqualTo("3.4"))

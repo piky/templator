@@ -72,10 +72,17 @@
         </template>
       </#list>
     </templates>
-    <graphs/>
-    <#-- <graphs>
-        <xsl:apply-templates select="child::*/*/metrics/*[not (discoveryRule)]/graphs/graph"/>
-    </graphs> -->
+    <graphs>
+        <#list body.templates as t>
+        	<#list t.metrics as m>
+        		<#list m.graphs as g>
+                <graph>
+                    <@graph g t/>
+                </graph>
+                </#list>
+            </#list>
+        </#list>    
+    </graphs>
     <triggers>
         <#list body.templates as t>
         	<#list t.metrics as m>
@@ -342,6 +349,53 @@
     </dependencies>
     <tags/>
 	
+</#macro>
+
+<#-- g - graph , t - current template -->
+<#macro graph g t>
+            ${xml_wrap(g.name,'name')}
+            ${xml_wrap(g.width?c,'width')}
+            ${xml_wrap(g.height?c,'height')}
+            ${xml_wrap(g.yAxisMin?c,'yaxismin')}
+            ${xml_wrap(g.yAxisMax?c,'yaxismax')}            
+			${xml_wrap(g.showWorkPeriod?c,'show_work_period')}
+			${xml_wrap(g.showTriggers?c,'show_triggers')}
+			${xml_wrap(g.graphType.getZabbixValue()?c,'type')}
+			${xml_wrap(g.showLegend?c,'show_legend')}
+			${xml_wrap(g.show3d?c,'show_3d')}
+			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
+			${xml_wrap(g.percentRight?string(",##0.0;; decimalSeparator='.'"),'percent_right')}			
+			<#if g.yAxisMin??>
+          	<ymin_type_1>1</ymin_type_1>
+            <#else>
+            <ymin_type_1>0</ymin_type_1>
+            </#if>
+            <#if g.yAxisMax??>
+            <ymax_type_1>1</ymax_type_1>
+            <#else>
+            <ymax_type_1>0</ymax_type_1>
+            </#if>
+			<#-- ymin type with not implemented--> 
+            <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>
+            <graph_items>
+            	<#list g.graphItems as gi>
+            	<graph_item>
+            		<sortorder>${gi?index}</sortorder>
+            		${xml_wrap(gi.drawType.getZabbixValue()?c,'drawtype')}
+            		${xml_wrap(gi.graphColors[gi?index],'color')}
+            		${xml_wrap(gi.yAxisSide.getZabbixValue()?c,'yaxisside')}
+            		${xml_wrap(gi.calcFnc.getZabbixValue()?c,'calc_fnc')}
+            		${xml_wrap(gi.type.getZabbixValue()?c,'type')}
+                    <item>
+                        <host>${t.name}</host> 
+                        <key>${gi.metricKey}</key>
+                        <#-- ${xml_wrap(gi.type.getZabbixValue()?c,'discoveryRule')} -->
+                    </item>
+            	</graph_item>
+            	</#list>    
+            </graph_items>
+
 </#macro>
 
 <#--     <xsl:template name="triggerTemplate">

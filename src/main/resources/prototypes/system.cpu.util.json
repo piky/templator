@@ -12,5 +12,20 @@
 		{
 			"prototype":"trigger.cpu.high"
 		}
+	],
+	"graphs":[
+		{
+			"prototype":"none",
+			"name":"CPU utilization",
+			"yaxismin":0,
+			"yaxismax":100,
+			"graphItems":[
+				{
+					"drawtype":"GRADIENT_LINE",
+					"name":"system.cpu.util"
+				}
+			]
+			
+		}
 	]
 }
