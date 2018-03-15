@@ -2,6 +2,7 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = TriggerDeserializer.class)
@@ -12,13 +13,17 @@ public class Trigger {
 	private String prototype;
 	private String name;
 	private String expression;
+	@JsonAlias({"recovery_expression"})
 	private String recoveryExpression;
 	private int priority;
 	private String description;
 	private String url;
+	@JsonAlias({"manual_close"})
 	private ManualClose manualClose = ManualClose.NO;
+	@JsonAlias({"recovery_mode"})
 	private RecoveryMode recoveryMode;
-	//dependsOn - populate with trigger ids 
+	//dependsOn - populate with trigger ids
+	@JsonAlias({"depends_on"})
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
 	//dependencies - objects to be put onto zabbix_export output
 	private ArrayList<TriggerDependency> dependencies = new ArrayList<TriggerDependency>(0);
