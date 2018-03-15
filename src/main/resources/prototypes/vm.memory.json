@@ -5,45 +5,57 @@
 		"description": "Used memory in Bytes",
 		"group": "Memory",
 		"units": "B",
-		"delay":"3m",
-		"history":"30d",
-		"trends":"365d"
+		"delay": "3m",
+		"history": "30d",
+		"trends": "365d"
 	},
 	{
 		"prototype": "vm.memory.free",
 		"name": "Available memory",
 		"group": "Memory",
 		"units": "B",
-		"delay":"3m",
-		"history":"30d",
-		"trends":"365d"
+		"delay": "3m",
+		"history": "30d",
+		"trends": "365d"
 	},
 	{
 		"prototype": "vm.memory.total",
 		"name": "Total memory",
 		"group": "Memory",
 		"units": "B",
-		"delay":"3m",
-		"history":"30d",
-		"trends":"365d",
-		"description": "Total memory in Bytes"		
-		
+		"delay": "3m",
+		"history": "30d",
+		"trends": "365d",
+		"description": "Total memory in Bytes"
 	},
 	{
 		"prototype": "vm.memory.pused",
 		"name": "Memory utilization",
 		"group": "Memory",
-		"valueType":"FLOAT",
+		"valueType": "FLOAT",
 		"units": "%",
 		"description": "Memory utilization in %",
-		"delay":"3m",
-		"history":"30d",
-		"trends":"365d",
-		"triggers":[
+		"delay": "3m",
+		"history": "30d",
+		"trends": "365d",
+		"triggers": [
 			{
-				"prototype":"trigger.memory.high"
+				"prototype": "trigger.memory.high"
+			}
+		],
+		"graphs": [
+			{
+				"prototype": "none",
+				"name": "Memory utilization",
+				"yaxismin": 0,
+				"yaxismax": 100,
+				"graphItems": [
+					{
+						"drawtype": "GRADIENT_LINE",
+						"name": "vm.memory.pused"
+					}
+				]
 			}
 		]
 	}
-
 ]

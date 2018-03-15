@@ -48,6 +48,17 @@ then
     $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
 end
 
+rule "Rule 3b: generate each graph name(discovery rules, prefix with alarmObject)"
+	agenda-group "populate"
+	no-loop
+when
+    $m : Metric ($key: key != null, alarmObject != null, $graphs: graphs)
+    $gr: Graph () from $graphs
+then
+    logger.info("Generating graph name for "+ $gr);
+    $gr.setName( $m.getAlarmObject() + ": " + $gr.getName() );
+end
+
 
 rule "Rule 8: purge original description(description)"
 	agenda-group "populate"

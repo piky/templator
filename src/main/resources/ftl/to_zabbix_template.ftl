@@ -35,7 +35,7 @@
             <discovery_rules>
 	            <#list t.discoveryRules as dr>
 	            <discovery_rule>
-	                <@discovery_rule dr/>
+	                <@discovery_rule dr t/>
 	            </discovery_rule>
             </#list>
             </discovery_rules>
@@ -239,7 +239,7 @@
                     </#if>
 </#macro>
 
-<#macro discovery_rule dr>
+<#macro discovery_rule dr t>
     
             <name>${dr.name}</name>
             <type>${headers.snmp_item_type}</type>
@@ -308,7 +308,16 @@
                     </#list>
                 </#list>
             </trigger_prototypes>
-            <graph_prototypes/><#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
+            <graph_prototypes>
+        	<#list dr.metrics as m>
+        		<#list m.graphs as g>
+                <graph_prototype>
+                    <@graph g t/>
+                </graph_prototype>
+                </#list>
+            </#list>    
+			</graph_prototypes>
+            <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
             <#if zbx_ver = '3.4'>
             <jmx_endpoint/>
@@ -364,7 +373,7 @@
 			${xml_wrap(g.showLegend?c,'show_legend')}
 			${xml_wrap(g.show3d?c,'show_3d')}
 			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
-			${xml_wrap(g.percentRight?string(",##0.0;; decimalSeparator='.'"),'percent_right')}			
+			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right')}			
 			<#if g.yAxisMin??>
           	<ymin_type_1>1</ymin_type_1>
             <#else>

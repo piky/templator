@@ -110,6 +110,9 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					Agenda agenda = ksession.getAgenda();
 					//last agendaGroup will evaluate first...
 					agenda.getAgendaGroup( "validate" ).setFocus();
+					
+					agenda.getAgendaGroup( "populate.graph.keys" ).setFocus();
+					
 					//should go after trigger names, expressions, recovery are ready
 					agenda.getAgendaGroup( "populate.trigger.dependencies" ).setFocus();
 					agenda.getAgendaGroup( "populate" ).setFocus();
