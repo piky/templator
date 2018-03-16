@@ -43,23 +43,11 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.debug("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr);
+    logger.warn("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
     $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
-end
-
-
-
-//replaces TEMPLATE_NAME:METRIC name
-rule "Rule: generate each trigger recovery expression"
-	agenda-group "populate"
-	no-loop
-when    
-    $m : Metric ($key: key != null, $triggers: triggers)
-    $t : Template(metricsRegistry contains $m)
-    $tr: Trigger ($e: recoveryExpression!=null) from $triggers 
-then
-    logger.debug("Generating trigger recoveryExpression (changing TEMPLATE_NAME:METRIC) for "+ $tr);
-    $tr.setRecoveryExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    if ($tr.getRecoveryExpression() != null) {
+    	$tr.setRecoveryExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    }
 end
 
 
