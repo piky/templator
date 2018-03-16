@@ -5,7 +5,7 @@
 
 	<xsl:output method="xml" indent="yes"/>
 
-	<xsl:variable name="graph_drawtype"> <!-- preprocessing step types, replace with zabbix ints -->
+	<xsl:variable name="graph_drawtype">
 		<entry key="line">0</entry>
 		<entry key="filled_region">1</entry>
 		<entry key="bold_line">2</entry>
@@ -14,7 +14,7 @@
 		<entry key="gradient">5</entry>
 	</xsl:variable>
 
-	<xsl:variable name="graph_yaxisside"> <!-- preprocessing step types, replace with zabbix ints -->
+	<xsl:variable name="graph_yaxisside">
 		<entry key="left">0</entry>
 		<entry key="right">1</entry>
 	</xsl:variable>

@@ -7,7 +7,19 @@
 		"delay": "1m",
 		"history": "2w",
 		"trends": "0d",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"triggers": [
+			{
+				"documentation": "This trigger expression works as follows:\n1. Can be triggered if ifOperStatus = 2\n2. {$IFCONTROL:\"{#IFNAME}\"}=1 - user can redefine Context macro to value - 0. That marks this interface as not important. No new trigger will be fired if this interface is down.\nif IFNAME not available - use SNMPINDEX (IFINDEX))\n3. {TEMPLATE_NAME:METRIC.diff()}=1) - trigger fires only ifOperStatus ever was up(1) before. (do not fire ethernal off interfaces.)\nWARNING. if closed manually - won't fire again on next poll. because of .diff. Thats why manual_close is disabled.",
+				"id": "if.down",
+				"expression": "{$IFCONTROL:\"{#IFNAME}\"}=1 and ({TEMPLATE_NAME:METRIC.last()}=2 and {TEMPLATE_NAME:METRIC.diff()}=1)",
+				"recovery_expression": "{TEMPLATE_NAME:METRIC.last()}<>2",
+				"manual_close": "NO",
+				"name": "Link down",
+				"description": "Interface is down",
+				"priority": 3
+			}
+		]
 	},
 	{
 		"prototype": "net.if.in",
@@ -17,6 +29,20 @@
 		"delay": "3m",
 		"history": "30d",
 		"units": "bps",
+		"triggers": [
+			{
+				"documentation": "- This trigger uses 3% hysteresis (WARNING: do not change {$IF_UTIL_MAX:\"{#IFNAME}\"} below or equal to 3%\n- Additionally added 'and net.if.speed[*].last()>0' in order to fix ZBX-12688",
+				"id": "if.util_high",
+				"expression": "({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()} or\n{TEMPLATE_NAME:<xsl:value-of select=$outMetricKey/>.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}) and\n{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}>0",
+				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(15m)}>(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()} and\n{TEMPLATE_NAME:<xsl:value-of select=$outMetricKey/>.avg(15m)}>(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}",
+				"manual_close": "YES",
+				"name": "High bandwidth usage >{$IF_UTIL_MAX:\"{#IFNAME}\"}%",
+				"priority": 2,
+				"dependsOn": [
+					"if.down"
+				]
+			}
+		],
 		"graphs": [
 			{
 				"name": "Network traffic",
@@ -70,7 +96,22 @@
 		"group": "Network_Interfaces",
 		"delay": "5m",
 		"history": "1w",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"triggers": [
+			{
+				"documentation": "Recovers when below 80% of {$IF_ERRORS_WARN:\"{#IFNAME}\"} (see ZBX-13128)",
+				"id": "if.errors",
+				"expression": "{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}\nor {TEMPLATE_NAME:<xsl:value-of select=$outErrorsMetricKey/>.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}",
+				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:\"{#IFNAME}\"}*0.8",
+				"manual_close": "YES",
+				"name": "High error rate",
+				"priority": 2,
+				"description": "Recovers when below 80% of {$IF_ERRORS_WARN:\"{#IFNAME}\"} threshold",
+				"dependsOn": [
+					"if.down"
+				]
+			}
+		]
 	},
 	{
 		"prototype": "net.if.out.errors",
@@ -95,6 +136,39 @@
 		"delay": "5m",
 		"history": "1w",
 		"valueType": "INTEGER"
+	},
+	{
+		"prototype": "net.if.speed",
+		"name": "Speed",
+		"group": "Network_Interfaces",
+		"delay": "5m",
+		"history": "1w",
+		"trends": "0d",
+		"valueType": "INTEGER",
+		"units": "bps",
+		"triggers": [
+			{
+				"documentation": "Might be problems with Mikrotik. Also checked:\n - That type is Ethernet\n- That interfaces is not in down status (issue on HP Procurve)",
+				"id": "if.speed.not_max",
+				"expression": "{TEMPLATE_NAME:METRIC.change()}<0 and {TEMPLATE_NAME:METRIC.last()}>0 \n and (\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=6 or \n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=7 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=11 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=62 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=69 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=117\n)\nand\n({TEMPLATE_NAME:<xsl:value-of select=\"$statusMetricKey\"/>.last()}<>2)",
+				"recoveryExpression": "({TEMPLATE_NAME:METRIC.change()}>0 and {TEMPLATE_NAME:METRIC.prev()}>0) or\n({TEMPLATE_NAME:<xsl:value-of select=\"$statusMetricKey\"/>.last()}=2)",
+				"manual_close": "YES",
+				"name": "Ethernet has changed to lower speed than it was before",
+				"priority": 1,
+				"description": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Ack to close.",
+				"dependsOn": [
+					"if.down"
+				]
+			}
+		]
+	},
+	{
+		"prototype": "net.if.type",
+		"name": "Interface type",
+		"group": "Network_Interfaces",
+		"delay": "1h",
+		"history": "1w",
+		"trends": "0d",
+		"valueType": "INTEGER"
 	}
-
 ]
