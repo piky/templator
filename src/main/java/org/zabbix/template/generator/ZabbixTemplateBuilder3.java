@@ -117,15 +117,10 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					agenda.getAgendaGroup( "populate.trigger.dependencies" ).setFocus();
 					agenda.getAgendaGroup( "populate" ).setFocus();
 					
-
-					//put all metrics into registry. TODO, REFACTOR
-					t.constructMetricsRegistry();
 					ksession.fireAllRules();
 					ksession.dispose();
 
 				}
-
-
 
 
 			}

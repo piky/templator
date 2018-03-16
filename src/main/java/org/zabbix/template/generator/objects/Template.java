@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /*
  * 
  *	This is a Class that defines model for Zabbix template
  */
+@JsonDeserialize(using = TemplateDeserializer.class)
 public class Template {
 	
 	private String name;
@@ -23,7 +25,7 @@ public class Template {
 	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
 	private Metric metrics[] = new Metric[0];
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
-	private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
+	//private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
 	
 	private ArrayList<UserMacro> macros = new ArrayList<UserMacro>(0);
@@ -127,7 +129,7 @@ public class Template {
 	public void setDocumentation(TemplateDocumentation documentation) {
 		this.documentation = documentation;
 	}
-	//error prone. Refactor
+	
 	public void constructMetricsRegistry() {
 		//this.metricsRegistry = null;
 		try {
