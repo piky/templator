@@ -47,12 +47,12 @@ public class PrototypesService {
 	    if (node.getNodeType() == JsonNodeType.ARRAY) {
 	    	for (JsonNode jn:  node) {
 	    		prototypes.put(jn.get("prototype").asText(), jn);
-	    		logger.info(jn.get("prototype").asText());
+	    		logger.debug(jn.get("prototype").asText());
 	    	}
 	    }
 	    else if (node.getNodeType() == JsonNodeType.OBJECT) {
 	    	prototypes.put(node.get("prototype").asText(), node);
-		    logger.info(node.get("prototype").asText());
+		    logger.debug(node.get("prototype").asText());
 	    }
 	    else {
 	    	logger.error("Unknown JSON object in file");

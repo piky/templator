@@ -1,6 +1,9 @@
 package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -27,7 +30,29 @@ public class Trigger {
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
 	//dependencies - objects to be put onto zabbix_export output
 	private ArrayList<TriggerDependency> dependencies = new ArrayList<TriggerDependency>(0);
-	
+
+	//this array to store all metrics used apart from parent metric. To be used in Drools(replace with metric keys)
+	private HashSet <String> metricsUsed = new HashSet<>(0); 
+
+	public void constructMetricsUsed() {
+		
+		Matcher m = Pattern.compile("__(.+?)__")
+				.matcher(this.expression);
+		while (m.find()) {
+			this.metricsUsed.add(m.group(1));
+		}
+
+		if (this.recoveryExpression != null) {
+			m = Pattern.compile("__(.+?)__")
+					.matcher(this.recoveryExpression);
+			while (m.find()) {
+				this.metricsUsed.add(m.group(1));
+			}
+		}
+
+	}
+
+
 	public enum ManualClose implements ZabbixValue {
 
 		YES(1),
@@ -166,5 +191,12 @@ public class Trigger {
 	public void setDependencies(ArrayList<TriggerDependency> dependencies) {
 		this.dependencies = dependencies;
 	}
+	public HashSet<String> getMetricsUsed() {
+		return metricsUsed;
+	}
+	public void setMetrics(HashSet<String> metricsUsed) {
+		this.metricsUsed = metricsUsed;
+	}
+
 
 }

@@ -33,8 +33,8 @@
 			{
 				"documentation": "- This trigger uses 3% hysteresis (WARNING: do not change {$IF_UTIL_MAX:\"{#IFNAME}\"} below or equal to 3%\n- Additionally added 'and net.if.speed[*].last()>0' in order to fix ZBX-12688",
 				"id": "if.util_high",
-				"expression": "({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()} or\n{TEMPLATE_NAME:<xsl:value-of select=$outMetricKey/>.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}) and\n{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}>0",
-				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(15m)}>(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()} and\n{TEMPLATE_NAME:<xsl:value-of select=$outMetricKey/>.avg(15m)}>(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:<xsl:value-of select=$speedMetricKey/>.last()}",
+				"expression": "({TEMPLATE_NAME:METRIC.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:__net.if.speed__.last()} or\n{TEMPLATE_NAME:__net.if.out__.avg(15m)}>({$IF_UTIL_MAX:\"{#IFNAME}\"}/100)*{TEMPLATE_NAME:__net.if.speed__.last()}) and\n{TEMPLATE_NAME:__net.if.speed__.last()}>0",
+				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(15m)}<(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:__net.if.speed__.last()} and\n{TEMPLATE_NAME:__net.if.out__.avg(15m)}<(({$IF_UTIL_MAX:\"{#IFNAME}\"}-3)/100)*{TEMPLATE_NAME:__net.if.speed__.last()}",
 				"manual_close": "YES",
 				"name": "High bandwidth usage >{$IF_UTIL_MAX:\"{#IFNAME}\"}%",
 				"priority": 2,
@@ -101,8 +101,8 @@
 			{
 				"documentation": "Recovers when below 80% of {$IF_ERRORS_WARN:\"{#IFNAME}\"} (see ZBX-13128)",
 				"id": "if.errors",
-				"expression": "{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}\nor {TEMPLATE_NAME:<xsl:value-of select=$outErrorsMetricKey/>.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}",
-				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(5m)}&lt;{$IF_ERRORS_WARN:\"{#IFNAME}\"}*0.8",
+				"expression": "{TEMPLATE_NAME:METRIC.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}\nor {TEMPLATE_NAME:__net.if.out.errors__.avg(5m)}>{$IF_ERRORS_WARN:\"{#IFNAME}\"}",
+				"recovery_expression": "{TEMPLATE_NAME:METRIC.avg(5m)}<{$IF_ERRORS_WARN:\"{#IFNAME}\"}*0.8 \nand {TEMPLATE_NAME:__net.if.out.errors__.avg(5m)}<{$IF_ERRORS_WARN:\"{#IFNAME}\"}*0.8",
 				"manual_close": "YES",
 				"name": "High error rate",
 				"priority": 2,
@@ -150,8 +150,8 @@
 			{
 				"documentation": "Might be problems with Mikrotik. Also checked:\n - That type is Ethernet\n- That interfaces is not in down status (issue on HP Procurve)",
 				"id": "if.speed.not_max",
-				"expression": "{TEMPLATE_NAME:METRIC.change()}<0 and {TEMPLATE_NAME:METRIC.last()}>0 \n and (\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=6 or \n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=7 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=11 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=62 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=69 or\n{TEMPLATE_NAME:<xsl:value-of select=\"$typeMetricKey\"/>.last()}=117\n)\nand\n({TEMPLATE_NAME:<xsl:value-of select=\"$statusMetricKey\"/>.last()}<>2)",
-				"recoveryExpression": "({TEMPLATE_NAME:METRIC.change()}>0 and {TEMPLATE_NAME:METRIC.prev()}>0) or\n({TEMPLATE_NAME:<xsl:value-of select=\"$statusMetricKey\"/>.last()}=2)",
+				"expression": "{TEMPLATE_NAME:METRIC.change()}<0 and {TEMPLATE_NAME:METRIC.last()}>0 \n and (\n{TEMPLATE_NAME:__net.if.type__.last()}=6 or \n{TEMPLATE_NAME:__net.if.type__.last()}=7 or\n{TEMPLATE_NAME:__net.if.type__.last()}=11 or\n{TEMPLATE_NAME:__net.if.type__.last()}=62 or\n{TEMPLATE_NAME:__net.if.type__.last()}=69 or\n{TEMPLATE_NAME:__net.if.type__.last()}=117\n)\nand\n({TEMPLATE_NAME:__net.if.status__.last()}<>2)\n",
+				"recoveryExpression": "({TEMPLATE_NAME:METRIC.change()}>0 and {TEMPLATE_NAME:METRIC.prev()}>0) or\n({TEMPLATE_NAME:__net.if.status__.last()}=2)",
 				"manual_close": "YES",
 				"name": "Ethernet has changed to lower speed than it was before",
 				"priority": 1,

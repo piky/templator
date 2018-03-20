@@ -55,11 +55,16 @@ public class TriggerDeserializer extends StdDeserializer<Trigger> {
 			ObjectReader updater = mapper.readerForUpdating(defaults);
 			Trigger merged = updater.readValue(node);
 			
+			merged.constructMetricsUsed();
+			System.out.println("Metrics used in this trigger: "+merged.getMetricsUsed().toString());
+			
 			return merged;
 		
 		} else {
 			throw new MetricPrototypeNotFoundException("There is no such prototype: "+protoName);
 		}
 	}
+	
+	
 
 }

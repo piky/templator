@@ -43,13 +43,36 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.warn("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
+    logger.debug("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
     $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
     if ($tr.getRecoveryExpression() != null) {
-    	$tr.setRecoveryExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
     }
 end
 
+
+/*
+TRIGGERS REPLACE METRICS in expressions
+*/
+//replaces TEMPLATE_NAME:METRIC name
+rule "Rule: replace metrics in expression"
+	agenda-group "populate"
+	no-loop
+when
+    
+    $m : Metric ($key: key != null, $triggers: triggers)
+    $t : Template(metricsRegistry contains $m)
+    $tr: Trigger ($e: expression!=null, $metricsUsed: metricsUsed) from $triggers
+    
+    $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.prototype memberOf $metricsUsed ) 
+then
+    logger.warn("REPLACING metric "+$m2.getPrototype()+" in triggers: "+ $tr.getName());
+    
+    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:__"+$m2.getPrototype()+"__",$t.getName()+":"+$m2.getKey()));
+    if ($tr.getRecoveryExpression() != null) {
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:__"+$m2.getPrototype()+"__",$t.getName()+":"+$m2.getKey()));
+    }    
+end
 
 
 //
