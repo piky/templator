@@ -44,7 +44,7 @@ when
     $m : Metric ($key: key != null, alarmObject != null, $triggers: triggers)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.info("Generating trigger name for "+ $tr);
+    logger.debug("Generating trigger name for "+ $tr.getName());
     $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
 end
 

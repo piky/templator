@@ -56,7 +56,6 @@ public class TriggerDeserializer extends StdDeserializer<Trigger> {
 			Trigger merged = updater.readValue(node);
 			
 			merged.constructMetricsUsed();
-			System.out.println("Metrics used in this trigger: "+merged.getMetricsUsed().toString());
 			
 			return merged;
 		
