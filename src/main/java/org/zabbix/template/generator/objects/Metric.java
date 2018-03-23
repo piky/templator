@@ -186,8 +186,8 @@ public abstract class Metric {
 
 	private  String units;
 	
-	@JsonAlias("logformat")
-	private String logFormat;
+	@JsonAlias({"logformat","log_format","logFormat"})
+	private String logtimefmt;
 
 	//SNMP stuff:
 	private String oid;
@@ -310,11 +310,11 @@ public abstract class Metric {
 		this.units = units;
 	}
 	
-	public String getLogFormat() {
-		return logFormat;
+	public String getLogtimefmt() {
+		return logtimefmt;
 	}
-	public void setLogFormat(String logFormat) {
-		this.logFormat = logFormat;
+	public void SetLogtimefmt(String logtimefmt) {
+		this.logtimefmt = logtimefmt;
 	}
 	public String getOid() {
 		return oid;

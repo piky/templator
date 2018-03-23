@@ -1,5 +1,7 @@
 package org.zabbix.template.generator.objects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class ValueMap {
 
 	private String name;
@@ -7,6 +9,7 @@ public class ValueMap {
 	
 	public static class Mapping {
 		private String value;
+		@JsonAlias({"newvalue","new_value"})
 		private String newValue;
 		public String getValue() {
 			return value;
