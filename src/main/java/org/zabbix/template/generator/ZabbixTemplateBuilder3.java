@@ -43,10 +43,15 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		errorHandler(deadLetterChannel("direct:errors"));
 		
 		//generate jackson mapper
-		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-		JacksonDataFormat yamlJackson = new JacksonDataFormat(mapper,InputJSON.class);
+		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+		ObjectMapper jsonMapper = new ObjectMapper();
+		JacksonDataFormat yamlJackson = new JacksonDataFormat(yamlMapper,InputJSON.class);
+		JacksonDataFormat jsonJackson = new JacksonDataFormat(jsonMapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
 		onException(org.zabbix.template.generator.objects.MetricPrototypeNotFoundException.class)
+		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
+		
+		onException(Exception.class)
 		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
 		
 		//other errors
@@ -60,12 +65,25 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				
 		
 		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
-		.unmarshal(yamlJackson)
+		
+		//JSON - YAML Chooser //TODO add by extention .json / .yaml 
+        .doTry()
+        	.log("Try YAML....")
+        	.unmarshal(yamlJackson)
+            .to("direct:create_template")
+        .doCatch(Exception.class)
+        	.log("Try JSON....")
+        	.unmarshal(jsonJackson)
+        	.to("direct:create_template")
+        .end();
+		
+		
+		
 /*		.marshal().json(JsonLibrary.Jackson,true)
 		.log("${body}");
 		
 		from("direct:stub")*/
-		
+		from("direct:create_template")
 		//.unmarshal().json(JsonLibrary.Jackson,InputJSON.class)
 		.process(new Processor() {
 
@@ -77,8 +95,8 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				KieSession ksession = kContainer.newKieSession();
 				ksession.setGlobal("logger", logger);
 
-				AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
-				ksession.addEventListener(agendaEventListener);
+				//AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
+				//ksession.addEventListener(agendaEventListener);
 
 
 				ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
@@ -166,7 +184,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) //replace SNMPvX with SNMPv2 or SNMPv1 lang
 		
 		.setHeader("CamelOverruleFileName",
-                simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.yaml','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+                simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.yaml','').replace('.json','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		
 		.to("file:src/main/resources/ftl/out");
 
