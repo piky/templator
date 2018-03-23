@@ -3,6 +3,7 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
@@ -15,10 +16,11 @@ public abstract class Metric {
 	private String vendorDocumentation;
 	private String ref;
 	private String vendorDescription;
+	@JsonAlias("zabbixKey")
 	private String key;
 
 	private String expressionFormula;
-
+	@JsonAlias("inventory_link")
 	private InventoryLink inventoryLink = InventoryLink.NONE;
 
 
@@ -147,8 +149,6 @@ public abstract class Metric {
 	};
 
 
-
-
 	public enum ValueType implements ZabbixValue {
 
 		FLOAT(0),
@@ -172,18 +172,22 @@ public abstract class Metric {
 
 
 	private ValueType valueType = ValueType.INTEGER;
+	@JsonAlias({"itemType","item_type"})
 	private Type type; 
 
 	public enum Group {
-		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory,Storage //to be extended	
+		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory,Storage,General //to be extended	
 	};
 	private Group group;
+	@JsonAlias("update")
 	private  String delay = "5m";
 	private  String history = "7d";
 	private  String trends = "365d";
 
 	private  String units;
-
+	
+	@JsonAlias("logformat")
+	private String logFormat;
 
 	//SNMP stuff:
 	private String oid;
@@ -304,6 +308,13 @@ public abstract class Metric {
 	}
 	public void setUnits(String units) {
 		this.units = units;
+	}
+	
+	public String getLogFormat() {
+		return logFormat;
+	}
+	public void setLogFormat(String logFormat) {
+		this.logFormat = logFormat;
 	}
 	public String getOid() {
 		return oid;

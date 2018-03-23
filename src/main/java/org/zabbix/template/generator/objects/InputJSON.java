@@ -3,9 +3,12 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class InputJSON {
 
 	private ArrayList<Template> templates = new ArrayList<Template>(0);
+	@JsonAlias("value_maps")
 	private ArrayList<ValueMap> valueMaps = new ArrayList<ValueMap>(0);
 	
 
