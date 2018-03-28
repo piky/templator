@@ -76,15 +76,8 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
         	.unmarshal(jsonJackson)
         	.to("direct:create_template")
         .end();
-		
-		
-		
-/*		.marshal().json(JsonLibrary.Jackson,true)
-		.log("${body}");
-		
-		from("direct:stub")*/
+
 		from("direct:create_template")
-		//.unmarshal().json(JsonLibrary.Jackson,InputJSON.class)
 		.process(new Processor() {
 
 			@Override

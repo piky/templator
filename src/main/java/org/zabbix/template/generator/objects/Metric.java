@@ -13,12 +13,15 @@ public abstract class Metric {
 
 	private String name;
 	private String description;
+	@JsonAlias("vendor_documentation")
 	private String vendorDocumentation;
 	private String ref;
+	@JsonAlias("vendor_description")
 	private String vendorDescription;
 	@JsonAlias("zabbixKey")
 	private String key;
 
+	@JsonAlias("expression_formula")
 	private String expressionFormula;
 	@JsonAlias("inventory_link")
 	private InventoryLink inventoryLink = InventoryLink.NONE;
@@ -170,7 +173,7 @@ public abstract class Metric {
 
 	};
 
-
+	@JsonAlias("value_type")
 	private ValueType valueType = ValueType.INTEGER;
 	@JsonAlias({"itemType","item_type"})
 	private Type type; 
@@ -196,11 +199,15 @@ public abstract class Metric {
 
 
 	//Discovery stuff
+	@JsonAlias("discovery_rule")
 	private String discoveryRule;
+	@JsonAlias("alarm_object")
 	private String alarmObject;
+	@JsonAlias("alarm_object_type")
 	private String alarmObjectType;
 
 	//valuemap
+	@JsonAlias("value_map")
 	private String valueMap;
 
 
