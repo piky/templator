@@ -67,8 +67,8 @@ when
 	$m : Metric (vendorDescription != null )
 then
     logger.debug("Generating description(description) for "+$m);
-    modify( $m ) { 
-    		setDescription("")
+    modify( $m ) {
+    		setDescription(null)
     	};
 end
 
@@ -100,7 +100,7 @@ then
     logger.debug("Generating description(vendorDescription) for "+$m);
 	if ($m.getDescription() != null) {
 		modify( $m ) {
-    		setDescription( $m.getDescription() + "\n" + $m.getVendorDescription() )
+    		setDescription( $m.getDescription() + $m.getVendorDescription() )
 	    };
 	}
 	else {

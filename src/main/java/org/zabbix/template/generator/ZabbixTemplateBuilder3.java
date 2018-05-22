@@ -174,6 +174,11 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		from("direct:zabbix_export")
 		.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
 		.to("xslt:templates/indent.xsl?saxon=true") //proper indentation for XML file
+		.to("xslt:templates/to_metrics_strip_whitespace.xsl?saxon=true")// trim whitespace on some multiline nodes //REFACTOR with DEV-827 below
+        //https://support.zabbix.com/browse/DEV-827
+        .to("xslt:templates/to_zabbix_add_carriage_return.xsl?saxon=true")
+        .setBody(body().regexReplaceAll("&#xD;", simple("&#13;")))
+
 		.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) //replace SNMPvX with SNMPv2 or SNMPv1 lang
 		
 		.setHeader("CamelOverruleFileName",
