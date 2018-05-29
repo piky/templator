@@ -150,6 +150,12 @@
 			<artifactId>drools-compiler</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.drools/drools-core -->
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+		</dependency>
+
 
 
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
