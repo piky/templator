@@ -41,7 +41,13 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		errorHandler(deadLetterChannel("direct:errors"));
-		
+
+
+		//kie
+		KieServices ks = KieServices.Factory.get();
+		KieContainer kContainer = ks.getKieClasspathContainer();
+		KieSession ksession = kContainer.newKieSession();
+		ksession.setGlobal("logger", logger);
 		//generate jackson mapper
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		ObjectMapper jsonMapper = new ObjectMapper();
@@ -82,11 +88,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				//kie
-				KieServices ks = KieServices.Factory.get();
-				KieContainer kContainer = ks.getKieClasspathContainer();
-				KieSession ksession = kContainer.newKieSession();
-				ksession.setGlobal("logger", logger);
+
 
 				//AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
 				//ksession.addEventListener(agendaEventListener);
@@ -129,7 +131,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					agenda.getAgendaGroup( "populate" ).setFocus();
 					
 					ksession.fireAllRules();
-					ksession.dispose();
+					//ksession.dispose();
 
 				}
 

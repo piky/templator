@@ -88,7 +88,7 @@
         	<#list t.metrics as m>
         		<#list m.triggers as tr>
                 <trigger>
-                    <@trigger tr/>
+                    <@trigger tr t/>
                 </trigger>
                 </#list>
             </#list>
@@ -303,7 +303,7 @@
             	<#list dr.metrics as m>
             		<#list m.triggers as tr>
                     <trigger_prototype>
-                        <@trigger tr/>
+                        <@trigger tr t/>
                     </trigger_prototype>
                     </#list>
                 </#list>
@@ -325,9 +325,9 @@
  </#macro>
 
 <#-- tr - trigger-->
-<#macro trigger tr>
+<#macro trigger tr t>
 	
-	<expression>${tr.expression}</expression>
+	<expression>${tr.expression?replace('TEMPLATE_NAME',t.name)}</expression>
 	<#local recovery_mode = 0>
 	<#if tr.recoveryExpression??>
 		<#local recovery_mode = 1>
@@ -337,7 +337,7 @@
 		<#local recovery_mode = 0>
 	</#if>
 	${xml_wrap(recovery_mode!0,'recovery_mode')}
-	${xml_wrap(tr.recoveryExpression!'','recovery_expression')}
+	${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression')}
     <name>${tr.name}</name>
     <correlation_mode>0</correlation_mode>
     <correlation_tag/>
@@ -351,8 +351,8 @@
 		<#list tr.dependencies as trd>
 		<dependency>
 			${xml_wrap(trd.name!'','name')}
-			${xml_wrap(trd.expression!'','expression')}
-			${xml_wrap(trd.recoveryExpression!'','recovery_expression')}
+			${xml_wrap((trd.expression!'')?replace('TEMPLATE_NAME',t.name),'expression')}
+			${xml_wrap((trd.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression')}
 		</dependency>
 		</#list>
     </dependencies>

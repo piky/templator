@@ -34,6 +34,7 @@ end
 TRIGGERS
 */
 //replaces TEMPLATE_NAME:METRIC name
+// TEMPLATE_NAME is left intact. To be replaced later on. For cases like cross template dependencies(icmp ping -> NO_SNMP)
 rule "Rule: generate each trigger expression"
 	agenda-group "populate"
 	no-loop
@@ -43,10 +44,10 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.debug("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
-    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    logger.warn("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
+    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     if ($tr.getRecoveryExpression() != null) {
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC",$t.getName()+":"+$key));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     }
 end
 
