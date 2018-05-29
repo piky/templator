@@ -178,8 +178,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		
 		.setHeader("CamelOverruleFileName",
                 simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.yaml','').replace('.json','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		
-		.to("file:src/main/resources/ftl/out");
+		.to("file:bin/out/noxsl");
 
 
 	}
