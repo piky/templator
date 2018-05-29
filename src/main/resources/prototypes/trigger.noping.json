@@ -1,0 +1,10 @@
+[
+	{
+		"prototype": "trigger.noping",
+		"id":"noping",
+	    "name": "Unavailable by ICMP ping",
+	    "description": "Last three attempts returned timeout.  Please check device connectivity.",
+		"expression":"{TEMPLATE_NAME:METRIC.max(#3)}=0",
+		"priority": 4
+	}
+]
