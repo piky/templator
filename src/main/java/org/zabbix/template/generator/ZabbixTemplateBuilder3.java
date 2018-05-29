@@ -3,6 +3,7 @@ package org.zabbix.template.generator;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
@@ -19,11 +20,7 @@ import org.kie.api.runtime.rule.Agenda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.zabbix.template.generator.objects.DiscoveryRule;
-import org.zabbix.template.generator.objects.InputJSON;
-import org.zabbix.template.generator.objects.Metric;
-import org.zabbix.template.generator.objects.Template;
-import org.zabbix.template.generator.objects.ValueMap;
+import org.zabbix.template.generator.objects.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -144,24 +141,31 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 		to(
 				"direct:snmpv1",
-				"direct:snmpv2"
-				//"direct:icmp",
+				"direct:snmpv2",
+				"direct:icmp"
 				//"direct:remote_service"
 				);
-	    from("direct:snmpv1")
-	    	 //.filter().xpath("//z:classes[z:class='SNMPv1']",ns)
-				.setHeader("snmp_item_type", simple("1", String.class))
-				.setHeader("template_suffix", simple("SNMPv1", String.class))
-			 	.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
-	    	 	.to("direct:zabbix_export");
+		from("direct:snmpv1")
+			.filter(exchange -> ((InputJSON)exchange.getIn().getBody()).getUniqueTemplateClasses().contains(TemplateClass.SNMP_V1))
+			.setHeader("snmp_item_type", simple("1", String.class))
+			.setHeader("template_suffix", simple("SNMPv1", String.class))
+			.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
+			.to("direct:zabbix_export");
 
 
 	    from("direct:snmpv2")
-			//.filter().xpath("//z:classes[z:class='SNMPv2']",ns)
+			.filter(exchange -> ((InputJSON)exchange.getIn().getBody()).getUniqueTemplateClasses().contains(TemplateClass.SNMP_V2))
 			.setHeader("snmp_item_type", simple("4", String.class))
 		    .setHeader("template_suffix", simple("SNMPv2", String.class))
 			.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
-			.to("direct:zabbix_export");		
+			.to("direct:zabbix_export");
+
+		from("direct:icmp")
+			.filter(exchange -> ((InputJSON)exchange.getIn().getBody()).getUniqueTemplateClasses().contains(TemplateClass.ICMP))
+			.setHeader("snmp_item_type", simple("1", String.class))
+			.setHeader("template_suffix", simple("", String.class))
+			.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ICMP")
+			.to("direct:zabbix_export");
 		
 		//.marshal().json(JsonLibrary.Jackson,true)
 		//.marshal().jacksonxml(true)
