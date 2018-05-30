@@ -14,8 +14,25 @@ when
 	$tr: Trigger ($dependsOn: dependsOn) from $triggers
 	
 	$m2 : Metric ($triggers2: triggers, $m.discoveryRule == discoveryRule)
-    $tr2: Trigger ($dependsOn contains id) from $triggers2 
+    $tr2: Trigger (
+        $dependsOn contains id
+        ,id != "noping"
+     ) from $triggers2
 then
     logger.info("Found dependency "+$tr2.getId()+" for "+ $tr.getName());
     $tr.getDependencies().add(new TriggerDependency($tr2.getName(), $tr2.getExpression(), $tr2.getRecoveryExpression()));
+end
+
+/*
+This is static that should be removed in the future
+*/
+rule "Static rule to add ping dependency into some templates"
+	agenda-group "populate.trigger.dependencies"
+	no-loop
+when
+	$m : Metric ($triggers: triggers)
+    $tr2: Trigger (dependsOn contains "noping") from $triggers
+then
+    logger.info("Found static dependency "+$tr2.getId()+" for noping");
+    $tr2.getDependencies().add(new TriggerDependency("Unavailable by ICMP ping", "{TEMPLATE_NAME:icmpping.max(#3)}=0", null));
 end

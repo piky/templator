@@ -40,11 +40,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		errorHandler(deadLetterChannel("direct:errors"));
 
 
-		//kie
-		KieServices ks = KieServices.Factory.get();
-		KieContainer kContainer = ks.getKieClasspathContainer();
-		KieSession ksession = kContainer.newKieSession();
-		ksession.setGlobal("logger", logger);
+
 		//generate jackson mapper
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		ObjectMapper jsonMapper = new ObjectMapper();
@@ -92,13 +88,18 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 
 				ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
-				
+				//kie
+				KieServices ks = KieServices.Factory.get();
+				KieContainer kContainer = ks.getKieClasspathContainer();
+				KieSession ksession = kContainer.newKieSession();
+				ksession.setGlobal("logger", logger);
 				ksession.insert((InputJSON) exchange.getIn().getBody());
 				//insert valueMaps into Drools
 				
 				//valueMaps.forEach((vm)->ksession.insert(vm));
 
 				ArrayList<Template> templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
+
 				for (Template t: templates) {
 					Metric[] metrics = t.getMetrics();
 					ksession.insert(t);
@@ -128,7 +129,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					agenda.getAgendaGroup( "populate" ).setFocus();
 					
 					ksession.fireAllRules();
-					//ksession.dispose();
+					ksession.dispose();
 
 				}
 
