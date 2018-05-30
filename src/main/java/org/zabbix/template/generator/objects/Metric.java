@@ -179,7 +179,7 @@ public abstract class Metric {
 	private Type type; 
 
 	public enum Group {
-		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory,Storage,General //to be extended	
+		CPU,Memory,Status,Temperature,Network_Interfaces,Internal_Items,Inventory,Storage,General,Fans,Power_Supply //to be extended
 	};
 	private Group group;
 	@JsonAlias("update")
