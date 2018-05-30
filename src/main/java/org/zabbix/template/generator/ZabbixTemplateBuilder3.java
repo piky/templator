@@ -61,6 +61,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.setHeader("template_ver", simple("{{version}}",String.class))
 		.setHeader("lang", simple("EN",String.class))
+		.setHeader("zbx_ver", simple("3.4", Double.class))
 				
 		
 		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
@@ -187,10 +188,10 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
         .setBody(body().regexReplaceAll("&#xD;", simple("&#13;")))
 
 		.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) //replace SNMPvX with SNMPv2 or SNMPv1 lang
-		
-		.setHeader("CamelOverruleFileName",
-                simple("${in.headers.subfolder}/${in.headers.CamelFileName.replace('.yaml','').replace('.json','')}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		.to("file:bin/out/noxsl");
+
+		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
+		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		.to("file:bin/out");
 
 
 	}
