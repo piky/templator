@@ -1,7 +1,10 @@
 package org.zabbix.template.generator.objects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class DiscoveryRule {
 	private String name;
+	@JsonAlias("snmp_oid")
 	private String oid;
 	private String key;
 	private String description;
