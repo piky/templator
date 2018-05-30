@@ -37,7 +37,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		errorHandler(deadLetterChannel("direct:errors"));
+		//errorHandler(deadLetterChannel("direct:errors"));
 
 
 
@@ -48,33 +48,35 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		JacksonDataFormat jsonJackson = new JacksonDataFormat(jsonMapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
 		onException(org.zabbix.template.generator.objects.MetricPrototypeNotFoundException.class)
-		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
+			.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
 		
 		onException(Exception.class)
-		.log(LoggingLevel.ERROR,"${file:name}: Please check metric prototype: ${exception.message}");
+			.log(LoggingLevel.ERROR,"${file:name}: ${exception.message} ${exception.stacktrace}")
+			.handled(true);
 		
 		//other errors
-		from("direct:errors")
-		.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
-
+	/*	from("direct:errors")
+			.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
+*/
 
 		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.setHeader("template_ver", simple("{{version}}",String.class))
 		.setHeader("lang", simple("EN",String.class))
 		.setHeader("zbx_ver", simple("3.4", Double.class))
 				
-		
+
 		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 		
-		//JSON - YAML Chooser //TODO add by extention .json / .yaml 
-        .doTry()
-        	.log("Try YAML....")
-        	.unmarshal(yamlJackson)
-            .to("direct:create_template")
-        .doCatch(Exception.class)
-        	.log("Try JSON....")
-        	.unmarshal(jsonJackson)
-        	.to("direct:create_template")
+		//JSON - YAML Chooser //TODO add by extention .json / .yaml
+		.choice()
+			.when(simple("${file:ext} == 'yaml'"))
+				.log("Try YAML....")
+				.unmarshal(yamlJackson)
+				.to("direct:create_template")
+			.when(simple("${file:ext} == 'json'"))
+				.log("Try JSON....")
+				.unmarshal(jsonJackson)
+				.to("direct:create_template")
         .end();
 
 		from("direct:create_template")
