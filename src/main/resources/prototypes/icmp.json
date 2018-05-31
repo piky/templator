@@ -1,6 +1,6 @@
 [
 	{
-		"prototype": "icmpping",
+		"id": "icmpping",
 		"zabbixKey": "icmpping",
 		"name": "ICMP ping",
 		"group": "Status",
@@ -11,12 +11,12 @@
 		"valueMap": "Service state",
 		"triggers": [
 			{
-				"prototype": "trigger.noping"
+				"prototype": "noping"
 			}
 		]
 	},
 	{
-		"prototype": "icmppingloss",
+		"id": "icmppingloss",
 		"name": "ICMP loss",
 		"zabbixKey": "icmppingloss",
 		"type":"SIMPLE_CHECK",
@@ -39,7 +39,7 @@
 		]
 	},
 	{
-		"prototype": "icmppingsec",
+		"id": "icmppingsec",
 		"name": "ICMP response time",
 		"zabbixKey": "icmppingsec",
 		"group": "Status",

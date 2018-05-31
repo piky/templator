@@ -46,13 +46,13 @@ public class PrototypesService {
 	    JsonNode node = mapper.readTree(file);
 	    if (node.getNodeType() == JsonNodeType.ARRAY) {
 	    	for (JsonNode jn:  node) {
-	    		prototypes.put(jn.get("prototype").asText(), jn);
-	    		logger.debug(jn.get("prototype").asText());
+	    		prototypes.put(jn.get("id").asText(), jn);
+	    		logger.debug(jn.get("id").asText());
 	    	}
 	    }
 	    else if (node.getNodeType() == JsonNodeType.OBJECT) {
-	    	prototypes.put(node.get("prototype").asText(), node);
-		    logger.debug(node.get("prototype").asText());
+	    	prototypes.put(node.get("id").asText(), node);
+		    logger.debug(node.get("id").asText());
 	    }
 	    else {
 	    	logger.error("Unknown JSON object in file");

@@ -62,7 +62,7 @@ rule "Rule 4: generate additional macros"
 	no-loop
 when
 	$t: Template($metrics: metricsRegistry)
-    exists (Metric(prototype == "system.cpu.util") from $metrics)
+    exists (Metric(id == "system.cpu.util") from $metrics)
 then
     logger.info("Found system.cpu.util metric, adding additional MACRO...");
     modify($t) {getMacros().add(new UserMacro("{$CPU_UTIL_MAX}","90"));};
@@ -73,7 +73,7 @@ rule "Rule 5: generate additional macros"
 	no-loop
 when
 	$t: Template($metrics: metricsRegistry)
-    exists (Metric(prototype == "vm.memory.pused") from $metrics)
+    exists (Metric(id == "vm.memory.pused") from $metrics)
 then
     logger.info("Found vm.memory.pused metric, adding additional MACRO...");
     modify($t) {getMacros().add(new UserMacro("{$MEMORY_UTIL_MAX}","90"));};
@@ -87,7 +87,7 @@ rule "Rule 6: generate additional macros"
 	no-loop
 when
 	$t: Template($metrics: metricsRegistry)
-    exists (Metric(prototype == "sensor.temp.value") from $metrics)
+    exists (Metric(id == "sensor.temp.value") from $metrics)
 then
     logger.info("Found sensor.temp.value metric, adding additional MACRO...");
     modify($t) {
@@ -106,7 +106,7 @@ rule "Rule 7: generate additional macros (vfs.fs.pused)"
 	no-loop
 when
 	$t: Template($metrics: metricsRegistry)
-    exists (Metric(prototype == "vfs.fs.pused") from $metrics)
+    exists (Metric(id == "vfs.fs.pused") from $metrics)
 then
     logger.info("Found vfs.fs.pused metric, adding additional MACRO...");
     modify($t) {

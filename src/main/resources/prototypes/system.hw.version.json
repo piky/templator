@@ -1,5 +1,5 @@
 [{
-	"prototype":"system.hw.version",
+	"id":"system.hw.version",
 	"key":"system.hw.version",
 	"name":"Hardware version(revision)",
 	"valueType":"CHAR",

@@ -3,7 +3,7 @@ global org.slf4j.Logger logger;
 
 
 
-rule "Change for each graph: metric prototype with actual metric key"
+rule "Change for each graph: metric id with actual metric key"
 	agenda-group "populate.graph.keys"
 	no-loop
 when
@@ -11,10 +11,10 @@ when
 	$gr: Graph ($gitems: graphItems) from $graphs
 	$gitem: GraphItem () from $gitems
 	
-	$m2 : Metric ( $m.discoveryRule == discoveryRule, $gitem.metricKey == $m2.prototype )
+	$m2 : Metric ( $m.discoveryRule == discoveryRule, $gitem.metricKey == $m2.id )
  
 then
-    logger.info("Found graph "+$gr.getName()+" : replace metric prototype "+$gitem.getMetricKey() + " with " + $m2.getKey());
+    logger.info("Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
     //now replace gitem.metricKey with actual metric key:
     $gitem.setMetricKey($m2.getKey());
 end

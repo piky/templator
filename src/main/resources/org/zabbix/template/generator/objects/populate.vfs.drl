@@ -7,9 +7,9 @@ rule "Rule 4: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
 when
-	$m : Metric ( prototype == 'vfs.fs.pused')
-	$m_used: Metric ( prototype == 'vfs.fs.used')
-	$m_total: Metric ( prototype == 'vfs.fs.total')
+	$m : Metric ( id == 'vfs.fs.pused')
+	$m_used: Metric ( id == 'vfs.fs.used')
+	$m_total: Metric ( id == 'vfs.fs.total')
 then
     logger.debug("There are vfs.fs.total and vfs.fs.used found "+$m);
     modify( $m ) { 
@@ -22,9 +22,9 @@ rule "Rule 5: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
 when
-	$m : Metric ( prototype == 'vfs.fs.pused')
-	$m_used: Metric ( prototype == 'vfs.fs.units.used')
-	$m_total: Metric ( prototype == 'vfs.fs.units.total')
+	$m : Metric ( id == 'vfs.fs.pused')
+	$m_used: Metric ( id == 'vfs.fs.units.used')
+	$m_total: Metric ( id == 'vfs.fs.units.total')
 then
     logger.debug("There are vfs.fs.units.total and vfs.fs.units.used found "+$m);
     modify( $m ) { 
@@ -36,9 +36,9 @@ rule "Rule 6: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
 when
-	$m : Metric ( prototype == 'vfs.fs.pused')
-	$m_free: Metric ( prototype == 'vfs.fs.free')
-	$m_total: Metric ( prototype == 'vfs.fs.total')
+	$m : Metric ( id == 'vfs.fs.pused')
+	$m_free: Metric ( id == 'vfs.fs.free')
+	$m_total: Metric ( id == 'vfs.fs.total')
 then
     logger.debug("There are vfs.fs.total and vfs.fs.free found "+$m);
     modify( $m ) { 
@@ -51,9 +51,9 @@ rule "Rule 7: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
 when
-	$m : Metric ( prototype == 'vfs.fs.pused')
-	$m_free: Metric ( prototype == 'vfs.fs.free')
-	$m_used: Metric ( prototype == 'vfs.fs.used')
+	$m : Metric ( id == 'vfs.fs.pused')
+	$m_free: Metric ( id == 'vfs.fs.free')
+	$m_used: Metric ( id == 'vfs.fs.used')
 then
     logger.debug("There are vfs.fs.used and vfs.fs.free found "+$m);
     modify( $m ) { 

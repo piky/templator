@@ -1,5 +1,5 @@
 {
-	"prototype":"system.hw.serialnumber",
+	"id":"system.hw.serialnumber",
 	"key":"system.hw.serialnumber",
 	"name":"Hardware serial number",
 	"valueType":"CHAR",

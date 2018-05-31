@@ -17,11 +17,11 @@ end
 rule "Rule 2: Generate metric key for SNMP type"
 	agenda-group "populate"
 when
-	$m : Metric ( key == null, snmpObject != null, prototype != null)
+	$m : Metric ( key == null, snmpObject != null, id != null)
 then
     logger.debug("There is no 'key' for "+$m.getName()+" so let's generate it...");
     modify( $m ) { 
-    		setKey( $m.getPrototype()+"["+$m.getSnmpObject()+"]")
+    		setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
     	};
 end
 

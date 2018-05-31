@@ -1,5 +1,5 @@
 {
-	"prototype":"system.cpu.util",
+	"id":"system.cpu.util",
 	"name":"CPU utilization",
 	"description":"CPU utilization in %",
 	"valueType":"FLOAT",
@@ -15,7 +15,6 @@
 	],
 	"graphs":[
 		{
-			"prototype":"none",
 			"name":"CPU utilization",
 			"yaxismin":0,
 			"yaxismax":100,

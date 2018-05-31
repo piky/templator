@@ -1,6 +1,6 @@
 [
 	{
-		"prototype": "vm.memory.used",
+		"id": "vm.memory.used",
 		"name": "Used memory",
 		"description": "Used memory in Bytes",
 		"group": "Memory",
@@ -10,7 +10,7 @@
 		"trends": "365d"
 	},
 	{
-		"prototype": "vm.memory.free",
+		"id": "vm.memory.free",
 		"name": "Available memory",
 		"group": "Memory",
 		"units": "B",
@@ -19,7 +19,7 @@
 		"trends": "365d"
 	},
 	{
-		"prototype": "vm.memory.total",
+		"id": "vm.memory.total",
 		"name": "Total memory",
 		"group": "Memory",
 		"units": "B",
@@ -29,7 +29,7 @@
 		"description": "Total memory in Bytes"
 	},
 	{
-		"prototype": "vm.memory.pused",
+		"id": "vm.memory.pused",
 		"name": "Memory utilization",
 		"group": "Memory",
 		"valueType": "FLOAT",
@@ -45,7 +45,6 @@
 		],
 		"graphs": [
 			{
-				"prototype": "none",
 				"name": "Memory utilization",
 				"yaxismin": 0,
 				"yaxismax": 100,

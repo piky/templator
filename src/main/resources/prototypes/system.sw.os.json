@@ -1,5 +1,5 @@
 {
-	"prototype":"system.sw.os",
+	"id":"system.sw.os",
 	"key":"system.sw.os",
 	"name":"Operating system",
 	"valueType":"CHAR",

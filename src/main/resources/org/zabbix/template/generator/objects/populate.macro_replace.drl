@@ -65,13 +65,13 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null, $metricsUsed: metricsUsed) from $triggers
     
-    $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.prototype memberOf $metricsUsed ) 
+    $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.id memberOf $metricsUsed )
 then
-    logger.warn("REPLACING metric "+$m2.getPrototype()+" in triggers: "+ $tr.getName());
+    logger.warn("REPLACING metric "+$m2.getId()+" in triggers: "+ $tr.getName());
     
-    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:__"+$m2.getPrototype()+"__",$t.getName()+":"+$m2.getKey()));
+    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
     if ($tr.getRecoveryExpression() != null) {
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:__"+$m2.getPrototype()+"__",$t.getName()+":"+$m2.getKey()));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
     }    
 end
 

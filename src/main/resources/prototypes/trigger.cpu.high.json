@@ -1,6 +1,6 @@
 [
 	{
-		"prototype": "trigger.cpu.high",
+		"id": "trigger.cpu.high",
 	    "name": "High CPU utilization",
 		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$CPU_UTIL_MAX}",
 		"priority": 3

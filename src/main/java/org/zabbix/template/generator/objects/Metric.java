@@ -11,6 +11,9 @@ public abstract class Metric {
 	//use this field to match to class
 	private String prototype;
 
+
+	private String id;
+
 	private String name;
 	private String description;
 	@JsonAlias("vendor_documentation")
@@ -225,6 +228,14 @@ public abstract class Metric {
 	}
 	public void setPrototype(String prototype) {
 		this.prototype = prototype;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;

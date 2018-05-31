@@ -1,5 +1,5 @@
 {
-	"prototype":"system.hw.firmware",
+	"id":"system.hw.firmware",
 	"key":"system.hw.firmware",
 	"name":"Firmware version",
 	"valueType":"CHAR",
@@ -9,7 +9,7 @@
 	"trends":"0",
 	"triggers":[
 		{
-			"prototype":"none",
+			"id":"none",
 			"expression":"{TEMPLATE_NAME:METRIC.diff()}=1 and {TEMPLATE_NAME:METRIC.strlen()}>0",
 			"recoveryMode":"NONE",
 			"manualClose":"YES",

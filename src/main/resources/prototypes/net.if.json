@@ -1,6 +1,6 @@
 [
 	{
-		"prototype": "net.if.status",
+		"id": "net.if.status",
 		"name": "Operational status",
 		"description": "Used memory in Bytes",
 		"group": "Network_Interfaces",
@@ -22,7 +22,7 @@
 		]
 	},
 	{
-		"prototype": "net.if.in",
+		"id": "net.if.in",
 		"name": "Bits received",
 		"group": "Network_Interfaces",
 		"valueType": "INTEGER",
@@ -82,7 +82,7 @@
 		]
 	},
 	{
-		"prototype": "net.if.out",
+		"id": "net.if.out",
 		"name": "Bits sent",
 		"group": "Network_Interfaces",
 		"delay": "3m",
@@ -91,7 +91,7 @@
 		"units": "bps"
 	},
 	{
-		"prototype": "net.if.in.errors",
+		"id": "net.if.in.errors",
 		"name": "Inbound packets with errors",
 		"group": "Network_Interfaces",
 		"delay": "5m",
@@ -114,7 +114,7 @@
 		]
 	},
 	{
-		"prototype": "net.if.out.errors",
+		"id": "net.if.out.errors",
 		"name": "Outbound packets with errors",
 		"group": "Network_Interfaces",
 		"delay": "5m",
@@ -122,7 +122,7 @@
 		"valueType": "INTEGER"
 	},
 	{
-		"prototype": "net.if.in.discards",
+		"id": "net.if.in.discards",
 		"name": "Inbound packets discarded",
 		"group": "Network_Interfaces",
 		"delay": "5m",
@@ -130,7 +130,7 @@
 		"valueType": "INTEGER"
 	},
 	{
-		"prototype": "net.if.out.discards",
+		"id": "net.if.out.discards",
 		"name": "Outbound packets discarded",
 		"group": "Network_Interfaces",
 		"delay": "5m",
@@ -138,7 +138,7 @@
 		"valueType": "INTEGER"
 	},
 	{
-		"prototype": "net.if.speed",
+		"id": "net.if.speed",
 		"name": "Speed",
 		"group": "Network_Interfaces",
 		"delay": "5m",
@@ -163,7 +163,7 @@
 		]
 	},
 	{
-		"prototype": "net.if.type",
+		"id": "net.if.type",
 		"name": "Interface type",
 		"group": "Network_Interfaces",
 		"delay": "1h",

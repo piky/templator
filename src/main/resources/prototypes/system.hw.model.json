@@ -1,5 +1,5 @@
 {
-	"prototype":"system.hw.model",
+	"id":"system.hw.model",
 	"key":"system.hw.model",
 	"name":"Hardware model name",
 	"valueType":"CHAR",

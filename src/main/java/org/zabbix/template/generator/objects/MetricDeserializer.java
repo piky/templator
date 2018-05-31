@@ -85,9 +85,16 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		//get prototype name from json 
-		String protoName = node.get("prototype").textValue();
-		
+		//get prototype name from json
+		String protoName;
+		try {
+			protoName = node.get("prototype").textValue();
+		}
+		catch (NullPointerException npe) {
+			//assign default as 'none'
+			protoName = "none";
+		}
+
 		JsonNode defaultJson = prototypes.get(protoName);
 		if (defaultJson != null) {
 			Metric defaults = mapper.treeToValue(defaultJson,MetricDefault.class);
