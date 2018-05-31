@@ -21,14 +21,13 @@ end
 
 
 
-/* TODO 
+
 rule "Validation rule 3: valueMap mentioned in metric should be defined"
 	agenda-group "postvalidate"
 when
 	$m: Metric($vm_name : valueMap != null)
-	$t : InputJSON()
-	ValueMap ( name != $vm_name) from $t.valueMaps 	
+	$t: InputJSON( )
+	not ValueMap(name == $vm_name) from $t.valueMaps
 then
-    logger.info("Found value map for "+ $vm_name);
+    logger.warn("No value map found for " + $vm_name + ". It used in " +$m.getId());
 end
-*/
