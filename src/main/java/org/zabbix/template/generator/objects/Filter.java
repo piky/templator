@@ -1,7 +1,11 @@
 package org.zabbix.template.generator.objects;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 //TODO add enums for evaltype and ooperator.
 public class Filter {
-	
+
+	@JsonAlias("evaltype")
 	private EvalType evalType;
 	private String formula;
 	private Condition[] conditions;
