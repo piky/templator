@@ -103,10 +103,10 @@ when
 then
     logger.info("Found sensor.temp.value metric, adding additional MACRO...");
     modify($t) {
-    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"CPU\"}","75")),
-    	getMacros().add(new UserMacro("{$TEMP_WARN:\"CPU\"}","70")),
-    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"AMBIENT\"}","35")),
-    	getMacros().add(new UserMacro("{$TEMP_WARN:\"AMBIENT\"}","30")),
+//    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"CPU\"}","75")),
+//    	getMacros().add(new UserMacro("{$TEMP_WARN:\"CPU\"}","70")),
+//    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"AMBIENT\"}","35")),
+//    	getMacros().add(new UserMacro("{$TEMP_WARN:\"AMBIENT\"}","30")),
     	getMacros().add(new UserMacro("{$TEMP_CRIT}","60")),
     	getMacros().add(new UserMacro("{$TEMP_WARN}","50")),
     	getMacros().add(new UserMacro("{$TEMP_CRIT_LOW}","5"));

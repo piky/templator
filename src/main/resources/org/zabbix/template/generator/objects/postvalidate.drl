@@ -7,7 +7,7 @@ rule "Validation rule 1: you should have both discoveryRule and alarmObject defi
 when
 	$m : Metric (discoveryRule != null, alarmObject == null )
 then
-    logger.error("Please define 'alarmObject' for "+$m);
+    logger.error("Please define 'alarmObject' for "+$m.getId());
 end
 
 
@@ -16,7 +16,7 @@ rule "Validation rule 2: check key"
 when
 	$m : Metric (key == null)
 then
-    logger.error("There is no 'key' for "+$m.getName());
+    logger.error("There is no 'key' for "+$m.getId());
 end
 
 

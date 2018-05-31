@@ -26,7 +26,7 @@
 		"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
 		"priority":2,
 		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
-		"dependsOn":["tempCrit"]
+		"dependsOn":["tempCrit","tempCrit.combined"]
 	},
 	{
 		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
