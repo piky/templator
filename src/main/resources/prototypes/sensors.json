@@ -12,35 +12,63 @@
 		"trends":"365d",
 		"alarmObjectType":"",
 		"triggers":[
-			{
-				"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
-				"id":"tempWarn",
-				"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
-				"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}-3",
-				"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
-				"priority":2,
-				"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
-				"dependsOn":["tempCrit"]
-			},
-			{
-				"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
-				"id":"tempCrit",
-				"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
-				"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}-3",
-				"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
-				"priority":4,
-				"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
-			},
-			{
-				"documentation":"Using recovery expression... Temperature has to be 3 points more than threshold level  ({$TEMP_CRIT_LOW}+3)",
-				"id":"tempLow",
-				"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}<{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
-				"recoveryExpression":"{TEMPLATE_NAME:METRIC.min(5m)}>{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}+3",
-				"name":"Temperature is too low: <{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
-				"priority":3
-			}
+			{"prototype":"tempWarn"},
+			{"prototype":"tempCrit"},
+			{"prototype":"tempLow"}
 		]
 	},
+
+	{
+		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
+		"id":"tempWarn",
+		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
+		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}-3",
+		"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
+		"priority":2,
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
+		"dependsOn":["tempCrit"]
+	},
+	{
+		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
+		"id":"tempWarn.combined",
+		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_WARN_STATUS}",
+		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}-3",
+		"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
+		"priority":2,
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
+
+		"dependsOn":["tempCrit","tempCrit.combined"]
+	},
+	{
+		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
+		"id":"tempCrit",
+		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
+		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}-3",
+		"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
+		"priority":4,
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
+	},
+	{
+		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_CRIT}-3)",
+		"id":"tempCrit.combined",
+		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_CRIT_STATUS}",
+		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}-3",
+		"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
+		"priority":4,
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
+	},	
+	{
+		"documentation":"Using recovery expression... Temperature has to be 3 points more than threshold level  ({$TEMP_CRIT_LOW}+3)",
+		"id":"tempLow",
+		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}<{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
+		"recoveryExpression":"{TEMPLATE_NAME:METRIC.min(5m)}>{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}+3",
+		"name":"Temperature is too low: <{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
+		"priority":3
+	},
+
+
+
+
 	{
 		"id":"sensor.temp.status",
 		"name":"Temperature status",
@@ -102,6 +130,7 @@
 		"id":"sensor.fan.speed",
 		"name":"Fan speed",
 		"group":"Fans",
-		"units":"rpm"
+		"units":"rpm",
+		"history": "30d"
 	}
 ]
