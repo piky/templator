@@ -3,7 +3,7 @@ global org.slf4j.Logger logger;
 
 
 rule "Validation rule 1: you should have both discoveryRule and alarmObject defined"
-	agenda-group "validate"
+	agenda-group "postvalidate"
 when
 	$m : Metric (discoveryRule != null, alarmObject == null )
 then
@@ -12,7 +12,7 @@ end
 
 
 rule "Validation rule 2: check key"
-	agenda-group "validate"
+	agenda-group "postvalidate"
 when
 	$m : Metric (key == null)
 then
@@ -20,17 +20,10 @@ then
 end
 
 
-rule "Validation rule: check name"
-	agenda-group "validate"
-when
-	$m : Metric (name == null)
-then
-    logger.error("There is no 'name' for "+$m);
-end
 
 /* TODO 
 rule "Validation rule 3: valueMap mentioned in metric should be defined"
-	agenda-group "validate"
+	agenda-group "postvalidate"
 when
 	$m: Metric($vm_name : valueMap != null)
 	$t : InputJSON()
