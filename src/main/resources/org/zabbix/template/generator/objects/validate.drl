@@ -16,7 +16,7 @@ rule "Validation rule 2: check key"
 when
 	$m : Metric (key == null)
 then
-    logger.error("There is no 'key' for "+$m);
+    logger.error("There is no 'key' for "+$m.getName());
 end
 
 /* TODO 

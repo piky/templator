@@ -19,7 +19,7 @@ rule "Rule 2: Generate metric key for SNMP type"
 when
 	$m : Metric ( key == null, snmpObject != null, prototype != null)
 then
-    logger.debug("There is no key for "+$m+" so let's generate it...");
+    logger.debug("There is no 'key' for "+$m.getName()+" so let's generate it...");
     modify( $m ) { 
     		setKey( $m.getPrototype()+"["+$m.getSnmpObject()+"]")
     	};

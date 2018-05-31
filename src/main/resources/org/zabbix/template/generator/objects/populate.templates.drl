@@ -10,7 +10,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
 then
-    logger.info("Found SNMP_DEVICE class, attaching template dependency for "+$t);
+    logger.info("Found SNMP_DEVICE class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Generic SNMPvX");};
 end
 
@@ -23,7 +23,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.SNMP_V1 || this == TemplateClass.SNMP_V2|| this == TemplateClass.SNMP_V3) from $classes)
 then
-    logger.info("Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t);
+    logger.info("Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t.getName());
     modify($t) {setName($t.getName()+" SNMPvX");};
 end
 
@@ -35,7 +35,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.INTERFACES) from $classes)
 then
-    logger.info("Found INTERFACES class, attaching template dependency for "+$t);
+    logger.info("Found INTERFACES class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Interfaces SNMPvX");};
 end
 
@@ -48,7 +48,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.INTERFACES_SIMPLE) from $classes)
 then
-    logger.info("Found INTERFACES_SIMPLE class, attaching template dependency for "+$t);
+    logger.info("Found INTERFACES_SIMPLE class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Interfaces Simple SNMPvX");};
 end
 

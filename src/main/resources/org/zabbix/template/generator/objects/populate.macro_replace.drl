@@ -44,7 +44,7 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.warn("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
+    logger.debug("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
     $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     if ($tr.getRecoveryExpression() != null) {
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
