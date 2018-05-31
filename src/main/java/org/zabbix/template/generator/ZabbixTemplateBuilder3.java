@@ -5,6 +5,8 @@ package org.zabbix.template.generator;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
@@ -42,8 +44,13 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 
 		//generate jackson mapper
+
+		//create factorey to enable comments for json
+		JsonFactory f = new JsonFactory();
+		f.enable(JsonParser.Feature.ALLOW_COMMENTS);
+
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-		ObjectMapper jsonMapper = new ObjectMapper();
+		ObjectMapper jsonMapper = new ObjectMapper(f);
 		JacksonDataFormat yamlJackson = new JacksonDataFormat(yamlMapper,InputJSON.class);
 		JacksonDataFormat jsonJackson = new JacksonDataFormat(jsonMapper,InputJSON.class);
 		//Catch wrong metric prototypes spelling
