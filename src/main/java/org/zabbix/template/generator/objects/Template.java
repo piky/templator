@@ -4,7 +4,7 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -29,7 +29,7 @@ public class Template {
 	//private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
 	
-	private LinkedHashSet<UserMacro> macros = new LinkedHashSet<UserMacro>(0);
+	private TreeSet<UserMacro> macros = new TreeSet<>();
 	private ArrayList<String> templates = new ArrayList<String>(0);
 	
 	
@@ -86,10 +86,10 @@ public class Template {
 	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
 		this.discoveryRules = discoveryRules;
 	}
-	public LinkedHashSet<UserMacro> getMacros() {
+	public TreeSet<UserMacro> getMacros() {
 		return macros;
 	}
-	public void setMacros(LinkedHashSet<UserMacro> macros) {
+	public void setMacros(TreeSet<UserMacro> macros) {
 		this.macros = macros;
 	}
 	/**

@@ -2,7 +2,7 @@ package org.zabbix.template.generator.objects;
 
 import java.util.Objects;
 
-public class UserMacro {
+public class UserMacro implements Comparable<UserMacro>{
 	private String macro;
 	private String value;
 	public String getMacro() {
@@ -39,5 +39,11 @@ public class UserMacro {
 	public int hashCode() {
 
 		return Objects.hash(macro);
+	}
+
+
+	@Override
+	public int compareTo(UserMacro o) {
+		return this.getMacro().compareTo(o.getMacro());
 	}
 }
