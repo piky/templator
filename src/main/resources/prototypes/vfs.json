@@ -3,7 +3,7 @@
 		"name": "Storage units",
 		"id": "vfs.fs.units",
 		"group": "Internal_Items",
-		"history": "7d",
+		"history": "1w",
 		"trends": "0d"
 	},
 	{
@@ -12,7 +12,7 @@
 		"group":"Internal_Items",
 		"description":"Used storage in units",
 		"units":"units",
-		"history":"7d",
+		"history":"1w",
 		"trends":"0d"
 	},
 	{
@@ -21,7 +21,7 @@
 		"group":"Internal_Items",
 		"description":"Total space in units",
 		"units":"units",
-		"history":"7d",
+		"history":"1w",
 		"trends":"0d"
 	},	
 

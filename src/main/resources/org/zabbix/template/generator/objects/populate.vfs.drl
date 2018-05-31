@@ -60,3 +60,32 @@ then
 		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
 	};
 end
+
+
+rule "Rule 8: generate vfs.fs.total"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vfs.fs.total')
+	$m_u_total : Metric ( id == 'vfs.fs.units.total')
+	$m_u: Metric ( id == 'vfs.fs.units')
+then
+    logger.info("There are vfs.fs.units.total and vfs.fs.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end
+
+rule "Rule 9: generate vfs.fs.used"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vfs.fs.used')
+	$m_u_used : Metric ( id == 'vfs.fs.units.used')
+	$m_u: Metric ( id == 'vfs.fs.units')
+then
+    logger.info("There are vfs.fs.units.used and vfs.fs.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end
