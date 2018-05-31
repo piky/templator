@@ -15,19 +15,23 @@ end
 
 /*
 TODO remove this rule.
+regenerate defined key if it is item prototype.
 */
 rule "Rule 2.1: Generate metric key for SNMP type"
-
 	agenda-group "populate"
+	no-loop
 when
-	$m : Metric ( key != null, alarmObject != null, discoveryRule != null)
+	$m : Metric ( key != null, discoveryRule != null)
 then
     //logger.debug("There is no 'key' for "+$m.getName()+" so let's generate it...");
-    $m.setKey( $m.getId()+"["+$m.getSnmpObject()+"]");
+    modify( $m ) {
+            setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
+        };
 end
 
 rule "Rule 2: Generate metric key for SNMP type"
 	agenda-group "populate"
+	no-loop
 when
 	$m : Metric ( key == null, snmpObject != null, id != null)
 then
