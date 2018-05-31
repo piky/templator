@@ -39,6 +39,18 @@ then
     modify($t) {getTemplates().add("Template Module Interfaces SNMPvX");};
 end
 
+//This rules attaches template dependencies if there are some Classes present in it
+rule "Rule: generate dependencies for templates - Template Module EtherLike-MIB"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($classes: classes)
+    exists (TemplateClass(this == TemplateClass.INTERFACES_ETHERLIKE_EXTENSION) from $classes)
+then
+    logger.info("Found INTERFACES_ETHERLIKE_EXTENSION class, attaching template dependency for "+$t.getName());
+    modify($t) {getTemplates().add("Template Module EtherLike-MIB SNMPvX");};
+end
+
 
 //This rules attaches template dependencies if there are some Classes present in it
 rule "Rule 3: generate dependencies for templates - Template Module Interfaces Simple"

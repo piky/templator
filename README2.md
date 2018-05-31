@@ -83,6 +83,6 @@ attach sub templates
 if class = SNMP_DEVICE -> attach SNMP GENERIC
 if class = INTERFACES -> attach SNMP INTERFACES
 if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
-
+if class = Interfaces EtherLike Extension -> Attach Template Module EtherLike-MIB
 ### magic 4: SNMPvX
 add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  

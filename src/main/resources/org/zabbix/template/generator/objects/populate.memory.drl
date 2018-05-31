@@ -60,3 +60,32 @@ then
 		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
 	};
 end
+
+
+rule "Rule 8: generate vm.memory.total"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vm.memory.total')
+	$m_u_total : Metric ( id == 'vm.memory.units.total')
+	$m_u: Metric ( id == 'vm.memory.units')
+then
+    logger.info("There are vm.memory.units.total and vm.memory.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end
+
+rule "Rule 9: generate vm.memory.used"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vm.memory.used')
+	$m_u_used : Metric ( id == 'vm.memory.units.used')
+	$m_u: Metric ( id == 'vm.memory.units')
+then
+    logger.info("There are vm.memory.units.used and vm.memory.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end

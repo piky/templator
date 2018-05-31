@@ -56,5 +56,33 @@
 				]
 			}
 		]
+	},
+	{
+		"id":"vm.memory.units",
+		"name": "Memory units",
+		"group": "Internal_Items",
+		"delay": "3m",
+		"trends": "0",
+		"history": "1w"
+	},
+	{
+		"id":"vm.memory.units.used",
+		"name": "Used memory in units",
+		"group": "Internal_Items",
+		"units":"units",
+		"delay": "3m",
+		"trends": "0",
+		"history": "1w",
+		"description": "Used memory in units"
+	},
+	{
+		"id":"vm.memory.units.total",
+		"name": "Total memory in units",
+		"group": "Internal_Items",
+		"units":"units",
+		"delay": "3m",
+		"trends": "0",
+		"history": "1w",
+		"description": "Total memory in units"
 	}
 ]
