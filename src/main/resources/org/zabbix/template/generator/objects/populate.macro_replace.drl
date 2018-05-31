@@ -4,28 +4,28 @@ global org.slf4j.Logger logger;
 METRICS
 */
 //
-rule "Rule: replaces ALARM_OBJECT macro in metrics"
+rule "Rule: replaces __ALARM_OBJECT__ macro in metrics"
 	agenda-group "populate"
 	no-loop
 when    
     $m : Metric ($key: key != null,  $alarmObject: alarmObject != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replaceAll("ALARM_OBJECT",$alarmObject));
+    	$m.setDescription( $m.getDescription().replaceAll("__ALARM_OBJECT__",$alarmObject));
     }
-    $m.setName( $m.getName().replaceAll("ALARM_OBJECT",$alarmObject));
+    $m.setName( $m.getName().replaceAll("__ALARM_OBJECT__",$alarmObject));
 end
 
-rule "Rule: replaces ALARM_OBJECT_TYPE macro in metrics"
+rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in metrics"
 	agenda-group "populate"
 	no-loop
 when    
     $m : Metric ($key: key != null, $alarmObjectType: alarmObjectType != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    	$m.setDescription( $m.getDescription().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
-    $m.setName( $m.getName().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    $m.setName( $m.getName().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
 end
 
 
@@ -77,38 +77,38 @@ end
 
 
 //
-rule "Rule: replaces ALARM_OBJECT macro in expressions"
+rule "Rule: replaces __ALARM_OBJECT__ macro in expressions"
 	agenda-group "populate"
 	no-loop
 when    
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObject: alarmObject != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug("Generating trigger expression (changing ALARM_OBJECT) for "+ $tr.getName());
+    logger.debug("Generating trigger expression (changing __ALARM_OBJECT__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("ALARM_OBJECT",$alarmObject));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT__",$alarmObject));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replaceAll("ALARM_OBJECT",$alarmObject));
+    	$tr.setDescription( $tr.getDescription().replaceAll("__ALARM_OBJECT__",$alarmObject));
     }
-    $tr.setExpression( $tr.getExpression().replaceAll("ALARM_OBJECT",$alarmObject));
-    $tr.setName( $tr.getName().replaceAll("ALARM_OBJECT",$alarmObject));
+    $tr.setExpression( $tr.getExpression().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    $tr.setName( $tr.getName().replaceAll("__ALARM_OBJECT__",$alarmObject));
 end
 
-rule "Rule: replaces ALARM_OBJECT_TYPE macro in expressions"
+rule "Rule: replaces ____ALARM_OBJECT_TYPE__ macro in expressions"
 	agenda-group "populate"
 	no-loop
 when    
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObjectType: alarmObjectType != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug("Generating trigger expression (changing ALARM_OBJECT_TYPE) for "+ $tr.getName());
+    logger.debug("Generating trigger expression (changing __ALARM_OBJECT_TYPE__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    	$tr.setDescription( $tr.getDescription().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
-    $tr.setExpression( $tr.getExpression().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
-    $tr.setName( $tr.getName().replaceAll("ALARM_OBJECT_TYPE",$alarmObjectType));
+    $tr.setExpression( $tr.getExpression().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $tr.setName( $tr.getName().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
 end

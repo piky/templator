@@ -56,7 +56,7 @@
 		"history": "30d",
 		"valueType": "FLOAT",
 		"units": "%",
-		"description": "Storage utilization in % for ALARM_OBJECT",
+		"description": "Storage utilization in % for __ALARM_OBJECT__",
 		"triggers": [
 			{
 				"prototype": "none",
