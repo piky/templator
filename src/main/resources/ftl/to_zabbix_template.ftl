@@ -568,7 +568,7 @@ ${mib}
 </#list>
 </#if>
 <#if t.documentation??>
-<#if t.documentation.issues??>
+<#if (t.documentation.issues?size>0)>
 Known Issues:
 <#list t.documentation.issues as i>
 <#if i.description??>
