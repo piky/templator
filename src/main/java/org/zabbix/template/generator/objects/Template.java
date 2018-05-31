@@ -30,7 +30,7 @@ public class Template {
 	private TemplateDocumentation documentation;
 	
 	private TreeSet<UserMacro> macros = new TreeSet<>();
-	private ArrayList<String> templates = new ArrayList<String>(0);
+	private TreeSet<String> templates = new TreeSet<String>();
 	
 	
 	//this method return a  list of all unique mibs met in the template. This is required for FreeMarker generation of template description 
@@ -95,13 +95,13 @@ public class Template {
 	/**
 	 * @return the templates
 	 */
-	public ArrayList<String> getTemplates() {
+	public TreeSet<String> getTemplates() {
 		return templates;
 	}
 	/**
 	 * @param templates the templates to set
 	 */
-	public void setTemplates(ArrayList<String> templates) {
+	public void setTemplates(TreeSet<String> templates) {
 		this.templates = templates;
 	}
 	public Metric[] getMetrics() {
