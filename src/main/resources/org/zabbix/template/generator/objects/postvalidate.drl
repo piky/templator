@@ -19,6 +19,15 @@ then
     logger.error("There is no 'key' for "+$m.getName());
 end
 
+
+rule "Validation rule: check name"
+	agenda-group "validate"
+when
+	$m : Metric (name == null)
+then
+    logger.error("There is no 'name' for "+$m);
+end
+
 /* TODO 
 rule "Validation rule 3: valueMap mentioned in metric should be defined"
 	agenda-group "validate"
