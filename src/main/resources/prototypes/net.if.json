@@ -1,5 +1,11 @@
 [
 	{
+		"oid": "1.3.6.1.2.1.2.2.1.8.{#SNMPINDEX}",
+		"snmpObject": "ifOperStatus.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The current operational state of the interface.\n- The testing(3) state indicates that no operational packet scan be passed\n- If ifAdminStatus is down(2) then ifOperStatus should be down(2)\n- If ifAdminStatus is changed to up(1) then ifOperStatus should change to up(1) if the interface is ready to transmit and receive network traffic\n- It should change todormant(5) if the interface is waiting for external actions (such as a serial line waiting for an incoming connection)\n- It should remain in the down(2) state if and only if there is a fault that prevents it from going to the up(1) state\n- It should remain in the notPresent(6) state if the interface has missing(typically, hardware) components.",
+		"valueMap": "IF-MIB::ifOperStatus",
 		"id": "net.if.status",
 		"name": "Operational status",
 		"description": "Used memory in Bytes",
@@ -22,6 +28,21 @@
 		]
 	},
 	{
+		"snmpObject": "ifHCInOctets.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.31.1.1.1.6.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The total number of octets received on the interface,including framing characters.  This object is a 64-bit version of ifInOctets. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			},
+			{
+				"type": "MULTIPLIER",
+				"params": "8"
+			}
+		],
+		
 		"id": "net.if.in",
 		"name": "Bits received",
 		"group": "Network_Interfaces",
@@ -82,6 +103,21 @@
 		]
 	},
 	{
+		"snmpObject": "ifHCOutOctets.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.31.1.1.1.10.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The total number of octets transmitted out of the interface, including framing characters.  This object is a 64-bit version of ifOutOctets.Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			},
+			{
+				"type": "MULTIPLIER",
+				"params": "8"
+			}
+		],
+
 		"id": "net.if.out",
 		"name": "Bits sent",
 		"group": "Network_Interfaces",
@@ -91,6 +127,17 @@
 		"units": "bps"
 	},
 	{
+		"snmpObject": "ifInErrors.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.2.2.1.14.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "For packet-oriented interfaces, the number of inbound packets that contained errors preventing them from being deliverable to a higher-layer protocol.  For character-oriented or fixed-length interfaces, the number of inbound transmission units that contained errors preventing them from being deliverable to a higher-layer protocol. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			}
+		],
+
 		"id": "net.if.in.errors",
 		"name": "Inbound packets with errors",
 		"group": "Network_Interfaces",
@@ -114,6 +161,17 @@
 		]
 	},
 	{
+		"snmpObject": "ifOutErrors.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.2.2.1.20.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "For packet-oriented interfaces, the number of outbound packets that contained errors preventing them from being deliverable to a higher-layer protocol.  For character-oriented or fixed-length interfaces, the number of outbound transmission units that contained errors preventing them from being deliverable to a higher-layer protocol. Discontinuities in the value of this counter can occur at re-initialization of the management system, and at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			}
+		],
+
 		"id": "net.if.out.errors",
 		"name": "Outbound packets with errors",
 		"group": "Network_Interfaces",
@@ -122,6 +180,17 @@
 		"valueType": "INTEGER"
 	},
 	{
+		"snmpObject": "ifInDiscards.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.2.2.1.13.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The number of inbound packets which were chosen to be discarded\neven though no errors had been detected to prevent their being deliverable to a higher-layer protocol.\nOne possible reason for discarding such a packet could be to free up buffer space.\nDiscontinuities in the value of this counter can occur at re-initialization of the management system,\nand at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			}
+		],
+
 		"id": "net.if.in.discards",
 		"name": "Inbound packets discarded",
 		"group": "Network_Interfaces",
@@ -130,6 +199,17 @@
 		"valueType": "INTEGER"
 	},
 	{
+		"snmpObject": "ifOutDiscards.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.2.2.1.19.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The number of outbound packets which were chosen to be discarded\neven though no errors had been detected to prevent their being deliverable to a higher-layer protocol.\nOne possible reason for discarding such a packet could be to free up buffer space.\nDiscontinuities in the value of this counter can occur at re-initialization of the management system,\nand at other times as indicated by the value of ifCounterDiscontinuityTime.",
+		"preprocessing": [
+			{
+				"type": "DELTA_PER_SECOND"
+			}
+		],
+
 		"id": "net.if.out.discards",
 		"name": "Outbound packets discarded",
 		"group": "Network_Interfaces",
@@ -138,6 +218,17 @@
 		"valueType": "INTEGER"
 	},
 	{
+		"snmpObject": "ifHighSpeed.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.31.1.1.1.15.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "An estimate of the interface's current bandwidth in units of 1,000,000 bits per second.  If this object reports a value of `n' then the speed of the interface is somewhere in the range of `n-500,000' to`n+499,999'.  For interfaces which do not vary in bandwidth or for those where no accurate estimation can be made, this object should contain the nominal bandwidth.  For a sub-layer which has no concept of bandwidth, this object should be zero.",
+		"preprocessing": [
+			{
+				"type": "MULTIPLIER",
+				"params": 1000000
+			}
+		],
 		"id": "net.if.speed",
 		"name": "Speed",
 		"group": "Network_Interfaces",
@@ -163,6 +254,12 @@
 		]
 	},
 	{
+		"snmpObject": "ifType.{#SNMPINDEX}",
+		"oid": "1.3.6.1.2.1.2.2.1.3.{#SNMPINDEX}",
+		"mib": "IF-MIB",
+		"alarmObject": "Interface {#IFNAME}({#IFALIAS})",
+		"vendorDescription": "The type of interface.\nAdditional values for ifType are assigned by the Internet Assigned NumbersAuthority (IANA),\nthrough updating the syntax of the IANAifType textual convention.",
+		"valueMap": "IF-MIB::ifType",
 		"id": "net.if.type",
 		"name": "Interface type",
 		"group": "Network_Interfaces",
