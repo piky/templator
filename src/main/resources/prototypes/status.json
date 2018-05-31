@@ -31,7 +31,7 @@
     },
     {
         "id": "health.warn",
-        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$HEALTH_CRIT_STATUS},eq)}=1",
+        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$HEALTH_WARN_STATUS},eq)}=1",
         "name":"System status is in warning state",
         "priority":2,
         "description": "Please check the device for warnings",
@@ -39,7 +39,7 @@
     },
     {
         "id": "health.notok",
-        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$HEALTH_WARN_STATUS},ne)}=1",
+        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$HEALTH_NOTOK_STATUS},ne)}=1",
         "name": "System status is not in normal state",
         "priority": 1,
         "description": "Please check the device for errors",
