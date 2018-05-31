@@ -10,7 +10,6 @@ public enum TemplateClass {
 	FAULT,
 	GENERAL,
 	IF_MIB,
-	IF_MIB_SIMPLE,
 	ICMP,
 	//end
 	

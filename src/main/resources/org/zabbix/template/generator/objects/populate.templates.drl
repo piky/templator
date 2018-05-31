@@ -157,20 +157,6 @@ then
     };
 end
 
-rule "Rule 10: generate additional macros (IF_MIB_SIMPLE class)"
-	agenda-group "populate"
-	no-loop
-when
-	$t: Template($classes: classes)
-    exists (TemplateClass(this == TemplateClass.IF_MIB_SIMPLE) from $classes)
-then
-    logger.info("Found IF_MIB_SIMPLE class, adding additional MACRO");
-    modify($t) {
-    	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
-    	getMacros().add(new UserMacro("{$IF_UTIL_MAX}","95")),
-    	getMacros().add(new UserMacro("{$IF_ERRORS_WARN}","2"));	
-    };
-end
 
 rule "Rule 11: generate additional macros (ICMP class)"
 	agenda-group "populate"
