@@ -13,6 +13,18 @@ then
 end
 
 
+/*
+TODO remove this rule.
+*/
+rule "Rule 2.1: Generate metric key for SNMP type"
+
+	agenda-group "populate"
+when
+	$m : Metric ( key != null, alarmObject != null, discoveryRule != null)
+then
+    //logger.debug("There is no 'key' for "+$m.getName()+" so let's generate it...");
+    $m.setKey( $m.getId()+"["+$m.getSnmpObject()+"]");
+end
 
 rule "Rule 2: Generate metric key for SNMP type"
 	agenda-group "populate"
@@ -120,5 +132,18 @@ then
     modify( $m ) { 
     		setDescription( $m.getDescription() + "\nReference: " + $m.getRef() );
     	};
+end
+
+/*
+ It's not safe to map item prototypes to inventory. So, that kind of linked should be removed.
+*/
+rule "Rule: purge inventory_link for item prototypes"
+	agenda-group "populate"
+	salience 101
+when
+	$m : Metric (discoveryRule != null,inventoryLink != InventoryLink.NONE)
+then
+    logger.warn("Purging inventory link for item prototype:"+$m.getId());
+    $m.setInventoryLink(InventoryLink.NONE);
 end
 
