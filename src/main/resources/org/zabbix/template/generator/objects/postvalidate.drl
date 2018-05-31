@@ -31,3 +31,12 @@ when
 then
     logger.warn("No value map found for " + $vm_name + ". It used in " +$m.getId());
 end
+
+
+rule "Validation rule 3: check Type"
+	agenda-group "postvalidate"
+when
+	$m: Metric(type == null)
+then
+    logger.error("No 'type' defined for" + $m.getId());
+end
