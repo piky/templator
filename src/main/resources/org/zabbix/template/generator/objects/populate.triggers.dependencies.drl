@@ -24,6 +24,7 @@ then
 end
 
 /*
+TODO
 This is static that should be removed in the future
 */
 rule "Static rule to add ping dependency into some templates"

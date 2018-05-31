@@ -77,11 +77,11 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		//JSON - YAML Chooser //TODO add by extention .json / .yaml
 		.choice()
 			.when(simple("${file:ext} == 'yaml'"))
-				.log("Try YAML....")
+				//.log("Try YAML....")
 				.unmarshal(yamlJackson)
 				.to("direct:create_template")
 			.when(simple("${file:ext} == 'json'"))
-				.log("Try JSON....")
+				//.log("Try JSON....")
 				.unmarshal(jsonJackson)
 				.to("direct:create_template")
         .end();

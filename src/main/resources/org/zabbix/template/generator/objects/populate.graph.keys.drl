@@ -14,7 +14,7 @@ when
 	$m2 : Metric ( $m.discoveryRule == discoveryRule, $gitem.metricKey == $m2.id )
  
 then
-    logger.info("Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
+    logger.debug("Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
     //now replace gitem.metricKey with actual metric key:
     $gitem.setMetricKey($m2.getKey());
 end
