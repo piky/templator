@@ -1,5 +1,7 @@
 package org.zabbix.template.generator.objects;
 
+import java.util.Objects;
+
 public class UserMacro {
 	private String macro;
 	private String value;
@@ -25,4 +27,17 @@ public class UserMacro {
 		this.value = value;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserMacro userMacro = (UserMacro) o;
+		return Objects.equals(macro, userMacro.macro);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(macro);
+	}
 }

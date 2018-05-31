@@ -28,7 +28,7 @@ public class Template {
 	//private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
 	
-	private ArrayList<UserMacro> macros = new ArrayList<UserMacro>(0);
+	private HashSet<UserMacro> macros = new HashSet<UserMacro>(0);
 	private ArrayList<String> templates = new ArrayList<String>(0);
 	
 	
@@ -85,10 +85,10 @@ public class Template {
 	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
 		this.discoveryRules = discoveryRules;
 	}
-	public ArrayList<UserMacro> getMacros() {
+	public HashSet<UserMacro> getMacros() {
 		return macros;
 	}
-	public void setMacros(ArrayList<UserMacro> macros) {
+	public void setMacros(HashSet<UserMacro> macros) {
 		this.macros = macros;
 	}
 	/**

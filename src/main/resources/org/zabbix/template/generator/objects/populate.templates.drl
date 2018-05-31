@@ -79,6 +79,9 @@ then
     modify($t) {getMacros().add(new UserMacro("{$MEMORY_UTIL_MAX}","90"));};
 end
 
+/*
+Add macro if it doesn't exist before.
+*/
 rule "Rule 6: generate additional macros"
 	agenda-group "populate"
 	no-loop
