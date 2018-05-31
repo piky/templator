@@ -1,0 +1,28 @@
+[
+    {
+        "prototype": "fan.crit",
+        "id": "fan.crit",
+        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$FAN_CRIT_STATUS},eq)}=1",
+        "name": "Fan is in critical state",
+        "priority": 3,
+        "description": "Please check the fan unit"
+    },
+    {
+        "prototype": "fan.warn",
+        "id": "fan.warn",
+        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$FAN_WARN_STATUS},eq)}=1",
+        "name": "Fan is in warning state",
+        "priority": 2,
+        "description": "Please check the fan unit",
+        "dependsOn":["fan.crit"]
+    },
+    {
+        "prototype": "fan.notok",
+        "id": "fan.notok",
+        "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$FAN_OK_STATUS},ne)}=1",
+        "name": "Fan is not in normal state",
+        "priority": 1,
+        "description": "Please check the fan unit",
+        "dependsOn":["fan.crit","fan.warn"]
+    }
+]
