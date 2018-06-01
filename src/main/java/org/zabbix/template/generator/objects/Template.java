@@ -30,7 +30,7 @@ public class Template {
 	private TemplateDocumentation documentation;
 	
 	private TreeSet<UserMacro> macros = new TreeSet<>();
-	private TreeSet<String> templates = new TreeSet<String>();
+	private TreeSet<String> templates = new TreeSet<>();
 	
 	
 	//this method return a  list of all unique mibs met in the template. This is required for FreeMarker generation of template description 
