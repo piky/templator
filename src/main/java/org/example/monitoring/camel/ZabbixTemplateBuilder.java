@@ -119,7 +119,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		.to("xslt:templates/to_zabbix_export.xsl?saxon=true")
 		.to("xslt:templates/to_zabbix_export_create_groups.xsl?saxon=true")
 		//https://support.zabbix.com/browse/DEV-827
-		.to("xslt:templates/to_zabbix_add_carriage_return.xsl?saxon=true") 
+		.to("xslt:templates/to_zabbix_sort.xsl?saxon=true")
+		.to("xslt:templates/to_zabbix_add_carriage_return.xsl?saxon=true")
+
 		.setBody(body().regexReplaceAll("&#xD;", simple("&#13;")))
 		
     //with lang.setBody(body().regexReplaceAll("_SNMPvX", simple(" ${in.headers.template_suffix} ${in.headers.lang}")))
