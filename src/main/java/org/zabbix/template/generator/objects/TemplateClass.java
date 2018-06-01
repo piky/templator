@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum TemplateClass {
 	
-	//used in macros
+	// for template classification:
 	PERFORMANCE,
 	FAULT,
 	GENERAL,
+	INVENTORY,
+
+
 	IF_MIB,
 	ICMP,
 	//end
