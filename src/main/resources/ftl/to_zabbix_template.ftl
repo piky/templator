@@ -622,7 +622,7 @@ device : ${i.device!''}
     <#list list as le>
         <#local dlist = dlist + {le[key]:le[key]}>
     </#list>
-    <#return dlist?values>
+    <#return (dlist?values)?sort>
  </#function>
  <#function xml_wrap var tag>
      <#if var?string != ''>
