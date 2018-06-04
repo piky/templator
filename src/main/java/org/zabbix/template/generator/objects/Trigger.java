@@ -2,6 +2,7 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,7 @@ public class Trigger {
 	@JsonAlias({"depends_on"})
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
 	//dependencies - objects to be put onto zabbix_export output
-	private ArrayList<TriggerDependency> dependencies = new ArrayList<TriggerDependency>(0);
+	private TreeSet<TriggerDependency> dependencies = new TreeSet<TriggerDependency>();
 
 	//this array to store all metrics used apart from parent metric. To be used in Drools(replace with metric keys)
 	private HashSet <String> metricsUsed = new HashSet<>(0); 
@@ -185,10 +186,10 @@ public class Trigger {
 	public void setDependsOn(ArrayList<String> dependsOn) {
 		this.dependsOn = dependsOn;
 	}
-	public ArrayList<TriggerDependency> getDependencies() {
+	public TreeSet<TriggerDependency> getDependencies() {
 		return dependencies;
 	}
-	public void setDependencies(ArrayList<TriggerDependency> dependencies) {
+	public void setDependencies(TreeSet<TriggerDependency> dependencies) {
 		this.dependencies = dependencies;
 	}
 	public HashSet<String> getMetricsUsed() {

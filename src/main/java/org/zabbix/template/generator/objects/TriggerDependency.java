@@ -1,6 +1,9 @@
 package org.zabbix.template.generator.objects;
 
-public class TriggerDependency {
+import java.util.Comparator;
+import java.util.Objects;
+
+public class TriggerDependency implements Comparable<TriggerDependency>{
 	public TriggerDependency(String name, String expression, String recoveryExpression) {
 		super();
 		this.name = name;
@@ -28,5 +31,32 @@ public class TriggerDependency {
 	private String name;
 	private String expression;
 	private String recoveryExpression;
-}	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		TriggerDependency that = (TriggerDependency) o;
+		return Objects.equals(name, that.name) &&
+				Objects.equals(expression, that.expression) &&
+				Objects.equals(recoveryExpression, that.recoveryExpression);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(name, expression, recoveryExpression);
+	}
+
+	private static Comparator<String> nullSafeStringComparator = Comparator
+			.nullsFirst(String::compareToIgnoreCase);
+
+	@Override
+	public int compareTo(TriggerDependency td){
+		return Comparator.comparing(TriggerDependency::getName,nullSafeStringComparator)
+				.thenComparing(TriggerDependency::getExpression,nullSafeStringComparator)
+				.thenComparing(TriggerDependency::getRecoveryExpression,nullSafeStringComparator)
+				.compare(this, td);
+	}
+}
 
