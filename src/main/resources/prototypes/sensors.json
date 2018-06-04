@@ -84,7 +84,7 @@
 		"group":"Temperature",
 		"description":"Temperature location of testpoint: __ALARM_OBJECT__",
 		"delay":"1h",
-		"history":"7d",
+		"history":"1w",
 		"trends":"0d"
 	},
 
