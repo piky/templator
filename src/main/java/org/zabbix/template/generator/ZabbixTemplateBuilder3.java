@@ -101,9 +101,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				//kie
 				KieServices ks = KieServices.Factory.get();
 				KieContainer kContainer = ks.getKieClasspathContainer();
-				KieSession ksession = kContainer.newKieSession();
-				ksession.setGlobal("logger", logger);
-				ksession.insert((InputJSON) exchange.getIn().getBody());
+
 				//insert valueMaps into Drools
 				
 				//valueMaps.forEach((vm)->ksession.insert(vm));
@@ -112,6 +110,9 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 				for (Template t: templates) {
 					Metric[] metrics = t.getMetrics();
+					KieSession ksession = kContainer.newKieSession();
+					ksession.setGlobal("logger", logger);
+					ksession.insert((InputJSON) exchange.getIn().getBody());
 					ksession.insert(t);
 					if (metrics != null) {
 						for (Metric m: metrics) {
