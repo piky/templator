@@ -6,8 +6,39 @@
     "valueType":"INTEGER",
     "group":"Disk_Arrays",
     "history":"7d",
-    "trends":"0d"
+    "trends":"0d",
+    "triggers":[//defaults
+      {
+        "prototype":"diskarray.cache.crit"
+      }
+    ]
   },
+
+  //diskarray triggers as protos:
+  {
+    "id":"diskarray.cache.crit",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_CRIT_STATUS},eq)}=1",
+    "name": "Disk array cache controller is in critical state!",
+    "priority": "3",
+    "description": "Please check the device for faults"
+  },
+  {
+    "id":"diskarray.cache.warn",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_WARN_STATUS},eq)}=1",
+    "name": "Disk array cache controller is in warning state!",
+    "priority": "2",
+    "description": "Please check the device for faults",
+    "dependsOn":["diskarray.cache.crit"]
+  },
+  {
+    "id":"diskarray.cache.notok",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_OK_STATUS},ne)}=1",
+    "name": "Disk array cache controller is not in optimal state",
+    "priority": "2",
+    "description": "Please check the device for faults",
+    "dependsOn":["diskarray.cache.warn","diskarray.cache.crit"]
+  },
+
 
   {
 
@@ -16,8 +47,41 @@
     "valueType":"INTEGER",
     "group":"Disk_Arrays",
     "history":"7d",
-    "trends":"0d"
+    "trends":"0d",
+    "triggers":[
+      {
+        "prototype":"diskarray.cache.battery.crit"
+      }
+    ]
   },
+
+  //triggers protos for diskarray.cachce.battery.*
+  {
+    "id":"diskarray.cache.battery.crit",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS},eq)}=1",
+    "name": "Disk array cache controller battery is in critical state!",
+    "priority": "3",
+    "description": "Please check the device for faults"
+  },
+  {
+    "id": "diskarray.cache.battery.warm",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_BATTERY_WARN_STATUS},eq)}=1",
+    "name": "Disk array cache controller battery is in warning state!",
+    "priority": "2",
+    "description": "Please check the device for faults",
+    "dependsOn": [
+      "diskarray.cache.battery.crit"
+    ]
+  },
+  {
+    "id":"diskarray.cache.battery.notok",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_BATTERY_OK_STATUS},ne)}=1",
+    "name": "Disk array cache controller battery is not in optimal state!",
+    "priority": "2",
+    "description": "Please check the device for faults",
+    "dependsOn":["diskarray.cache.battery.crit","diskarray.cache.battery.warn"]
+  },
+
 
   {
 
@@ -26,8 +90,52 @@
     "valueType":"INTEGER",
     "group":"Disk_Arrays",
     "history":"7d",
-    "trends":"0d"
+    "trends":"0d",
+    "triggers":[
+      {"prototypes":"disk_array.crit"}
+    ]
   },
+
+  //system.hw.diskarray.cache.status trigger protos
+  {
+    "id":"disk_array.fail",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_FAIL_STATUS},eq)}=1",
+    "name": "Disk array controller is in unrecoverable state!",
+    "priority": "5",
+    "description": "Please check the device for faults"
+  },
+  {
+    "id":"disk_array.crit",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CRIT_STATUS},eq)}=1",
+    "name": "Disk array controller is in critical state",
+    "priority": "4",
+    "description": "Please check the device for faults",
+    "dependsOn":["disk_array.fail"]
+  },
+  {
+    "id": "disk_array.warm",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_WARN_STATUS},eq)}=1",
+    "name": "Disk array controller is in warning state",
+    "priority": "3",
+    "description": "Please check the device for faults",
+    "dependsOn": [
+      "disk_array.fail",
+      "disk_array.crit"
+    ]
+  },
+  {
+    "id": "disk_array.notok",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_OK_STATUS},ne)}=1",
+    "name": "Disk array controller is not in optimal state",
+    "priority": "2",
+    "description": "Please check the device for faults",
+    "dependsOn": [
+      "disk_array.fail",
+      "disk_array.crit",
+      "disk_array.warn"
+    ]
+  },
+
 
   {
 
@@ -45,17 +153,73 @@
     "name":"Physical disk status",
     "group":"Physical_Disks",
     "delay":"3m",
+    "trends":"0d",
     "history":"30d",
-    "trends":"0d"
+    "triggers":[
+      {
+        "prototype":"disk.fail"
+      }
+    ]
   },
+
+  //disk trigger protos
+  {
+    "id":"disk.fail",
+    "name":"Physical disk failed",
+    "priority":"4",
+    "description":"Please check physical disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_FAIL_STATUS},eq)}=1"
+  },
+  {
+    "id":"disk.warn",
+    "name":"Physical disk is in warning state",
+    "priority":"2",
+    "description":"Please check physical disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_WARN_STATUS},eq)}=1",
+    "dependsOn":["disk.fail"]
+  },
+  {
+    "id":"disk.notok",
+    "name":"Physical disk is not in OK state",
+    "priority":"2",
+    "description":"Please check physical disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_OK_STATUS},ne)}=1",
+    "dependsOn":["disk.fail","disk.warn"]
+  },
+
 
   {
     "id":"system.hw.physicaldisk.smart_status",
     "name":"Physical disk S.M.A.R.T. status",
     "group":"Physical_Disks",
     "delay":"3m",
-    "trends":"0d"
+    "trends":"0d",
+    "triggers":[
+      {
+        "prototype":"disk_smart.fail"
+      }
+    ]
+
+
   },
+  //disk smart trigger protos:
+  {
+    "id":"disk_smart.fail",
+    "name":"Physical disk S.M.A.R.T. status<",
+    "priority":"4",
+    "description":"Disk probably requires replacement.",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_SMART_FAIL_STATUS},eq)}=1",
+    "dependsOn":["disk.fail"]
+  },
+  {
+    "id":"disk_smart.notok",
+    "name":"Physical disk S.M.A.R.T. status is not in OK state",
+    "priority":"3",
+    "description":"Disk probably requires replacement.",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_SMART_OK_STATUS},ne)}=1",
+    "dependsOn":["disk.fail","disk.warn","disk.notok","disk_smart.fail"]
+  },
+
 
   {
     "id":"system.hw.physicaldisk.serialnumber",
@@ -63,7 +227,13 @@
     "group":"Physical_Disks",
     "valueType": "CHAR",
     "delay":"1d",
-    "trends":"0d"
+    "trends":"0d",
+    "alarmObjectType":"Disk",//required for trigger
+    "triggers":[
+      {
+        "prototype":"trigger.sn.changed"
+      }
+    ]
   },
 
   {
@@ -162,6 +332,35 @@
     "name":"Status",
     "group":"Virtual_Disks",
     "delay":"3m",
-    "history":"2w"
+    "history":"2w",
+    "triggers":[
+      {"prototype":"vdisk.fail"}
+    ]
+  },
+  //vdisk trigger prototypes
+  {
+    "id":"vdisk.fail",
+    "name":"Virtual disk failed",
+    "priority":"4",
+    "description":"Please check virtual disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_FAIL_STATUS},eq)}=1"
+  },
+  {
+    "id":"vdisk.warn",
+    "name":"Virtual disk is in warning state",
+    "priority":"3",
+    "description":"Please check virtual disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_WARN_STATUS},eq)}=1",
+    "dependsOn":["vdisk.fail"]
+  },
+  {
+    "id":"vdisk.notok",
+    "name":"Virtual disk is not in OK state",
+    "priority":"2",
+    "description":"Please check virtual disk for warnings or errors",
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_OK_STATUS},ne)}=1",
+    "dependsOn":["vdisk.fail","vdisk.warn"]
   }
+
+
 ]
