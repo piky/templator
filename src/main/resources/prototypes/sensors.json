@@ -124,7 +124,8 @@
 		"id":"sensor.fan.speed.percentage",
 		"name":"Fan speed, %",
 		"group":"Fans",
-		"units":"%"
+		"units":"%",
+		"history": "30d"
 	},
 	{
 		"id":"sensor.fan.speed",

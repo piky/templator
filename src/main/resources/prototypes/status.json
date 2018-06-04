@@ -17,7 +17,7 @@
     {
         "id": "health.disaster",
         "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$HEALTH_DISASTER_STATUS},eq)}=1",
-        "name":"System status is in unrecoverable state!",
+        "name":"System is in unrecoverable state!",
         "priority":4,
         "description": "Please check the device for faults"
     },
