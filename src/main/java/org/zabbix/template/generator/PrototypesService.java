@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +70,11 @@ public class PrototypesService {
 
 			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath:prototypes/*");
 			//mapper JSON
-		    ObjectMapper mapper = new ObjectMapper();
+			//create factory to enable comments for json
+			JsonFactory f = new JsonFactory();
+			f.enable(JsonParser.Feature.ALLOW_COMMENTS);
+
+			ObjectMapper mapper = new ObjectMapper(f);
 
 			for (Resource r: resources) {
 				File file = r.getFile();
