@@ -6,7 +6,11 @@
     <version>${zbx_ver}</version>
     <date>2015-12-30T14:41:30Z</date>
     <groups>
-        <@generate_groups body.getUniqueTemplateClasses()![]/>
+        <#list generate_groups(body.getUniqueTemplateClasses()![]) as g>
+            <group>
+                <name>${g?replace('_',' ')}</name>
+            </group>
+        </#list>
     </groups>
     <templates>
     <#list body.templates as t>
@@ -15,7 +19,11 @@
             <name>${t.name}</name>
             <description><@generate_template_description t/></description>       
             <groups>
-				<@generate_groups t.classes![]/>
+                <#list generate_groups(t.classes![]) as g>
+                    <group>
+                        <name>${g?replace('_',' ')}</name>
+                    </group>
+                </#list>
             </groups>
             <applications>
                 <#list distinct_by_key(t.metricsRegistry,'group') as g>
@@ -515,43 +523,37 @@
 
     </xsl:template>
  -->
-<#macro generate_groups groups_list>
+ <#function generate_groups groups_list>
+    <#local glist = []>
     <#local found = false>
+
     <#list groups_list as g>
           <#switch g>
           <#case 'OS'>
-          <#local found = true>
-        <group>
-            <name>Templates/Operating Systems</name>
-        </group>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Operating Systems"]>
             <#break>
           <#case 'NETWORK'>
-          <#local found = true>
-        <group>
-            <name>Templates/Network Devices</name>
-        </group>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Network Devices"]>
             <#break>
           <#case 'SERVER'>
-          <#local found = true>
-        <group>
-            <name>Templates/Servers Hardware</name>
-        </group>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Servers Hardware"]>
             <#break>
           <#case 'MODULE'>
-          <#local found = true>
-        <group>
-            <name>Templates/Modules</name>
-        </group>
-            <#break>                                
+            <#local found = true>
+            <#local glist = glist + ["Templates/Modules"]>
+            <#break>
           <#default>
         </#switch>
     </#list>
     <#if found == false>
-        <group>
-            <name>Templates/Modules</name>
-        </group>
+            <#local glist = glist + ["Templates/Modules"]>
 	</#if>
-</#macro>
+
+    <#return (glist)?sort>
+ </#function>
 
 <#macro generate_template_description t>
 ${t.description!''} version: ${headers.template_ver}
@@ -616,7 +618,7 @@ device : ${i.device!''}
      </#if>
  </#function>
  
- <#-- This function get a list of objects and the key of this object. Then it returns list(unique set) of values of this key-->
+ <#-- This function get a list of objects and the key of this object. Then it returns sorted list(unique set) of values of this key-->
  <#function distinct_by_key list key>
      <#local dlist = {}>
     <#list list as le>
