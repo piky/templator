@@ -34,9 +34,13 @@
             </applications>
             <items>
                 <#list t.metrics as m>
+                <#-- if metric has zbxVer(zbx_ver) that is no equal to current : skip this metric -->
+                <#if m.zbxVer?? && ((m.zbxVer!0) >= zbx_ver?number)>
+                <#else>
                 <item>
                     <@item m/>
                 </item>
+                </#if>
                 </#list>
             </items>
             <#if (t.discoveryRules?size > 0)>

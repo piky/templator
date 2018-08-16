@@ -24,6 +24,10 @@ public abstract class Metric {
 	@JsonAlias("zabbixKey")
 	private String key;
 
+
+    @JsonAlias("zbx_ver")
+	private float zbxVer;
+
 	@JsonAlias("expression_formula")
 	private String expressionFormula;
 	@JsonAlias("inventory_link")
@@ -290,7 +294,13 @@ public abstract class Metric {
 	public void setValueMap(String valueMap) {
 		this.valueMap = valueMap;
 	}
+    public float getZbxVer() {
+        return zbxVer;
+    }
 
+    public void setZbxVer(float zbxVer) {
+        this.zbxVer = zbxVer;
+    }
 	/**
 	 * @return the preprocessing
 	 */
