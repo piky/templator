@@ -1,10 +1,8 @@
 
 package org.zabbix.template.generator.objects;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -37,12 +35,13 @@ public class Template {
 	private TreeSet<String> templates = new TreeSet<>();
 	
 	
-	//this method return a  list of all unique mibs met in the template. This is required for FreeMarker generation of template description 
-	public HashSet<String> getUniqueMibs(){
+	//this method return a  list of all unique mibs met in the template.
+    //This is required for FreeMarker generation of template description
+	public HashSet<String> getUniqueMibs(Metric[] metrics) {
 		
 		HashSet<String> set = new HashSet<String>(0); 
 		String mib;
-		for (Metric m: this.metricsRegistry) {
+		for (Metric m: metrics) {
 				if ((mib = m.getMib()) != null) {
 					set.add(mib);
 				}
@@ -150,6 +149,28 @@ public class Template {
 			catch (NullPointerException npe) {}
 		}
 	}
+
+	public ArrayList<Metric> getMetricsByDiscovery(Metric[] metrics, String discoveryName) {
+        Predicate<Metric> metricPredicate = m -> m.getDiscoveryRule() == discoveryName;
+        return getMetrics((ArrayList<Metric>) Arrays.asList(metrics), metricPredicate);
+    }
+
+    public ArrayList<Metric> getMetricsByZbxVer(Metric[] metrics, String zbxVer) {
+        Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
+        return getMetrics( Arrays.asList(metrics), filter_by_min_version);
+    }
+
+    public ArrayList<Metric> getMetrics(List<Metric> metrics, Predicate<Metric> metricPredicate) {
+
+        ArrayList<Metric> toReturn = new ArrayList<>();
+        for (Metric m : metrics
+                .stream()
+                .filter(metricPredicate)
+                .toArray(Metric[]::new)) {
+            toReturn.add(m);
+        }
+        return toReturn;
+    }
 	
 	@Override
 	public int hashCode() {

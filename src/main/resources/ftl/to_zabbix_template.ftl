@@ -1,7 +1,6 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = headers.zbx_ver?string>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
-<#assign filtered_templates = body.getFilteredTemplatesByVersion(zbx_ver)![]>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
@@ -14,7 +13,7 @@
         </#list>
     </groups>
     <templates>
-    <#list filtered_templates as t>
+    <#list body.templates as t>
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
@@ -27,14 +26,14 @@
                 </#list>
             </groups>
             <applications>
-                <#list distinct_by_key(t.metricsRegistry,'group') as g>
+                <#list distinct_by_key(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver),'group') as g>
                 <application>
                     <name>${g?replace('_',' ')}</name>
                 </application>
                 </#list>
             </applications>
             <items>
-                <#list t.metrics as m>
+                <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
                 <item>
                     <@item m/>
                 </item>
@@ -83,7 +82,7 @@
     </templates>
     <graphs>
         <#list body.templates as t>
-        	<#list t.metrics as m>
+        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
         		<#list m.graphs as g>
                 <graph>
                     <@graph g t/>
@@ -94,7 +93,7 @@
     </graphs>
     <triggers>
         <#list body.templates as t>
-        	<#list t.metrics as m>
+        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
         		<#list m.triggers as tr>
                 <trigger>
                     <@trigger tr t/>
@@ -252,7 +251,7 @@
 </#macro>
 
 <#macro discovery_rule dr t>
-
+            <#assign metrics = t.getMetricsByZbxVer(dr.metrics,zbx_ver)>
             <name>${dr.name}</name>
             <type>${headers.snmp_item_type}</type>
             <snmp_community>${snmp_community}</snmp_community>
@@ -302,14 +301,14 @@
             <lifetime>${time_suffix_to_days('30d')}</lifetime>
             ${xml_wrap(dr.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
-                <#list dr.metrics as m>
+                <#list metrics as m>
                     <item_prototype>
                         <@item m/>
                     </item_prototype>
                 </#list>
             </item_prototypes>
             <trigger_prototypes>
-            	<#list dr.metrics as m>
+            	<#list metrics as m>
             		<#list m.triggers as tr>
                     <trigger_prototype>
                         <@trigger tr t/>
@@ -318,7 +317,7 @@
                 </#list>
             </trigger_prototypes>
             <graph_prototypes>
-        	<#list dr.metrics as m>
+        	<#list metrics as m>
         		<#list m.graphs as g>
                 <graph_prototype>
                     <@graph g t/>
@@ -563,7 +562,7 @@ ${t.description!''} version: ${headers.template_ver}
 Overview: ${t.documentation.overview!''}
 </#if>
 </#if>
-<#assign mibs = t.getUniqueMibs()![]>
+<#assign mibs = t.getUniqueMibs(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
 <#if (mibs?size>0)>
 MIBs used:
 <#list mibs as mib>

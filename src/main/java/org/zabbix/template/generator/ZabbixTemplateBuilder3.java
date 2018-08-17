@@ -146,9 +146,23 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 			}
 		})
-		.to("direct:multicaster");
+		.to("direct:multicaster_version");
 
-		from("direct:multicaster")
+		from("direct:multicaster_version")
+			    .multicast().parallelProcessing().onPrepare(new InputJSONDeepClone()) //deep clone, so objects are not linked anymore
+                .to("direct:zbx3.2", "direct:zbx3.4");
+
+        from("direct:zbx3.2")
+                //.stop();
+                    .setHeader("zbx_ver", simple("3.2", String.class))
+                    .to("direct:multicaster_snmp");
+
+        from("direct:zbx3.4")
+                .setHeader("zbx_ver", simple("3.4", String.class))
+                .to("direct:multicaster_snmp");
+
+
+		from("direct:multicaster_snmp")
 		.to("log:result?level=DEBUG").multicast().parallelProcessing().
 		to(
 				"direct:snmpv1",
