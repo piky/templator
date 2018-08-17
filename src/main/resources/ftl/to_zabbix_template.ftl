@@ -1,6 +1,7 @@
 <#ftl output_format="XML">
-<#assign zbx_ver = '3.4'>
+<#assign zbx_ver = headers.zbx_ver?string>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
+<#assign filtered_templates = body.getFilteredTemplatesByVersion(zbx_ver?number)![]>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
@@ -13,7 +14,7 @@
         </#list>
     </groups>
     <templates>
-    <#list body.templates as t>
+    <#list filtered_templates as t>
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
@@ -142,12 +143,12 @@
                     </#if>
                     <#if zbx_ver == '3.2'>
                         <#local multiplier_value = 0>
-                    <#if m.preprocessing??>                                
+                    <#if m.preprocessing??>
                         <#list m.preprocessing as p>
                             <#if p.type == 'MULTIPLIER'>
-                                <#local multiplier_value = 1>    
+                                <#local multiplier_value = 1>
                                 <#break>
-                            </#if>    
+                            </#if>
                         </#list>
                     </#if>
                     <multiplier>${multiplier_value}</multiplier>
@@ -166,13 +167,13 @@
                     <#if m.preprocessing??>
                         <#list m.preprocessing as p>
                             <#if p.type == 'DELTA_PER_SECOND'>
-                                <#local delta_value = 1>    
+                                <#local delta_value = 1>
                                 <#break>
-                            </#if>    
+                            </#if>
                         </#list>
                     </#if>
                     <delta>${delta_value}</delta>
-                    </#if>                             
+                    </#if>
                     <snmpv3_contextname/>
                     <snmpv3_securityname/>
                     <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -185,9 +186,9 @@
                     <#if m.preprocessing??>
                         <#list m.preprocessing as p>
                             <#if p.type == 'MULTIPLIER'>
-                                <#local formula_value = 1>    
+                                <#local formula_value = p.params>
                                 <#break>
-                            </#if>    
+                            </#if>
                         </#list>
                     </#if>
                     <formula>${formula_value}</formula>
@@ -241,27 +242,27 @@
                     <#if zbx_ver = '3.4'>
                     <jmx_endpoint/>
                     </#if>
-                    <#if zbx_ver = '3.4'>
-                        <#if m.discoveryRule??><#-- item prototype-->
+                    <#if m.discoveryRule??><#-- item prototype-->
                     <application_prototypes/>
+                    </#if>
+                    <#if zbx_ver = '3.4'>
+                        <#if m.discoveryRule??>
                     <master_item_prototype/>
                         <#else><#-- normal item -->
                     <master_item/>
                         </#if>
                     </#if>
+
 </#macro>
 
 <#macro discovery_rule dr t>
-    
+
             <name>${dr.name}</name>
             <type>${headers.snmp_item_type}</type>
             <snmp_community>${snmp_community}</snmp_community>
             <snmp_oid>${dr.oid}</snmp_oid>
             <key>${dr.key}</key>
-            <delay>1h</delay>
-            <#--<xsl:call-template name="time_suffix_to_seconds">
-                    <xsl:with-param name="time" select="$discoveryDelay"/>
-                </xsl:call-template>  -->
+            <delay>${time_suffix_to_seconds('1h')}</delay>
             <status>0</status>
             <allowed_hosts/>
             <snmpv3_contextname/>

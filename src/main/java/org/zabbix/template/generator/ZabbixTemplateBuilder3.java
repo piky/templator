@@ -109,13 +109,12 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				ArrayList<Template> templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
 
 				for (Template t: templates) {
-					Metric[] metrics = t.getMetrics();
 					KieSession ksession = kContainer.newKieSession();
 					ksession.setGlobal("logger", logger);
 					ksession.insert((InputJSON) exchange.getIn().getBody());
 					ksession.insert(t);
-					if (metrics != null) {
-						for (Metric m: metrics) {
+					if (t.getMetrics() != null) {
+						for (Metric m: t.getMetrics()) {
 							ksession.insert(m);
 						}
 					}

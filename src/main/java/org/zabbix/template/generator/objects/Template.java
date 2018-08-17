@@ -24,7 +24,11 @@ public class Template {
 	private ArrayList<String> groups =  new ArrayList<String>(0);//groups would be populated in Drools
 	
 	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
-	private Metric metrics[] = new Metric[0];
+
+
+
+	private ArrayList<Metric> metrics = new ArrayList<>(0);
+
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
 	//private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
@@ -104,10 +108,11 @@ public class Template {
 	public void setTemplates(TreeSet<String> templates) {
 		this.templates = templates;
 	}
-	public Metric[] getMetrics() {
+	public ArrayList<Metric> getMetrics() {
 		return metrics;
 	}
-	public void setMetrics(Metric metrics[]) {
+
+	public void setMetrics(ArrayList<Metric> metrics) {
 		this.metrics = metrics;
 	}
 
@@ -132,15 +137,15 @@ public class Template {
 	}
 	
 	public void constructMetricsRegistry() {
-		//this.metricsRegistry = null;
+		this.metricsRegistry.clear();
 		try {
-			this.metricsRegistry.addAll(Arrays.asList(this.metrics));
+			this.metricsRegistry.addAll(metrics);
 		}
 		catch (NullPointerException npe) {}
 		
 		for (DiscoveryRule d: this.discoveryRules) {
 			try {
-				this.metricsRegistry.addAll(Arrays.asList(d.getMetrics()));
+				this.metricsRegistry.addAll(d.getMetrics());
 			}
 			catch (NullPointerException npe) {}
 		}

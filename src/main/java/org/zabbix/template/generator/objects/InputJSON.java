@@ -1,7 +1,10 @@
 package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
@@ -41,5 +44,32 @@ public class InputJSON {
 			}
 		}
 		return set;
+	}
+
+	//this method return a list of all templates with metrics filtered by zbxVer
+	public ArrayList<Template> getFilteredTemplatesByVersion(double zbxVer){
+
+		ArrayList<Template> filteredTemplates = new ArrayList<Template>(0);
+		filteredTemplates.addAll(templates);
+		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer() < zbxVer);
+
+		for (Template t: filteredTemplates) {
+
+			t.setMetrics(t.getMetrics().stream()
+					.filter(filter_by_min_version)
+					.collect(Collectors.toCollection(ArrayList::new)));
+			for (DiscoveryRule d: t.getDiscoveryRules()) {
+				try {
+					d.setMetrics(d.getMetrics().stream()
+							.filter(filter_by_min_version)
+							.collect(Collectors.toCollection(ArrayList::new)));
+				}
+				catch (NullPointerException npe) {}
+			}
+			t.constructMetricsRegistry();
+		}
+
+		return filteredTemplates;
+
 	}
 }

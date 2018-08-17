@@ -2,6 +2,8 @@ package org.zabbix.template.generator.objects;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+import java.util.ArrayList;
+
 public class DiscoveryRule {
 	private String name;
 	@JsonAlias("snmp_oid")
@@ -9,8 +11,9 @@ public class DiscoveryRule {
 	private String key;
 	private String description;
 	private Filter filter;
-	private Metric metrics[] = new Metric[0];
-	
+	private ArrayList<Metric> metrics = new ArrayList<>(0);
+
+
 
 	public String getName() {
 		return name;
@@ -44,11 +47,11 @@ public class DiscoveryRule {
 		this.description = description;
 	}
 
-	public Metric[] getMetrics() {
+	public ArrayList<Metric> getMetrics() {
 		return metrics;
 	}
 
-	public void setMetrics(Metric metrics[]) {
+	public void setMetrics(ArrayList<Metric> metrics) {
 		this.metrics = metrics;
 	}
 
