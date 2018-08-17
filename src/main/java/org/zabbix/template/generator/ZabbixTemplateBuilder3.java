@@ -3,7 +3,6 @@ package org.zabbix.template.generator;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -149,7 +148,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.to("direct:multicaster_version");
 
 		from("direct:multicaster_version")
-			    .multicast().parallelProcessing().onPrepare(new InputJSONDeepClone()) //deep clone, so objects are not linked anymore
+			    .multicast().parallelProcessing()
                 .to("direct:zbx3.2", "direct:zbx3.4");
 
         from("direct:zbx3.2")
@@ -214,7 +213,16 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
 		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-		.to("file:bin/out");
+		.to("file:bin/out")
+
+		.choice()
+            .when(header("zbx_ver").isEqualTo("3.4"))
+            .to("validator:templates/zabbix_export_3.4.xsd")
+            .when(header("zbx_ver").isEqualTo("3.2"))
+            .to("validator:templates/zabbix_export_3.2.xsd")
+            .otherwise()
+            .log("Unknown zbx_ver provided")
+		.end();
 
 
 	}
