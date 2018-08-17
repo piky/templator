@@ -47,11 +47,11 @@ public class InputJSON {
 	}
 
 	//this method return a list of all templates with metrics filtered by zbxVer
-	public ArrayList<Template> getFilteredTemplatesByVersion(double zbxVer){
+	public ArrayList<Template> getFilteredTemplatesByVersion(String zbxVer){
 
 		ArrayList<Template> filteredTemplates = new ArrayList<Template>(0);
 		filteredTemplates.addAll(templates);
-		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer() < zbxVer);
+		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
 
 		for (Template t: filteredTemplates) {
 

@@ -26,7 +26,7 @@ public abstract class Metric {
 
 
     @JsonAlias("zbx_ver")
-	private double zbxVer = 3;
+	private Version zbxVer = new Version("3.0");
 
 	@JsonAlias("expression_formula")
 	private String expressionFormula;
@@ -294,11 +294,11 @@ public abstract class Metric {
 	public void setValueMap(String valueMap) {
 		this.valueMap = valueMap;
 	}
-    public double getZbxVer() {
+    public Version getZbxVer() {
         return zbxVer;
     }
 
-    public void setZbxVer(double zbxVer) {
+    public void setZbxVer(Version zbxVer) {
         this.zbxVer = zbxVer;
     }
 	/**

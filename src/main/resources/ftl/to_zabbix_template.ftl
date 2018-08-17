@@ -1,7 +1,7 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = headers.zbx_ver?string>
 <#assign snmp_community= '{$SNMP_COMMUNITY}'>
-<#assign filtered_templates = body.getFilteredTemplatesByVersion(zbx_ver?number)![]>
+<#assign filtered_templates = body.getFilteredTemplatesByVersion(zbx_ver)![]>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
@@ -35,13 +35,9 @@
             </applications>
             <items>
                 <#list t.metrics as m>
-                <#-- if metric has zbxVer(zbx_ver) that is no equal to current : skip this metric -->
-                <#if m.zbxVer?? && ((m.zbxVer!0) >= zbx_ver?number)>
-                <#else>
                 <item>
                     <@item m/>
                 </item>
-                </#if>
                 </#list>
             </items>
             <#if (t.discoveryRules?size > 0)>

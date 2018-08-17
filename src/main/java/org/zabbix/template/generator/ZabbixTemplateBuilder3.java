@@ -69,7 +69,6 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.setHeader("template_ver", simple("{{version}}",String.class))
 		.setHeader("lang", simple("EN",String.class))
-		.setHeader("zbx_ver", simple("3.4", Double.class))
 				
 
 		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
