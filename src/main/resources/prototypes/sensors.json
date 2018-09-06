@@ -11,6 +11,11 @@
 		"history":"30d",
 		"trends":"365d",
 		"alarmObjectType":"",
+		"translations":{
+			"RU":{
+				"name":"Температура"
+			}
+		},
 		"triggers":[
 			{"prototype":"tempWarn"},
 			{"prototype":"tempCrit"},
@@ -26,7 +31,12 @@
 		"name":"Temperature is above warning threshold: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}",
 		"priority":2,
 		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
-		"dependsOn":["tempCrit","tempCrit.combined"]
+		"dependsOn":["tempCrit","tempCrit.combined"],
+        "translations":{
+            "RU":{
+              "name":"Температура выше нормы: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}"
+            }
+        }
 	},
 	{
 		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
@@ -37,7 +47,12 @@
 		"priority":2,
 		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
 
-		"dependsOn":["tempCrit","tempCrit.combined"]
+		"dependsOn":["tempCrit","tempCrit.combined"],
+        "translations":{
+          "RU":{
+            "name":"Температура выше нормы: >{$TEMP_WARN:\"__ALARM_OBJECT_TYPE__\"}"
+          }
+        }
 	},
 	{
 		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_WARN}-3)",
@@ -46,7 +61,12 @@
 		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}-3",
 		"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
 		"priority":4,
-		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
+        "translations":{
+          "RU":{
+            "name":"Температура очень высокая: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}"
+          }
+        }
 	},
 	{
 		"documentation":"Using recovery expression... Temperature has to drop 3 points less than threshold level ({$TEMP_CRIT}-3)",
@@ -55,7 +75,12 @@
 		"recoveryExpression":"{TEMPLATE_NAME:METRIC.max(5m)}<{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}-3",
 		"name":"Temperature is above critical threshold: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}",
 		"priority":4,
-		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available"
+		"description":"This trigger uses temperature sensor values as well as temperature sensor status if available",
+        "translations":{
+          "RU":{
+            "name":"Температура очень высокая: >{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}"
+          }
+        }
 	},	
 	{
 		"documentation":"Using recovery expression... Temperature has to be 3 points more than threshold level  ({$TEMP_CRIT_LOW}+3)",
@@ -63,7 +88,12 @@
 		"expression":"{TEMPLATE_NAME:METRIC.avg(5m)}<{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
 		"recoveryExpression":"{TEMPLATE_NAME:METRIC.min(5m)}>{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}+3",
 		"name":"Temperature is too low: <{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}",
-		"priority":3
+		"priority":3,
+        "translations":{
+          "RU":{
+            "name":"Температура слишком низкая: <{$TEMP_CRIT_LOW:\"__ALARM_OBJECT_TYPE__\"}"
+          }
+        }
 	},
 
 
@@ -102,7 +132,12 @@
 			{
 				"prototype":"psu.warn"
 			}
-		]
+		],
+        "translations":{
+          "RU":{
+            "name":"Статус блока питания"
+          }
+        }
 	},
 	{
 		"id":"sensor.fan.status",
@@ -118,20 +153,35 @@
 			{
 				"prototype":"fan.warn"
 			}
-		]
+		],
+        "translations":{
+          "RU":{
+            "name":"Статус вентилятора"
+          }
+        }
 	},
 	{
 		"id":"sensor.fan.speed.percentage",
 		"name":"Fan speed, %",
 		"group":"Fans",
 		"units":"%",
-		"history": "30d"
+		"history": "30d",
+        "translations":{
+          "RU":{
+            "name":"Скорость вращения вентилятора, %"
+          }
+        }
 	},
 	{
 		"id":"sensor.fan.speed",
 		"name":"Fan speed",
 		"group":"Fans",
 		"units":"rpm",
-		"history": "30d"
+		"history": "30d",
+        "translations":{
+          "RU":{
+            "name":"Скорость вращения вентилятора"
+          }
+        }
 	}
 ]

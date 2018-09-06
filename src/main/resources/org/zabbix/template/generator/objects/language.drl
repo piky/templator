@@ -1,0 +1,63 @@
+package org.zabbix.template.generator.objects
+import java.util.HashMap;
+global org.slf4j.Logger logger;
+global String lang;
+
+
+rule "Translation rule: metric name"
+	agenda-group "language"
+	no-loop
+when
+	$m : Metric (translations != null)
+	$hm: HashMap(this.keySet() contains lang) from $m.translations
+	Translation(name !=null) from $hm[lang]
+then
+    logger.info("Translating metric name: "+$m.getId());
+    modify($m){
+        setName($m.getTranslations().get(lang).getName());
+    }
+end
+
+rule "Translation rule: metric description"
+	agenda-group "language"
+	no-loop
+when
+	$m : Metric (translations != null)
+	$hm: HashMap(this.keySet() contains lang) from $m.translations
+	Translation(description !=null) from $hm[lang]
+then
+    logger.info("Translating metric description: "+$m.getId());
+    modify($m){
+        setDescription($m.getTranslations().get(lang).getDescription());
+    }
+end
+
+rule "Translation rule: trigger name"
+	agenda-group "language"
+	no-loop
+when
+	$m : Metric ($triggers: triggers)
+    $tr: Trigger (translations != null) from $triggers
+	$hm: HashMap(this.keySet() contains lang) from $tr.translations
+	Translation(name !=null) from $hm[lang]
+then
+    logger.info("Translating trigger name: "+$tr.getId());
+    modify($tr){
+        setName($tr.getTranslations().get(lang).getName());
+    }
+end
+
+rule "Translation rule: trigger description"
+	agenda-group "language"
+	no-loop
+when
+	$m : Metric ($triggers: triggers)
+    $tr: Trigger (translations != null) from $triggers
+	$hm: HashMap(this.keySet() contains lang) from $tr.translations
+	Translation(description !=null) from $hm[lang]
+then
+    logger.info("Translating trigger description: "+$tr.getId());
+    modify($tr){
+        setDescription($tr.getTranslations().get(lang).getDescription());
+    }
+end

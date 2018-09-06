@@ -7,5 +7,10 @@
 	"delay":"1h",
 	"history":"2w",
 	"trends":"0",	
-	"inventoryLink":"MODEL"	
+	"inventoryLink":"MODEL"	,
+	"translations":{
+		"RU":{
+			"name":"Модель"
+		}
+	}
 }

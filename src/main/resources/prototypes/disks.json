@@ -11,7 +11,12 @@
       {
         "prototype":"diskarray.cache.crit"
       }
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус кэша контроллера дискового массива"
+      }
+    }
   },
 
   //diskarray triggers as protos:
@@ -20,7 +25,13 @@
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_CRIT_STATUS},eq)}=1",
     "name": "Disk array cache controller is in critical state!",
     "priority": "3",
-    "description": "Please check the device for faults"
+    "description": "Please check the device for faults",
+    "translations": {
+      "RU":{
+        "name":"Статус кэша контроллера дискового массива: авария",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id":"diskarray.cache.warn",
@@ -28,7 +39,13 @@
     "name": "Disk array cache controller is in warning state",
     "priority": "2",
     "description": "Please check the device for faults",
-    "dependsOn":["diskarray.cache.crit"]
+    "dependsOn":["diskarray.cache.crit"],
+    "translations": {
+      "RU":{
+        "name":"Статус кэша контроллера дискового массива: предупреждение",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id":"diskarray.cache.notok",
@@ -36,7 +53,13 @@
     "name": "Disk array cache controller is not in optimal state",
     "priority": "2",
     "description": "Please check the device for faults",
-    "dependsOn":["diskarray.cache.warn","diskarray.cache.crit"]
+    "dependsOn":["diskarray.cache.warn","diskarray.cache.crit"],
+    "translations": {
+      "RU":{
+        "name":"Статус кэша контроллера дискового массива не норма",
+        "description":"Проверьте устройство"
+      }
+    }
   },
 
 
@@ -52,7 +75,12 @@
       {
         "prototype":"diskarray.cache.battery.crit"
       }
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус батарейки кэша контроллера дискового массива"
+      }
+    }
   },
 
   //triggers protos for diskarray.cachce.battery.*
@@ -61,7 +89,13 @@
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_CACHE_BATTERY_CRIT_STATUS},eq)}=1",
     "name": "Disk array cache controller battery is in critical state!",
     "priority": "3",
-    "description": "Please check the device for faults"
+    "description": "Please check the device for faults",
+    "translations":{
+      "RU":{
+        "name":"Статус батарейки кэша контроллера дискового массива: авария",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id": "diskarray.cache.battery.warn",
@@ -71,7 +105,13 @@
     "description": "Please check the device for faults",
     "dependsOn": [
       "diskarray.cache.battery.crit"
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус батарейки кэша контроллера дискового массива: предупреждение",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id":"diskarray.cache.battery.notok",
@@ -79,7 +119,13 @@
     "name": "Disk array cache controller battery is not in optimal state",
     "priority": "2",
     "description": "Please check the device for faults",
-    "dependsOn":["diskarray.cache.battery.crit","diskarray.cache.battery.warn"]
+    "dependsOn":["diskarray.cache.battery.crit","diskarray.cache.battery.warn"],
+    "translations":{
+      "RU":{
+        "name":"Статус батарейки кэша контроллера дискового массива не норма",
+        "description":"Проверьте устройство"
+      }
+    }
   },
 
 
@@ -93,16 +139,27 @@
     "trends":"0d",
     "triggers":[
       {"prototype":"disk_array.crit"}
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус контроллера дискового массива"
+      }
+    }
   },
 
-  //system.hw.diskarray.cache.status trigger protos
+  //system.hw.diskarray.status trigger protos
   {
     "id":"disk_array.fail",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_ARRAY_FAIL_STATUS},eq)}=1",
     "name": "Disk array controller is in unrecoverable state!",
     "priority": "5",
-    "description": "Please check the device for faults"
+    "description": "Please check the device for faults",
+    "translations":{
+      "RU":{
+        "name":"Статус контроллера дискового массива: сбой",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id":"disk_array.crit",
@@ -110,7 +167,13 @@
     "name": "Disk array controller is in critical state",
     "priority": "4",
     "description": "Please check the device for faults",
-    "dependsOn":["disk_array.fail"]
+    "dependsOn":["disk_array.fail"],
+    "translations":{
+      "RU":{
+        "name":"Статус контроллера дискового массива: авария",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id": "disk_array.warn",
@@ -121,7 +184,13 @@
     "dependsOn": [
       "disk_array.fail",
       "disk_array.crit"
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус контроллера дискового массива: предупреждение",
+        "description":"Проверьте устройство"
+      }
+    }
   },
   {
     "id": "disk_array.notok",
@@ -133,7 +202,13 @@
       "disk_array.fail",
       "disk_array.crit",
       "disk_array.warn"
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус контроллера дискового массива не норма",
+        "description":"Проверьте устройство"
+      }
+    }
   },
 
 
@@ -145,7 +220,12 @@
     "group":"Disk_Arrays",
     "delay":"1d",
     "history":"30d",
-    "trends":"0d"
+    "trends":"0d",
+    "translations":{
+      "RU":{
+        "name":"Модель контроллера дискового массива"
+      }
+    }
   },
 
   {
@@ -159,7 +239,12 @@
       {
         "prototype":"disk.fail"
       }
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Статус физического диска"
+      }
+    }
   },
 
   //disk trigger protos
@@ -168,7 +253,13 @@
     "name":"Physical disk failed",
     "priority":"4",
     "description":"Please check physical disk for warnings or errors",
-    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_FAIL_STATUS},eq)}=1"
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_FAIL_STATUS},eq)}=1",
+    "translations":{
+      "RU":{
+        "name":"Статус физического диска: сбой",
+        "description":"Проверьте диск"
+      }
+    }
   },
   {
     "id":"disk.warn",
@@ -176,7 +267,13 @@
     "priority":"2",
     "description":"Please check physical disk for warnings or errors",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_WARN_STATUS},eq)}=1",
-    "dependsOn":["disk.fail"]
+    "dependsOn":["disk.fail"],
+    "translations":{
+      "RU":{
+        "name":"Статус физического диска: предупреждение",
+        "description":"Проверьте диск"
+      }
+    }
   },
   {
     "id":"disk.notok",
@@ -184,7 +281,13 @@
     "priority":"2",
     "description":"Please check physical disk for warnings or errors",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_OK_STATUS},ne)}=1",
-    "dependsOn":["disk.fail","disk.warn"]
+    "dependsOn":["disk.fail","disk.warn"],
+    "translations":{
+      "RU":{
+        "name":"Статус физического диска не норма",
+        "description":"Проверьте диск"
+      }
+    }
   },
 
 
@@ -199,7 +302,12 @@
       {
         "prototype":"disk_smart.fail"
       }
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"S.M.A.R.T. статус диска"
+      }
+    }
 
 
   },
@@ -210,7 +318,13 @@
     "priority":"4",
     "description":"Disk probably requires replacement.",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_SMART_FAIL_STATUS},eq)}=1",
-    "dependsOn":["disk.fail"]
+    "dependsOn":["disk.fail"],
+    "translations":{
+      "RU":{
+        "name":"Статус S.M.A.R.T. физического диска: сбой",
+        "description":"Возможно требуется замена диска."
+      }
+    }
   },
   {
     "id":"disk_smart.notok",
@@ -218,7 +332,13 @@
     "priority":"3",
     "description":"Disk probably requires replacement.",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$DISK_SMART_OK_STATUS},ne)}=1",
-    "dependsOn":["disk.fail","disk.warn","disk.notok","disk_smart.fail"]
+    "dependsOn":["disk.fail","disk.warn","disk.notok","disk_smart.fail"],
+    "translations":{
+      "RU":{
+        "name":"Статус S.M.A.R.T. физического диска не норма",
+        "description":"Возможно требуется замена диска."
+      }
+    }
   },
 
 
@@ -235,7 +355,13 @@
       {
         "prototype":"trigger.sn.changed"
       }
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Серийный номер физического диска"
+      }
+    }
+
   },
 
   {
@@ -245,7 +371,13 @@
     "valueType": "CHAR",
     "delay":"1h",
     "trends":"0d",
-    "history":"2w"
+    "history":"2w",
+    "translations":{
+      "RU":{
+        "name":"Модель физического диска"
+      }
+    }
+
   },
 
   {
@@ -255,7 +387,12 @@
     "valueType": "CHAR",
     "delay":"1h",
     "trends":"0d",
-    "history":"2w"
+    "history":"2w",
+    "translations":{
+      "RU":{
+        "name":"Код производителя диска"
+      }
+    }
   },
 
   {
@@ -265,7 +402,12 @@
     "delay":"1h",
     "trends":"0d",
     "history":"2w",
-    "units":"B"
+    "units":"B",
+    "translations":{
+      "RU":{
+        "name":"Размер диска"
+      }
+    }
   },
 
   {
@@ -275,7 +417,12 @@
     "delay":"1h",
     "trends":"0d",
     "history":"2w",
-    "units":"B"
+    "units":"B",
+    "translations":{
+      "RU":{
+        "name":"Размер диска"
+      }
+    }
   },
 
 
@@ -285,7 +432,12 @@
     "group":"Physical_Disks",
     "delay":"1h",
     "trends":"0d",
-    "history":"2w"
+    "history":"2w",
+    "translations":{
+      "RU":{
+        "name":"Тип диска"
+      }
+    }
   },
 
   {
@@ -294,7 +446,12 @@
     "group":"Physical_Disks",
     "delay":"1h",
     "history":"2w",
-    "units":"s"
+    "units":"s",
+    "translations":{
+      "RU":{
+        "name":"Количество часов включенным"
+      }
+    }
   },
 
   {
@@ -302,7 +459,12 @@
     "name":"Layout type ",
     "group":"Virtual_Disks",
     "delay":"1h",
-    "history":"2w"
+    "history":"2w",
+    "translations":{
+      "RU":{
+        "name":"Конфигурация"
+      }
+    }
   },
 
   {
@@ -326,7 +488,12 @@
     "name":"Current state",
     "group":"Virtual_Disks",
     "delay":"3m",
-    "history":"2w"
+    "history":"2w",
+    "translations":{
+      "RU":{
+        "name":"Текущее состояние"
+      }
+    }
   },
 
   {
@@ -337,7 +504,12 @@
     "history":"2w",
     "triggers":[
       {"prototype":"vdisk.crit"}
-    ]
+    ],
+    "translations":{
+      "RU":{
+        "name":"Текущий статус"
+      }
+    }
   },
   //vdisk trigger prototypes
   {
@@ -345,7 +517,13 @@
     "name":"Virtual disk failed",
     "priority":"4",
     "description":"Please check virtual disk for warnings or errors",
-    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_CRIT_STATUS},eq)}=1"
+    "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_CRIT_STATUS},eq)}=1",
+    "translations":{
+      "RU":{
+        "name":"Статус виртуального диска: сбой",
+        "description":"Проверьте диск"
+      }
+    }
   },
   {
     "id":"vdisk.warn",
@@ -353,7 +531,14 @@
     "priority":"3",
     "description":"Please check virtual disk for warnings or errors",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_WARN_STATUS},eq)}=1",
-    "dependsOn":["vdisk.crit"]
+    "dependsOn":["vdisk.crit"],
+    "translations":{
+      "RU":{
+        "name":"Статус виртуального диска: предупреждение",
+        "description":"Проверьте диск"
+      }
+    }
+
   },
   {
     "id":"vdisk.notok",
@@ -361,7 +546,13 @@
     "priority":"2",
     "description":"Please check virtual disk for warnings or errors",
     "expression": "{TEMPLATE_NAME:METRIC.count(#1,{$VDISK_OK_STATUS},ne)}=1",
-    "dependsOn":["vdisk.crit","vdisk.warn"]
+    "dependsOn":["vdisk.crit","vdisk.warn"],
+    "translations":{
+      "RU":{
+        "name":"Статус виртуального диска не норма",
+        "description":"Проверьте диск"
+      }
+    }
   }
 
 

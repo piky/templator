@@ -86,3 +86,26 @@ if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
 if class = Interfaces EtherLike Extension -> Attach Template Module EtherLike-MIB
 ### magic 4: SNMPvX
 add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  
+
+
+### why generator is implemented in the first place?
+What XML format should be so it can be a part of Zabbix?
+
+Templates
+  - Require of 'template/metric/trigger prototypes'
+    - Reusing item/trigger names and descriptions
+  - Need to fill in all attributes, even if they are not used. No defaults. Too verbose! Too much boilerplate!
+    - Built in translations
+  - Templates are Zabbix version specific. Shouldn't be. So you end up o
+  - All enum attributes are shown as integers. Not possible to remember them!
+  - Style: Application and Tag reusing
+
+Triggers
+  - Edit triggers/trigger prototypes in Zabbix in XML form because of Trigger dependencies. You need to reference templates by expression+name+rec_expression. Thats HARD.
+  - Introduce trigger 'snippets': Built in into zabbix expressions for one or two metrics.
+  - Introduce shorter trigger expressions that do not mention template/host name by default.
+
+What can help to reduce the requirement for external generation tool?
+- introduction to short identifier for templates/triggers/metrics
+- switch to JSON as less verbose
+- allow not to use all attributes

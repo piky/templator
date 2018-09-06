@@ -15,7 +15,18 @@
 			"manualClose":"YES",
 			"name":"Firmware has changed",
 			"description":"Firmware version has changed. Ack to close",
-			"priority":1
+			"priority":1,
+			"translations":{
+				"RU":{
+					"name":"Версия прошивки изменилась",
+					"description":"Версия прошивки изменилась. Подтвердите и закройте."
+				}
+			}
 		}
-	]
+	],
+	"translations":{
+		"RU":{
+			"name":"Версия прошивки"
+		}
+	}
 }

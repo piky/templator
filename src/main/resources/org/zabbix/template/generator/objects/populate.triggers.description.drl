@@ -1,6 +1,6 @@
 package org.zabbix.template.generator.objects
 global org.slf4j.Logger logger;
-
+global String lang;
 
 rule "Rule 12a: generate each trigger description"
 	agenda-group "populate"
@@ -10,7 +10,11 @@ when
     $tr: Trigger (description==null) from $triggers 
 then
     logger.debug("Generating trigger description for "+ $tr);
-    $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.");
+    if(lang.equals("EN")){
+        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.");
+    } else if(lang.equals("RU")){
+        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.");
+    }
 end
 
 rule "Rule 12b: generate each trigger description"
@@ -21,5 +25,10 @@ when
     $tr: Trigger (description!=null) from $triggers 
 then
     logger.debug("Generating trigger description for "+ $tr);
-    $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+    if(lang.equals("EN")){
+        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+    } else if(lang.equals("RU")){
+        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+    }
+
 end

@@ -23,9 +23,20 @@
 				"manual_close": "NO",
 				"name": "Link down",
 				"description": "Interface is down",
-				"priority": 3
+				"priority": 3,
+				"translations":{
+					"RU": {
+						"name":"Интерфейс недоступен",
+						"description": "Интерфейс недоступен"
+					}
+				}
 			}
-		]
+		],
+		"translations":{
+			"RU": {
+				"name":"Текущий статус интерфейса"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifHCInOctets.{#SNMPINDEX}",
@@ -61,7 +72,12 @@
 				"priority": 2,
 				"dependsOn": [
 					"if.down"
-				]
+				],
+				"translations":{
+					"RU":{
+						"name":"Интерфейс сильно загружен >{$IF_UTIL_MAX:\"{#IFNAME}\"}%"
+					}
+				}
 			}
 		],
 		"graphs": [
@@ -100,7 +116,13 @@
 					}
 				]
 			}
-		]
+		],
+		"translations":{
+			"RU": {
+				"name":"Бит получено"
+			}
+		}
+
 	},
 	{
 		"snmpObject": "ifHCOutOctets.{#SNMPINDEX}",
@@ -124,7 +146,12 @@
 		"delay": "3m",
 		"history": "30d",
 		"valueType": "INTEGER",
-		"units": "bps"
+		"units": "bps",
+		"translations":{
+			"RU": {
+				"name":"Бит отправлено"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifInErrors.{#SNMPINDEX}",
@@ -156,9 +183,21 @@
 				"description": "Recovers when below 80% of {$IF_ERRORS_WARN:\"{#IFNAME}\"} threshold",
 				"dependsOn": [
 					"if.down"
-				]
+				],
+				"translations":{
+					"RU": {
+						"name":"Большое количество ошибок интерфейса",
+						"description":"Восстановление когда ниже 80% от значения {$IF_ERRORS_WARN:\"{#IFNAME}\"}"
+					}
+				}
+
 			}
-		]
+		],
+		"translations":{
+			"RU": {
+				"name":"Входящих пакетов с ошибками"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifOutErrors.{#SNMPINDEX}",
@@ -177,7 +216,12 @@
 		"group": "Network_Interfaces",
 		"delay": "5m",
 		"history": "1w",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"translations":{
+			"RU": {
+				"name":"Исходящих пакетов с ошибками"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifInDiscards.{#SNMPINDEX}",
@@ -196,7 +240,12 @@
 		"group": "Network_Interfaces",
 		"delay": "5m",
 		"history": "1w",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"translations":{
+			"RU": {
+				"name":"Пакетов отброшено (входящих)"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifOutDiscards.{#SNMPINDEX}",
@@ -215,7 +264,12 @@
 		"group": "Network_Interfaces",
 		"delay": "5m",
 		"history": "1w",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"translations":{
+			"RU": {
+				"name":"Пакетов отброшено (исходящих)"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifHighSpeed.{#SNMPINDEX}",
@@ -249,9 +303,19 @@
 				"description": "This Ethernet connection has transitioned down from its known maximum speed. This might be a sign of autonegotiation issues. Ack to close.",
 				"dependsOn": [
 					"if.down"
-				]
+				],
+				"translations":{
+					"RU": {
+						"name":"Интерфейс перешел на более низкую скорость, чем был ранее"
+					}
+				}
 			}
-		]
+		],
+		"translations":{
+			"RU": {
+				"name":"Пропускная способность"
+			}
+		}
 	},
 	{
 		"snmpObject": "ifType.{#SNMPINDEX}",
@@ -266,6 +330,12 @@
 		"delay": "1h",
 		"history": "1w",
 		"trends": "0d",
-		"valueType": "INTEGER"
+		"valueType": "INTEGER",
+		"translations":{
+			"RU": {
+				"name":"Тип интерфейса"
+			}
+		}
+
 	}
 ]

@@ -6,5 +6,10 @@
 	"group":"Inventory",
 	"delay":"1h",
 	"history":"2w",
-	"trends":"0"
+	"trends":"0",
+	"translations":{
+		"RU":{
+			"name":"Версия аппаратной ревизии"
+		}
+	}
 }]

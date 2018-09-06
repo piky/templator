@@ -67,25 +67,41 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.setHeader("template_ver", simple("{{version}}",String.class))
-		.setHeader("lang", simple("EN",String.class))
+
 				
 
 		.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
-		
-		//JSON - YAML Chooser //TODO add by extention .json / .yaml
-		.choice()
-			.when(simple("${file:ext} == 'yaml'"))
-				//.log("Try YAML....")
-				.unmarshal(yamlJackson)
-				.to("direct:create_template")
-			.when(simple("${file:ext} == 'json'"))
-				//.log("Try JSON....")
-				.unmarshal(jsonJackson)
-				.to("direct:create_template")
-        .end();
+		.to("direct:lang");
+
+
+		from("direct:lang")
+				.multicast()
+				.to("direct:EN", "direct:RU");
+
+		from("direct:RU")
+				.setHeader("lang", simple("RU",String.class))
+				.to("direct:create_template");
+
+		from("direct:EN")
+				.setHeader("lang", simple("EN",String.class))
+				.to("direct:create_template");
+
 
 		from("direct:create_template")
-		.process(new Processor() {
+				//JSON - YAML Chooser //TODO add by extention .json / .yaml
+				.choice()
+					.when(simple("${file:ext} == 'yaml'"))
+						//.log("Try YAML....")
+						.unmarshal(yamlJackson)
+						.to("direct:drools")
+					.when(simple("${file:ext} == 'json'"))
+						//.log("Try JSON....")
+						.unmarshal(jsonJackson)
+						.to("direct:drools")
+				.end();
+
+		from("direct:drools")
+			.process(new Processor() {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
@@ -108,12 +124,19 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 				for (Template t: templates) {
 					KieSession ksession = kContainer.newKieSession();
-					ksession.setGlobal("logger", logger);
-					ksession.insert((InputJSON) exchange.getIn().getBody());
-					ksession.insert(t);
+
+
+                    ksession.setGlobal("logger", logger);
+					ksession.setGlobal("lang", exchange.getIn().getHeader("lang").toString());
+                    ksession.insert((InputJSON) exchange.getIn().getBody());
+                    ksession.insert(t);
+
 					if (t.getMetrics() != null) {
 						for (Metric m: t.getMetrics()) {
 							ksession.insert(m);
+							for (Trigger tr: m.getTriggers()) {
+								ksession.insert(tr);
+							}
 						}
 					}
 
@@ -123,6 +146,9 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 							
 							m.setDiscoveryRule(drule.getName());
 							ksession.insert(m);
+							for (Trigger tr: m.getTriggers()) {
+								ksession.insert(tr);
+							}
 
 						}
 					}
@@ -136,12 +162,12 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					agenda.getAgendaGroup( "populate.trigger.dependencies" ).setFocus();
 					agenda.getAgendaGroup( "populate" ).setFocus();
 					agenda.getAgendaGroup( "prevalidate" ).setFocus();
+					agenda.getAgendaGroup( "language" ).setFocus();
 					
 					ksession.fireAllRules();
 					ksession.dispose();
 
 				}
-
 
 			}
 		})

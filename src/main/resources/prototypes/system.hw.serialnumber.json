@@ -13,5 +13,10 @@
 		{
 			"prototype" : "trigger.sn.changed"
 		}
-	]
+	],
+	"translations":{
+		"RU":{
+			"name":"Серийный номер"
+		}
+	}
 }

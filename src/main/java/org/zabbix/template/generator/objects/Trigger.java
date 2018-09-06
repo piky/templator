@@ -1,6 +1,7 @@
 package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -33,8 +34,17 @@ public class Trigger {
 	private TreeSet<TriggerDependency> dependencies = new TreeSet<TriggerDependency>();
 
 	//this array to store all metrics used apart from parent metric. To be used in Drools(replace with metric keys)
-	private HashSet <String> metricsUsed = new HashSet<>(0); 
+	private HashSet <String> metricsUsed = new HashSet<>(0);
 
+	//Translations arr
+	private HashMap<String,Translation> translations = new HashMap<>(0);
+	public HashMap<String, Translation> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(HashMap<String, Translation> translations) {
+		this.translations = translations;
+	}
 	public void constructMetricsUsed() {
 		
 		Matcher m = Pattern.compile("__(.+?)__")

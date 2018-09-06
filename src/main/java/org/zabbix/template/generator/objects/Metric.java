@@ -2,6 +2,7 @@ package org.zabbix.template.generator.objects;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -117,6 +118,18 @@ public abstract class Metric {
 	private String snmpObject;
 	private String mib;
 
+
+
+
+	//Translations arr
+	private HashMap<String,Translation> translations = new HashMap<>(0);
+	public HashMap<String, Translation> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(HashMap<String, Translation> translations) {
+		this.translations = translations;
+	}
 
 	//Discovery stuff
 	@JsonAlias("discovery_rule")

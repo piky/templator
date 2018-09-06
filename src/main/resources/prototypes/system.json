@@ -27,7 +27,13 @@
 				"description": "The device uptime is less than 10 minutes",
 				"dependsOn": [
 					"nosnmp"
-				]
+				],
+				"translations":{
+					"RU":{
+						"name": "{HOST.NAME} был только что перезагружен",
+						"description": "Аптайм устройства менее 10 минут"
+						}
+				}
 			}
 		]
 	},
@@ -138,7 +144,13 @@
 				"description": "SNMP is not available for polling. Please check device connectivity and SNMP settings.",
 				"dependsOn": [
 					"noping"
-				]
+				],
+				"translations":{
+					"RU":{
+						"name": "Нет сбора данных по SNMP",
+						"description": "Не удается опросить по SNMP. Проверьте доступность устройства и настройки SNMP."
+						}
+				}
 			}
 		]
 	},

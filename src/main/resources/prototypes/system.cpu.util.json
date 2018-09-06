@@ -1,4 +1,10 @@
 {
+	"translations": {
+		"RU": {
+			"name":"Загрузка процессора",
+          	"description": "Загрузка процессора в %"
+		}
+	},
 	"id":"system.cpu.util",
 	"name":"CPU utilization",
 	"description":"CPU utilization in %",
