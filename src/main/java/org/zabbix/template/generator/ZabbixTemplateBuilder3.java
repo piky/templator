@@ -68,7 +68,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 			.log(LoggingLevel.WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}");
 */
 
-		from("file:bin/in/json?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
+		from("file:bin/in?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 		.setHeader("template_ver", simple("{{version}}",String.class))
 
 				
