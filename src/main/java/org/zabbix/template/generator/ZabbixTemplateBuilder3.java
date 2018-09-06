@@ -88,7 +88,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 
 		from("direct:create_template")
-				//JSON - YAML Chooser //TODO add by extention .json / .yaml
+				//JSON - YAML Chooser
 				.choice()
 					.when(simple("${file:ext} == 'yaml'"))
 						//.log("Try YAML....")
@@ -238,7 +238,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 		.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) //replace SNMPvX with SNMPv2 or SNMPv1 lang
 
 		.setHeader("subfolder",simple("${in.headers.CamelFileName.split('_')[1]}",String.class))
-		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+		.setHeader("CamelOverruleFileName",simple("${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.lang}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 		.to("file:bin/out")
 
 		.choice()
