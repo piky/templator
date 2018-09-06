@@ -68,7 +68,7 @@ public class PrototypesService {
 	public void init() {
 		try {
 
-			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath:prototypes/*");
+			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:bin/prototypes/*");
 			//mapper JSON
 			//create factory to enable comments for json
 			JsonFactory f = new JsonFactory();

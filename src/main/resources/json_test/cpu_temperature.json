@@ -1,8 +1,0 @@
-{
-	"prototype":"cpu.temperature.metric",
-	"discoveryRule":{"name":"TestD"},
-	"type":"SNMP",
-	"group":"Temperature",
-	"oid":".1.123.12.3.2",
-	"snmpObject":"cpuTemp"
-}
