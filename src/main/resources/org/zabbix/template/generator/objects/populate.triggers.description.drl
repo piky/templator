@@ -1,0 +1,34 @@
+package org.zabbix.template.generator.objects
+;
+global String lang;
+
+rule "Rule 12a: generate each trigger description"
+	agenda-group "populate"
+	no-loop
+when
+    $m : Metric ($triggers: triggers)
+    $tr: Trigger (description==null) from $triggers 
+then
+    logger.debug(marker,"Generating trigger description for "+ $tr);
+    if(lang.equals("EN")){
+        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.");
+    } else if(lang.equals("RU")){
+        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.");
+    }
+end
+
+rule "Rule 12b: generate each trigger description"
+	agenda-group "populate"
+	no-loop
+when
+	$m : Metric ($triggers: triggers)
+    $tr: Trigger (description!=null) from $triggers 
+then
+    logger.debug(marker,"Generating trigger description for "+ $tr);
+    if(lang.equals("EN")){
+        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+    } else if(lang.equals("RU")){
+        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+    }
+
+end

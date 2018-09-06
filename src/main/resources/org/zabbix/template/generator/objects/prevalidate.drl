@@ -1,0 +1,10 @@
+package org.zabbix.template.generator.objects
+;
+
+rule "Validation rule: check name"
+	agenda-group "prevalidate"
+when
+	$m : Metric (name == null)
+then
+    logger.error(marker,"There is no 'name' for "+$m);
+end

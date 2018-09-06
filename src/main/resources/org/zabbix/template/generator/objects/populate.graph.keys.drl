@@ -1,0 +1,19 @@
+package org.zabbix.template.generator.objects
+
+
+
+rule "Change for each graph: metric id with actual metric key"
+	agenda-group "populate.graph.keys"
+	no-loop
+when
+	$m : Metric ($graphs: graphs)
+	$gr: Graph ($gitems: graphItems) from $graphs
+	$gitem: GraphItem () from $gitems
+	
+	$m2 : Metric ( $m.discoveryRule == discoveryRule, $gitem.metricKey == $m2.id )
+ 
+then
+    logger.debug(marker,"Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
+    //now replace gitem.metricKey with actual metric key:
+    $gitem.setMetricKey($m2.getKey());
+end

@@ -1,0 +1,42 @@
+package org.zabbix.template.generator.objects
+;
+
+
+rule "Validation rule 1: you should have both discoveryRule and alarmObject defined"
+	agenda-group "postvalidate"
+when
+	$m : Metric (discoveryRule != null, alarmObject == null )
+then
+    logger.error(marker,"Please define 'alarmObject' for "+$m.getId());
+end
+
+
+rule "Validation rule 2: check key"
+	agenda-group "postvalidate"
+when
+	$m : Metric (key == null)
+then
+    logger.error(marker,"There is no 'key' for "+$m.getId());
+end
+
+
+
+
+rule "Validation rule 3: valueMap mentioned in metric should be defined"
+	agenda-group "postvalidate"
+when
+	$m: Metric($vm_name : valueMap != null)
+	$t: InputJSON( )
+	not ValueMap(name == $vm_name) from $t.valueMaps
+then
+    logger.warn(marker,"No value map found for " + $vm_name + ". It used in " +$m.getId());
+end
+
+
+rule "Validation rule 3: check Type"
+	agenda-group "postvalidate"
+when
+	$m: Metric(type == null)
+then
+    logger.error(marker,"No 'type' defined for" + $m.getId());
+end

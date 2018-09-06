@@ -1,0 +1,91 @@
+package org.zabbix.template.generator.objects
+;
+
+
+
+rule "Rule 4: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( id == 'vm.memory.pused')
+	$m_used: Metric ( id == 'vm.memory.used')
+	$m_total: Metric ( id == 'vm.memory.total')
+then
+    logger.debug(marker,"There are vm.memory.total and vm.memory.used found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+
+rule "Rule 5: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( id == 'vm.memory.pused')
+	$m_used: Metric ( id == 'vm.memory.units.used')
+	$m_total: Metric ( id == 'vm.memory.units.total')
+then
+    logger.debug(marker,"There are vm.memory.units.total and vm.memory.units.used found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+rule "Rule 6: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( id == 'vm.memory.pused')
+	$m_free: Metric ( id == 'vm.memory.free')
+	$m_total: Metric ( id == 'vm.memory.total')
+then
+    logger.debug(marker,"There are vm.memory.total and vm.memory.free found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
+	};
+end
+
+
+rule "Rule 7: generate vm.memory.pused"
+	agenda-group "populate"
+	salience -50
+when
+	$m : Metric ( id == 'vm.memory.pused')
+	$m_free: Metric ( id == 'vm.memory.free')
+	$m_used: Metric ( id == 'vm.memory.used')
+then
+    logger.debug(marker,"There are vm.memory.used and vm.memory.free found "+$m);
+    modify( $m ) { 
+		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
+	};
+end
+
+
+rule "Rule 8: generate vm.memory.total"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vm.memory.total')
+	$m_u_total : Metric ( id == 'vm.memory.units.total')
+	$m_u: Metric ( id == 'vm.memory.units')
+then
+    logger.info(marker,"There are vm.memory.units.total and vm.memory.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end
+
+rule "Rule 9: generate vm.memory.used"
+	agenda-group "populate"
+	salience -50
+when
+    $m : Metric ( id == 'vm.memory.used')
+	$m_u_used : Metric ( id == 'vm.memory.units.used')
+	$m_u: Metric ( id == 'vm.memory.units')
+then
+    logger.info(marker,"There are vm.memory.units.used and vm.memory.units found ");
+    modify( $m ) {
+		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
+	};
+end

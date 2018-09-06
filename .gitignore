@@ -36,3 +36,5 @@ src/data/platon/out/zbx_export_templates.html
 src/data/platon/out/core2.html
 src/data/platon/in/zbx_export_templates.xml
 src/data/platon/in/core2.xml
+src/main/resources/ftl/out/
+.freemarker-ide.xml

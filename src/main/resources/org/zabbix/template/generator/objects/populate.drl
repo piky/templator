@@ -1,0 +1,154 @@
+package org.zabbix.template.generator.objects
+
+rule "Rule 1: automatically add type=SNMP if type is not populated"
+	agenda-group "populate"
+when
+	$m : Metric (type == null, snmpObject !=null, oid != null )
+then
+    logger.debug(marker,"RULE1:Adding type=SNMP for "+$m);
+    modify($m) { setType(Metric.Type.SNMP) };
+end
+
+
+/*
+TODO remove this rule.
+regenerate defined key if it is item prototype.
+This rule must go before anything else
+*/
+rule "Rule 2.1: Generate metric key for SNMP type"
+	agenda-group "populate"
+	salience 999
+	no-loop
+when
+	$m : Metric ( key != null, key not contains '[', key not contains ']', discoveryRule != null)
+then
+    logger.info(marker,"RULE2.1: There is a 'key' statically defined but item is prototype(LLD): for "+$m.getName()+" "+$m.getKey()+" so let's regenerate it...");
+    modify( $m ) {
+            setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
+    };
+end
+
+//This rule must go before anything else
+rule "Rule 2: Generate metric key for SNMP type"
+	agenda-group "populate"
+	salience 999
+	no-loop
+when
+	$m : Metric ( key == null, snmpObject != null, id != null)
+then
+    logger.debug(marker,"RULE2: There is no 'key' for "+$m.getName()+" so let's generate it...");
+    modify( $m ) { 
+    		setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
+    };
+end
+
+
+rule "Rule 3: prefix Name with alarmObject"
+	agenda-group "populate"
+when
+	$m : Metric ( alarmObject != null)
+then
+    logger.debug(marker,"RULE3: Changing name to 'alarmObject: $m.name' for "+$m);
+    modify( $m ) { 
+    		setName( $m.getAlarmObject() + ": " + $m.getName() )
+    	};
+end
+
+rule "Rule 3a: generate each trigger name(discovery rules, prefix with alarmObject)"
+	agenda-group "populate"
+	no-loop
+when
+    $m : Metric ($key: key != null, alarmObject != null, $triggers: triggers)
+    $tr: Trigger ($e: expression!=null) from $triggers 
+then
+    logger.debug(marker,"Generating trigger name for "+ $tr.getName());
+    $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
+end
+
+rule "Rule 3b: generate each graph name(discovery rules, prefix with alarmObject)"
+	agenda-group "populate"
+	no-loop
+when
+    $m : Metric ($key: key != null, alarmObject != null, $graphs: graphs)
+    $gr: Graph () from $graphs
+then
+    logger.info(marker,"Generating graph name for "+ $gr);
+    $gr.setName( $m.getAlarmObject() + ": " + $gr.getName() );
+end
+
+
+rule "Rule 8: purge original description(description)"
+	agenda-group "populate"
+	salience 101
+when
+	$m : Metric (vendorDescription != null )
+then
+    logger.debug(marker,"Generating description(description) for "+$m);
+    modify( $m ) {
+    		setDescription(null)
+    	};
+end
+
+rule "Rule 9: generate each item description(mib)"
+	agenda-group "populate"
+	salience 100
+when
+	$m : Metric (mib != null)
+then
+    logger.debug(marker,"Generating description(mib) for "+$m);
+	if ($m.getDescription() != null) {
+		modify( $m ) {
+    		setDescription( "MIB: " + $m.getMib()+"\n"+$m.getDescription() )
+	    };
+	}
+	else {
+		modify( $m ) {
+			setDescription( "MIB: " + $m.getMib()+"\n" )
+		};
+	}    	
+end
+
+rule "Rule 10: generate each item description"
+	agenda-group "populate"
+	salience 99
+when
+	$m : Metric (vendorDescription != null)
+then
+    logger.debug(marker,"Generating description(vendorDescription) for "+$m);
+	if ($m.getDescription() != null) {
+		modify( $m ) {
+    		setDescription( $m.getDescription() + $m.getVendorDescription() )
+	    };
+	}
+	else {
+		modify( $m ) {
+			setDescription( $m.getVendorDescription() )
+		};
+	}
+end
+
+rule "Rule 11: generate each item description"
+	agenda-group "populate"
+	salience 98
+when
+	$m : Metric (ref != null)
+then
+    logger.debug(marker,"Generating description(ref) for "+$m);
+    modify( $m ) { 
+    		setDescription( $m.getDescription() + "\nReference: " + $m.getRef() );
+    	};
+end
+
+/*
+ It's not safe to map item prototypes to inventory. So, that kind of linked should be removed.
+*/
+rule "Rule: purge inventory_link for item prototypes"
+	agenda-group "populate"
+	salience 101
+when
+	$m : Metric (discoveryRule != null,inventoryLink != InventoryLink.NONE)
+then
+    logger.warn(marker,"Purging inventory link for item prototype:"+$m.getId());
+    $m.setInventoryLink(InventoryLink.NONE);
+end
+
