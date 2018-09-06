@@ -13,13 +13,16 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 
 
+
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.Agenda;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.objects.*;
 
@@ -31,10 +34,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 @Component
 public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
-	private static final Logger logger = LoggerFactory.getLogger(Main.class);
+	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
+	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("TEMPLATE_GEN");
 
-	 
-	
+
 
 	@Override
 	public void configure() throws Exception {
@@ -106,7 +109,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 
-
+                String lang = exchange.getIn().getHeader("lang").toString();
 				//AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
 				//ksession.addEventListener(agendaEventListener);
 
@@ -123,11 +126,13 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 				ArrayList<Template> templates = ((InputJSON) exchange.getIn().getBody()).getTemplates();
 
 				for (Template t: templates) {
-					KieSession ksession = kContainer.newKieSession();
 
+				    Marker DROOLS_MARKER = MarkerManager.getMarker("DROOLS_"+t.getName()+"_"+lang).setParents(TEMPLATE_GEN);
 
+                    KieSession ksession = kContainer.newKieSession();
                     ksession.setGlobal("logger", logger);
-					ksession.setGlobal("lang", exchange.getIn().getHeader("lang").toString());
+                    ksession.setGlobal("marker", DROOLS_MARKER);
+					ksession.setGlobal("lang", lang);
                     ksession.insert((InputJSON) exchange.getIn().getBody());
                     ksession.insert(t);
 

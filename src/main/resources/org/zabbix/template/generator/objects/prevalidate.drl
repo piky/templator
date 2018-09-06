@@ -1,10 +1,10 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 
 rule "Validation rule: check name"
 	agenda-group "prevalidate"
 when
 	$m : Metric (name == null)
 then
-    logger.error("There is no 'name' for "+$m);
+    logger.error(marker,"There is no 'name' for "+$m);
 end

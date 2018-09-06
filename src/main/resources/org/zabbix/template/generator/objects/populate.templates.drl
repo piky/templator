@@ -1,6 +1,6 @@
 package org.zabbix.template.generator.objects
 
-global org.slf4j.Logger logger;
+;
 
 //Theses rules attaches template dependencies if there are some Classes present in it
 rule "Rule 1: generate dependencies for templates - Template Module Generic"
@@ -10,7 +10,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
 then
-    logger.info("Found SNMP_DEVICE class, attaching template dependency for "+$t.getName());
+    logger.info(marker,"Found SNMP_DEVICE class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Generic SNMPvX");};
 end
 
@@ -23,7 +23,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.SNMP_V1 || this == TemplateClass.SNMP_V2|| this == TemplateClass.SNMP_V3) from $classes)
 then
-    logger.info("Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t.getName());
+    logger.info(marker,"Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t.getName());
     modify($t) {setName($t.getName()+" SNMPvX");};
 end
 
@@ -35,7 +35,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.INTERFACES) from $classes)
 then
-    logger.info("Found INTERFACES class, attaching template dependency for "+$t.getName());
+    logger.info(marker,"Found INTERFACES class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Interfaces SNMPvX");};
 end
 
@@ -47,7 +47,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.INTERFACES_ETHERLIKE_EXTENSION) from $classes)
 then
-    logger.info("Found INTERFACES_ETHERLIKE_EXTENSION class, attaching template dependency for "+$t.getName());
+    logger.info(marker,"Found INTERFACES_ETHERLIKE_EXTENSION class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module EtherLike-MIB SNMPvX");};
 end
 
@@ -60,7 +60,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.INTERFACES_SIMPLE) from $classes)
 then
-    logger.info("Found INTERFACES_SIMPLE class, attaching template dependency for "+$t.getName());
+    logger.info(marker,"Found INTERFACES_SIMPLE class, attaching template dependency for "+$t.getName());
     modify($t) {getTemplates().add("Template Module Interfaces Simple SNMPvX");};
 end
 
@@ -76,7 +76,7 @@ when
 	$t: Template($metrics: metricsRegistry)
     exists (Metric(id == "system.cpu.util") from $metrics)
 then
-    logger.info("Found system.cpu.util metric, adding additional MACRO...");
+    logger.info(marker,"Found system.cpu.util metric, adding additional MACRO...");
     modify($t) {getMacros().add(new UserMacro("{$CPU_UTIL_MAX}","90"));};
 end
 
@@ -87,7 +87,7 @@ when
 	$t: Template($metrics: metricsRegistry)
     exists (Metric(id == "vm.memory.pused") from $metrics)
 then
-    logger.info("Found vm.memory.pused metric, adding additional MACRO...");
+    logger.info(marker,"Found vm.memory.pused metric, adding additional MACRO...");
     modify($t) {getMacros().add(new UserMacro("{$MEMORY_UTIL_MAX}","90"));};
 end
 
@@ -101,7 +101,7 @@ when
 	$t: Template($metrics: metricsRegistry)
     exists (Metric(id == "sensor.temp.value") from $metrics)
 then
-    logger.info("Found sensor.temp.value metric, adding additional MACRO...");
+    logger.info(marker,"Found sensor.temp.value metric, adding additional MACRO...");
     modify($t) {
 //    	getMacros().add(new UserMacro("{$TEMP_CRIT:\"CPU\"}","75")),
 //    	getMacros().add(new UserMacro("{$TEMP_WARN:\"CPU\"}","70")),
@@ -120,7 +120,7 @@ when
 	$t: Template($metrics: metricsRegistry)
     exists (Metric(id == "vfs.fs.pused") from $metrics)
 then
-    logger.info("Found vfs.fs.pused metric, adding additional MACRO...");
+    logger.info(marker,"Found vfs.fs.pused metric, adding additional MACRO...");
     modify($t) {
     	getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","90")),
     	getMacros().add(new UserMacro("{$STORAGE_UTIL_WARN}","80"));	
@@ -135,7 +135,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.GENERAL) from $classes)
 then
-    logger.info("Found GENERAL class, adding additional MACRO");
+    logger.info(marker,"Found GENERAL class, adding additional MACRO");
     modify($t) {
     	getMacros().add(new UserMacro("{$SNMP_TIMEOUT}","3m"));	
     };
@@ -149,7 +149,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.IF_MIB) from $classes)
 then
-    logger.info("Found IF_MIB class, adding additional MACRO");
+    logger.info(marker,"Found IF_MIB class, adding additional MACRO");
     modify($t) {
     	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
     	getMacros().add(new UserMacro("{$IF_UTIL_MAX}","90")),
@@ -165,7 +165,7 @@ when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.ICMP) from $classes)
 then
-    logger.info("Found ICMP class, adding additional MACRO");
+    logger.info(marker,"Found ICMP class, adding additional MACRO");
     modify($t) {
     	getMacros().add(new UserMacro("{$ICMP_LOSS_WARN}","20")),
     	getMacros().add(new UserMacro("{$ICMP_RESPONSE_TIME_WARN}","0.15"));	

@@ -1,5 +1,5 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 /*
 METRICS
 */
@@ -44,7 +44,7 @@ when
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.debug("Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
     $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     if ($tr.getRecoveryExpression() != null) {
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
@@ -67,7 +67,7 @@ when
     
     $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.id memberOf $metricsUsed )
 then
-    logger.warn("REPLACING metric "+$m2.getId()+" in triggers: "+ $tr.getName());
+    logger.warn(marker,"REPLACING metric "+$m2.getId()+" in triggers: "+ $tr.getName());
     
     $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
     if ($tr.getRecoveryExpression() != null) {
@@ -84,7 +84,7 @@ when
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObject: alarmObject != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug("Generating trigger expression (changing __ALARM_OBJECT__) for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT__",$alarmObject));
     }
@@ -102,7 +102,7 @@ when
     $m : Metric ($key: key != null, $triggers: triggers, $alarmObjectType: alarmObjectType != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug("Generating trigger expression (changing __ALARM_OBJECT_TYPE__) for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT_TYPE__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
     	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }

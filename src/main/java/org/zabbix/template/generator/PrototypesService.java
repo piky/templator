@@ -8,8 +8,8 @@ import javax.annotation.PostConstruct;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 public class PrototypesService {
 
 	private static HashMap<String,JsonNode> prototypes = new HashMap<String,JsonNode>();
-	private final static Logger logger = LoggerFactory.getLogger(PrototypesService.class);
+	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
 
 
 	private ResourceLoader resourceLoader;

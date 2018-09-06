@@ -1,0 +1,4 @@
+import org.apache.logging.log4j.Marker;
+global org.apache.logging.log4j.core.Logger logger;
+global String lang;
+global Marker marker;

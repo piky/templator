@@ -1,5 +1,5 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 
 
 
@@ -11,7 +11,7 @@ when
 	$m_used: Metric ( id == 'vm.memory.used')
 	$m_total: Metric ( id == 'vm.memory.total')
 then
-    logger.debug("There are vm.memory.total and vm.memory.used found "+$m);
+    logger.debug(marker,"There are vm.memory.total and vm.memory.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -26,7 +26,7 @@ when
 	$m_used: Metric ( id == 'vm.memory.units.used')
 	$m_total: Metric ( id == 'vm.memory.units.total')
 then
-    logger.debug("There are vm.memory.units.total and vm.memory.units.used found "+$m);
+    logger.debug(marker,"There are vm.memory.units.total and vm.memory.units.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -40,7 +40,7 @@ when
 	$m_free: Metric ( id == 'vm.memory.free')
 	$m_total: Metric ( id == 'vm.memory.total')
 then
-    logger.debug("There are vm.memory.total and vm.memory.free found "+$m);
+    logger.debug(marker,"There are vm.memory.total and vm.memory.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
 	};
@@ -55,7 +55,7 @@ when
 	$m_free: Metric ( id == 'vm.memory.free')
 	$m_used: Metric ( id == 'vm.memory.used')
 then
-    logger.debug("There are vm.memory.used and vm.memory.free found "+$m);
+    logger.debug(marker,"There are vm.memory.used and vm.memory.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
 	};
@@ -70,7 +70,7 @@ when
 	$m_u_total : Metric ( id == 'vm.memory.units.total')
 	$m_u: Metric ( id == 'vm.memory.units')
 then
-    logger.info("There are vm.memory.units.total and vm.memory.units found ");
+    logger.info(marker,"There are vm.memory.units.total and vm.memory.units found ");
     modify( $m ) {
 		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
 	};
@@ -84,7 +84,7 @@ when
 	$m_u_used : Metric ( id == 'vm.memory.units.used')
 	$m_u: Metric ( id == 'vm.memory.units')
 then
-    logger.info("There are vm.memory.units.used and vm.memory.units found ");
+    logger.info(marker,"There are vm.memory.units.used and vm.memory.units found ");
     modify( $m ) {
 		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
 	};

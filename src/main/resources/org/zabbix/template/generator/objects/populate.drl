@@ -1,13 +1,11 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
-
 
 rule "Rule 1: automatically add type=SNMP if type is not populated"
 	agenda-group "populate"
 when
 	$m : Metric (type == null, snmpObject !=null, oid != null )
 then
-    logger.debug("RULE1:Adding type=SNMP for "+$m);
+    logger.debug(marker,"RULE1:Adding type=SNMP for "+$m);
     modify($m) { setType(Metric.Type.SNMP) };
 end
 
@@ -24,7 +22,7 @@ rule "Rule 2.1: Generate metric key for SNMP type"
 when
 	$m : Metric ( key != null, key not contains '[', key not contains ']', discoveryRule != null)
 then
-    logger.info("RULE2.1: There is a 'key' statically defined but item is prototype(LLD): for "+$m.getName()+" "+$m.getKey()+" so let's regenerate it...");
+    logger.info(marker,"RULE2.1: There is a 'key' statically defined but item is prototype(LLD): for "+$m.getName()+" "+$m.getKey()+" so let's regenerate it...");
     modify( $m ) {
             setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
     };
@@ -38,7 +36,7 @@ rule "Rule 2: Generate metric key for SNMP type"
 when
 	$m : Metric ( key == null, snmpObject != null, id != null)
 then
-    logger.debug("RULE2: There is no 'key' for "+$m.getName()+" so let's generate it...");
+    logger.debug(marker,"RULE2: There is no 'key' for "+$m.getName()+" so let's generate it...");
     modify( $m ) { 
     		setKey( $m.getId()+"["+$m.getSnmpObject()+"]")
     };
@@ -50,7 +48,7 @@ rule "Rule 3: prefix Name with alarmObject"
 when
 	$m : Metric ( alarmObject != null)
 then
-    logger.debug("RULE3: Changing name to 'alarmObject: $m.name' for "+$m);
+    logger.debug(marker,"RULE3: Changing name to 'alarmObject: $m.name' for "+$m);
     modify( $m ) { 
     		setName( $m.getAlarmObject() + ": " + $m.getName() )
     	};
@@ -63,7 +61,7 @@ when
     $m : Metric ($key: key != null, alarmObject != null, $triggers: triggers)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
-    logger.debug("Generating trigger name for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger name for "+ $tr.getName());
     $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
 end
 
@@ -74,7 +72,7 @@ when
     $m : Metric ($key: key != null, alarmObject != null, $graphs: graphs)
     $gr: Graph () from $graphs
 then
-    logger.info("Generating graph name for "+ $gr);
+    logger.info(marker,"Generating graph name for "+ $gr);
     $gr.setName( $m.getAlarmObject() + ": " + $gr.getName() );
 end
 
@@ -85,7 +83,7 @@ rule "Rule 8: purge original description(description)"
 when
 	$m : Metric (vendorDescription != null )
 then
-    logger.debug("Generating description(description) for "+$m);
+    logger.debug(marker,"Generating description(description) for "+$m);
     modify( $m ) {
     		setDescription(null)
     	};
@@ -97,7 +95,7 @@ rule "Rule 9: generate each item description(mib)"
 when
 	$m : Metric (mib != null)
 then
-    logger.debug("Generating description(mib) for "+$m);
+    logger.debug(marker,"Generating description(mib) for "+$m);
 	if ($m.getDescription() != null) {
 		modify( $m ) {
     		setDescription( "MIB: " + $m.getMib()+"\n"+$m.getDescription() )
@@ -116,7 +114,7 @@ rule "Rule 10: generate each item description"
 when
 	$m : Metric (vendorDescription != null)
 then
-    logger.debug("Generating description(vendorDescription) for "+$m);
+    logger.debug(marker,"Generating description(vendorDescription) for "+$m);
 	if ($m.getDescription() != null) {
 		modify( $m ) {
     		setDescription( $m.getDescription() + $m.getVendorDescription() )
@@ -135,7 +133,7 @@ rule "Rule 11: generate each item description"
 when
 	$m : Metric (ref != null)
 then
-    logger.debug("Generating description(ref) for "+$m);
+    logger.debug(marker,"Generating description(ref) for "+$m);
     modify( $m ) { 
     		setDescription( $m.getDescription() + "\nReference: " + $m.getRef() );
     	};
@@ -150,7 +148,7 @@ rule "Rule: purge inventory_link for item prototypes"
 when
 	$m : Metric (discoveryRule != null,inventoryLink != InventoryLink.NONE)
 then
-    logger.warn("Purging inventory link for item prototype:"+$m.getId());
+    logger.warn(marker,"Purging inventory link for item prototype:"+$m.getId());
     $m.setInventoryLink(InventoryLink.NONE);
 end
 

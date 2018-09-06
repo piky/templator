@@ -1,7 +1,5 @@
 package org.zabbix.template.generator.objects
 import java.util.HashMap;
-global org.slf4j.Logger logger;
-global String lang;
 
 
 rule "Translation rule: metric name"
@@ -12,7 +10,7 @@ when
 	$hm: HashMap(this.keySet() contains lang) from $m.translations
 	Translation(name !=null) from $hm[lang]
 then
-    logger.info("Translating metric name: "+$m.getId());
+    logger.info(marker,"Translating metric name: {}",$m.getId());
     modify($m){
         setName($m.getTranslations().get(lang).getName());
     }
@@ -26,7 +24,7 @@ when
 	$hm: HashMap(this.keySet() contains lang) from $m.translations
 	Translation(description !=null) from $hm[lang]
 then
-    logger.info("Translating metric description: "+$m.getId());
+    logger.info(marker,"Translating metric description: "+$m.getId());
     modify($m){
         setDescription($m.getTranslations().get(lang).getDescription());
     }
@@ -41,7 +39,7 @@ when
 	$hm: HashMap(this.keySet() contains lang) from $tr.translations
 	Translation(name !=null) from $hm[lang]
 then
-    logger.info("Translating trigger name: "+$tr.getId());
+    logger.info(marker,"Translating trigger name: "+$tr.getId());
     modify($tr){
         setName($tr.getTranslations().get(lang).getName());
     }
@@ -56,7 +54,7 @@ when
 	$hm: HashMap(this.keySet() contains lang) from $tr.translations
 	Translation(description !=null) from $hm[lang]
 then
-    logger.info("Translating trigger description: "+$tr.getId());
+    logger.info(marker,"Translating trigger description: {}",$tr.getId());
     modify($tr){
         setDescription($tr.getTranslations().get(lang).getDescription());
     }

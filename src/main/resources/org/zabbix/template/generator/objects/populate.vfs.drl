@@ -1,5 +1,5 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 
 
 
@@ -11,7 +11,7 @@ when
 	$m_used: Metric ( id == 'vfs.fs.used')
 	$m_total: Metric ( id == 'vfs.fs.total')
 then
-    logger.debug("There are vfs.fs.total and vfs.fs.used found "+$m);
+    logger.debug(marker,"There are vfs.fs.total and vfs.fs.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -26,7 +26,7 @@ when
 	$m_used: Metric ( id == 'vfs.fs.units.used')
 	$m_total: Metric ( id == 'vfs.fs.units.total')
 then
-    logger.debug("There are vfs.fs.units.total and vfs.fs.units.used found "+$m);
+    logger.debug(marker,"There are vfs.fs.units.total and vfs.fs.units.used found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
 	};
@@ -40,7 +40,7 @@ when
 	$m_free: Metric ( id == 'vfs.fs.free')
 	$m_total: Metric ( id == 'vfs.fs.total')
 then
-    logger.debug("There are vfs.fs.total and vfs.fs.free found "+$m);
+    logger.debug(marker,"There are vfs.fs.total and vfs.fs.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
 	};
@@ -55,7 +55,7 @@ when
 	$m_free: Metric ( id == 'vfs.fs.free')
 	$m_used: Metric ( id == 'vfs.fs.used')
 then
-    logger.debug("There are vfs.fs.used and vfs.fs.free found "+$m);
+    logger.debug(marker,"There are vfs.fs.used and vfs.fs.free found "+$m);
     modify( $m ) { 
 		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
 	};
@@ -70,7 +70,7 @@ when
 	$m_u_total : Metric ( id == 'vfs.fs.units.total')
 	$m_u: Metric ( id == 'vfs.fs.units')
 then
-    logger.info("There are vfs.fs.units.total and vfs.fs.units found ");
+    logger.info(marker,"There are vfs.fs.units.total and vfs.fs.units found ");
     modify( $m ) {
 		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
 	};
@@ -84,7 +84,7 @@ when
 	$m_u_used : Metric ( id == 'vfs.fs.units.used')
 	$m_u: Metric ( id == 'vfs.fs.units')
 then
-    logger.info("There are vfs.fs.units.used and vfs.fs.units found ");
+    logger.info(marker,"There are vfs.fs.units.used and vfs.fs.units found ");
     modify( $m ) {
 		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
 	};

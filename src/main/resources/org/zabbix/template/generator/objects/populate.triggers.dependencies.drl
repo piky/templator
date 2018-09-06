@@ -1,5 +1,5 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 global String lang;
 
 /*
@@ -20,7 +20,7 @@ when
         ,id != "noping"
      ) from $triggers2
 then
-    logger.info("Found dependency "+$tr2.getId()+"("+$tr2.getName()+") for "+$tr.getId()+"("+$tr.getName()+")");
+    logger.info(marker,"Found dependency "+$tr2.getId()+"("+$tr2.getName()+") for "+$tr.getId()+"("+$tr.getName()+")");
     modify($tr){
         getDependencies().add(new TriggerDependency($tr2.getName(), $tr2.getExpression(), $tr2.getRecoveryExpression()));
     }
@@ -38,7 +38,7 @@ when
 	$m : Metric ($triggers: triggers)
     $tr2: Trigger (dependsOn contains "noping") from $triggers
 then
-    logger.info("Found static dependency "+$tr2.getId()+" for noping");
+    logger.info(marker,"Found static dependency "+$tr2.getId()+" for noping");
 
         if(lang.equals("EN")){
 

@@ -1,5 +1,5 @@
 package org.zabbix.template.generator.objects
-global org.slf4j.Logger logger;
+;
 
 
 rule "Validation rule 1: you should have both discoveryRule and alarmObject defined"
@@ -7,7 +7,7 @@ rule "Validation rule 1: you should have both discoveryRule and alarmObject defi
 when
 	$m : Metric (discoveryRule != null, alarmObject == null )
 then
-    logger.error("Please define 'alarmObject' for "+$m.getId());
+    logger.error(marker,"Please define 'alarmObject' for "+$m.getId());
 end
 
 
@@ -16,7 +16,7 @@ rule "Validation rule 2: check key"
 when
 	$m : Metric (key == null)
 then
-    logger.error("There is no 'key' for "+$m.getId());
+    logger.error(marker,"There is no 'key' for "+$m.getId());
 end
 
 
@@ -29,7 +29,7 @@ when
 	$t: InputJSON( )
 	not ValueMap(name == $vm_name) from $t.valueMaps
 then
-    logger.warn("No value map found for " + $vm_name + ". It used in " +$m.getId());
+    logger.warn(marker,"No value map found for " + $vm_name + ". It used in " +$m.getId());
 end
 
 
@@ -38,5 +38,5 @@ rule "Validation rule 3: check Type"
 when
 	$m: Metric(type == null)
 then
-    logger.error("No 'type' defined for" + $m.getId());
+    logger.error(marker,"No 'type' defined for" + $m.getId());
 end
