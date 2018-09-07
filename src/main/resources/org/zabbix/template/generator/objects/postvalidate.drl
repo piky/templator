@@ -33,10 +33,49 @@ then
 end
 
 
-rule "Validation rule 3: check Type"
+rule "Validation rule 4: check Type"
 	agenda-group "postvalidate"
 when
 	$m: Metric(type == null)
 then
     logger.error(marker,"No 'type' defined for" + $m.getId());
+end
+
+
+rule "Validation rule 5: Macro defined but never used in triggers"
+	agenda-group "postvalidate"
+when
+	      $t: Template (macros != null)
+	          UserMacro($macro: macro) from $t.macros
+    not $tr:  Trigger  ( expression contains $macro )
+    not $tr2: Trigger  ( recoveryExpression contains $macro )
+then
+    logger.warn(marker,"User Macro found but never used in triggers: {} in template {}",$macro, $t.getName());
+end
+
+
+
+//usermacro regex: ^\{\$[A-Z0-9_]+(:".+")?\}$
+rule "Validation rule 6: Check usermacro syntax used"
+	agenda-group "postvalidate"
+when
+	$t: Template(macros != null)
+	UserMacro( $macro: macro not matches "^\\{\\$[A-Z0-9_]+(:\".+\")?\\}$") from $t.macros
+then
+    logger.error(marker,"Bad User Macro found {} in template {}",$macro, $t.getName());
+end
+
+rule "Validation rule 7: Macro used in triggers but not defined"
+	agenda-group "postvalidate"
+when
+      $t: Template ()
+      $tr: Trigger  ( expression matches ".+\\{\\$[A-Z0-9_]+(:\".+\")?\\}.+" )
+      forall ( UserMacro( $macro: macro) from $t.macros
+        Trigger( this == $tr, expression not contains $macro)
+        Trigger( this == $tr, recoveryExpression not contains $macro)
+      )
+
+      //exists (Trigger(this == $tr, expression contains $macro))
+then
+    logger.error(marker,"User Macro is used in the trigger but not defined: {} in template {}", $tr.getExpression(), $t.getName());
 end
