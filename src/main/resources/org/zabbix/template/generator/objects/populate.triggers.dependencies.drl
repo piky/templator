@@ -14,7 +14,7 @@ when
 	$m : Metric ($triggers: triggers)
 	$tr: Trigger ($dependsOn: dependsOn) from $triggers
 	
-	$m2 : Metric ($triggers2: triggers, $m.discoveryRule == discoveryRule)
+	$m2 : Metric ($triggers2: triggers, $m.discoveryRule == discoveryRule, $m.alarmObject == alarmObject)
     $tr2: Trigger (
         $dependsOn contains id
         ,id != "noping"
