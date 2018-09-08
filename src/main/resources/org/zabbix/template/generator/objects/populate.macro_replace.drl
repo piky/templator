@@ -55,7 +55,7 @@ end
 /*
 TRIGGERS REPLACE METRICS in expressions
 */
-//replaces TEMPLATE_NAME:METRIC name
+//replaces TEMPLATE_NAME:__metricID__ name
 rule "Rule: replace metrics in expression"
 	agenda-group "populate"
 	no-loop
