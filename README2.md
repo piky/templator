@@ -17,7 +17,7 @@ use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API
 ```
 <xsl:when test="./classes[class='OS']"><name>Templates/Operating Systems</name></xsl:when>
 <xsl:when test="./classes[class='Network']"><name>Templates/Network Devices</name></xsl:when>
-<xsl:when test="./classes[class='Server']"><name>Templates/Servers Hardware</name></xsl:when>
+<xsl:when test="./classes[class='Server']"><name>Templates/Server Hardware</name></xsl:when>
 <xsl:when test="./classes[class='Module']"><name>Templates/Modules</name></xsl:when>
 <xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 ```

@@ -539,7 +539,7 @@
             <#break>
           <#case 'SERVER'>
             <#local found = true>
-            <#local glist = glist + ["Templates/Servers Hardware"]>
+            <#local glist = glist + ["Templates/Server Hardware"]>
             <#break>
           <#case 'MODULE'>
             <#local found = true>
