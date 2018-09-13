@@ -1,41 +1,78 @@
 package org.zabbix.template.generator.objects;
 
-
 rule "Baseline rule: PERFORMANCE+NETWORK"
 	agenda-group "baseline"
 when
-    $t: Template (classes contains TemplateClass.PERFORMANCE , classes contains TemplateClass.NETWORK) and
+    $t: Template (classes contains TemplateClass.PERFORMANCE , classes contains TemplateClass.NETWORK)
+    do [logBadge]
+/*    not (
+
+    ) do [notBadgeFull]
+*/
     not (
         Metric (id =='system.cpu.util') and
         Metric (id =='vm.memory.pused')
-    )
+    ) do [notBadgeBase]
 then
-    logger.error(marker,"This template cannot be badged as PERFORMANCE");
+    //
+then[logBadge]
+    logger.info(marker,"Checking for PERFORMANCE+NETWORK+FULL badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as PERFORMANCE+NETWORK");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as PERFORMANCE+NETWORK+FULL");
 end
+
 
 
 rule "Baseline rule: FAULT+NETWORK"
 	agenda-group "baseline"
 when
-    $t: Template (classes contains TemplateClass.FAULT , classes contains TemplateClass.NETWORK) and
+    $t: Template (classes contains TemplateClass.FAULT , classes contains TemplateClass.NETWORK)
+    do [logBadge]
+    not (
+        Metric (id =='sensor.temp.value') and
+        Metric (id =='sensor.fan.status') and
+        Metric (id =='sensor.psu.status')
+    ) do [notBadgeFull]
     not (
         Metric (id =='sensor.temp.value')
-    )
+    ) do [notBadgeBase]
 then
-    logger.error(marker,"This template cannot be badged as FAULT");
+    //
+then[logBadge]
+    logger.info(marker,"Checking for FAULT+NETWORK+FULL badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as FAULT+NETWORK");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as FAULT+NETWORK+FULL");
 end
 
 
 rule "Baseline rule: INVENTORY+NETWORK"
 	agenda-group "baseline"
 when
-    $t: Template (classes contains TemplateClass.INVENTORY , classes contains TemplateClass.NETWORK) and
+    $t: Template (classes contains TemplateClass.INVENTORY , classes contains TemplateClass.NETWORK)
+    do [logBadge]
+    not (
+        Metric (id =='system.hw.model') and
+        Metric (id =='system.hw.serialnumber') and
+        Metric (id =='system.sw.os') and
+        Metric (id =='system.hw.firmware') and
+        Metric (id =='system.hw.version')
+    ) do [notBadgeFull]
     not (
         Metric (id =='system.hw.model') and
         Metric (id =='system.hw.serialnumber')
-    )
+    ) do [notBadgeBase]
 then
-    logger.error(marker,"This template cannot be badged as INVENTORY");
+    //
+then[logBadge]
+    logger.info(marker,"Checking for INVENTORY+NETWORK+FULL badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as INVENTORY+NETWORK");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as INVENTORY+NETWORK+FULL");
 end
 
 
@@ -69,4 +106,33 @@ then[notBadgeBase]
     logger.error(marker,"This template cannot be badged as IF_MIB");
 then[notBadgeFull]
     logger.warn(marker,"This template cannot be badged as IF_MIB+FULL");
+end
+
+
+
+rule "Baseline rule: FAULT+SERVER"
+	agenda-group "baseline"
+when
+    $t: Template (classes contains TemplateClass.SERVER, classes contains TemplateClass.FAULT )
+    do [logBadge]
+    /*not (
+
+    ) do [notBadgeFull]
+    */
+    not (
+            Metric (id =='sensor.temp.value') and
+            Metric (id =='sensor.psu.status') and
+            Metric (id =='sensor.fan.status') and
+            Metric (id =='system.hw.physicaldisk.status') and
+            Metric (id =='system.hw.diskarray.status') and
+            Metric (id =='system.hw.virtualdisk.status')
+    ) do [notBadgeBase]
+then
+    //
+then[logBadge]
+    logger.info(marker,"Checking for FAULT+SERVER badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as FAULT+SERVER");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as FAULT+SERVER+FULL");
 end
