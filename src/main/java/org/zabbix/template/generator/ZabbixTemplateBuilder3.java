@@ -159,6 +159,7 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 					}
 					Agenda agenda = ksession.getAgenda();
 					//last agendaGroup will evaluate first...
+					agenda.getAgendaGroup( "baseline" ).setFocus();
 					agenda.getAgendaGroup( "postvalidate" ).setFocus();
 					
 					agenda.getAgendaGroup( "populate.graph.keys" ).setFocus();

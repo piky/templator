@@ -38,7 +38,7 @@ rule "Validation rule 4: check Type"
 when
 	$m: Metric(type == null)
 then
-    logger.error(marker,"No 'type' defined for" + $m.getId());
+    logger.error(marker,"No 'type' defined for {}",$m.getId());
 end
 
 

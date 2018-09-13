@@ -1,0 +1,39 @@
+package org.zabbix.template.generator.objects;
+
+
+rule "Baseline rule: PERFORMANCE+NETWORK"
+	agenda-group "baseline"
+when
+    $t: Template (classes contains TemplateClass.PERFORMANCE , classes contains TemplateClass.NETWORK) and
+    not (
+        Metric (id =='system.cpu.util') and
+        Metric (id =='vm.memory.pused')
+    )
+then
+    logger.error(marker,"This template cannot be badged as PERFORMANCE");
+end
+
+
+rule "Baseline rule: FAULT+NETWORK"
+	agenda-group "baseline"
+when
+    $t: Template (classes contains TemplateClass.FAULT , classes contains TemplateClass.NETWORK) and
+    not (
+        Metric (id =='sensor.temp.value')
+    )
+then
+    logger.error(marker,"This template cannot be badged as FAULT");
+end
+
+
+rule "Baseline rule: INVENTORY+NETWORK"
+	agenda-group "baseline"
+when
+    $t: Template (classes contains TemplateClass.INVENTORY , classes contains TemplateClass.NETWORK) and
+    not (
+        Metric (id =='system.hw.model') and
+        Metric (id =='system.hw.serialnumber')
+    )
+then
+    logger.error(marker,"This template cannot be badged as INVENTORY");
+end
