@@ -37,3 +37,36 @@ when
 then
     logger.error(marker,"This template cannot be badged as INVENTORY");
 end
+
+
+
+rule "Baseline rule: INTERFACES(IF_MIB)"
+	agenda-group "baseline"
+when
+    $t: Template (classes contains TemplateClass.IF_MIB )
+    do [logBadge]
+    not (
+            Metric (id =='net.if.status') and
+            Metric (id =='net.if.in') and
+            Metric (id =='net.if.out') and
+            Metric (id =='net.if.in.errors') and
+            Metric (id =='net.if.out.errors') and
+            Metric (id =='net.if.out.discards') and
+            Metric (id =='net.if.in.discards') and
+            Metric (id =='net.if.type') and
+            Metric (id =='net.if.speed')
+    ) do [notBadgeFull]
+    not (
+            Metric (id =='net.if.status') and
+            Metric (id =='net.if.in') and
+            Metric (id =='net.if.out')
+    ) do [notBadgeBase]
+then
+    //
+then[logBadge]
+    logger.info(marker,"Checking for IF_MIB badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as IF_MIB");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as IF_MIB+FULL");
+end
