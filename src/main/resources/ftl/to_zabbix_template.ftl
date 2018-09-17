@@ -531,15 +531,15 @@
           <#switch g>
           <#case 'OS'>
             <#local found = true>
-            <#local glist = glist + ["Templates/Operating Systems"]>
+            <#local glist = glist + ["Templates/Operating systems"]>
             <#break>
           <#case 'NETWORK'>
             <#local found = true>
-            <#local glist = glist + ["Templates/Network Devices"]>
+            <#local glist = glist + ["Templates/Network devices"]>
             <#break>
           <#case 'SERVER'>
             <#local found = true>
-            <#local glist = glist + ["Templates/Server Hardware"]>
+            <#local glist = glist + ["Templates/Server hardware"]>
             <#break>
           <#case 'MODULE'>
             <#local found = true>
