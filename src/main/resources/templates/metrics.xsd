@@ -173,7 +173,7 @@
                             </xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Fault (Power Supply) -->
+						<xs:sequence> <!-- Template Fault (Power supply) -->
 							<xs:element name="psVoltage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							<xs:element name="psStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 						</xs:sequence>
@@ -189,7 +189,7 @@
 							</xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Network Interfaces -->
+						<xs:sequence> <!-- Template Network interfaces -->
 							<xs:element name="net.if.status" type="tns:metricType"/>
 							<xs:element name="net.if.in" type="tns:metricType"/>
 							<xs:element name="net.if.out" type="tns:metricType"/>
@@ -204,7 +204,7 @@
 							</xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Network Interfaces Ethernet -->
+						<xs:sequence> <!-- Template Network interfaces Ethernet -->
 							<xs:element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
 						</xs:sequence>
 					</xs:choice>
@@ -456,13 +456,13 @@
 			<xs:enumeration value="Disk Arrays"/>
 			<xs:enumeration value="Physical Disks"/>
             <xs:enumeration value="Virtual Disks"/>
-			<xs:enumeration value="Power Supply"/>
+			<xs:enumeration value="Power supply"/>
 			<xs:enumeration value="Fans"/>
 
 			<xs:enumeration value="General"/>
 			<xs:enumeration value="Inventory"/>
 
-			<xs:enumeration value="Network Interfaces"/> <!-- Network interfaces -->
+			<xs:enumeration value="Network interfaces"/> <!-- Network interfaces -->
 
 			<xs:enumeration value="Internal Items"/><!-- place items used in calculated items only -->
 
