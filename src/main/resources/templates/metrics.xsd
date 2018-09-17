@@ -505,7 +505,7 @@
 			<xs:enumeration value="Remote Service"/>
 
 			<xs:enumeration value="Interfaces"/>
-			<xs:enumeration value="Interfaces Simple"/>
+			<xs:enumeration value="Interfaces simple"/>
 			<xs:enumeration value="Interfaces Win"/>
 			<xs:enumeration value="Interfaces EtherLike Extension"/>
 
