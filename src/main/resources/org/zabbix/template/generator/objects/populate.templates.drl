@@ -53,7 +53,7 @@ end
 
 
 //This rules attaches template dependencies if there are some Classes present in it
-rule "Rule 3: generate dependencies for templates - Template Module Interfaces simple"
+rule "Rule 3: generate dependencies for templates - Template Module Interfaces Simple"
 	agenda-group "populate"
 	no-loop
 when
@@ -61,7 +61,7 @@ when
     exists (TemplateClass(this == TemplateClass.INTERFACES_SIMPLE) from $classes)
 then
     logger.info(marker,"Found INTERFACES_SIMPLE class, attaching template dependency for "+$t.getName());
-    modify($t) {getTemplates().add("Template Module Interfaces simple SNMPvX");};
+    modify($t) {getTemplates().add("Template Module Interfaces Simple SNMPvX");};
 end
 
 
