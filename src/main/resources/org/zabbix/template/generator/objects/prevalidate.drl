@@ -4,7 +4,50 @@ package org.zabbix.template.generator.objects
 rule "Validation rule: check name"
 	agenda-group "prevalidate"
 when
+    $i : InputJSON()
 	$m : Metric (name == null)
 then
     logger.error(marker,"There is no 'name' for "+$m);
+    modify($i){
+        setFailed(true);
+    }
+end
+
+
+
+rule "Validation rule: check group"
+	agenda-group "prevalidate"
+when
+	$i : InputJSON()
+	$m : Metric (group == null)
+then
+    logger.error(marker,"There is no 'group' for "+$m.getName());
+    modify($i){
+        setFailed(true);
+    }
+end
+
+rule "Validation rule: check id"
+	agenda-group "prevalidate"
+when
+    $i : InputJSON()
+	$m : Metric (id == null || id == "none") //where is set to "none", huh? TODO
+then
+    logger.error(marker,"There is no 'id' for "+$m.getId());
+    modify($i){
+        setFailed(true);
+    }
+end
+
+
+rule "Validation rule: check valueType"
+	agenda-group "prevalidate"
+when
+	$i : InputJSON()
+	$m : Metric (valueType == null)
+then
+    logger.error(marker,"There is no 'valueType' for "+$m.getName());
+    modify($i){
+        setFailed(true);
+    }
 end

@@ -177,7 +177,14 @@ public class ZabbixTemplateBuilder3 extends RouteBuilder {
 
 			}
 		})
-		.to("direct:multicaster_version");
+		.choice()
+			.when(body().method("isFailed"))
+                .log(LoggingLevel.ERROR,"STOPPING")
+                .stop()
+			.otherwise()
+                .to("direct:multicaster_version");
+
+
 
 		from("direct:multicaster_version")
 			    .multicast().parallelProcessing()

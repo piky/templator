@@ -10,6 +10,18 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class InputJSON {
 
+	//this attribute is used to stop templates from further processing if set to true (from Drools rule for example)
+	private boolean failed = false;
+
+	public boolean isFailed() {
+		return failed;
+	}
+
+	public void setFailed(boolean failed) {
+		this.failed = failed;
+	}
+
+
 	private ArrayList<Template> templates = new ArrayList<Template>(0);
 	@JsonAlias("value_maps")
 	private ArrayList<ValueMap> valueMaps = new ArrayList<ValueMap>(0);
