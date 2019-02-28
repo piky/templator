@@ -42,11 +42,11 @@ then
 
         if(lang.equals("EN")){
 
-                $tr2.getDependencies().add(new TriggerDependency("Unavailable by ICMP Ping", "{TEMPLATE_NAME:icmpping.max(#3)}=0", null));
+                $tr2.getDependencies().add(new TriggerDependency("Unavailable by ICMP ping", "{TEMPLATE_NAME:icmpping.max(#3)}=0", null));
 
         } else if(lang.equals("RU")){
 
-                $tr2.getDependencies().add(new TriggerDependency("Нет ответа на ICMP Ping", "{TEMPLATE_NAME:icmpping.max(#3)}=0", null));
+                $tr2.getDependencies().add(new TriggerDependency("Нет ответа на ICMP ping", "{TEMPLATE_NAME:icmpping.max(#3)}=0", null));
 
         }
 
