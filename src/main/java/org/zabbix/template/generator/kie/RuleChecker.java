@@ -13,7 +13,6 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.Agenda;
 import org.zabbix.template.generator.objects.InputJSON;
-import org.zabbix.template.generator.PrototypesService;
 import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.Metric;
 import org.zabbix.template.generator.objects.Template;
@@ -22,8 +21,8 @@ import org.zabbix.template.generator.objects.ValueMap;
 
 public class RuleChecker implements Processor {
 
-	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
-	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("TEMPLATE_GEN");
+	private static final Logger logger = LogManager.getLogger(RuleChecker.class.getName());
+	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("RuleChecker");
 
 
     @Override

@@ -7,27 +7,31 @@
 
         </Console>
     </Appenders>
+
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="org.springframework" level="warn">
+         <Logger name="org.springframework" level="warn">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.apache.curator" level="warn">
             <AppenderRef ref="Console"/>
         </Logger>
+        
         <Logger name="org.kie" level="warn">
             <AppenderRef ref="Console"/>
         </Logger>
+        
         <Logger name="org.drools" level="warn">
             <AppenderRef ref="Console"/>
         </Logger>
+        
         <Logger name="org.apache.camel" level="warn">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.zabbix.template.generator" level="warn">
-            <AppenderRef ref="Console"/>
+            <!-- <AppenderRef ref="Console"/> -->
         </Logger>
 
     </Loggers>
