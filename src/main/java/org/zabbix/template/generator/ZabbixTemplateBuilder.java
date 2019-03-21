@@ -76,11 +76,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		*/
 		from("direct:create_template")
 				// JSON - YAML Chooser
-				.choice().when(simple("${file:ext} == 'yaml'"))
-				// .log("Try YAML....")
-				.unmarshal(yamlJackson).to("direct:drools").when(simple("${file:ext} == 'json'"))
+				.choice()
+					.when(simple("${file:ext} == 'yaml'"))
+					// .log("Try YAML....")
+						.unmarshal(yamlJackson).to("direct:drools")
+					.when(simple("${file:ext} == 'json'"))
 				// .log("Try JSON....")
-				.unmarshal(jsonJackson).to("direct:drools").end();
+						.unmarshal(jsonJackson).to("direct:drools");
 
 		/*STEP 4: evaluate drools rules.
 		note that drools rules come in different agenda groups. See RuleChecker
@@ -105,7 +107,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				);
 		from("direct:snmpv1")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-						.contains(TemplateClass.SNMP_V1))
+					.contains(TemplateClass.SNMP_V1))
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
 				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
