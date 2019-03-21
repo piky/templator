@@ -1,4 +1,5 @@
 target/
+.vscode/
 src/data/result/template_cisco.xml
 src/data/result/template_juniper.xml
 src/data/result_step1/template_cisco.xml
@@ -38,3 +39,4 @@ src/data/platon/in/zbx_export_templates.xml
 src/data/platon/in/core2.xml
 src/main/resources/ftl/out/
 .freemarker-ide.xml
+.factorypath
