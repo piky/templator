@@ -6,12 +6,13 @@ package org.zabbix.template.generator.objects
 rule "Rule 1: generate dependencies for templates - Template Module Generic"
 	agenda-group "populate"
 	no-loop
+	dialect "mvel"
 when
 	$t: Template($classes: classes)
     exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
 then
-    logger.info(marker,"Found SNMP_DEVICE class, attaching template dependency for "+$t.getName());
-    modify($t) {getTemplates().add("Template Module Generic SNMPvX");};
+    logger.info(marker,"Found SNMP_DEVICE class, attaching template dependency for "+$t.name);
+    modify($t) {templates.add("Template Module Generic SNMPvX");};
 end
 
 //Theses rules attaches template dependencies if there are some Classes present in it

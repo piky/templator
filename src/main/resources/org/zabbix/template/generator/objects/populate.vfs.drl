@@ -1,11 +1,10 @@
-package org.zabbix.template.generator.objects
-;
-
+package org.zabbix.template.generator.objects;
 
 
 rule "Rule 4: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
 	$m : Metric ( id == 'vfs.fs.pused')
 	$m_used: Metric ( id == 'vfs.fs.used')
@@ -13,14 +12,15 @@ when
 then
     logger.debug(marker,"There are vfs.fs.total and vfs.fs.used found "+$m);
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
-	};
+			expressionFormula = "(last("+$m_used.key+")/last("+$m_total.key+"))*100"
+	  };
 end
 
 
 rule "Rule 5: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
 	$m : Metric ( id == 'vfs.fs.pused')
 	$m_used: Metric ( id == 'vfs.fs.units.used')
@@ -28,13 +28,14 @@ when
 then
     logger.debug(marker,"There are vfs.fs.units.total and vfs.fs.units.used found "+$m);
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
-	};
+			expressionFormula = "(last("+$m_used.key+")/last("+$m_total.key+"))*100"
+	  };
 end
 
 rule "Rule 6: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
 	$m : Metric ( id == 'vfs.fs.pused')
 	$m_free: Metric ( id == 'vfs.fs.free')
@@ -42,14 +43,15 @@ when
 then
     logger.debug(marker,"There are vfs.fs.total and vfs.fs.free found "+$m);
     modify( $m ) { 
-		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
-	};
+			expressionFormula = "((last("+$m_total.key+")-last("+$m_free.key+"))/last("+$m_total.key+"))*100"
+	  };
 end
 
 
 rule "Rule 7: generate vfs.fs.pused"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
 	$m : Metric ( id == 'vfs.fs.pused')
 	$m_free: Metric ( id == 'vfs.fs.free')
@@ -57,14 +59,15 @@ when
 then
     logger.debug(marker,"There are vfs.fs.used and vfs.fs.free found "+$m);
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
-	};
+		    expressionFormula = "(last("+$m_used.key+")/(last("+$m_free.key+")+last("+$m_used.key+")))*100"
+	  };
 end
 
 
 rule "Rule 8: generate vfs.fs.total"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
     $m : Metric ( id == 'vfs.fs.total')
 	$m_u_total : Metric ( id == 'vfs.fs.units.total')
@@ -72,20 +75,21 @@ when
 then
     logger.info(marker,"There are vfs.fs.units.total and vfs.fs.units found ");
     modify( $m ) {
-		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
-	};
+		    expressionFormula = "(last("+$m_u_total.key+")*last("+$m_u.key+"))"
+	  };
 end
 
 rule "Rule 9: generate vfs.fs.used"
 	agenda-group "populate"
 	salience -50
+	dialect "mvel"
 when
     $m : Metric ( id == 'vfs.fs.used')
-	$m_u_used : Metric ( id == 'vfs.fs.units.used')
-	$m_u: Metric ( id == 'vfs.fs.units')
+	  $m_u_used : Metric ( id == 'vfs.fs.units.used')
+	  $m_u: Metric ( id == 'vfs.fs.units')
 then
     logger.info(marker,"There are vfs.fs.units.used and vfs.fs.units found ");
     modify( $m ) {
-		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
-	};
+		    expressionFormula = "(last("+$m_u_used.key+")*last("+$m_u.key+"))"
+	  };
 end

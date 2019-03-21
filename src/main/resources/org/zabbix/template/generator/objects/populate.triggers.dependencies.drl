@@ -9,6 +9,7 @@ For example. This doesn' catch ICMP Ping dependencies inside ICMP Ping template
 
 rule "Generate each trigger dependency"
 	agenda-group "populate.trigger.dependencies"
+    dialect "mvel"
 	no-loop
 when
 	$m : Metric ($triggers: triggers)
@@ -20,9 +21,9 @@ when
         ,id != "noping"
      ) from $triggers2
 then
-    logger.info(marker,"Found dependency "+$tr2.getId()+"("+$tr2.getName()+") for "+$tr.getId()+"("+$tr.getName()+")");
+    logger.info(marker,"Found dependency "+$tr2.id+"("+$tr2.name+") for "+$tr.id+"("+$tr.name+")");
     modify($tr){
-        getDependencies().add(new TriggerDependency($tr2.getName(), $tr2.getExpression(), $tr2.getRecoveryExpression()));
+        getDependencies().add(new TriggerDependency($tr2.name, $tr2.expression, $tr2.recoveryExpression));
     }
 
 end

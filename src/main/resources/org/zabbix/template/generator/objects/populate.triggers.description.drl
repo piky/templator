@@ -5,30 +5,32 @@ global String lang;
 rule "Rule 12a: generate each trigger description"
 	agenda-group "populate"
 	no-loop
+    dialect "mvel"
 when
     $m : Metric ($triggers: triggers)
     $tr: Trigger (description==null) from $triggers 
 then
     logger.debug(marker,"Generating trigger description for "+ $tr);
     if(lang.equals("EN")){
-        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.");
+        $tr.description ="Last value: {ITEM.LASTVALUE1}."
     } else if(lang.equals("RU")){
-        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.");
+        $tr.description = "Последнее значение: {ITEM.LASTVALUE1}."
     }
 end
 
 rule "Rule 12b: generate each trigger description"
 	agenda-group "populate"
 	no-loop
+    dialect "mvel"
 when
 	$m : Metric ($triggers: triggers)
     $tr: Trigger (description!=null) from $triggers 
 then
     logger.debug(marker,"Generating trigger description for "+ $tr);
     if(lang.equals("RU")){
-        $tr.setDescription( "Последнее значение: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+        $tr.description = String.format("Последнее значение: {ITEM.LASTVALUE1}.\n%s", $tr.description)
+        
     } else {
-        $tr.setDescription( "Last value: {ITEM.LASTVALUE1}.\n"+$tr.getDescription() );
+        $tr.description = String.format("Last value: {ITEM.LASTVALUE1}.\n%s", $tr.description)
     }
-
 end

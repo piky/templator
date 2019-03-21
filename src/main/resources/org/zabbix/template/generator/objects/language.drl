@@ -1,7 +1,6 @@
 package org.zabbix.template.generator.objects
 import java.util.HashMap;
 
-
 rule "Translation rule: metric name"
 	agenda-group "language"
 	no-loop
