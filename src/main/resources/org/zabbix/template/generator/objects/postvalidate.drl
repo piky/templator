@@ -49,12 +49,12 @@ rule "Validation rule 5: Macro defined but never used in triggers"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
-	      $t: Template (macros != null)
-	          UserMacro($macro: macro) from $t.macros
-    not $tr:  Trigger  ( expression contains $macro )
-    not $tr2: Trigger  ( recoveryExpression contains $macro )
+	$t: Template (macros != null)
+	$macro: UserMacro() from $t.macros
+    not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
+    not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
 then
-    logger.warn(marker,"User Macro found but never used in triggers: {} in template {}",$macro, $t.name);
+    logger.warn(marker,"User Macro found but never used in triggers: {} in template {}", $macro.macro, $t.name);
 end
 
 

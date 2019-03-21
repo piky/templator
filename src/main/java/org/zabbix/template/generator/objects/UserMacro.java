@@ -6,6 +6,12 @@ public class UserMacro implements Comparable<UserMacro> {
 	private String macro;
 	private String value;
 
+	public String extractMacroName() {
+		// ^\{\$[A-Z0-9_]+(:".+")?\}$
+		// returns macro name without {$:"context"}
+		return this.macro.replaceFirst("^\\{\\$([A-Z0-9_]+)(:\".+\")?\\}$", "$1");
+	}
+
 	public String getMacro() {
 		return macro;
 	}
