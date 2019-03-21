@@ -12,7 +12,9 @@ when
     exists (TemplateClass(this == TemplateClass.SNMP_DEVICE) from $classes)
 then
     logger.info(marker,"Found SNMP_DEVICE class, attaching template dependency for "+$t.name);
-    modify($t) {templates.add("Template Module Generic SNMPvX");};
+    modify($t) {
+		getTemplates().add("Template Module Generic SNMPvX");
+	};
 end
 
 //Theses rules attaches template dependencies if there are some Classes present in it
