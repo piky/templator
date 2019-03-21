@@ -38,6 +38,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		ObjectMapper jsonMapper = new ObjectMapper(f);
 		JacksonDataFormat yamlJackson = new JacksonDataFormat(yamlMapper, InputJSON.class);
 		JacksonDataFormat jsonJackson = new JacksonDataFormat(jsonMapper, InputJSON.class);
+
+		//processor to run all drools checks
 		RuleChecker ruleChecker = new RuleChecker();
 
 		// Catch wrong metric prototypes spelling
@@ -53,19 +55,25 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		 * WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}"
 		 * );
 		 */
+		
 
+		/*STEP 1: LOAD INPUT FILE */
 		from("file:bin/in?noop=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 				.setHeader("template_ver", simple("{{version}}", String.class))
 
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 				.to("direct:lang");
 
+	    /*STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
 		from("direct:lang").multicast().to("direct:EN", "direct:RU");
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class)).to("direct:create_template");
 
 		from("direct:EN").setHeader("lang", simple("EN", String.class)).to("direct:create_template");
 
+		/*STEP 3: CREATE INPUTJSON object from yaml or json 
+		merging between prototype and input is happening here
+		*/
 		from("direct:create_template")
 				// JSON - YAML Chooser
 				.choice().when(simple("${file:ext} == 'yaml'"))
@@ -74,17 +82,23 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				// .log("Try JSON....")
 				.unmarshal(jsonJackson).to("direct:drools").end();
 
+		/*STEP 4: evaluate drools rules.
+		note that drools rules come in different agenda groups. See RuleChecker
+		*/
 		from("direct:drools").process(ruleChecker).choice().when(body().method("isFailed"))
 				.log(LoggingLevel.ERROR, "STOPPING").stop().otherwise().to("direct:multicaster_version");
 
+		/*STEP 5: multicast to different zabbix versions (3.2, 3.4)*/
 		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
 
 		from("direct:zbx3.2")
 				// .stop();
 				.setHeader("zbx_ver", simple("3.2", String.class)).to("direct:multicaster_snmp");
 
-		from("direct:zbx3.4").setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
+		from("direct:zbx3.4")
+				.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
 
+		/*STEP 6: multicast to different SNMP versions (and ICMP)*/
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:snmpv1", "direct:snmpv2", "direct:icmp"
 				// "direct:remote_service"
@@ -123,9 +137,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// for example
 		// Naming restrictions can also be checked for custom metrics
 
-		// final part convert to zabbix XML
+		/*STEP 7(FINAL): export to XML, using freemarker */
 		from("direct:zabbix_export").to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
-				.to("xslt:templates/indent.xsl?saxon=true") // proper indentation for XML file
+				.to("xslt:templates/indent.xsl?saxon=true") //TODO proper indentation for XML file
 				.to("xslt:templates/to_metrics_strip_whitespace.xsl?saxon=true")// trim whitespace on some multiline
 																				// nodes //REFACTOR with DEV-827 below
 				// https://support.zabbix.com/browse/DEV-827
