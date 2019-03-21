@@ -63,9 +63,9 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener  {
 
     public String matchsToString() {
         if (matchList.size() == 0) {
-            return "No matchs occurred.";
+            return "No matches occurred.";
         } else {
-            StringBuilder sb = new StringBuilder("Matchs: ");
+            StringBuilder sb = new StringBuilder("Matches: ");
             for (Match match : matchList) {
                 sb.append("\n  rule: ").append(match.getRule().getName());
             }
