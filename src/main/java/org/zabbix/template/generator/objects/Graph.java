@@ -2,7 +2,6 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -14,84 +13,74 @@ public class Graph {
 	private int width = 900;
 	private int height = 200;
 
-	@JsonAlias({"graphtype"})
+	@JsonAlias({ "graphtype" })
 	private GraphType graphType = GraphType.NORMAL;
 
-
-	@JsonAlias({"percent_left"})
+	@JsonAlias({ "percent_left" })
 	private float percentLeft = 0;
-	@JsonAlias({"percent_right"})
+	@JsonAlias({ "percent_right" })
 	private float percentRight = 0;
-	@JsonAlias({"show_3d"})
+	@JsonAlias({ "show_3d" })
 	private int show3d = 0;
-	@JsonAlias({"show_legend"})
+	@JsonAlias({ "show_legend" })
 	private int showLegend = 1;
-	@JsonAlias({"show_triggers"})
+	@JsonAlias({ "show_triggers" })
 	private int showTriggers = 1;
-	@JsonAlias({"show_work_period"})
+	@JsonAlias({ "show_work_period" })
 	private int showWorkPeriod = 1;
 
-	@JsonAlias({"yaxismax"})
+	@JsonAlias({ "yaxismax" })
 	private float yAxisMax = 100;
 
-	@JsonAlias({"yaxismin"})
+	@JsonAlias({ "yaxismin" })
 	private float yAxisMin = 0;
 
-	@JsonAlias({"ymax_type"})
+	@JsonAlias({ "ymax_type" })
 	private YType yMaxType = YType.CALCULATED;
 
-	@JsonAlias({"ymin_type"})
+	@JsonAlias({ "ymin_type" })
 	private YType yMinType = YType.CALCULATED;
 
-	@JsonAlias({"gitems","graph_items"})
+	@JsonAlias({ "gitems", "graph_items" })
 	private ArrayList<GraphItem> graphItems = new ArrayList<GraphItem>(0);
 
-
-
-
-
-
-
-
-	//for Graph item object
-
+	// for Graph item object
 
 	public enum GraphType implements ZabbixValue {
 
-		NORMAL(0),
-		STACKED(1),
-		PIE(2),
-		EXPLODED(3);
+		NORMAL(0), STACKED(1), PIE(2), EXPLODED(3);
 		private int zabbixValue;
 
-		GraphType(int zabbixValue){
+		GraphType(int zabbixValue) {
 			this.setZabbixValue(zabbixValue);
 		}
+
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
 
-	};	
+	};
 
-	//for ymax_type,ymin_type
+	// for ymax_type,ymin_type
 	public enum YType implements ZabbixValue {
 
-		CALCULATED(0),
-		FIXED(1),
-		ITEM(3);
+		CALCULATED(0), FIXED(1), ITEM(3);
 		private int zabbixValue;
 
-		YType(int zabbixValue){
+		YType(int zabbixValue) {
 			this.setZabbixValue(zabbixValue);
 		}
+
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -226,9 +215,6 @@ public class Graph {
 
 	public void setGraphItems(ArrayList<GraphItem> graphItems) {
 		this.graphItems = graphItems;
-	};		
-
-
-
+	};
 
 }

@@ -13,8 +13,6 @@ public class DiscoveryRule {
 	private Filter filter;
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
-
-
 	public String getName() {
 		return name;
 	}

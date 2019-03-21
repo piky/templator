@@ -1,6 +1,5 @@
 package org.zabbix.template.generator;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -10,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         @SuppressWarnings("unused")
-		ApplicationContext ctx = SpringApplication.run(Main.class, args);
+        ApplicationContext ctx = SpringApplication.run(Main.class, args);
     }
 
 }

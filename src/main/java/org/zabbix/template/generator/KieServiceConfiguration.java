@@ -7,21 +7,21 @@ import org.springframework.context.annotation.Configuration;
 
 //@Configuration
 public class KieServiceConfiguration {
-    //private static final String drlFile = "drl/rule-test.drl";
- 
+    // private static final String drlFile = "drl/rule-test.drl";
+
     @Bean
     public KieContainer kieContainer() {
-        /*KieServices kieServices = KieServices.Factory.get();
- 
-        KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        kieFileSystem.write(ResourceFactory.newClassPathResource(drlFile));
-        KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
-        kieBuilder.buildAll();
-        KieModule kieModule = kieBuilder.getKieModule();
-        */
-        
+        /*
+         * KieServices kieServices = KieServices.Factory.get();
+         * 
+         * KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
+         * kieFileSystem.write(ResourceFactory.newClassPathResource(drlFile));
+         * KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
+         * kieBuilder.buildAll(); KieModule kieModule = kieBuilder.getKieModule();
+         */
+
         KieServices ks = KieServices.Factory.get();
         return ks.getKieClasspathContainer();
-        //return kieServices.newKieContainer(kieModule.getReleaseId());
+        // return kieServices.newKieContainer(kieModule.getReleaseId());
     }
 }

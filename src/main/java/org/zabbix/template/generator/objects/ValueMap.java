@@ -6,20 +6,24 @@ public class ValueMap {
 
 	private String name;
 	private Mapping[] mappings;
-	
+
 	public static class Mapping {
 		private String value;
-		@JsonAlias({"newvalue","new_value"})
+		@JsonAlias({ "newvalue", "new_value" })
 		private String newValue;
+
 		public String getValue() {
 			return value;
 		}
+
 		public void setValue(String value) {
 			this.value = value;
 		}
+
 		public String getNewValue() {
 			return newValue;
 		}
+
 		public void setNewValue(String newValue) {
 			this.newValue = newValue;
 		}
@@ -40,6 +44,5 @@ public class ValueMap {
 	public void setMappings(Mapping[] mappings) {
 		this.mappings = mappings;
 	}
-	
 
 }

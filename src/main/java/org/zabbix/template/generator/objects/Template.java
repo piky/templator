@@ -13,47 +13,44 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 @JsonDeserialize(using = TemplateDeserializer.class)
 public class Template {
-	
+
 	private String name;
 	private String description;
 	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);
-	
+
 	@JsonIgnore
-	private ArrayList<String> groups =  new ArrayList<String>(0);//groups would be populated in Drools
-	
+	private ArrayList<String> groups = new ArrayList<String>(0);// groups would be populated in Drools
+
 	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
-
-
 
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
-	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); //overall list, regardless discovery or not
-	//private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0); //overall list, regardless discovery or not
+	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); // overall list, regardless discovery or not
+	// private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0);
+	// //overall list, regardless discovery or not
 	private TemplateDocumentation documentation;
-	
+
 	private TreeSet<UserMacro> macros = new TreeSet<>();
 	private TreeSet<String> templates = new TreeSet<>();
-	
-	
-	//this method return a  list of all unique mibs met in the template.
-    //This is required for FreeMarker generation of template description
+
+	// this method return a list of all unique mibs met in the template.
+	// This is required for FreeMarker generation of template description
 	public HashSet<String> getUniqueMibs(Metric[] metrics) {
-		
-		HashSet<String> set = new HashSet<String>(0); 
+
+		HashSet<String> set = new HashSet<String>(0);
 		String mib;
-		for (Metric m: metrics) {
-				if ((mib = m.getMib()) != null) {
-					set.add(mib);
-				}
+		for (Metric m : metrics) {
+			if ((mib = m.getMib()) != null) {
+				set.add(mib);
+			}
 		}
 		return set;
 	}
-	
-	
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -61,52 +58,63 @@ public class Template {
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	/**
 	 * @return the classes
 	 */
 	public ArrayList<TemplateClass> getClasses() {
 		return classes;
 	}
+
 	/**
 	 * @param classes the classes to set
 	 */
 	public void setClasses(ArrayList<TemplateClass> classes) {
 		this.classes = classes;
 	}
+
 	public ArrayList<String> getGroups() {
 		return groups;
 	}
+
 	public void setGroups(ArrayList<String> groups) {
 		this.groups = groups;
 	}
+
 	public DiscoveryRule[] getDiscoveryRules() {
 		return discoveryRules;
 	}
+
 	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
 		this.discoveryRules = discoveryRules;
 	}
+
 	public TreeSet<UserMacro> getMacros() {
 		return macros;
 	}
+
 	public void setMacros(TreeSet<UserMacro> macros) {
 		this.macros = macros;
 	}
+
 	/**
 	 * @return the templates
 	 */
 	public TreeSet<String> getTemplates() {
 		return templates;
 	}
+
 	/**
 	 * @param templates the templates to set
 	 */
 	public void setTemplates(TreeSet<String> templates) {
 		this.templates = templates;
 	}
+
 	public ArrayList<Metric> getMetrics() {
 		return metrics;
 	}
@@ -118,60 +126,59 @@ public class Template {
 	public ArrayList<Metric> getMetricsRegistry() {
 		return metricsRegistry;
 	}
+
 	public void setMetricsRegistry(ArrayList<Metric> metricsRegistry) {
 		this.metricsRegistry = metricsRegistry;
 	}
-	
+
 	/**
 	 * @return the documentation
 	 */
 	public TemplateDocumentation getDocumentation() {
 		return documentation;
 	}
+
 	/**
 	 * @param documentation the documentation to set
 	 */
 	public void setDocumentation(TemplateDocumentation documentation) {
 		this.documentation = documentation;
 	}
-	
+
 	public void constructMetricsRegistry() {
 		this.metricsRegistry.clear();
 		try {
 			this.metricsRegistry.addAll(metrics);
+		} catch (NullPointerException npe) {
 		}
-		catch (NullPointerException npe) {}
-		
-		for (DiscoveryRule d: this.discoveryRules) {
+
+		for (DiscoveryRule d : this.discoveryRules) {
 			try {
 				this.metricsRegistry.addAll(d.getMetrics());
+			} catch (NullPointerException npe) {
 			}
-			catch (NullPointerException npe) {}
 		}
 	}
 
 	public ArrayList<Metric> getMetricsByDiscovery(Metric[] metrics, String discoveryName) {
-        Predicate<Metric> metricPredicate = m -> m.getDiscoveryRule() == discoveryName;
-        return getMetrics((ArrayList<Metric>) Arrays.asList(metrics), metricPredicate);
-    }
+		Predicate<Metric> metricPredicate = m -> m.getDiscoveryRule() == discoveryName;
+		return getMetrics((ArrayList<Metric>) Arrays.asList(metrics), metricPredicate);
+	}
 
-    public ArrayList<Metric> getMetricsByZbxVer(Metric[] metrics, String zbxVer) {
-        Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
-        return getMetrics( Arrays.asList(metrics), filter_by_min_version);
-    }
+	public ArrayList<Metric> getMetricsByZbxVer(Metric[] metrics, String zbxVer) {
+		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
+		return getMetrics(Arrays.asList(metrics), filter_by_min_version);
+	}
 
-    public ArrayList<Metric> getMetrics(List<Metric> metrics, Predicate<Metric> metricPredicate) {
+	public ArrayList<Metric> getMetrics(List<Metric> metrics, Predicate<Metric> metricPredicate) {
 
-        ArrayList<Metric> toReturn = new ArrayList<>();
-        for (Metric m : metrics
-                .stream()
-                .filter(metricPredicate)
-                .toArray(Metric[]::new)) {
-            toReturn.add(m);
-        }
-        return toReturn;
-    }
-	
+		ArrayList<Metric> toReturn = new ArrayList<>();
+		for (Metric m : metrics.stream().filter(metricPredicate).toArray(Metric[]::new)) {
+			toReturn.add(m);
+		}
+		return toReturn;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -179,6 +186,7 @@ public class Template {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -1,6 +1,5 @@
 package org.zabbix.template.generator;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Stephen Masters, Isaac Martin
  */
-public class TrackingAgendaEventListener extends DefaultAgendaEventListener  {
+public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
 
     private static Logger log = LoggerFactory.getLogger(TrackingAgendaEventListener.class);
 
@@ -36,8 +35,7 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener  {
         if (ruleMetaDataMap.size() > 0) {
             sb.append("\n  With [" + ruleMetaDataMap.size() + "] meta-data:");
             for (String key : ruleMetaDataMap.keySet()) {
-                sb.append("\n    key=" + key + ", value="
-                        + ruleMetaDataMap.get(key));
+                sb.append("\n    key=" + key + ", value=" + ruleMetaDataMap.get(key));
             }
         }
 
