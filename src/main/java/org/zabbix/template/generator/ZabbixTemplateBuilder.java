@@ -47,7 +47,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		//generate jackson mapper
 
-		//create factorey to enable comments for json
+		//create factory to enable comments for json
 		JsonFactory f = new JsonFactory();
 		f.enable(JsonParser.Feature.ALLOW_COMMENTS);
 
