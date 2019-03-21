@@ -32,7 +32,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 
 @Component
-public class ZabbixTemplateBuilder3 extends RouteBuilder {
+public class ZabbixTemplateBuilder extends RouteBuilder {
 
 	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
 	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("TEMPLATE_GEN");
