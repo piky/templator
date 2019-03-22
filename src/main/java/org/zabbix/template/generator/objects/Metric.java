@@ -37,7 +37,7 @@ public abstract class Metric {
 																								// mapping
 		ZABBIX_INTERNAL(5), SNMP_V3(6), ZABBIX_AGENT_ACTIVE(7), ZABBIX_AGGREGATE(8), WEB_ITEM(9), EXTERNAL_CHECK(10),
 		DATABASE_MONITOR(11), IPMI_AGENT(12), SSH_AGENT(13), TELNET_AGENT(14), CALCULATED(15), JMX_AGENT(16),
-		SNMP_TRAP(17), DEPENDENT_ITEM(18);
+		SNMP_TRAP(17), DEPENDENT_ITEM(18), HTTP_AGENT(19);
 
 		private int zabbixValue;
 
@@ -82,7 +82,8 @@ public abstract class Metric {
 
 	public enum Group {
 		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Inventory, Storage, General, Fans,
-		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Wireless// to be extended
+		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Wireless,
+		Nginx// to be extended
 	};
 
 	private Group group;
