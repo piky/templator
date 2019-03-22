@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /*
@@ -16,6 +17,10 @@ public class Template {
 
 	private String name;
 	private String description;
+	
+	@JsonAlias("zbx_ver")
+	private Version zbxVer = new Version("3.0");
+
 	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);
 
 	@JsonIgnore
@@ -61,6 +66,14 @@ public class Template {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Version getZbxVer() {
+		return zbxVer;
+	}
+
+	public void setZbxVer(Version zbxVer) {
+		this.zbxVer = zbxVer;
 	}
 
 	/**

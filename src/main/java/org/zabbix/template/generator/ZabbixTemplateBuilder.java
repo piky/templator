@@ -94,10 +94,17 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
 
 		from("direct:zbx3.2")
-				// .stop();
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
+					.stream()
+					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("3.2")) <= 0)
+				))
 				.setHeader("zbx_ver", simple("3.2", String.class)).to("direct:multicaster_snmp");
 
 		from("direct:zbx3.4")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
+					.stream()
+					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)
+				))
 				.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
 
 		/*STEP 6: multicast to different SNMP versions (and ICMP)*/
