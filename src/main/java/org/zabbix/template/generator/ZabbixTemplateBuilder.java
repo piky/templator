@@ -102,7 +102,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		/*STEP 6: multicast to different SNMP versions (and ICMP)*/
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
-				.to("direct:snmpv1", "direct:snmpv2", "direct:icmp"
+				.to("direct:snmpv1", "direct:snmpv2", "direct:other"
 				// "direct:remote_service"
 				);
 		from("direct:snmpv1")
@@ -121,12 +121,17 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:zabbix_export");
 
-		from("direct:icmp")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-						.contains(TemplateClass.ICMP))
+		from("direct:other")
+				.filter(exchange -> ( //only non SNMP templates here
+					(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
+					.stream()
+					.anyMatch((a) -> a.equals(TemplateClass.SNMP_V1) ||
+									 a.equals(TemplateClass.SNMP_V2) || 
+									 a.equals(TemplateClass.SNMP_V3)
+					) == false )
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("", String.class))
-				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ICMP")
+				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
 				.to("direct:zabbix_export");
 
 		// .marshal().json(JsonLibrary.Jackson,true)
