@@ -11,9 +11,9 @@ when
     $m : Metric ($key: key != null,  $alarmObject: alarmObject != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    	$m.setDescription( $m.getDescription().replace("__ALARM_OBJECT__",$alarmObject));
     }
-    $m.setName( $m.getName().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    $m.setName( $m.getName().replace("__ALARM_OBJECT__",$alarmObject));
 end
 
 rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in metrics"
@@ -23,9 +23,9 @@ when
     $m : Metric ($key: key != null, $alarmObjectType: alarmObjectType != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$m.setDescription( $m.getDescription().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
-    $m.setName( $m.getName().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $m.setName( $m.getName().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
 end
 
 
@@ -39,15 +39,14 @@ rule "Rule: generate each trigger expression"
 	agenda-group "populate"
 	no-loop
 when
-    
     $m : Metric ($key: key != null, $triggers: triggers)
     $t : Template(metricsRegistry contains $m)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
     logger.debug(marker,"Generating trigger expression (changing TEMPLATE_NAME:METRIC) for "+ $tr.getName());
-    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
+    $tr.setExpression( $e.replace("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     if ($tr.getRecoveryExpression() != null) {
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("TEMPLATE_NAME:METRIC","TEMPLATE_NAME:"+$key));
     }
 end
 
@@ -69,9 +68,9 @@ when
 then
     logger.warn(marker,"REPLACING metric "+$m2.getId()+" in triggers: "+ $tr.getName());
     
-    $tr.setExpression( $e.replaceAll("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
+    $tr.setExpression( $e.replace("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
     if ($tr.getRecoveryExpression() != null) {
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("TEMPLATE_NAME:__"+$m2.getId()+"__",$t.getName()+":"+$m2.getKey()));
     }    
 end
 
@@ -86,13 +85,13 @@ when
 then
     logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__ALARM_OBJECT__",$alarmObject));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    	$tr.setDescription( $tr.getDescription().replace("__ALARM_OBJECT__",$alarmObject));
     }
-    $tr.setExpression( $tr.getExpression().replaceAll("__ALARM_OBJECT__",$alarmObject));
-    $tr.setName( $tr.getName().replaceAll("__ALARM_OBJECT__",$alarmObject));
+    $tr.setExpression( $tr.getExpression().replace("__ALARM_OBJECT__",$alarmObject));
+    $tr.setName( $tr.getName().replace("__ALARM_OBJECT__",$alarmObject));
 end
 
 rule "Rule: replaces ____ALARM_OBJECT_TYPE__ macro in expressions"
@@ -104,11 +103,11 @@ when
 then
     logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT_TYPE__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$tr.setDescription( $tr.getDescription().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     }
-    $tr.setExpression( $tr.getExpression().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
-    $tr.setName( $tr.getName().replaceAll("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $tr.setExpression( $tr.getExpression().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $tr.setName( $tr.getName().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
 end
