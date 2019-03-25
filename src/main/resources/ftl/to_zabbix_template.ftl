@@ -156,7 +156,7 @@
                     <status>0</status>
                     <value_type>${m.valueType.getZabbixValue()}</value_type>
                     <allowed_hosts/>
-                    ${xml_wrap(m.units!'','units')}
+                    ${xml_wrap((prepare_units(m.units!'')),'units')}
                     <#if zbx_ver == '3.2'>
                         <#local delta_value = 0>
                     <#if m.preprocessing??>
@@ -617,6 +617,16 @@ device : ${i.device!''}
         </#if>
      </#if>
  </#function>
+
+ <#function prepare_units units>
+     <#if zbx_ver='3.4' || zbx_ver='3.2'>
+         <#if units?starts_with('!')><#return units?keep_after('!')>
+         <#else><#return units>
+         </#if>
+     <#else> <#-- 4.0 or newer-->
+            <#return units>
+     </#if>
+ </#function> 
  
  <#-- This function get a list of objects and the key of this object. Then it returns sorted list(unique set) of values of this key-->
  <#function distinct_by_key list key>
