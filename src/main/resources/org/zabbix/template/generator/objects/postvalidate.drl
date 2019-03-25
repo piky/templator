@@ -58,8 +58,9 @@ when
 	$macro: UserMacro() from $t.macros
     not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
     not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
+	not $metric: Metric ( key contains $macro.extractMacroName() )
 then
-    logger.warn(marker,"User Macro found but never used in triggers: {} in template {}", $macro.macro, $t.name);
+    logger.warn(marker,"User Macro found but never used in triggers or item keys: {} in template {}", $macro.macro, $t.name);
 end
 
 
