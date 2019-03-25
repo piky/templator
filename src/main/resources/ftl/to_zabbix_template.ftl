@@ -545,6 +545,10 @@
             <#local found = true>
             <#local glist = glist + ["Templates/Modules"]>
             <#break>
+          <#case 'APP'>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Applications"]>
+            <#break>
           <#default>
         </#switch>
     </#list>

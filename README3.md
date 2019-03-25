@@ -33,6 +33,7 @@ For example
 `Network` - adds template to Template/Network devices group  
 `Server` - adds template to Template/Server hardware group  
 `Module` - adds template to Template/Modules group  
+`App` - adds template to Template/Applications group  
 
 ### Conventions
 TODO
