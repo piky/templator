@@ -1,0 +1,31 @@
+package org.zabbix.template.generator.objects
+
+
+
+rule "Change for each dependent metric: metric id with actual metric key"
+    agenda-group "populate.masteritem.keys"
+    no-loop
+    dialect "mvel"
+when
+    $t: Template($metrics: metricsRegistry)
+    $m_d : Metric ($master: masterItem != null) from $metrics
+    $m: Metric (id == $master) from $metrics
+then
+    logger.info(marker,"Replacing master item id {} with master item key {}", $m_d.masterItem, $m.key);
+    $m_d.masterItem = $m.key;
+end
+
+rule "Uknown master metric"
+    agenda-group "populate.masteritem.keys"
+    no-loop
+    dialect "mvel"
+	salience -100
+when
+    $ij: InputJSON()
+	$t: Template($metrics: metricsRegistry)
+    $m_d: Metric ($master: masterItem != null) from $metrics
+    not $m: Metric (id == $master) from $metrics
+then
+    logger.error(marker,"No such master metric found {}", $master)
+	$ij.failed = true;
+end

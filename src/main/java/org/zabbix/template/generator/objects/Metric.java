@@ -121,6 +121,9 @@ public abstract class Metric {
 	@JsonAlias("alarm_object_type")
 	private String alarmObjectType;
 
+	@JsonAlias("master_item")
+	private String masterItem;
+
 	// valuemap
 	@JsonAlias("value_map")
 	private String valueMap;
@@ -325,6 +328,14 @@ public abstract class Metric {
 	public void setAlarmObjectType(String alarmObjectType) {
 		this.alarmObjectType = alarmObjectType;
 	}
+
+	public String getMasterItem() {
+		return masterItem;
+	}
+
+	public void setMasterItem(String masterItem) {
+		this.masterItem = masterItem;
+	}	
 
 	public String getValueMap() {
 		return valueMap;

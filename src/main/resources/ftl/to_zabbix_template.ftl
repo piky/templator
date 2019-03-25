@@ -242,9 +242,9 @@
                     </#if>
                     <#if zbx_ver = '3.4'>
                         <#if m.discoveryRule??>
-                    <master_item_prototype/>
+                            <@master_item m 'master_item_prototype'/>
                         <#else><#-- normal item -->
-                    <master_item/>
+                            <@master_item m 'master_item'/>
                         </#if>
                     </#if>
 
@@ -405,6 +405,17 @@
             	</#list>    
             </graph_items>
 
+</#macro>
+
+
+<#macro master_item m tag>
+        <#if m.masterItem??>
+            <${tag}>
+                ${xml_wrap(m.masterItem,'key')}
+            </${tag}>
+        <#else>
+            <${tag}/>
+        </#if>
 </#macro>
 
 <#--     <xsl:template name="triggerTemplate">
