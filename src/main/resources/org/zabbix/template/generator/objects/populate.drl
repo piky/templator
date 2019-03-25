@@ -152,3 +152,14 @@ then
     $m.setInventoryLink(InventoryLink.NONE);
 end
 
+rule "Rule: reset delay to 0 for DEPENDENT ITEMS"
+	agenda-group "populate"
+	salience 101
+	dialect "mvel"
+when
+	$m : Metric (type == Metric.Type.DEPENDENT_ITEM)
+then
+    logger.debug(marker,"Resetting delay to 0 for dependent item {}", $m.id);
+    $m.delay = 0;
+end
+

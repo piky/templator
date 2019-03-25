@@ -600,7 +600,9 @@ device : ${i.device!''}
          <#else><#return time>
          </#if>
      <#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
-        <#if time?matches('[0-9]+','r')>
+        <#if time == '0'>
+            <#return time>
+        <#elseif time?matches('[0-9]+','r')>
             <#return time+'s'>
         <#else>
             <#return time>
