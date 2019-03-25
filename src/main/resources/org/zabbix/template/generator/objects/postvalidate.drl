@@ -59,8 +59,9 @@ when
     not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
     not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
 	not $metric: Metric ( key contains $macro.extractMacroName() )
+	not $metric: Metric ( url contains $macro.extractMacroName() ) // http url for http agent
 then
-    logger.warn(marker,"User Macro found but never used in triggers or item keys: {} in template {}", $macro.macro, $t.name);
+    logger.warn(marker,"User Macro found but never used in triggers or item keys|item htpt url: {} in template {}", $macro.macro, $t.name);
 end
 
 
@@ -104,4 +105,18 @@ when
       )
 then
     logger.error(marker,"User Macro is used in the item key but not defined: {} in template {}", $m.key, $t.name);
+end
+
+//TODO: Works only if single macro used in item key. Broken if multiple macros used in item key
+rule "Validation rule 9: Macro used in item url but not defined"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+      $t: Template ()
+      $m: Metric ( url matches ".+\\{\\$[A-Z0-9_]+(:\".+\")?\\}.+")
+      forall ( UserMacro( $macro: macro) from $t.macros
+        Metric( this == $m, url not contains $macro)
+      )
+then
+    logger.error(marker,"User Macro is used in the url but not defined: {} in template {}", $m.url, $t.name);
 end

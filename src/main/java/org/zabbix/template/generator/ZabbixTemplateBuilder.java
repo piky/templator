@@ -90,8 +90,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:drools").process(ruleChecker).choice().when(body().method("isFailed"))
 				.log(LoggingLevel.ERROR, "STOPPING").stop().otherwise().to("direct:multicaster_version");
 
-		/*STEP 5: multicast to different zabbix versions (3.2, 3.4)*/
-		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4");
+		/*STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0)*/
+		from("direct:multicaster_version").multicast().parallelProcessing()
+			.to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0");
 
 		from("direct:zbx3.2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
@@ -106,6 +107,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)
 				))
 				.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
+
+		from("direct:zbx4.0")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
+					.stream()
+					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("4.0")) <= 0)
+				))
+				.setHeader("zbx_ver", simple("4.0", String.class)).to("direct:multicaster_snmp");
 
 		/*STEP 6: multicast to different SNMP versions (and ICMP)*/
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
@@ -170,10 +178,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.to("file:bin/out")
 
 				.choice()
+					.when(header("zbx_ver").isEqualTo("4.0")).log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
 					.when(header("zbx_ver").isEqualTo("3.4")).to("validator:templates/zabbix_export_3.4.xsd")
 					.when(header("zbx_ver").isEqualTo("3.2")).to("validator:templates/zabbix_export_3.2.xsd")
+					
 				.otherwise()
-					.log("Unknown zbx_ver provided").end();
+					.log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
 
 	}
 }

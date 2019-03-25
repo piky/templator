@@ -50,7 +50,7 @@
             <#else>
             <discovery_rules/>
             </#if>                    
-            <#if zbx_ver = '3.4'>
+            <#if zbx_ver = '3.4' || zbx_ver = '4.0'>
             <httptests/>
             </#if>
             <#if (t.macros?size > 0)>
@@ -220,7 +220,7 @@
                     <valuemap/>
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt')}
-                    <#if zbx_ver == '3.4'>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
                     <#if m.preprocessing??>
                     <preprocessing>
                     <#list m.preprocessing as p>
@@ -234,13 +234,33 @@
                     <preprocessing/>
                     </#if>
                     </#if>
-                    <#if zbx_ver = '3.4'>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
                     <jmx_endpoint/>
                     </#if>
                     <#if m.discoveryRule??><#-- item prototype-->
                     <application_prototypes/>
                     </#if>
-                    <#if zbx_ver = '3.4'>
+                    <#if zbx_ver = '4.0'>
+                    ${xml_wrap(m.timeout!'3s','timeout')}
+                    ${xml_wrap(m.url!'','url')}
+                    <query_fields/>
+                    <posts/>
+                    ${xml_wrap(m.statusCodes!'200','status_codes')}
+                    ${xml_wrap(m.followRedirects!'1','follow_redirects')}
+                    ${xml_wrap(m.postType!'0','post_type')}
+                    ${xml_wrap(m.httpProxy!'','http_proxy')}
+                    ${xml_wrap(m.headers!'','headers')}
+                    ${xml_wrap(m.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
+                    ${xml_wrap(m.requestMethod.getZabbixValue()?c,'request_method')}
+                    <output_format>0</output_format>
+                    <allow_traps>0</allow_traps>
+                    <ssl_cert_file/>
+                    <ssl_key_file/>
+                    <ssl_key_password/>
+                    <verify_peer>0</verify_peer>
+                    <verify_host>0</verify_host>
+                    </#if>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
                         <#if m.discoveryRule??>
                             <@master_item m 'master_item_prototype'/>
                         <#else><#-- normal item -->
@@ -327,7 +347,7 @@
 			</graph_prototypes>
             <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
-            <#if zbx_ver = '3.4'>
+            <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
             <jmx_endpoint/>
             </#if>
  </#macro>
@@ -610,7 +630,7 @@ device : ${i.device!''}
          <#elseif time?ends_with('d')><#return ((time?keep_before('d')?number)*86400)?c>
          <#else><#return time>
          </#if>
-     <#else> <#-- 3.4 --><#--as is, but add 's' if no suffix-->
+     <#else> <#-- 3.4 || 4.0 + --><#--as is, but add 's' if no suffix-->
         <#if time == '0'>
             <#return time>
         <#elseif time?matches('[0-9]+','r')>
@@ -626,7 +646,7 @@ device : ${i.device!''}
          <#elseif time?ends_with('w')><#return ((time?keep_before('w')?number)*7)?c>
          <#else><#return time>
          </#if>
-     <#else> <#-- 3.4 --><#--as is, but add 'd' if no suffix-->
+     <#else> <#-- 3.4 || 4.0 --><#--as is, but add 'd' if no suffix-->
         <#if time == '0'>
             <#return time>
         <#elseif time?matches('[0-9]+','r')>

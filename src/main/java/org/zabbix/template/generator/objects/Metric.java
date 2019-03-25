@@ -426,4 +426,261 @@ public abstract class Metric {
 		return true;
 	}
 
+
+	/**
+	 * @return the timeout
+	 */
+	public String getTimeout() {
+		return timeout;
+	}
+
+	/**
+	 * @param timeout the timeout to set
+	 */
+	public void setTimeout(String timeout) {
+		this.timeout = timeout;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * @return the queryFields
+	 */
+	public String getQueryFields() {
+		return queryFields;
+	}
+
+	/**
+	 * @param queryFields the queryFields to set
+	 */
+	public void setQueryFields(String queryFields) {
+		this.queryFields = queryFields;
+	}
+
+	/**
+	 * @return the posts
+	 */
+	public String getPosts() {
+		return posts;
+	}
+
+	/**
+	 * @param posts the posts to set
+	 */
+	public void setPosts(String posts) {
+		this.posts = posts;
+	}
+
+	/**
+	 * @return the statusCodes
+	 */
+	public String getStatusCodes() {
+		return statusCodes;
+	}
+
+	/**
+	 * @param statusCodes the statusCodes to set
+	 */
+	public void setStatusCodes(String statusCodes) {
+		this.statusCodes = statusCodes;
+	}
+
+	/**
+	 * @return the followRedirects
+	 */
+	public String getFollowRedirects() {
+		return followRedirects;
+	}
+
+	/**
+	 * @param followRedirects the followRedirects to set
+	 */
+	public void setFollowRedirects(String followRedirects) {
+		this.followRedirects = followRedirects;
+	}
+
+	/**
+	 * @return the postType
+	 */
+	public String getPostType() {
+		return postType;
+	}
+
+	/**
+	 * @param postType the postType to set
+	 */
+	public void setPostType(String postType) {
+		this.postType = postType;
+	}
+
+	/**
+	 * @return the httpProxy
+	 */
+	public String getHttpProxy() {
+		return httpProxy;
+	}
+
+	/**
+	 * @param httpProxy the httpProxy to set
+	 */
+	public void setHttpProxy(String httpProxy) {
+		this.httpProxy = httpProxy;
+	}
+
+	/**
+	 * @return the headers
+	 */
+	public String getHeaders() {
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers to set
+	 */
+	public void setHeaders(String headers) {
+		this.headers = headers;
+	}
+
+	/**
+	 * @return the retrieveMode
+	 */
+	public RetrieveMode getRetrieveMode() {
+		return retrieveMode;
+	}
+
+	/**
+	 * @param retrieveMode the retrieveMode to set
+	 */
+	public void setRetrieveMode(RetrieveMode retrieveMode) {
+		this.retrieveMode = retrieveMode;
+	}
+
+	/**
+	 * @return the retrieveMode
+	 */
+	public RequestMethod getRequestMethod() {
+		return requestMethod;
+	}
+
+	/**
+	 * @param retrieveMode the retrieveMode to set
+	 */
+	public void setRequestMethod(RequestMethod requestMethod) {
+		this.requestMethod = requestMethod;
+	}	
+
+	public enum RetrieveMode implements ZabbixValue {
+
+		BODY(0), HEADERS(1), BODY_AND_HEADERS(2);
+		private int zabbixValue;
+
+		RetrieveMode(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	public enum RequestMethod implements ZabbixValue {
+
+		GET(0), POST(1), PUT(2), HEAD(3);
+		private int zabbixValue;
+
+		RequestMethod(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	@JsonAlias("output_format")
+	private OutputFormat outputFormat;
+	public enum OutputFormat implements ZabbixValue {
+
+		RAW(0), JSON(1);
+		private int zabbixValue;
+
+		OutputFormat(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+		//http 4.0 stuff
+		private String timeout;
+		private String url;
+		
+		@JsonAlias("query_fields")
+		private String queryFields;
+		
+		@JsonAlias("posts")
+		private String posts;
+		
+		@JsonAlias("status_codes")
+		private String statusCodes;
+	
+		@JsonAlias("follow_redirects")
+		private String followRedirects;
+	
+		@JsonAlias("post_type")
+		private String postType;
+	
+		@JsonAlias("http_proxy")
+		private String httpProxy;
+	
+		@JsonAlias("headers")
+		private String headers;
+	
+		@JsonAlias("retrieve_mode")
+		private RetrieveMode retrieveMode = RetrieveMode.BODY;
+	
+		@JsonAlias("request_method")
+		private RequestMethod requestMethod = RequestMethod.GET;
+		
+		//TODO add others HTTP 4.0:
+		// <allow_traps>0</allow_traps>
+		// <ssl_cert_file/>
+		// <ssl_key_file/>
+		// <ssl_key_password/>
+		// <verify_peer>0</verify_peer>
+		// <verify_host>0</verify_host>
 }
+
+
