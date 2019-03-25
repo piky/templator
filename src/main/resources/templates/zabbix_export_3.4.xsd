@@ -404,7 +404,14 @@
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
-					<xs:element type="xs:string" name="master_item_prototype"/>
+					<xs:element name="master_item_prototype" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element type="xs:string" name="key" minOccurs="0" maxOccurs="1"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -415,7 +422,13 @@
 		<xs:complexContent>
 			<xs:extension base="itemObj">
 				<xs:sequence>
-					<xs:element type="xs:string" name="master_item"/>
+					<xs:element name="master_item" minOccurs="0" maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element type="xs:string" name="key" minOccurs="0" maxOccurs="1"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
