@@ -446,7 +446,7 @@
            -->
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="0"/>
-			<xs:maxInclusive value="17"/>
+			<xs:maxInclusive value="18"/>
 		</xs:restriction>
 	</xs:simpleType>
 

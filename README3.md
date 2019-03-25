@@ -26,10 +26,13 @@ However, to reuse metric definitions - you can define most of its fields in `pro
 Once referenced, any additional metric fields can be redefined. So metrics can be customized even if prototype is used.
 
 ### Usage of template classes
+
 Template classes can be defined in `in` files. They serve as tags to activate something.
 For example
-TODO
-
+`OS` - adds template to Template/Operating systems group  
+`Network` - adds template to Template/Network devices group  
+`Server` - adds template to Template/Server hardware group  
+`Module` - adds template to Template/Modules group  
 
 ### Conventions
 TODO
@@ -79,16 +82,6 @@ use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API
 - use TEMPLATE_NAME:METRIC instead of real trigger keys in expressions/recoveryExpressions use __trigger_ID__ to replace other metrics used in trigger expressions.
 - Minimize conditions and complex logic in Freemarker. Do all weird and magic stuff in Drools.
       
-
-
-## Classes 'magic'  
-### magic 1  
-```
-<xsl:when test="./classes[class='OS']"><name>Templates/Operating systems</name></xsl:when>
-<xsl:when test="./classes[class='Network']"><name>Templates/Network devices</name></xsl:when>
-<xsl:when test="./classes[class='Server']"><name>Templates/Server hardware</name></xsl:when>
-<xsl:when test="./classes[class='Module']"><name>Templates/Modules</name></xsl:when>
-<xsl:otherwise><name>Templates/Modules</name></xsl:otherwise>
 ```
 
 ### magic 2  

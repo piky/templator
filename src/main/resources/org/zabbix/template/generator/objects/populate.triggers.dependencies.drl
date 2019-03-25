@@ -4,7 +4,7 @@ global String lang;
 
 /*
 This will found trigger pairs (inside single metric ONLY(fix?)). If there is a trigger mentioned in dependsOn - add it to dependsOn
-For example. This doesn' catch ICMP Ping dependencies inside ICMP Ping template
+For example. This doesn't catch ICMP Ping dependencies inside ICMP Ping template
 */
 
 rule "Generate each trigger dependency"
