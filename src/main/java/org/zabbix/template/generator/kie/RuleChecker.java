@@ -32,7 +32,7 @@ public class RuleChecker implements Processor {
         // AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
         // ksession.addEventListener(agendaEventListener);
 
-        ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
+        //ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
         // kie
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
