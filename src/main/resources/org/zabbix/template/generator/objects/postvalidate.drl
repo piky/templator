@@ -16,10 +16,10 @@ rule "Validation rule 2: check key"
 	dialect "mvel"
 when
 	$m : Metric (key == null)
-	$t: InputJSON( )
+	$ij: InputJSON( )
 then
     logger.error(marker,"There is no 'key' for "+$m.id);
-	$t.failed = true;
+	$ij.failed = true;
 end
 
 
@@ -30,11 +30,11 @@ rule "Validation rule 3: valueMap mentioned in metric should be defined"
 	dialect "mvel"
 when
 	$m: Metric($vm_name : valueMap != null)
-	$t: InputJSON( )
-	not ValueMap(name == $vm_name) from $t.valueMaps
+	$ij: InputJSON( )
+	not ValueMap(name == $vm_name) from $ij.valueMaps
 then
     logger.error(marker,"No value map found for " + $vm_name + ". It used in " +$m.id);
-	$t.failed = true;
+	$ij.failed = true;
 end
 
 
@@ -43,14 +43,14 @@ rule "Validation rule 4: check Type"
 	dialect "mvel"
 when
 	$m: Metric(type == null)
-	$t: InputJSON( )
+	$ij: InputJSON( )
 then
     logger.error(marker,"No 'type' defined for {}",$m.id);
-	$t.failed = true;
+	$ij.failed = true;
 end
 
 
-rule "Validation rule 5: Macro defined but never used in triggers"
+rule "Validation rule 5: Macro defined but never used in triggers or item keys"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
