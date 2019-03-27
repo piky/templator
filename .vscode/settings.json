@@ -1,7 +1,7 @@
 {
     "json.schemas": [
         {
-            "fileMatch":["/in/*.json"],
+            "fileMatch":["in/*.json"],
             "url":"./bin/zabbix_inputjson_schema.json"
         },
         {
@@ -10,11 +10,13 @@
         }
     ],
     "yaml.schemas": {
-        "./bin/zabbix_inputjson_schema.json": "/in/*",
-        "./bin/zabbix_metric_prototype_schema.json": "prototypes/*"
+        "./bin/zabbix_inputjson_schema.json": "/bin/in/*.yaml",
+        "./bin/zabbix_metric_prototype_schema.json": "/bin/prototypes/*.yaml"
+
     },
     "files.associations": {
         "*.json": "jsonc"
     },
-    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe",
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
