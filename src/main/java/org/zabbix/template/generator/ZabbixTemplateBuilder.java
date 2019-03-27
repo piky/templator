@@ -8,7 +8,6 @@ import org.apache.camel.component.jackson.JacksonDataFormat;
 
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
@@ -33,6 +32,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// create factory to enable comments for json
 		JsonFactory f = new JsonFactory();
 		f.enable(JsonParser.Feature.ALLOW_COMMENTS);
+		f.enable(JsonParser.Feature.ALLOW_TRAILING_COMMA);
 
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		ObjectMapper jsonMapper = new ObjectMapper(f);
