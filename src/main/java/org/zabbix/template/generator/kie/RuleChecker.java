@@ -17,7 +17,6 @@ import org.zabbix.template.generator.objects.DiscoveryRule;
 import org.zabbix.template.generator.objects.Metric;
 import org.zabbix.template.generator.objects.Template;
 import org.zabbix.template.generator.objects.Trigger;
-import org.zabbix.template.generator.objects.ValueMap;
 
 public class RuleChecker implements Processor {
 
