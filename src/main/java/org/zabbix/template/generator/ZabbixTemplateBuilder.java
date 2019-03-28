@@ -184,7 +184,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 																									// with SNMPv2 or
 																									// SNMPv1 lang
 
-				.setHeader("subfolder", simple("${in.headers.CamelFileName.split('_')[1]}", String.class))
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.subfolder}/${in.headers.zbx_ver}/${in.headers.lang}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 				.to("file:bin/out")
