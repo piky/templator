@@ -9,9 +9,24 @@ public class DiscoveryRule {
 	@JsonAlias("snmp_oid")
 	private String oid;
 	private String key;
+	
+	@JsonAlias({ "itemType", "item_type" })
+	private Type type;
+	@JsonAlias("update")
+	private String delay = "1h";
+	private String lifetime = "30d";
 	private String description;
+
 	private Filter filter;
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
+
+	// Preprocessing
+	private ArrayList<PreprocessingStep> preprocessing;
+
+	@JsonAlias("master_item")
+	private String masterItem;
+
+
 
 	public String getName() {
 		return name;
@@ -37,6 +52,30 @@ public class DiscoveryRule {
 		this.key = key;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public String getDelay() {
+		return delay;
+	}
+
+	public void setDelay(String delay) {
+		this.delay = delay;
+	}
+
+	public String getLifetime() {
+		return lifetime;
+	}
+
+	public void setLifetime(String lifetime) {
+		this.lifetime = lifetime;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -52,6 +91,29 @@ public class DiscoveryRule {
 	public void setMetrics(ArrayList<Metric> metrics) {
 		this.metrics = metrics;
 	}
+	/**
+	 * @return the preprocessing
+	 */
+	public ArrayList<PreprocessingStep> getPreprocessing() {
+		return preprocessing;
+	}
+
+	/**
+	 * @param preprocessing the preprocessing to set
+	 */
+	public void setPreprocessing(ArrayList<PreprocessingStep> preprocessing) {
+		this.preprocessing = preprocessing;
+	}
+
+
+	public String getMasterItem() {
+		return masterItem;
+	}
+
+	public void setMasterItem(String masterItem) {
+		this.masterItem = masterItem;
+	}	
+
 
 	public Filter getFilter() {
 		return filter;

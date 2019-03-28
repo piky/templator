@@ -15,7 +15,7 @@ public abstract class Metric {
 
 	private String name;
 	private String description;
-	@JsonAlias("vendor_documentation")
+	@JsonAlias("vendor_documentation") //TODO deprecate this
 	private String vendorDocumentation;
 	private String ref;
 	@JsonAlias("vendor_description")
@@ -31,29 +31,7 @@ public abstract class Metric {
 	@JsonAlias("inventory_link")
 	private InventoryLink inventoryLink = InventoryLink.NONE;
 
-	public enum Type implements ZabbixValue {
-
-		ZABBIX_AGENT(0), SNMP_V1(1), ZABBIX_TRAPPER(2), SIMPLE_CHECK(3), SNMP_V2(4), SNMP(4), // !!!!not official
-																								// mapping
-		ZABBIX_INTERNAL(5), SNMP_V3(6), ZABBIX_AGENT_ACTIVE(7), ZABBIX_AGGREGATE(8), WEB_ITEM(9), EXTERNAL_CHECK(10),
-		DATABASE_MONITOR(11), IPMI_AGENT(12), SSH_AGENT(13), TELNET_AGENT(14), CALCULATED(15), JMX_AGENT(16),
-		SNMP_TRAP(17), DEPENDENT_ITEM(18), HTTP_AGENT(19);
-
-		private int zabbixValue;
-
-		Type(int zabbixValue) {
-			this.setZabbixValue(zabbixValue);
-		}
-
-		@Override
-		public int getZabbixValue() {
-			return zabbixValue;
-		}
-
-		public void setZabbixValue(int zabbixValue) {
-			this.zabbixValue = zabbixValue;
-		}
-	};
+	
 
 	public enum ValueType implements ZabbixValue {
 
@@ -83,13 +61,14 @@ public abstract class Metric {
 	public enum Group {
 		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Inventory, Storage, General, Fans,
 		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Wireless,
-		Nginx// to be extended
+		Nginx,
+		Apache// to be extended
 	};
 
 	private Group group;
 	@JsonAlias("update")
 	private String delay = "5m";
-	private String history = "7d";
+	private String history = "90d";
 	private String trends = "365d";
 
 	private String units;
@@ -99,6 +78,7 @@ public abstract class Metric {
 
 	// SNMP stuff:
 	private String oid;
+	//TODO snmpObject only used for SNMP keys generation(in LLD). Deprecate
 	private String snmpObject;
 	private String mib;
 

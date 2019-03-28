@@ -22,6 +22,17 @@ then
 	$ij.failed = true;
 end
 
+rule "Validation rule 2.1: check key (discovery rule)"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	$dr : DiscoveryRule (key == null)
+	$ij: InputJSON( )
+then
+    logger.error(marker,"There is no 'key' for "+$dr.name);
+	$ij.failed = true;
+end
+
 
 
 
@@ -46,6 +57,17 @@ when
 	$ij: InputJSON( )
 then
     logger.error(marker,"No 'type' defined for {}",$m.id);
+	$ij.failed = true;
+end
+
+rule "Validation rule 4.1: check Type (discovery rule)"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	$dr: DiscoveryRule(type == null)
+	$ij: InputJSON( )
+then
+    logger.error(marker,"No 'type' defined for {}",$dr.name);
 	$ij.failed = true;
 end
 
@@ -119,4 +141,27 @@ when
       )
 then
     logger.error(marker,"User Macro is used in the url but not defined: {} in template {}", $m.url, $t.name);
+end
+
+
+rule "Validation rule 10: you should have both masterItem and type=DependentItem defined"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	$m : Metric (masterItem == null, type == Type.DEPENDENT_ITEM )
+	$ij: InputJSON( )
+then
+    logger.error(marker,"Please define 'masterItem' for "+$m.id);
+	$ij.failed = true;
+end
+
+rule "Validation rule 10.1: you should have both masterItem and type=DependentItem defined(discovery rule"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	$dr : DiscoveryRule (masterItem == null, type == Type.DEPENDENT_ITEM )
+	$ij: InputJSON( )
+then
+    logger.error(marker,"Please define 'masterItem' for "+$dr.name);
+	$ij.failed = true;
 end

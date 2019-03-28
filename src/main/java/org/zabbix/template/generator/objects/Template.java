@@ -26,7 +26,7 @@ public class Template {
 	@JsonIgnore
 	private ArrayList<String> groups = new ArrayList<String>(0);// groups would be populated in Drools
 
-	private DiscoveryRule discoveryRules[] = new DiscoveryRule[0];
+	private ArrayList<DiscoveryRule> discoveryRules = new ArrayList<DiscoveryRule>(0);
 
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
@@ -98,13 +98,20 @@ public class Template {
 		this.groups = groups;
 	}
 
-	public DiscoveryRule[] getDiscoveryRules() {
+		/**
+	 * @return the classes
+	 */
+	public ArrayList<DiscoveryRule> getDiscoveryRules() {
 		return discoveryRules;
 	}
 
-	public void setDiscoveryRules(DiscoveryRule discoveryRules[]) {
+	/**
+	 * @param classes the classes to set
+	 */
+	public void setDiscoveryRules(ArrayList<DiscoveryRule> discoveryRules) {
 		this.discoveryRules = discoveryRules;
 	}
+
 
 	public TreeSet<UserMacro> getMacros() {
 		return macros;

@@ -1,6 +1,6 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = headers.zbx_ver?string>
-<#assign snmp_community= '{$SNMP_COMMUNITY}'>
+<#assign snmp_community = '{$SNMP_COMMUNITY}'>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
@@ -50,7 +50,7 @@
             <#else>
             <discovery_rules/>
             </#if>                    
-            <#if zbx_ver = '3.4' || zbx_ver = '4.0'>
+            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
             <httptests/>
             </#if>
             <#if (t.macros?size > 0)>
@@ -77,6 +77,9 @@
             <templates/>
             </#if>
             <screens/>
+            <#if zbx_ver == '4.2'>
+            <tags/>
+            </#if>
         </template>
       </#list>
     </templates>
@@ -161,7 +164,7 @@
                         <#local delta_value = 0>
                     <#if m.preprocessing??>
                         <#list m.preprocessing as p>
-                            <#if p.type == 'DELTA_PER_SECOND'>
+                            <#if p.type == 'CHANGE_PER_SECOND'>
                                 <#local delta_value = 1>
                                 <#break>
                             </#if>
@@ -188,12 +191,12 @@
                     </#if>
                     <formula>${formula_value}</formula>
                     </#if>
-                    <#if zbx_ver = '3.2'>
+                    <#if zbx_ver == '3.2'>
                     <delay_flex/>
                     </#if>
                     ${xml_wrap(m.expressionFormula!'','params')}
                     <ipmi_sensor/>
-                    <#if zbx_ver = '3.2'>
+                    <#if zbx_ver == '3.2'>
                     <data_type>0</data_type>
                     </#if>
                     <authtype>0</authtype>
@@ -220,27 +223,16 @@
                     <valuemap/>
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt')}
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
-                    <#if m.preprocessing??>
-                    <preprocessing>
-                    <#list m.preprocessing as p>
-                        <step>
-                            <type>${p.type.getZabbixValue()}</type>
-                            <params>${p.params!''}</params>
-                        </step>
-                    </#list>
-                    </preprocessing>
-                    <#else>
-                    <preprocessing/>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <@preprocessing m zbx_ver/>
                     </#if>
-                    </#if>
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
                     <jmx_endpoint/>
                     </#if>
                     <#if m.discoveryRule??><#-- item prototype-->
                     <application_prototypes/>
                     </#if>
-                    <#if zbx_ver = '4.0'>
+                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
                     ${xml_wrap(m.timeout!'3s','timeout')}
                     ${xml_wrap(m.url!'','url')}
                     <query_fields/>
@@ -260,12 +252,15 @@
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
                     </#if>
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
+                    <#if zbx_ver == '3.4'>
                         <#if m.discoveryRule??>
                             <@master_item m 'master_item_prototype'/>
                         <#else><#-- normal item -->
                             <@master_item m 'master_item'/>
                         </#if>
+                    </#if>
+                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+                            <@master_item m 'master_item'/>
                     </#if>
 
 </#macro>
@@ -273,11 +268,19 @@
 <#macro discovery_rule dr t>
             <#assign metrics = t.getMetricsByZbxVer(dr.metrics,zbx_ver)>
             <name>${dr.name}</name>
+            <#if dr.type == 'SNMP'>
             <type>${headers.snmp_item_type}</type>
+            <#else>
+            <type>${dr.type.getZabbixValue()!'none'}</type>
+            </#if>
+            <#if dr.type == 'SNMP'>
             <snmp_community>${snmp_community}</snmp_community>
-            <snmp_oid>${dr.oid}</snmp_oid>
+            <#else>
+            <snmp_community/>
+            </#if>
+            ${xml_wrap(dr.oid!'','snmp_oid')}
             <key>${dr.key}</key>
-            <delay>${time_suffix_to_seconds('1h')}</delay>
+            <delay>${time_suffix_to_seconds(dr.delay)}</delay>
             <status>0</status>
             <allowed_hosts/>
             <snmpv3_contextname/>
@@ -287,7 +290,7 @@
             <snmpv3_authpassphrase/>
             <snmpv3_privprotocol>0</snmpv3_privprotocol>
             <snmpv3_privpassphrase/>
-            <#if zbx_ver = '3.2'>
+            <#if zbx_ver == '3.2'>
             <delay_flex/>
             </#if>
             <params/>
@@ -318,7 +321,7 @@
                 <conditions/>
             </#if>
             </filter>
-            <lifetime>${time_suffix_to_days('30d')}</lifetime>
+            <lifetime>${time_suffix_to_days(dr.lifetime)}</lifetime>
             ${xml_wrap(dr.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
                 <#list metrics as m>
@@ -347,8 +350,32 @@
 			</graph_prototypes>
             <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
-            <#if zbx_ver == '3.4' || zbx_ver == '4.0'>
+            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
             <jmx_endpoint/>
+            </#if>
+            <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+            <timeout>3s</timeout>
+            <url/>
+            <query_fields/>
+            <posts/>
+            <status_codes>200</status_codes>
+            <follow_redirects>1</follow_redirects>
+            <post_type>0</post_type>
+            <http_proxy/>
+            <headers/>
+            <retrieve_mode>0</retrieve_mode>
+            <request_method>0</request_method>
+            <allow_traps>0</allow_traps>
+            <ssl_cert_file/>
+            <ssl_key_file/>
+            <ssl_key_password/>
+            <verify_peer>0</verify_peer>
+            <verify_host>0</verify_host>
+            </#if>
+            <#if zbx_ver == '4.2'>
+            <lld_macro_paths/>
+            <@preprocessing dr zbx_ver/>
+            <@master_item dr 'master_item'/>
             </#if>
  </#macro>
 
@@ -361,7 +388,7 @@
 		<#local recovery_mode = 1>
 	<#elseif tr.recoveryMode??>
 		<#local recovery_mode = tr.recoveryMode.getZabbixValue()>
-	<#else>		
+	<#else>	
 		<#local recovery_mode = 0>
 	</#if>
 	${xml_wrap(recovery_mode!0,'recovery_mode')}
@@ -429,6 +456,7 @@
 
 
 <#macro master_item m tag>
+        <#-- m is metric or discovery -->
         <#if m.masterItem??>
             <${tag}>
                 ${xml_wrap(m.masterItem,'key')}
@@ -437,6 +465,27 @@
             <${tag}/>
         </#if>
 </#macro>
+
+<#macro preprocessing m zbx_ver>
+        <#-- m is metric or discovery -->
+        <#if m.preprocessing??>
+            <preprocessing>
+            <#list m.preprocessing as p>
+                <step>
+                    <type>${p.type.getZabbixValue()}</type>
+                    <params>${p.params!''}</params>
+                    <#if zbx_ver == '4.2'>
+                    <error_handler>0</error_handler>
+                    <error_handler_params/>
+                    </#if>
+                </step>
+            </#list>
+            </preprocessing>
+        <#else>
+            <preprocessing/>
+        </#if>
+</#macro>
+
 
 <#--     <xsl:template name="triggerTemplate">
         <xsl:variable name="template_name" select="../../../../name"/>

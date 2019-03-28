@@ -63,8 +63,10 @@ public class RuleChecker implements Processor {
                 }
             }
 
-            DiscoveryRule[] drules = t.getDiscoveryRules();
+            ArrayList<DiscoveryRule> drules = t.getDiscoveryRules();
             for (DiscoveryRule drule : drules) {
+                ksession.insert(drule);
+                
                 for (Metric m : drule.getMetrics()) {
 
                     m.setDiscoveryRule(drule.getName());

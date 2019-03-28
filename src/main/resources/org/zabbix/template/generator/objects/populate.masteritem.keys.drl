@@ -15,6 +15,19 @@ then
     $m_d.masterItem = $m.key;
 end
 
+rule "Change for each dependent discovery rule: metric id with actual metric key"
+    agenda-group "populate.masteritem.keys"
+    no-loop
+    dialect "mvel"
+when
+    $t: Template($drules: discoveryRules, $metrics: metricsRegistry)
+    $dr : DiscoveryRule ($master: masterItem != null) from $drules
+    $m: Metric (id == $master) from $metrics
+then
+    logger.info(marker,"Replacing master item id {} with master item key {}", $dr.masterItem, $m.key);
+    $dr.masterItem = $m.key;
+end
+
 rule "Uknown master metric"
     agenda-group "populate.masteritem.keys"
     no-loop
@@ -27,5 +40,20 @@ when
     not $m: Metric (id == $master) from $metrics
 then
     logger.error(marker,"No such master metric found {}", $master)
+	$ij.failed = true;
+end
+
+rule "Uknown master metric(discovery rule)"
+    agenda-group "populate.masteritem.keys"
+    no-loop
+    dialect "mvel"
+	salience -100
+when
+    $ij: InputJSON()
+    $t: Template($drules: discoveryRules, $metrics: metricsRegistry)
+    $dr: DiscoveryRule ($master: masterItem != null) from $drules
+    not $m: Metric (id == $master) from $metrics
+then
+    logger.error(marker,"No such master metric found {} on drule", $master, $dr.name)
 	$ij.failed = true;
 end

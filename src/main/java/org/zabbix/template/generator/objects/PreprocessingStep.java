@@ -1,39 +1,34 @@
 package org.zabbix.template.generator.objects;
 
 public class PreprocessingStep {
-
+//TODO add error handler:
+// <error_handler>0</error_handler>
+// <error_handler_params/>
 	enum PreprocessingType implements ZabbixValue {
 
-// 		Possible values: 
-// 1 - Custom multiplier; 
-// 2 - Right trim; 
-// 3 - Left trim; 
-// 4 - Trim; 
-// 5 - Regular expression matching; 
-// 6 - Boolean to decimal; 
-// 7 - Octal to decimal; 
-// 8 - Hexadecimal to decimal; 
-// 9 - Simple change; 
-// 10 - Change per second; 
-// 11 - XML XPath; 
-// 12 - JSONPath; 
-// 13 - In range; 
-// 14 - Matches regular expression; 
-// 15 - Does not match regular expression; 
-// 16 - Check for error in JSON; 
-// 17 - Check for error in XML; 
-// 18 - Check for error in regular expression; 
-// 19 - Discard unchanged; 
-// 20 - Discard unchanged with heartbeat; 
-// 21 - JavaScript; 
-// 22 - Prometheus pattern; 
-// 23 - Prometheus to JSON.
 		MULTIPLIER(1),
-		REGEX(5), 
-		DELTA_PER_SECOND(10),
-		XMLPATH(11),
-		JSONPATH(12),
-		JAVASCRIPT(21);
+		RIGHT_TRIM(2),
+		LEFT_TRIM(3),
+		TRIM(4),
+		REGEX(5),
+		BOOLEAN_TO_DECIMAL(6), 
+		OCTAL_TO_DECIMAL(7), 
+		HEXADECIMAL_TO_DECIMAL(8), 
+		SIMPLE_CHANGE(9), 
+		CHANGE_PER_SECOND(10), 
+		XML_XPATH(11), 
+		JSONPATH(12), 
+		IN_RANGE(13), 
+		MATCHES_REGULAR_EXPRESSION(14), 
+		DOES_NOT_MATCH_REGULAR_EXPRESSION(15), 
+		CHECK_FOR_ERROR_IN_JSON(16), 
+		CHECK_FOR_ERROR_IN_XML(17), 
+		CHECK_FOR_ERROR_IN_REGULAR_EXPRESSION(18), 
+		DISCARD_UNCHANGED(19), 
+		DISCARD_UNCHANGED_WITH_HEARTBEAT(20), 
+		JAVASCRIPT(21), 
+		PROMETHEUS_PATTERN(22), 
+		PROMETHEUS_TO_JSON(23);
 		private int zabbixValue;
 
 		PreprocessingType(int zabbixValue) {
