@@ -65,9 +65,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.to("direct:lang");
 
 	    /*STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
-		from("direct:lang").multicast().to("direct:EN", "direct:RU");
+		from("direct:lang").to("direct:EN");
+		//, "direct:RU").parallelProcessing();
 
-		from("direct:RU").setHeader("lang", simple("RU", String.class)).to("direct:create_template");
+		from("direct:RU").setHeader("lang", simple("RU", String.class))
+			.stop(); // RU is stopped as objects are not deep-cloned
+		//to("direct:create_template");
 
 		from("direct:EN").setHeader("lang", simple("EN", String.class)).to("direct:create_template");
 
