@@ -13,7 +13,9 @@ use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API
 
 
 ## Classes 'magic'  
+
 ### magic 1  
+
 ```
 <xsl:when test="./classes[class='OS']"><name>Templates/Operating systems</name></xsl:when>
 <xsl:when test="./classes[class='Network']"><name>Templates/Network devices</name></xsl:when>
@@ -78,17 +80,25 @@ use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API
 ```
 
 ### magic 3  
-attach sub templates
+
+attaching sub templates
 
 if class = SNMP_DEVICE -> attach SNMP GENERIC
 if class = INTERFACES -> attach SNMP INTERFACES
 if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
 if class = Interfaces EtherLike Extension -> Attach Template Module EtherLike-MIB
+
 ### magic 4: SNMPvX
+
 add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  
+
+## Other magics: applications, groups and application_prototypes
+
+if `application_prototype` is defined, then application is not filled with `group` value. This enforces 'single application guideline'
 
 
 ### why generator is implemented in the first place?
+
 What XML format should be so it can be a part of Zabbix?
 
 Templates

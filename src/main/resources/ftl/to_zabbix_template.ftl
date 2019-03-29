@@ -205,8 +205,11 @@
                     <publickey/>
                     <privatekey/>
                     <port/>
-                    ${xml_wrap(m.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
+                    ${xml_wrap(m.description!'','description')}
                     <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
+                    <#if m.applicationPrototype??>
+                    <applications/>
+                    <#else>
                     <applications>
                     <#-- change group to array in Java? -->
                     <#list [m.group] as g>
@@ -215,6 +218,7 @@
                     </application>
                     </#list>
                     </applications>
+                    </#if>
                     <#if m.valueMap??>
                     <valuemap>
                         <name>${m.valueMap}</name>
@@ -230,7 +234,15 @@
                     <jmx_endpoint/>
                     </#if>
                     <#if m.discoveryRule??><#-- item prototype-->
+                        <#if m.applicationPrototype??>
+                    <application_prototypes>
+                        <application_prototype>
+                            <name>${m.applicationPrototype}</name>
+                        </application_prototype>
+                    </application_prototypes>
+                        <#else>
                     <application_prototypes/>
+                        </#if>
                     </#if>
                     <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
                     ${xml_wrap(m.timeout!'3s','timeout')}
@@ -453,7 +465,6 @@
             </graph_items>
 
 </#macro>
-
 
 <#macro master_item m tag>
         <#-- m is metric or discovery -->

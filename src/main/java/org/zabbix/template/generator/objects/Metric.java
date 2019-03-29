@@ -66,6 +66,8 @@ public abstract class Metric {
 	};
 
 	private Group group;
+	@JsonAlias("application_prototype")
+	private String applicationPrototype;
 	@JsonAlias("update")
 	private String delay = "5m";
 	private String history = "90d";
@@ -219,6 +221,14 @@ public abstract class Metric {
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	public String getApplicationPrototype() {
+		return applicationPrototype;
+	}
+
+	public void setApplicationPrototype(String applicationPrototype) {
+		this.applicationPrototype = applicationPrototype;
 	}
 
 	public String getDelay() {

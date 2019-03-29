@@ -3,7 +3,7 @@
 ## Overview and why generating
 
 This tool serve to aid with templates generation in Zabbix.
-We suggest to use this tools because we want to achieve the following goals:
+We suggest to use this tool because we want to achieve the following goals:
 - A dozers or hunders of Templates can be changed in bulk
 - Same templates for different versions of Zabbix
 - Same templates for different versions of SNMP(if SNMP)
@@ -16,12 +16,15 @@ It also must has metrics that collect `Temperature` of at least one temperature 
 
 
 ## Workflow of the tool
+
 `<in> ----merge with-----> <prototypes> ----check merge result with the set of rules ---> generate different versions of the template: for 3.4, 3.2, in English, in Russian, for SNMPv2 and for SNMPv1...`
 
 ### In
+
 You can completely define the template in the `in` file: json and yaml(experimental) are supported for this.
 
 ### Prototypes
+
 However, to reuse metric definitions - you can define most of its fields in `prototypes` dir. Then, back in `in` file you can reference the prototype.
 Once referenced, any additional metric fields can be redefined. So metrics can be customized even if prototype is used.
 
@@ -36,6 +39,7 @@ For example
 `App` - adds template to Template/Applications group  
 
 ### Conventions
+
 TODO
 
 ### Choosing template version
@@ -69,26 +73,32 @@ TODO
 ### JSONSchema
 
 
+
+
 ## Magic stuff
+
 TODO
+
 - memory utilization, vfs utilization
 - how metrics are enriched if in LLD (keys, names) What is ALARM_OBJECT, ALARM_OBJECT_TYPE
-
+- if `application_prototype` is defined, then application is not filled with `group` value. This enforces 'single application guideline'
 
 _____________________________________________------------
+
 ## Features
+
 - any fields can be overridden  
 - custom metric can be added  
 
 ## Conventions used  
+
 metric.prototype must be in dot notation. Metric subclass - in TitleCase.  
 use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API)     
+
 - in discovery filter provide: formulaid in condition
 - arrays must be provided with default value of zero elements.
 - use `TEMPLATE_NAME:METRIC` instead of real trigger keys in expressions/recoveryExpressions use `__trigger_ID__` to replace other metrics used in trigger expressions.
 - Minimize conditions and complex logic in Freemarker. Do all weird and magic stuff in Drools.
-      
-```
 
 ### magic 2  
 
@@ -146,6 +156,7 @@ use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API
 ```
 
 ### magic 3  
+
 attach sub templates
 
 if class = SNMP_DEVICE -> attach SNMP GENERIC
@@ -153,6 +164,7 @@ if class = INTERFACES -> attach SNMP INTERFACES
 if class = INTERFACES_SIMPLE -> attach SNMP INTERFACES_SIMPLE
 if class = Interfaces EtherLike Extension -> Attach Template Module EtherLike-MIB
 ### magic 4: SNMPvX
+
 add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  
 
 

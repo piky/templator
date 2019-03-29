@@ -111,3 +111,29 @@ then
     $tr.setExpression( $tr.getExpression().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
     $tr.setName( $tr.getName().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
 end
+
+
+
+//
+rule "Rule: replaces __ALARM_OBJECT__ macro in applicationPrototype"
+	agenda-group "populate"
+	no-loop
+    dialect "mvel"
+when    
+    $m : Metric ($ap: applicationPrototype contains "__ALARM_OBJECT__", $alarmObject: alarmObject != null)
+then
+    logger.debug(marker,"Replacing AlarmObject in application_prototype "+ $m.id);
+    $m.applicationPrototype = $ap.replace("__ALARM_OBJECT__", $alarmObject);
+end
+
+rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in applicationPrototype"
+	agenda-group "populate"
+	no-loop
+    dialect "mvel"
+when    
+    $m : Metric ($ap: applicationPrototype != null, $alarmObjectType: alarmObjectType != null)
+then
+    logger.debug(marker,"Replacing AlarmObjectType in application_prototype "+ $m.id);
+    $m.applicationPrototype = $ap.replace("__ALARM_OBJECT_TYPE__",$alarmObjectType)
+    
+end
