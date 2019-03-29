@@ -355,7 +355,7 @@
 						</xs:sequence>
 					</xs:choice>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
-						<xs:element name="zabbixKey" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
+						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
 						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 						<xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
@@ -380,7 +380,7 @@
 					<xs:element name="expressionFormula" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
-						<xs:element name="zabbixKey" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
+						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
 						<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
 						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>

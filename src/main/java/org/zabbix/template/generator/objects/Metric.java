@@ -20,7 +20,7 @@ public abstract class Metric {
 	private String ref;
 	@JsonAlias("vendor_description")
 	private String vendorDescription;
-	@JsonAlias("zabbixKey")
+	@JsonAlias("key")
 	private String key;
 
 	@JsonAlias("zbx_ver")
