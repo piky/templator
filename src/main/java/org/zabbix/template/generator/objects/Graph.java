@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-//@JsonDeserialize(using = TriggerDeserializer.class)
 public class Graph {
 
 	private String prototype;

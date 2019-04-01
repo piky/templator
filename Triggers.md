@@ -30,10 +30,12 @@ for example in JSON:
 ```
 
 ## The most important fields you need to define:
+
 prototype: - reference to prototype if needed.
 expression:
 recovery_expression:
 other fields from the trigger can be defined, applied:
+
 https://www.zabbix.com/documentation/4.0/manual/api/reference/trigger/object
 
 in expressions used special MACRO: TEMPLATE_NAME:METRIC to reference metric where trigger is situated. Or use
@@ -99,6 +101,7 @@ that way, not only `health.crit` trigger but also `health.warn` trigger will be 
 
 
 ### Health check triggers
+
 - Define usermacro with value you want to check for. Use the following format for the macro:
 {$OBJECT_FAIL_STATUS}
 {$OBJECT_CRIT_STATUS}
