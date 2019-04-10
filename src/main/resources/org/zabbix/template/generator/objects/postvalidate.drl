@@ -83,7 +83,7 @@ when
 	not $metric: Metric ( key contains $macro.extractMacroName() )
 	not $metric: Metric ( url contains $macro.extractMacroName() ) // http url for http agent
 then
-    logger.warn(marker,"User Macro found but never used in triggers or item keys|item htpt url: {} in template {}", $macro.macro, $t.name);
+    logger.warn(marker,"User Macro found but never used in triggers or item keys|item http url: {} in template {}", $macro.macro, $t.name);
 end
 
 
