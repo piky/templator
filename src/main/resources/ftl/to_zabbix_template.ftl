@@ -482,6 +482,10 @@
         <#if m.preprocessing??>
             <preprocessing>
             <#list m.preprocessing as p>
+                <#if (zbx_ver='3.4' || zbx_ver='3.2' || zbx_ver='4.0') && (p.type.getZabbixValue() == 19 || p.type.getZabbixValue() == 20)>
+                <#-- skip discards preprocessing for template versions < 4.2-->
+                    <#continue>
+                </#if>
                 <step>
                     <type>${p.type.getZabbixValue()}</type>
                     <params>${p.params!''}</params>
