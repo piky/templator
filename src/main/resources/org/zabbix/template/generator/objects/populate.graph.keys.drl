@@ -10,8 +10,11 @@ when
 	$gr: Graph ($gitems: graphItems) from $graphs
 	$gitem: GraphItem () from $gitems
 	
-	$m2 : Metric ( $m.discoveryRule == discoveryRule, $gitem.metricKey == $m2.id )
- 
+	$m2 : Metric (
+		$m.discoveryRule == discoveryRule, 
+		($gitem.metricKey == $m2.id ||
+		 $gitem.metricKey == $m2.prototype)
+		)
 then
     logger.debug(marker,"Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
     //now replace gitem.metricKey with actual metric key:
