@@ -111,7 +111,7 @@ public abstract class Metric {
 	private String valueMap;
 
 	// Preprocessing
-	private ArrayList<PreprocessingStep> preprocessing;
+	private ArrayList<PreprocessingStep> preprocessing = new ArrayList<PreprocessingStep>(0);
 
 	// Triggers
 	private ArrayList<Trigger> triggers = new ArrayList<Trigger>(0);
