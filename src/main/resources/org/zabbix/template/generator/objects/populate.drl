@@ -189,7 +189,7 @@ end
 
 rule "Rule: reset trends to 0 for health-checks(metrics with value_maps) or non-numeric values"
 	agenda-group "populate"
-	salience 101
+	salience -100
 	dialect "mvel"
 when
 	$m : Metric (
@@ -199,4 +199,52 @@ when
 then
     logger.debug(marker,"Resetting trends to 0 for item {}", $m.id);
     $m.trends = "0";
+end
+
+// commented out to avoid broken graphs
+// rule "Rule: set update interval to 30s for health-checks(metrics with value_maps) and add discard with 5m"
+// 	agenda-group "populate"
+// 	salience -100
+// 	dialect "mvel"
+// when
+// 	$m : Metric (
+// 		valueMap != null,
+// 		preprocessing.size() == 0
+// 	)
+// 	// TODO add comparator to check whether discard already present then remove size() restriction
+// then
+//     logger.debug(marker,"Setting update interval to 30s for item {}", $m.id);
+//     $m.delay= "30s";
+// 	$m.history= "14d";
+// 	discard = new PreprocessingStep();
+// 	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_WITH_HEARTBEAT;
+// 	discard.params = "5m";
+// 	$m.preprocessing.add(discard);
+// end
+
+
+rule "Rule: add discard with 1h/1d heathbeat for inventory checks. Enforce 14d for history"
+	agenda-group "populate"
+	salience -100
+	dialect "mvel"
+when
+	$m : Metric (
+		(inventoryLink != InventoryLink.NONE ||
+		group == Metric$Group.Inventory)
+	)
+	// TODO add comparator to check whether discard already present then remove size() restriction
+then
+    logger.debug(marker,"Setting update interval to 1h for item {}", $m.id);
+	
+	$m.delay= "1h";
+	$m.history= "2w";
+	discard = new PreprocessingStep();
+	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_WITH_HEARTBEAT;
+	discard.params = "1d";
+	if (!($m.preprocessing contains discard)) {
+		logger.debug(marker,"Preprocessing does not contain {} {}, {}",$m.id, discard.type, $m.preprocessing);
+		$m.preprocessing.add(discard);
+	} else {
+		logger.debug(marker,"Preprocessing contains {} {}, {}",$m.id, discard.type, $m.preprocessing);
+	}
 end
