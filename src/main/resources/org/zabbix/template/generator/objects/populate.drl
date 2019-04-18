@@ -186,3 +186,17 @@ then
     logger.debug(marker,"Resetting delay to 0 for dependent discovery rule {}", $dr.name);
     $dr.delay = 0;
 end
+
+rule "Rule: reset trends to 0 for health-checks(metrics with value_maps) or non-numeric values"
+	agenda-group "populate"
+	salience 101
+	dialect "mvel"
+when
+	$m : Metric (
+		valueMap != null || 
+		(valueType != ValueType.INTEGER && valueType != ValueType.FLOAT)
+	)
+then
+    logger.debug(marker,"Resetting trends to 0 for item {}", $m.id);
+    $m.trends = "0";
+end
