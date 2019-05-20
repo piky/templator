@@ -32,7 +32,7 @@ rule "Rule 2.1: Generate metric key for SNMP type"
 	no-loop
 	dialect "mvel"
 when
-	$m : Metric ( key != null, key not contains '[', key not contains ']', discoveryRule != null)
+	$m : Metric ( type == Type.SNMP, key != null, key not contains '[', key not contains ']', discoveryRule != null)
 then
     logger.info(marker,"RULE2.1: There is a 'key' statically defined but item is prototype(LLD): for "+$m.name+" "+$m.key+" so let's regenerate it...");
     modify( $m ) {
