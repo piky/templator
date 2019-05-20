@@ -18,6 +18,8 @@ public class DiscoveryRule {
 	private String description;
 
 	private Filter filter;
+	@JsonAlias("lld_macro_paths")
+	private ArrayList<LLDMacroPath> lldMacroPaths = new ArrayList<>(0);
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
 	// Preprocessing
@@ -121,5 +123,13 @@ public class DiscoveryRule {
 
 	public void setFilter(Filter filter) {
 		this.filter = filter;
+	}
+
+	public ArrayList<LLDMacroPath> getLldMacroPaths() {
+		return lldMacroPaths;
+	}
+
+	public void setLldMacroPaths(ArrayList<LLDMacroPath> lldMacroPaths) {
+		this.lldMacroPaths = lldMacroPaths;
 	}
 }

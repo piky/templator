@@ -385,7 +385,7 @@
             <verify_host>0</verify_host>
             </#if>
             <#if zbx_ver == '4.2'>
-            <lld_macro_paths/>
+            <@lld_macro_paths dr/>
             <@preprocessing dr zbx_ver/>
             <@master_item dr 'master_item'/>
             </#if>
@@ -501,6 +501,20 @@
         </#if>
 </#macro>
 
+<#macro lld_macro_paths dr>
+    <#if dr.lldMacroPaths??>
+        <lld_macro_paths>
+        <#list dr.lldMacroPaths as lld_path>
+            <lld_macro_path>
+                <lld_macro>${lld_path.lldMacro}</lld_macro>
+                <path>${lld_path.path}</path>
+            </lld_macro_path>
+        </#list>
+        </lld_macro_paths>
+    <#else>
+        <lld_macro_paths/>
+    </#if>
+</#macro>
 
 <#--     <xsl:template name="triggerTemplate">
         <xsl:variable name="template_name" select="../../../../name"/>
