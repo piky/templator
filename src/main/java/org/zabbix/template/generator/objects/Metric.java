@@ -60,7 +60,7 @@ public abstract class Metric {
 
 	public enum Group {
 		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Inventory, Storage, General, Fans,
-		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Wireless,
+		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless,
 		Nginx,
 		Apache// to be extended
 	};
