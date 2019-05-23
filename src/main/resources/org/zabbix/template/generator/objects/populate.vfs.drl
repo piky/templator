@@ -93,3 +93,19 @@ then
 		    expressionFormula = "(last("+$m_u_used.key+")*last("+$m_u.key+"))"
 	  };
 end
+
+
+rule "Rule 10: generate vfs.fs.used"
+	agenda-group "populate"
+	salience -50
+	dialect "mvel"
+when
+    $m : Metric ( id == 'vfs.fs.used')
+	$m_total : Metric ( id == 'vfs.fs.total')
+	$m_free: Metric ( id == 'vfs.fs.free')
+then
+    logger.info(marker,"There are vfs.fs.total and vfs.fs.free found ");
+    modify( $m ) {
+		    expressionFormula = "(last("+$m_total.key+")-last("+$m_free.key+"))"
+	  };
+end
