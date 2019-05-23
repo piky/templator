@@ -83,6 +83,8 @@ TODO
 - how metrics are enriched if in LLD (keys, names) What is ALARM_OBJECT, ALARM_OBJECT_TYPE
 - if `application_prototype` is defined, then application is not filled with `group` value. This enforces 'single application guideline'
 - discard preprocessing steps are magically stripped for templates versions < 4.2
+- discard preprocessing steps are magically added for inventory like metrics  and health-checks
+- resets 'trends' to 0 for items with value maps.
 _____________________________________________------------
 
 ## Features

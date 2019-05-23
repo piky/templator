@@ -18,5 +18,11 @@
         "*.json": "jsonc"
     },
     "python.pythonPath": "C:\\Program Files\\Python37\\python.exe",
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    }
 }
