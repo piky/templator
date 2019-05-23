@@ -1,5 +1,4 @@
-package org.zabbix.template.generator.objects
-;
+package org.zabbix.template.generator.objects;
 
 
 

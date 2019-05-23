@@ -1,5 +1,35 @@
 package org.zabbix.template.generator.objects;
 
+rule "Baseline rule: PERFORMANCE+OS"
+	agenda-group "baseline"
+when
+//TODO extend add more metrics
+    $t: Template (classes contains TemplateClass.PERFORMANCE , classes contains TemplateClass.OS)
+    do [logBadge]
+    not (
+        Metric (id == 'system.cpu.switches') and
+        Metric (id == 'system.cpu.intr') and
+        Metric (id == 'vm.memory.available') and
+        Metric (id == 'vm.memory.total') and 
+        //metrics below are not recommended:
+        not (
+            Metric (id =='vm.memory.pused') or
+            Metric (id =='vm.memory.free')
+         )
+    ) do [notBadgeFull]
+    not (
+        Metric (id =='system.cpu.util')
+    ) do [notBadgeBase]
+then
+
+then[logBadge]
+    logger.info(marker,"Checking for PERFORMANCE+OS+FULL badge...");
+then[notBadgeBase]
+    logger.error(marker,"This template cannot be badged as PERFORMANCE+OS");
+then[notBadgeFull]
+    logger.warn(marker,"This template cannot be badged as PERFORMANCE+OS+FULL");
+end
+
 rule "Baseline rule: PERFORMANCE+NETWORK"
 	agenda-group "baseline"
 when
