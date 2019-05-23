@@ -451,7 +451,7 @@
             	<graph_item>
             		<sortorder>${gi?index}</sortorder>
             		${xml_wrap(gi.drawType.getZabbixValue()?c,'drawtype')}
-            		${xml_wrap(gi.graphColors[gi?index],'color')}
+            		${xml_wrap(gi.color!(gi.graphColors[gi?index]),'color')}
             		${xml_wrap(gi.yAxisSide.getZabbixValue()?c,'yaxisside')}
             		${xml_wrap(gi.calcFnc.getZabbixValue()?c,'calc_fnc')}
             		${xml_wrap(gi.type.getZabbixValue()?c,'type')}

@@ -12,6 +12,7 @@ public class GraphItem {
 	private DrawType drawType = DrawType.LINE;
 
 	// change to Color enum
+	@JsonAlias({"colour"})
 	private String color;
 
 	@JsonAlias({ "yaxisside" })
