@@ -28,6 +28,11 @@ public class DiscoveryRule {
 	@JsonAlias("master_item")
 	private String masterItem;
 
+	// if true, It means that only single discovery object is expected. Some validation rules can be ignored. 
+	private Boolean singleton = false;
+	@JsonAlias("zbx_ver")
+	private Version zbxVer = new Version("3.0");
+
 
 
 	public String getName() {
@@ -131,5 +136,21 @@ public class DiscoveryRule {
 
 	public void setLldMacroPaths(ArrayList<LLDMacroPath> lldMacroPaths) {
 		this.lldMacroPaths = lldMacroPaths;
+	}
+
+	public Boolean getSingleton() {
+		return singleton;
+	}
+
+	public void setSingleton(Boolean singleton) {
+		this.singleton = singleton;
+	}
+
+	public Version getZbxVer() {
+		return zbxVer;
+	}
+
+	public void setZbxVer(Version zbxVer) {
+		this.zbxVer = zbxVer;
 	}
 }

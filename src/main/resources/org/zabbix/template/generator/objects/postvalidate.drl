@@ -5,7 +5,8 @@ rule "Validation rule 1: you should have both discoveryRule and alarmObject defi
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
-	$m : Metric (discoveryRule != null, alarmObject == null )
+	$m : Metric ($dr: discoveryRule != null, alarmObject == null )
+	DiscoveryRule(name == $dr, singleton == false)
 then
     logger.error(marker,"Please define 'alarmObject' for "+$m.id);
 end

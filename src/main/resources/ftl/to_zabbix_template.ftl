@@ -41,11 +41,11 @@
             </items>
             <#if (t.discoveryRules?size > 0)>
             <discovery_rules>
-	            <#list t.discoveryRules as dr>
+	            <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
 	            <discovery_rule>
 	                <@discovery_rule dr t/>
 	            </discovery_rule>
-            </#list>
+                </#list>
             </discovery_rules>
             <#else>
             <discovery_rules/>

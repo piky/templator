@@ -190,11 +190,25 @@ public class Template {
 		return getMetrics(Arrays.asList(metrics), filter_by_min_version);
 	}
 
+	public ArrayList<DiscoveryRule> getDiscoveryRulesByZbxVer(DiscoveryRule[] drules, String zbxVer) {
+		Predicate<DiscoveryRule> filter_by_min_version = dr -> (dr.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
+		return getDiscoveryRules(Arrays.asList(drules), filter_by_min_version);
+	}
+
 	public ArrayList<Metric> getMetrics(List<Metric> metrics, Predicate<Metric> metricPredicate) {
 
 		ArrayList<Metric> toReturn = new ArrayList<>();
 		for (Metric m : metrics.stream().filter(metricPredicate).toArray(Metric[]::new)) {
 			toReturn.add(m);
+		}
+		return toReturn;
+	}
+
+	public ArrayList<DiscoveryRule> getDiscoveryRules(List<DiscoveryRule> drules, Predicate<DiscoveryRule> dPredicate) {
+
+		ArrayList<DiscoveryRule> toReturn = new ArrayList<>();
+		for (DiscoveryRule dr : drules.stream().filter(dPredicate).toArray(DiscoveryRule[]::new)) {
+			toReturn.add(dr);
 		}
 		return toReturn;
 	}
