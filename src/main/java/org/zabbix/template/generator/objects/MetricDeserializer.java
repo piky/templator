@@ -94,6 +94,8 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 			ObjectReader updater = mapper.readerForUpdating(defaults);
 			Metric merged = updater.readValue(node);
 
+			merged.constructMetricsUsed();//metrics used in expressionFormula
+
 			return merged;
 
 		} else {

@@ -2,6 +2,9 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -117,6 +120,10 @@ public abstract class Metric {
 	private ArrayList<Trigger> triggers = new ArrayList<Trigger>(0);
 	// Graphs
 	private ArrayList<Graph> graphs = new ArrayList<Graph>(0);
+
+	// this array to store all metrics used apart from parent metric. To be used in
+	// Drools(replace with metric keys)
+	private HashSet<String> metricsUsed = new HashSet<>(0);
 
 	// Generated down below
 	public String getPrototype() {
@@ -671,6 +678,29 @@ public abstract class Metric {
 		// <ssl_key_password/>
 		// <verify_peer>0</verify_peer>
 		// <verify_host>0</verify_host>
+
+		/*
+			used For expressionFormula
+		*/
+		public void constructMetricsUsed() {
+	
+			if (this.expressionFormula != null) {
+				Matcher m = Pattern.compile("__(.+?)__").matcher(this.expressionFormula);
+				while (m.find()) {
+					this.metricsUsed.add(m.group(1));
+				}
+			}
+		}
+
+		public HashSet<String> getMetricsUsed() {
+			return metricsUsed;
+		}
+	
+		public void setMetrics(HashSet<String> metricsUsed) {
+			this.metricsUsed = metricsUsed;
+		}
+
+
 }
 
 

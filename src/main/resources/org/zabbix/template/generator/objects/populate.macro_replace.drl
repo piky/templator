@@ -137,3 +137,49 @@ then
     $m.applicationPrototype = $ap.replace("__ALARM_OBJECT_TYPE__",$alarmObjectType)
     
 end
+
+
+
+
+
+
+/*
+CALCULATED EXPRESSIONS REPLACE METRICS in expressions
+*/
+
+//replaces TEMPLATE_NAME:__metricID__ name
+rule "Rule: replace metrics in expression formula"
+	agenda-group "populate"
+	no-loop
+    dialect "mvel"
+when
+    
+    $m : Metric ($key: key != null, $expression: expressionFormula != null, $metricsUsed: metricsUsed)
+    $t : Template(metricsRegistry contains $m)
+    $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.id memberOf $metricsUsed )
+then
+    logger.warn(marker,"REPLACING metric "+$m2.getId()+" in expressionFormula: "+ $m.id);
+    $m.expressionFormula =  $expression.replace("__"+$m2.id+"__",$m2.key);
+end
+//
+rule "Rule: replaces __ALARM_OBJECT__ macro in expression formula"
+	agenda-group "populate"
+	no-loop
+    dialect "mvel"
+when    
+    $m : Metric ($key: key != null, $expression: expressionFormula != null, $alarmObject: alarmObject != null)
+then
+    logger.debug(marker,"Generating formula expression for CALCULATED (changing __ALARM_OBJECT__) for "+ $m.id);
+    $m.expressionFormula = $m.expressionFormula.replace("__ALARM_OBJECT__",$alarmObject);
+end
+
+rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in expression formula"
+	agenda-group "populate"
+	no-loop
+    dialect "mvel"
+when    
+    $m : Metric ($key: key != null, $expression: expressionFormula != null, $alarmObjectType: alarmObjectType != null)
+then
+    logger.debug(marker,"Generating formula expression for CALCULATED (changing __ALARM_OBJECT_TYPE__) for "+ $m.id);
+    $m.expressionFormula = $m.expressionFormula.replace("__ALARM_OBJECT_TYPE__",$alarmObjectType);
+end
