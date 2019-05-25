@@ -154,6 +154,19 @@ then
     };
 end
 
+rule "Rule 7.1: generate additional macros (vfs.fs.inode.pfree)"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+    exists (Metric(id == "vfs.fs.inode.pfree") from $metrics)
+then
+    logger.info(marker,"Found vfs.fs.inode.pfree, adding additional MACRO...");
+    modify($t) {
+    	getMacros().add(new UserMacro("{$INODE_PFREE_WARN}","20")),
+    	getMacros().add(new UserMacro("{$INODE_PFREE_CRIT}","10"));
+    };
+end
 
 rule "Rule 8: generate additional macros (General class)"
 	agenda-group "populate"
