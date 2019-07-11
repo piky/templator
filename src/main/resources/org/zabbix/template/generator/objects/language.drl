@@ -3,58 +3,62 @@ import java.util.HashMap;
 
 rule "Translation rule: metric name"
 	agenda-group "language"
+	dialect "mvel"
 	no-loop
 when
 	$m : Metric (translations != null)
 	$hm: HashMap(this.keySet() contains lang) from $m.translations
 	Translation(name !=null) from $hm[lang]
 then
-    logger.info(marker,"Translating metric name: {}",$m.getId());
-    modify($m){
-        setName($m.getTranslations().get(lang).getName());
-    }
+	logger.info(marker,"Translating metric name: {}", $m.id);
+	modify($m){
+		name = $m.translations[lang].name;
+	}
 end
 
 rule "Translation rule: metric description"
 	agenda-group "language"
+	dialect "mvel"
 	no-loop
 when
 	$m : Metric (translations != null)
 	$hm: HashMap(this.keySet() contains lang) from $m.translations
 	Translation(description !=null) from $hm[lang]
 then
-    logger.info(marker,"Translating metric description: "+$m.getId());
-    modify($m){
-        setDescription($m.getTranslations().get(lang).getDescription());
-    }
+	logger.info(marker,"Translating metric description: "+$m.id);
+	modify($m){
+		description = $m.translations[lang].description;
+	}
 end
 
 rule "Translation rule: trigger name"
 	agenda-group "language"
+	dialect "mvel"
 	no-loop
 when
 	$m : Metric ($triggers: triggers)
-    $tr: Trigger (translations != null) from $triggers
+	$tr: Trigger (translations != null) from $triggers
 	$hm: HashMap(this.keySet() contains lang) from $tr.translations
 	Translation(name !=null) from $hm[lang]
 then
-    logger.info(marker,"Translating trigger name: "+$tr.getId());
-    modify($tr){
-        setName($tr.getTranslations().get(lang).getName());
-    }
+	logger.info(marker,"Translating trigger name: "+$tr.id);
+	modify($tr){
+		name = $tr.translations[lang].name;
+	}
 end
 
 rule "Translation rule: trigger description"
 	agenda-group "language"
+	dialect "mvel"
 	no-loop
 when
 	$m : Metric ($triggers: triggers)
-    $tr: Trigger (translations != null) from $triggers
+	$tr: Trigger (translations != null) from $triggers
 	$hm: HashMap(this.keySet() contains lang) from $tr.translations
 	Translation(description !=null) from $hm[lang]
 then
-    logger.info(marker,"Translating trigger description: {}",$tr.getId());
-    modify($tr){
-        setDescription($tr.getTranslations().get(lang).getDescription());
-    }
+	logger.info(marker,"Translating trigger description: {}",$tr.id);
+	modify($tr){
+		description = $tr.translations[lang].description;
+	}
 end
