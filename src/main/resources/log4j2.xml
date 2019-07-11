@@ -3,7 +3,7 @@
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%highlight{%-20.20c{2}[%-5p] %m%n}{FATAL=white, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue}" disableAnsi="false"/>
+            <PatternLayout pattern="%highlight{%-20.20c{2}[%-5p] %m%n}{FATAL=white, ERROR=red, WARN=blue, INFO=white, DEBUG=green, TRACE=blue}" disableAnsi="false"/>
         </Console>
     </Appenders>
 
