@@ -1,6 +1,5 @@
 package org.zabbix.template.generator.objects;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum TemplateClass {

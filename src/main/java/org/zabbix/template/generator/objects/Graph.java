@@ -3,7 +3,6 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class Graph {
 

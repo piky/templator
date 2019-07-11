@@ -1,10 +1,7 @@
 package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 

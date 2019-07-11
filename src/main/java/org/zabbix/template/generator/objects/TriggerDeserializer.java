@@ -3,9 +3,6 @@ package org.zabbix.template.generator.objects;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 import org.zabbix.template.generator.PrototypesService;
 
 import com.fasterxml.jackson.core.JsonParser;
