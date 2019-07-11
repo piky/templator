@@ -11,5 +11,4 @@ public class Main {
         @SuppressWarnings("unused")
         ApplicationContext ctx = SpringApplication.run(Main.class, args);
     }
-
 }

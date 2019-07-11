@@ -12,14 +12,14 @@ for example in JSON:
                             "snmpObject": "ciscoEnvMonTemperatureValue.{#SNMPINDEX}",
                             "mib": "CISCO-ENVMON-MIB",
                             "vendorDescription": "The current measurement of the test point being instrumented.",
-                            "alarmObject": "{#SNMPVALUE}",
+                            "resource": "{#SNMPVALUE}",
                             "triggers": [
                                 {
                                     "prototype": "tempWarn.combined"
                                 },
                                 {
                                     "prototype": "tempCrit.combined",
-                                    "expression": "{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"__ALARM_OBJECT_TYPE__\"}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_CRIT_STATUS}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_DISASTER_STATUS}"
+                                    "expression": "{TEMPLATE_NAME:METRIC.avg(5m)}>{$TEMP_CRIT:\"__RESOURCE_TYPE__\"}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_CRIT_STATUS}\nor\n{TEMPLATE_NAME:__sensor.temp.status__.last(0)}={$TEMP_DISASTER_STATUS}"
                                 },
                                 {
                                     "prototype": "tempLow"
@@ -42,7 +42,7 @@ in expressions used special MACRO: TEMPLATE_NAME:METRIC to reference metric wher
 __metric_id__ to reference any other metric.
 
 ## Composition of trigger name
-alarmObject of the metric is used
+resource of the metric is used
 
 
 ## prototypes
@@ -51,8 +51,8 @@ you can also define trigger not in `in` file but in prototypes
 
 ## Translating triggers
 
-
 ## Redefining metric triggers set of prototype
+
 You can redefine which triggers will be active to this specific template. Example:
 In prototype of `system.status` metric only `health.crit` trigger is present:
 ```
@@ -84,7 +84,7 @@ If you want to have more triggers for this metric, you may actually redefine thi
               "oid": "1.3.6.1.4.1.9.9.719.1.9.35.1.42.{#SNMPINDEX}",
               "snmpObject": "cucsComputeRackUnitOperState.{#SNMPINDEX}",
               "mib": "CISCO-UNIFIED-COMPUTING-COMPUTE-MIB",
-              "alarmObject": "{#UNIT_LOCATION}",
+              "resource": "{#UNIT_LOCATION}",
               "vendorDescription": "Cisco UCS compute:RackUnit:operState managed object property",
               "valueMap": "CISCO-UNIFIED-COMPUTING-TC-MIB::CucsLsOperState",
               "triggers": [
@@ -121,7 +121,7 @@ but you need to redefine trigger expression after that:
               "oid": "1.3.6.1.4.1.9.9.719.1.45.1.1.6.{#SNMPINDEX}",
               "snmpObject": "cucsStorageControllerOperState.{#SNMPINDEX}",
               "mib": "CISCO-UNIFIED-COMPUTING-STORAGE-MIB",
-              "alarmObject": "{#DISKARRAY_LOCATION}",
+              "resource": "{#DISKARRAY_LOCATION}",
               "valueMap": "CISCO-UNIFIED-COMPUTING-TC-MIB::CucsEquipmentOperability",
               "triggers":[
                 {

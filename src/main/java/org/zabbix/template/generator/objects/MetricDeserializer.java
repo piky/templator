@@ -60,7 +60,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 	 * 
 	 * String defaultJson = "{\r\n" + "	\"prototype\":\"sensor.temp.value\",\r\n" +
 	 * "	\"name\":\"Temperature\",\r\n" +
-	 * "	\"description\":\"Temperature readings of testpoint: <xsl:value-of select=\\\"alarmObject\\\"/>\",\r\n"
+	 * "	\"description\":\"Temperature readings of testpoint: <xsl:value-of select=\\\"resource\\\"/>\",\r\n"
 	 * + "	\"valueType\":\"FLOAT\",\r\n" + "	\"group\":\"Temperature\"\r\n" +
 	 * "}"; Metric defaults = mapper.readValue(defaultJson,MetricDefault.class);
 	 * 

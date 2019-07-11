@@ -97,10 +97,10 @@ public abstract class Metric {
 	// Discovery stuff
 	@JsonAlias("discovery_rule")
 	private String discoveryRule;
-	@JsonAlias("alarm_object")
-	private String alarmObject;
-	@JsonAlias("alarm_object_type")
-	private String alarmObjectType;
+	@JsonAlias("resource")
+	private String resource;
+	@JsonAlias("resource_type")
+	private String resourceType;
 
 	@JsonAlias("master_item")
 	private String masterItem;
@@ -306,20 +306,20 @@ public abstract class Metric {
 		this.discoveryRule = discoveryRule;
 	}
 
-	public String getAlarmObject() {
-		return alarmObject;
+	public String getResource() {
+		return resource;
 	}
 
-	public void setAlarmObject(String alarmObject) {
-		this.alarmObject = alarmObject;
+	public void setResource(String resource) {
+		this.resource = resource;
 	}
 
-	public String getAlarmObjectType() {
-		return alarmObjectType;
+	public String getResourceType() {
+		return resourceType;
 	}
 
-	public void setAlarmObjectType(String alarmObjectType) {
-		this.alarmObjectType = alarmObjectType;
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
 
 	public String getMasterItem() {

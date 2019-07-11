@@ -4,28 +4,28 @@ package org.zabbix.template.generator.objects
 METRICS
 */
 //
-rule "Rule: replaces __ALARM_OBJECT__ macro in metrics"
+rule "Rule: replaces __RESOURCE__ macro in metrics"
 	agenda-group "populate"
 	no-loop
 when    
-    $m : Metric ($key: key != null,  $alarmObject: alarmObject != null) 
+    $m : Metric ($key: key != null,  $resource: resource != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replace("__ALARM_OBJECT__",$alarmObject));
+    	$m.setDescription( $m.getDescription().replace("__RESOURCE__",$resource));
     }
-    $m.setName( $m.getName().replace("__ALARM_OBJECT__",$alarmObject));
+    $m.setName( $m.getName().replace("__RESOURCE__",$resource));
 end
 
-rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in metrics"
+rule "Rule: replaces __RESOURCE_TYPE__ macro in metrics"
 	agenda-group "populate"
 	no-loop
 when    
-    $m : Metric ($key: key != null, $alarmObjectType: alarmObjectType != null) 
+    $m : Metric ($key: key != null, $resourceType: resourceType != null) 
 then
     if ($m.getDescription() !=null) { 
-    	$m.setDescription( $m.getDescription().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$m.setDescription( $m.getDescription().replace("__RESOURCE_TYPE__",$resourceType));
     }
-    $m.setName( $m.getName().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $m.setName( $m.getName().replace("__RESOURCE_TYPE__",$resourceType));
 end
 
 
@@ -76,65 +76,65 @@ end
 
 
 //
-rule "Rule: replaces __ALARM_OBJECT__ macro in expressions"
+rule "Rule: replaces __RESOURCE__ macro in expressions"
 	agenda-group "populate"
 	no-loop
 when    
-    $m : Metric ($key: key != null, $triggers: triggers, $alarmObject: alarmObject != null)
+    $m : Metric ($key: key != null, $triggers: triggers, $resource: resource != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT__) for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger expression (changing __RESOURCE__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__ALARM_OBJECT__",$alarmObject));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__RESOURCE__",$resource));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replace("__ALARM_OBJECT__",$alarmObject));
+    	$tr.setDescription( $tr.getDescription().replace("__RESOURCE__",$resource));
     }
-    $tr.setExpression( $tr.getExpression().replace("__ALARM_OBJECT__",$alarmObject));
-    $tr.setName( $tr.getName().replace("__ALARM_OBJECT__",$alarmObject));
+    $tr.setExpression( $tr.getExpression().replace("__RESOURCE__",$resource));
+    $tr.setName( $tr.getName().replace("__RESOURCE__",$resource));
 end
 
-rule "Rule: replaces ____ALARM_OBJECT_TYPE__ macro in expressions"
+rule "Rule: replaces ____RESOURCE_TYPE__ macro in expressions"
 	agenda-group "populate"
 	no-loop
 when    
-    $m : Metric ($key: key != null, $triggers: triggers, $alarmObjectType: alarmObjectType != null)
+    $m : Metric ($key: key != null, $triggers: triggers, $resourceType: resourceType != null)
     $tr: Trigger () from $triggers 
 then
-    logger.debug(marker,"Generating trigger expression (changing __ALARM_OBJECT_TYPE__) for "+ $tr.getName());
+    logger.debug(marker,"Generating trigger expression (changing __RESOURCE_TYPE__) for "+ $tr.getName());
     if ($tr.getRecoveryExpression() !=null) { 
-    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$tr.setRecoveryExpression( $tr.getRecoveryExpression().replace("__RESOURCE_TYPE__",$resourceType));
     }
     if ($tr.getDescription() !=null) { 
-    	$tr.setDescription( $tr.getDescription().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    	$tr.setDescription( $tr.getDescription().replace("__RESOURCE_TYPE__",$resourceType));
     }
-    $tr.setExpression( $tr.getExpression().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
-    $tr.setName( $tr.getName().replace("__ALARM_OBJECT_TYPE__",$alarmObjectType));
+    $tr.setExpression( $tr.getExpression().replace("__RESOURCE_TYPE__",$resourceType));
+    $tr.setName( $tr.getName().replace("__RESOURCE_TYPE__",$resourceType));
 end
 
 
 
 //
-rule "Rule: replaces __ALARM_OBJECT__ macro in applicationPrototype"
+rule "Rule: replaces __RESOURCE__ macro in applicationPrototype"
 	agenda-group "populate"
 	no-loop
     dialect "mvel"
 when    
-    $m : Metric ($ap: applicationPrototype contains "__ALARM_OBJECT__", $alarmObject: alarmObject != null)
+    $m : Metric ($ap: applicationPrototype contains "__RESOURCE__", $resource: resource != null)
 then
-    logger.debug(marker,"Replacing AlarmObject in application_prototype "+ $m.id);
-    $m.applicationPrototype = $ap.replace("__ALARM_OBJECT__", $alarmObject);
+    logger.debug(marker,"Replacing resource in application_prototype "+ $m.id);
+    $m.applicationPrototype = $ap.replace("__RESOURCE__", $resource);
 end
 
-rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in applicationPrototype"
+rule "Rule: replaces __RESOURCE_TYPE__ macro in applicationPrototype"
 	agenda-group "populate"
 	no-loop
     dialect "mvel"
 when    
-    $m : Metric ($ap: applicationPrototype != null, $alarmObjectType: alarmObjectType != null)
+    $m : Metric ($ap: applicationPrototype != null, $resourceType: resourceType != null)
 then
-    logger.debug(marker,"Replacing AlarmObjectType in application_prototype "+ $m.id);
-    $m.applicationPrototype = $ap.replace("__ALARM_OBJECT_TYPE__",$alarmObjectType)
+    logger.debug(marker,"Replacing resourceType in application_prototype "+ $m.id);
+    $m.applicationPrototype = $ap.replace("__RESOURCE_TYPE__",$resourceType)
     
 end
 
@@ -162,24 +162,24 @@ then
     $m.expressionFormula =  $expression.replace("__"+$m2.id+"__",$m2.key);
 end
 //
-rule "Rule: replaces __ALARM_OBJECT__ macro in expression formula"
+rule "Rule: replaces __RESOURCE__ macro in expression formula"
 	agenda-group "populate"
 	no-loop
     dialect "mvel"
 when    
-    $m : Metric ($key: key != null, $expression: expressionFormula != null, $alarmObject: alarmObject != null)
+    $m : Metric ($key: key != null, $expression: expressionFormula != null, $resource: resource != null)
 then
-    logger.debug(marker,"Generating formula expression for CALCULATED (changing __ALARM_OBJECT__) for "+ $m.id);
-    $m.expressionFormula = $m.expressionFormula.replace("__ALARM_OBJECT__",$alarmObject);
+    logger.debug(marker,"Generating formula expression for CALCULATED (changing __RESOURCE__) for "+ $m.id);
+    $m.expressionFormula = $m.expressionFormula.replace("__RESOURCE__",$resource);
 end
 
-rule "Rule: replaces __ALARM_OBJECT_TYPE__ macro in expression formula"
+rule "Rule: replaces __RESOURCE_TYPE__ macro in expression formula"
 	agenda-group "populate"
 	no-loop
     dialect "mvel"
 when    
-    $m : Metric ($key: key != null, $expression: expressionFormula != null, $alarmObjectType: alarmObjectType != null)
+    $m : Metric ($key: key != null, $expression: expressionFormula != null, $resourceType: resourceType != null)
 then
-    logger.debug(marker,"Generating formula expression for CALCULATED (changing __ALARM_OBJECT_TYPE__) for "+ $m.id);
-    $m.expressionFormula = $m.expressionFormula.replace("__ALARM_OBJECT_TYPE__",$alarmObjectType);
+    logger.debug(marker,"Generating formula expression for CALCULATED (changing __RESOURCE_TYPE__) for "+ $m.id);
+    $m.expressionFormula = $m.expressionFormula.replace("__RESOURCE_TYPE__",$resourceType);
 end

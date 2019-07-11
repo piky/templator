@@ -56,37 +56,37 @@ then
 end
 
 
-rule "Rule 3: prefix Name with alarmObject"
+rule "Rule 3: prefix Name with resource"
 	agenda-group "populate"
 when
-	$m : Metric ( alarmObject != null)
+	$m : Metric ( resource != null)
 then
-    logger.debug(marker,"RULE3: Changing name to 'alarmObject: $m.name' for "+$m);
+    logger.debug(marker,"RULE3: Changing name to 'resource: $m.name' for "+$m);
     modify( $m ) { 
-    		setName( $m.getAlarmObject() + ": " + $m.getName() )
+    		setName( $m.getResource() + ": " + $m.getName() )
     	};
 end
 
-rule "Rule 3a: generate each trigger name(discovery rules, prefix with alarmObject)"
+rule "Rule 3a: generate each trigger name(discovery rules, prefix with resource)"
 	agenda-group "populate"
 	no-loop
 when
-    $m : Metric ($key: key != null, alarmObject != null, $triggers: triggers)
+    $m : Metric ($key: key != null, resource != null, $triggers: triggers)
     $tr: Trigger ($e: expression!=null) from $triggers 
 then
     logger.debug(marker,"Generating trigger name for "+ $tr.getName());
-    $tr.setName( $m.getAlarmObject() + ": " + $tr.getName() );
+    $tr.setName( $m.getResource() + ": " + $tr.getName() );
 end
 
-rule "Rule 3b: generate each graph name(discovery rules, prefix with alarmObject)"
+rule "Rule 3b: generate each graph name(discovery rules, prefix with resource)"
 	agenda-group "populate"
 	no-loop
 when
-    $m : Metric ($key: key != null, alarmObject != null, $graphs: graphs)
+    $m : Metric ($key: key != null, resource != null, $graphs: graphs)
     $gr: Graph () from $graphs
 then
     logger.info(marker,"Generating graph name for "+ $gr);
-    $gr.setName( $m.getAlarmObject() + ": " + $gr.getName() );
+    $gr.setName( $m.getResource() + ": " + $gr.getName() );
 end
 
 

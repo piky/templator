@@ -365,8 +365,8 @@
 						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<!-- To modify update intervals in in files -->
 						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="resource" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="resourceType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<!-- change to float -->
@@ -407,8 +407,8 @@
 						<!-- To modify update intervals in in files -->
 						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="resource" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<xs:element name="resourceType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/>
 						<!-- in to_metrics only -->
