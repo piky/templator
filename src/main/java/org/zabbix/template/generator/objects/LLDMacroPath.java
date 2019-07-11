@@ -7,7 +7,6 @@ public class LLDMacroPath {
     private String lldMacro;
     private String path;
 
-
     public String getPath() {
         return path;
     }

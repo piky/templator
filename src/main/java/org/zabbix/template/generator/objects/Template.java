@@ -17,7 +17,7 @@ public class Template {
 
 	private String name;
 	private String description;
-	
+
 	@JsonAlias("zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
@@ -98,7 +98,7 @@ public class Template {
 		this.groups = groups;
 	}
 
-		/**
+	/**
 	 * @return the classes
 	 */
 	public ArrayList<DiscoveryRule> getDiscoveryRules() {
@@ -111,7 +111,6 @@ public class Template {
 	public void setDiscoveryRules(ArrayList<DiscoveryRule> discoveryRules) {
 		this.discoveryRules = discoveryRules;
 	}
-
 
 	public TreeSet<UserMacro> getMacros() {
 		return macros;

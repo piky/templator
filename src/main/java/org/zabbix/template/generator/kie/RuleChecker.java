@@ -20,9 +20,8 @@ import org.zabbix.template.generator.objects.Trigger;
 
 public class RuleChecker implements Processor {
 
-	private static final Logger logger = LogManager.getLogger(RuleChecker.class.getName());
-	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("RuleChecker");
-
+    private static final Logger logger = LogManager.getLogger(RuleChecker.class.getName());
+    private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("RuleChecker");
 
     @Override
     public void process(Exchange exchange) throws Exception {
@@ -31,7 +30,8 @@ public class RuleChecker implements Processor {
         // AgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
         // ksession.addEventListener(agendaEventListener);
 
-        //ArrayList<ValueMap> valueMaps = ((InputJSON) exchange.getIn().getBody()).getValueMaps();
+        // ArrayList<ValueMap> valueMaps = ((InputJSON)
+        // exchange.getIn().getBody()).getValueMaps();
         // kie
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
@@ -66,7 +66,7 @@ public class RuleChecker implements Processor {
             ArrayList<DiscoveryRule> drules = t.getDiscoveryRules();
             for (DiscoveryRule drule : drules) {
                 ksession.insert(drule);
-                
+
                 for (Metric m : drule.getMetrics()) {
 
                     m.setDiscoveryRule(drule.getName());

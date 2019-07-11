@@ -61,7 +61,6 @@ public class Trigger {
 				this.metricsUsed.add(m.group(1));
 			}
 		}
-
 	}
 
 	public enum ManualClose implements ZabbixValue {

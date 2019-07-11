@@ -9,7 +9,7 @@ public class DiscoveryRule {
 	@JsonAlias("snmp_oid")
 	private String oid;
 	private String key;
-	
+
 	@JsonAlias({ "itemType", "item_type" })
 	private Type type;
 	@JsonAlias("update")
@@ -28,12 +28,11 @@ public class DiscoveryRule {
 	@JsonAlias("master_item")
 	private String masterItem;
 
-	// if true, It means that only single discovery object is expected. Some validation rules can be ignored. 
+	// if true, It means that only single discovery object is expected. Some
+	// validation rules can be ignored.
 	private Boolean singleton = false;
 	@JsonAlias("zbx_ver")
 	private Version zbxVer = new Version("3.0");
-
-
 
 	public String getName() {
 		return name;
@@ -98,6 +97,7 @@ public class DiscoveryRule {
 	public void setMetrics(ArrayList<Metric> metrics) {
 		this.metrics = metrics;
 	}
+
 	/**
 	 * @return the preprocessing
 	 */
@@ -112,15 +112,13 @@ public class DiscoveryRule {
 		this.preprocessing = preprocessing;
 	}
 
-
 	public String getMasterItem() {
 		return masterItem;
 	}
 
 	public void setMasterItem(String masterItem) {
 		this.masterItem = masterItem;
-	}	
-
+	}
 
 	public Filter getFilter() {
 		return filter;

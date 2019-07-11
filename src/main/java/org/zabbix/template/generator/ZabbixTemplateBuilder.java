@@ -39,7 +39,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		JacksonDataFormat yamlJackson = new JacksonDataFormat(yamlMapper, InputJSON.class);
 		JacksonDataFormat jsonJackson = new JacksonDataFormat(jsonMapper, InputJSON.class);
 
-		//processor to run all drools checks
+		// processor to run all drools checks
 		RuleChecker ruleChecker = new RuleChecker();
 
 		// Catch wrong metric prototypes spelling
@@ -55,92 +55,82 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		 * WARN,"General error:  ${file:name}: ${exception.message} ${exception.stacktrace}"
 		 * );
 		 */
-		
 
-		/*STEP 1: LOAD INPUT FILE */
+		/* STEP 1: LOAD INPUT FILE */
 		from("file:bin/in?noop=true&include=.*template.*&recursive=true&delay=10&idempotentKey=${file:name}-${file:modified}")
 				.setHeader("template_ver", simple("{{version}}", String.class))
 
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 				.to("direct:lang");
 
-	    /*STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
-		from("direct:lang").to("direct:EN");
-		//, "direct:RU").parallelProcessing();
+		/* STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
+		from("direct:lang")
+				// .to("direct:RU")
+				.to("direct:EN");
+
+		// , "direct:RU").parallelProcessing();
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
-			.stop(); // RU is stopped as objects are not deep-cloned
-		//to("direct:create_template");
+				// .stop(); // RU is stopped as objects are not deep-cloned
+				.to("direct:create_template");
 
 		from("direct:EN").setHeader("lang", simple("EN", String.class)).to("direct:create_template");
 
-		/*STEP 3: CREATE INPUTJSON object from yaml or json 
-		merging between prototype and input is happening here
-		*/
+		/*
+		 * STEP 3: CREATE INPUTJSON object from yaml or json merging between prototype
+		 * and input is happening here
+		 */
 		from("direct:create_template")
 				// JSON - YAML Chooser
-				.choice()
-					.when(simple("${file:ext} == 'yaml'"))
-					// .log("Try YAML....")
-						.unmarshal(yamlJackson).to("direct:drools")
-					.when(simple("${file:ext} == 'json'"))
+				.choice().when(simple("${file:ext} == 'yaml'"))
+				// .log("Try YAML....")
+				.unmarshal(yamlJackson).to("direct:drools").when(simple("${file:ext} == 'json'"))
 				// .log("Try JSON....")
-						.unmarshal(jsonJackson).to("direct:drools");
+				.unmarshal(jsonJackson).to("direct:drools");
 
-		/*STEP 4: evaluate drools rules.
-		note that drools rules come in different agenda groups. See RuleChecker
-		*/
+		/*
+		 * STEP 4: evaluate drools rules. note that drools rules come in different
+		 * agenda groups. See RuleChecker
+		 */
 		from("direct:drools").process(ruleChecker).choice().when(body().method("isFailed"))
 				.log(LoggingLevel.ERROR, "STOPPING").stop().otherwise().to("direct:multicaster_version");
 
-		/*STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0, 4.2)*/
-		from("direct:multicaster_version").multicast().parallelProcessing()
-			.to(
-				"direct:zbx3.2",
-				"direct:zbx3.4",
-				"direct:zbx4.0",
-				"direct:zbx4.2"
-				);
+		/* STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0, 4.2) */
+		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4",
+				"direct:zbx4.0", "direct:zbx4.2");
 
 		from("direct:zbx3.2")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
-					.stream()
-					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("3.2")) <= 0)
-				))
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.2")) <= 0)))
 				.setHeader("zbx_ver", simple("3.2", String.class)).to("direct:multicaster_snmp");
 
 		from("direct:zbx3.4")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
-					.stream()
-					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)
-				))
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)))
 				.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
 
 		from("direct:zbx4.0")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
-					.stream()
-					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("4.0")) <= 0)
-				))
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.0")) <= 0)))
 				.setHeader("zbx_ver", simple("4.0", String.class)).to("direct:multicaster_snmp");
 
 		from("direct:zbx4.2")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates()
-					.stream()
-					.anyMatch( (t) -> (t.getZbxVer().compareTo(new Version("4.2")) <= 0)
-				))
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.2")) <= 0)))
 				.setHeader("zbx_ver", simple("4.2", String.class)).to("direct:multicaster_snmp");
 
-		/*STEP 6: multicast to different SNMP versions (and ICMP)*/
+		/* STEP 6: multicast to different SNMP versions (and ICMP) */
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:snmpv1", "direct:snmpv2", "direct:other"
 				// "direct:remote_service"
 				);
 		from("direct:snmpv1")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-					.contains(TemplateClass.SNMP_V1))
+						.contains(TemplateClass.SNMP_V1))
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
-				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
+				.log(LoggingLevel.DEBUG,
+						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:zabbix_export");
 
 		from("direct:snmpv2")
@@ -148,20 +138,17 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.contains(TemplateClass.SNMP_V2))
 				.setHeader("snmp_item_type", simple("4", String.class))
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
-				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
+				.log(LoggingLevel.DEBUG,
+						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:zabbix_export");
 
-		from("direct:other")
-				.filter(exchange -> ( //only non SNMP templates here
-					(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-					.stream()
-					.anyMatch((a) -> a.equals(TemplateClass.SNMP_V1) ||
-									 a.equals(TemplateClass.SNMP_V2) || 
-									 a.equals(TemplateClass.SNMP_V3)
-					) == false )
+		from("direct:other").filter(exchange -> ( // only non SNMP templates here
+		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
+				.anyMatch((a) -> a.equals(TemplateClass.SNMP_V1) || a.equals(TemplateClass.SNMP_V2)
+						|| a.equals(TemplateClass.SNMP_V3)) == false)
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("", String.class))
-				.log("Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
+				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
 				.to("direct:zabbix_export");
 
 		// .marshal().json(JsonLibrary.Jackson,true)
@@ -174,9 +161,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// for example
 		// Naming restrictions can also be checked for custom metrics
 
-		/*STEP 7(FINAL): export to XML, using freemarker */
+		/* STEP 7(FINAL): export to XML, using freemarker */
 		from("direct:zabbix_export").to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
-				.to("xslt:templates/indent.xsl?saxon=true") //TODO proper indentation for XML file
+				.to("xslt:templates/indent.xsl?saxon=true") // TODO proper indentation for XML file
 				.to("xslt:templates/to_metrics_strip_whitespace.xsl?saxon=true")// trim whitespace on some multiline
 																				// nodes //REFACTOR with DEV-827 below
 				// https://support.zabbix.com/browse/DEV-827
@@ -192,14 +179,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 				.to("file:bin/out")
 
-				.choice()
-					.when(header("zbx_ver").isEqualTo("4.2")).log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
-					.when(header("zbx_ver").isEqualTo("4.0")).log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
-					.when(header("zbx_ver").isEqualTo("3.4")).to("validator:templates/zabbix_export_3.4.xsd")
-					.when(header("zbx_ver").isEqualTo("3.2")).to("validator:templates/zabbix_export_3.2.xsd")
-					
-				.otherwise()
-					.log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
+				.choice().when(header("zbx_ver").isEqualTo("4.2"))
+				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
+				.when(header("zbx_ver").isEqualTo("4.0"))
+				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
+				.when(header("zbx_ver").isEqualTo("3.4")).to("validator:templates/zabbix_export_3.4.xsd")
+				.when(header("zbx_ver").isEqualTo("3.2")).to("validator:templates/zabbix_export_3.2.xsd")
+
+				.otherwise().log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
 
 	}
 }

@@ -18,7 +18,7 @@ public abstract class Metric {
 
 	private String name;
 	private String description;
-	@JsonAlias("vendor_documentation") //TODO deprecate this
+	@JsonAlias("vendor_documentation") // TODO deprecate this
 	private String vendorDocumentation;
 	private String ref;
 	@JsonAlias("vendor_description")
@@ -33,8 +33,6 @@ public abstract class Metric {
 	private String expressionFormula;
 	@JsonAlias("inventory_link")
 	private InventoryLink inventoryLink = InventoryLink.NONE;
-
-	
 
 	public enum ValueType implements ZabbixValue {
 
@@ -63,9 +61,7 @@ public abstract class Metric {
 
 	public enum Group {
 		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Inventory, Storage, General, Fans,
-		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless,
-		Nginx,
-		Apache// to be extended
+		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless, Nginx, Apache// to be extended
 	};
 
 	private Group group;
@@ -83,7 +79,7 @@ public abstract class Metric {
 
 	// SNMP stuff:
 	private String oid;
-	//TODO snmpObject only used for SNMP keys generation(in LLD). Deprecate
+	// TODO snmpObject only used for SNMP keys generation(in LLD). Deprecate
 	private String snmpObject;
 	private String mib;
 
@@ -332,7 +328,7 @@ public abstract class Metric {
 
 	public void setMasterItem(String masterItem) {
 		this.masterItem = masterItem;
-	}	
+	}
 
 	public String getValueMap() {
 		return valueMap;
@@ -422,7 +418,6 @@ public abstract class Metric {
 			return false;
 		return true;
 	}
-
 
 	/**
 	 * @return the timeout
@@ -576,7 +571,7 @@ public abstract class Metric {
 	 */
 	public void setRequestMethod(RequestMethod requestMethod) {
 		this.requestMethod = requestMethod;
-	}	
+	}
 
 	public enum RetrieveMode implements ZabbixValue {
 
@@ -620,6 +615,7 @@ public abstract class Metric {
 
 	@JsonAlias("output_format")
 	private OutputFormat outputFormat;
+
 	public enum OutputFormat implements ZabbixValue {
 
 		RAW(0), JSON(1);
@@ -640,67 +636,64 @@ public abstract class Metric {
 
 	};
 
-		//http 4.0 stuff
-		private String timeout;
-		private String url;
-		
-		@JsonAlias("query_fields")
-		private String queryFields;
-		
-		@JsonAlias("posts")
-		private String posts;
-		
-		@JsonAlias("status_codes")
-		private String statusCodes;
-	
-		@JsonAlias("follow_redirects")
-		private String followRedirects;
-	
-		@JsonAlias("post_type")
-		private String postType;
-	
-		@JsonAlias("http_proxy")
-		private String httpProxy;
-	
-		@JsonAlias("headers")
-		private String headers;
-	
-		@JsonAlias("retrieve_mode")
-		private RetrieveMode retrieveMode = RetrieveMode.BODY;
-	
-		@JsonAlias("request_method")
-		private RequestMethod requestMethod = RequestMethod.GET;
-		
-		//TODO add others HTTP 4.0:
-		// <allow_traps>0</allow_traps>
-		// <ssl_cert_file/>
-		// <ssl_key_file/>
-		// <ssl_key_password/>
-		// <verify_peer>0</verify_peer>
-		// <verify_host>0</verify_host>
+	// http 4.0 stuff
+	private String timeout;
+	private String url;
 
-		/*
-			used For expressionFormula
-		*/
-		public void constructMetricsUsed() {
-	
-			if (this.expressionFormula != null) {
-				Matcher m = Pattern.compile("__(.+?)__").matcher(this.expressionFormula);
-				while (m.find()) {
-					this.metricsUsed.add(m.group(1));
-				}
+	@JsonAlias("query_fields")
+	private String queryFields;
+
+	@JsonAlias("posts")
+	private String posts;
+
+	@JsonAlias("status_codes")
+	private String statusCodes;
+
+	@JsonAlias("follow_redirects")
+	private String followRedirects;
+
+	@JsonAlias("post_type")
+	private String postType;
+
+	@JsonAlias("http_proxy")
+	private String httpProxy;
+
+	@JsonAlias("headers")
+	private String headers;
+
+	@JsonAlias("retrieve_mode")
+	private RetrieveMode retrieveMode = RetrieveMode.BODY;
+
+	@JsonAlias("request_method")
+	private RequestMethod requestMethod = RequestMethod.GET;
+
+	// TODO add others HTTP 4.0:
+	// <allow_traps>0</allow_traps>
+	// <ssl_cert_file/>
+	// <ssl_key_file/>
+	// <ssl_key_password/>
+	// <verify_peer>0</verify_peer>
+	// <verify_host>0</verify_host>
+
+	/*
+	 * used For expressionFormula
+	 */
+	public void constructMetricsUsed() {
+
+		if (this.expressionFormula != null) {
+			Matcher m = Pattern.compile("__(.+?)__").matcher(this.expressionFormula);
+			while (m.find()) {
+				this.metricsUsed.add(m.group(1));
 			}
 		}
+	}
 
-		public HashSet<String> getMetricsUsed() {
-			return metricsUsed;
-		}
-	
-		public void setMetrics(HashSet<String> metricsUsed) {
-			this.metricsUsed = metricsUsed;
-		}
+	public HashSet<String> getMetricsUsed() {
+		return metricsUsed;
+	}
 
+	public void setMetrics(HashSet<String> metricsUsed) {
+		this.metricsUsed = metricsUsed;
+	}
 
 }
-
-

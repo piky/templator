@@ -4,9 +4,9 @@ import java.util.Objects;
 import java.util.Comparator;
 
 public class PreprocessingStep implements Comparable<PreprocessingStep> {
-//TODO add error handler:
-// <error_handler>0</error_handler>
-// <error_handler_params/>
+	// TODO add error handler:
+	// <error_handler>0</error_handler>
+	// <error_handler_params/>
 
 	private PreprocessingStepType type;
 	private String params;
@@ -46,9 +46,7 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 
 	@Override
 	public int compareTo(PreprocessingStep ps) {
-		return Comparator
-				.comparing(PreprocessingStep::getType)
-				.thenComparing(PreprocessingStep::getParams, nullSafeStringComparator)
-				.compare(this, ps);
+		return Comparator.comparing(PreprocessingStep::getType)
+				.thenComparing(PreprocessingStep::getParams, nullSafeStringComparator).compare(this, ps);
 	}
 }

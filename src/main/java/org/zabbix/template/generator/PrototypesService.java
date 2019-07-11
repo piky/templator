@@ -24,9 +24,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 @Service("prototypesService")
 public class PrototypesService {
 
-	private static HashMap<String,JsonNode> prototypes = new HashMap<String,JsonNode>();
+	private static HashMap<String, JsonNode> prototypes = new HashMap<String, JsonNode>();
 	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
-
 
 	private ResourceLoader resourceLoader;
 
@@ -43,46 +42,42 @@ public class PrototypesService {
 		PrototypesService.prototypes = prototypes;
 	}
 
-	private static void addFileToMap(ObjectMapper mapper,File file) throws JsonProcessingException, IOException {
-		
-	    JsonNode node = mapper.readTree(file);
-	    if (node.getNodeType() == JsonNodeType.ARRAY) {
-	    	for (JsonNode jn:  node) {
-	    		prototypes.put(jn.get("id").asText(), jn);
-	    		logger.debug(jn.get("id").asText());
-	    	}
-	    }
-	    else if (node.getNodeType() == JsonNodeType.OBJECT) {
-	    	prototypes.put(node.get("id").asText(), node);
-		    logger.debug(node.get("id").asText());
-	    }
-	    else {
-	    	logger.error("Unknown JSON object in file");
-	    }
-	    
-	    
+	private static void addFileToMap(ObjectMapper mapper, File file) throws JsonProcessingException, IOException {
+
+		JsonNode node = mapper.readTree(file);
+		if (node.getNodeType() == JsonNodeType.ARRAY) {
+			for (JsonNode jn : node) {
+				prototypes.put(jn.get("id").asText(), jn);
+				logger.debug(jn.get("id").asText());
+			}
+		} else if (node.getNodeType() == JsonNodeType.OBJECT) {
+			prototypes.put(node.get("id").asText(), node);
+			logger.debug(node.get("id").asText());
+		} else {
+			logger.error("Unknown JSON object in file");
+		}
+
 	}
-	
-	
+
 	@PostConstruct
 	public void init() {
 		try {
 
-			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("file:bin/prototypes/*");
-			//mapper JSON
-			//create factory to enable comments for json
+			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+					.getResources("file:bin/prototypes/*");
+			// mapper JSON
+			// create factory to enable comments for json
 			JsonFactory f = new JsonFactory();
 			f.enable(JsonParser.Feature.ALLOW_COMMENTS);
 
 			ObjectMapper mapper = new ObjectMapper(f);
 
-			for (Resource r: resources) {
+			for (Resource r : resources) {
 				File file = r.getFile();
-				addFileToMap(mapper,file);
+				addFileToMap(mapper, file);
 			}
-		    	
-			logger.info("Prototypes map was loaded successfully.");
 
+			logger.info("Prototypes map was loaded successfully.");
 
 		} catch (IOException | NullPointerException e) {
 			logger.error("Prototypes map could not be initialized. ", e);

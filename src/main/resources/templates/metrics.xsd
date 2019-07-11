@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema targetNamespace="http://www.example.org/zbx_template_new/"
-		   xmlns:tns="http://www.example.org/zbx_template_new/"
-		   elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema targetNamespace="http://www.example.org/zbx_template_new/" 
+	xmlns:tns="http://www.example.org/zbx_template_new/" elementFormDefault="qualified" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="root" type="tns:rootType"/>
 	<xs:complexType name="templateType">
 		<xs:all>
@@ -58,7 +58,7 @@
 			<xs:element name="metrics">
 				<xs:complexType>
 					<xs:choice maxOccurs="unbounded">
-						<xs:sequence><!-- Template HOST-RESOURCES -->
+						<xs:sequence>							<!-- Template HOST-RESOURCES -->
 							<xs:choice minOccurs="0">
 								<xs:sequence>
 									<xs:element name="vm.memory.units" type="tns:metricType"/>
@@ -92,11 +92,11 @@
 							<xs:element name="vfs.fs.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 
 						</xs:sequence>
-						<xs:sequence><!-- Template Performance CPU-->
+						<xs:sequence>							<!-- Template Performance CPU-->
 							<xs:element name="system.cpu.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 							<xs:element name="system.cpu.load" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 						</xs:sequence>
-						<xs:sequence><!-- Template Performance Memory-->
+						<xs:sequence>							<!-- Template Performance Memory-->
 							<xs:choice minOccurs="0">
 								<xs:sequence>
 									<xs:element name="vm.memory.used" type="tns:metricType"/>
@@ -110,7 +110,7 @@
 							</xs:choice>
 							<xs:element name="vm.memory.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 						</xs:sequence>
-						<xs:sequence> <!-- Template General and System Info -->
+						<xs:sequence>							<!-- Template General and System Info -->
 							<xs:element name="system.uptime" type="tns:metricType"/>
 							<xs:element name="snmptrap.fallback" type="tns:metricType"/>
 							<xs:element name="system.location" type="tns:metricType"/>
@@ -120,18 +120,18 @@
 							<xs:element name="system.descr" type="tns:metricType"/>
 							<xs:element name="zabbix.snmp.available" type="tns:metricType"/>
 						</xs:sequence>
-						<xs:sequence> <!-- Template ICMP -->
+						<xs:sequence>							<!-- Template ICMP -->
 							<xs:element name="icmpping" type="tns:metricType"/>
 							<xs:element name="icmppingloss" type="tns:metricType"/>
 							<xs:element name="icmppingsec" type="tns:metricType"/>
 						</xs:sequence>
-						<xs:sequence> <!-- Template Remote Service (NTP,SMTP, SSH,Telnet) LDAP etc) -->
+						<xs:sequence>							<!-- Template Remote Service (NTP,SMTP, SSH,Telnet) LDAP etc) -->
 							<xs:choice maxOccurs="unbounded">
 								<xs:element name="net.tcp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
 								<xs:element name="net.udp.service" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
 							</xs:choice>
 						</xs:sequence>
-						<xs:sequence> <!-- Template Fault and System Info -->
+						<xs:sequence>							<!-- Template Fault and System Info -->
 							<xs:element name="sensor.temp.value" type="tns:metricType" maxOccurs="unbounded" minOccurs="1"/>
 							<xs:element name="sensor.temp.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							<xs:element name="sensor.temp.locale" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
@@ -139,18 +139,19 @@
 								<xs:element name="system.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="sensor.psu.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="sensor.fan.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<xs:element name="sensor.fan.speed" type="tns:metricType" maxOccurs="1" minOccurs="0"/> <!--rpm -->
+								<xs:element name="sensor.fan.speed" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<!--rpm -->
 								<xs:element name="sensor.fan.speed.percentage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							</xs:choice>
 						</xs:sequence>
-						<xs:sequence> <!-- Template Fault (Disks) -->
+						<xs:sequence>							<!-- Template Fault (Disks) -->
 							<!-- array controllers -->
 							<xs:element name="system.hw.diskarray.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							<xs:choice maxOccurs="unbounded">
-                                <xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.diskarray.cache.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.diskarray.cache.battery.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                            </xs:choice>
+								<xs:element name="system.hw.diskarray.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.diskarray.cache.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.diskarray.cache.battery.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							</xs:choice>
 							<!-- physical disks -->
 							<xs:element name="system.hw.physicaldisk.status" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 							<xs:choice maxOccurs="unbounded">
@@ -158,30 +159,31 @@
 								<xs:element name="system.hw.physicaldisk.smart_status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.physicaldisk.part_number" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.physicaldisk.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.physicaldisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.physicaldisk.power_on_hours" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.physicaldisk.media_type" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.power_on_hours" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.physicaldisk.media_type" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							</xs:choice>
-                            <!-- virtual disks -->
-                            <xs:choice maxOccurs="unbounded">
-                                <xs:element name="system.hw.virtualdisk.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.virtualdisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.virtualdisk.layout" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.virtualdisk.readpolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.virtualdisk.writepolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                                <xs:element name="system.hw.virtualdisk.state" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-                            </xs:choice>
+							<!-- virtual disks -->
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="system.hw.virtualdisk.status" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.virtualdisk.size" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.virtualdisk.layout" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.virtualdisk.readpolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.virtualdisk.writepolicy" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<xs:element name="system.hw.virtualdisk.state" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+							</xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Fault (Power supply) -->
+						<xs:sequence>							<!-- Template Fault (Power supply) -->
 							<xs:element name="psVoltage" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 							<xs:element name="psStatus" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Inventory -->
+						<xs:sequence>							<!-- Template Inventory -->
 							<xs:choice maxOccurs="unbounded">
 								<xs:element name="system.sw.os" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
-								<xs:element name="system.hw.version" type="tns:metricType" maxOccurs="1" minOccurs="0"/><!-- revision -->
+								<xs:element name="system.hw.version" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
+								<!-- revision -->
 								<xs:element name="system.hw.model" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.label" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								<xs:element name="system.hw.serialnumber" type="tns:metricType" maxOccurs="unbounded" minOccurs="0"/>
@@ -189,7 +191,7 @@
 							</xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Network interfaces -->
+						<xs:sequence>							<!-- Template Network interfaces -->
 							<xs:element name="net.if.status" type="tns:metricType"/>
 							<xs:element name="net.if.in" type="tns:metricType"/>
 							<xs:element name="net.if.out" type="tns:metricType"/>
@@ -204,8 +206,9 @@
 							</xs:choice>
 						</xs:sequence>
 
-						<xs:sequence> <!-- Template Network interfaces Ethernet -->
-							<xs:element name="net.if.duplex" type="tns:metricType"/><!-- ethernet only -->
+						<xs:sequence>							<!-- Template Network interfaces Ethernet -->
+							<xs:element name="net.if.duplex" type="tns:metricType"/>
+							<!-- ethernet only -->
 						</xs:sequence>
 					</xs:choice>
 				</xs:complexType>
@@ -240,10 +243,8 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="device_setup" maxOccurs="1" minOccurs="1"
-						type="xs:string" />
-			<xs:element name="known_devices" maxOccurs="unbounded"
-						minOccurs="1">
+			<xs:element name="device_setup" maxOccurs="1" minOccurs="1" type="xs:string" />
+			<xs:element name="known_devices" maxOccurs="unbounded" minOccurs="1">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="device" minOccurs="0" maxOccurs="unbounded">
@@ -327,7 +328,7 @@
 
 		<xs:sequence>
 			<xs:choice>
-				<xs:sequence> <!-- in file metric source -->
+				<xs:sequence>					<!-- in file metric source -->
 					<xs:element name="vendorDocumentation" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:choice>
 						<xs:sequence>
@@ -342,7 +343,8 @@
 							<xs:element name="oid" type="xs:string" maxOccurs="1" minOccurs="1">
 								<xs:annotation>
 									<xs:documentation>SNMP oid</xs:documentation>
-								</xs:annotation></xs:element>
+								</xs:annotation>
+							</xs:element>
 							<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
 							<xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						</xs:sequence>
@@ -350,62 +352,78 @@
 							<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
 							<xs:element name="calculated" type="xs:boolean" maxOccurs="1" minOccurs="1"/>
 						</xs:sequence>
-						<xs:sequence> <!-- use for all nonsnmps and noncalc -->
+						<xs:sequence>							<!-- use for all nonsnmps and noncalc -->
 							<xs:element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
 						</xs:sequence>
 					</xs:choice>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
-						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
+						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
 						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 						<xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- To modify update intervals in in files -->
 						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
-						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
+						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- change to float -->
+						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/>
+						<!-- 3.4-->
 						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					</xs:choice>
 				</xs:sequence>
 
-				<xs:sequence> <!--  full metric after merge -->
+				<xs:sequence>					<!--  full metric after merge -->
 					<xs:element name="documentation" maxOccurs="1" minOccurs="0"/>
-					<xs:element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/> <!-- in to_metrics only -->
-					<xs:element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/> <!-- in to_metrics only -->
+					<xs:element name="name" type="tns:langString" maxOccurs="unbounded" minOccurs="1"/>
+					<!-- in to_metrics only -->
+					<xs:element name="group" type="tns:groupList" maxOccurs="1" minOccurs="1"/>
+					<!-- in to_metrics only -->
 					<xs:element name="oid" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="snmpObject" type="xs:string" maxOccurs="1" minOccurs="1"/>
 					<xs:element name="mib" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="expressionFormula" type="xs:string" maxOccurs="1" minOccurs="0"/>
 					<xs:element name="itemType" type="tns:itemTypeList" maxOccurs="1" minOccurs="1"/>
 					<xs:choice maxOccurs="unbounded" minOccurs="0">
-						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/> <!-- use it to redefine zabbix item key -->
+						<xs:element name="key" type="xs:string" minOccurs="0" maxOccurs="1"/>
+						<!-- use it to redefine zabbix item key -->
 						<xs:element name="logFormat" type="xs:string" minOccurs="0"/>
-						<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/> <!-- in to_metrics only -->
+						<xs:element name="description" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
+						<!-- in to_metrics only -->
 						<xs:element name="vendorDescription" type="tns:langString" maxOccurs="unbounded" minOccurs="0"/>
 						<xs:element name="ref" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="history" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-						<xs:element name="trends" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-						<xs:element name="units" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-						<xs:element name="update" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- To modify update intervals in in files -->
+						<xs:element name="history" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- in to_metrics only -->
+						<xs:element name="trends" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- in to_metrics only -->
+						<xs:element name="units" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- in to_metrics only -->
+						<xs:element name="update" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- in to_metrics only -->
+						<xs:element name="updateMultiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- To modify update intervals in in files -->
 						<xs:element name="valueType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="discoveryRule" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="alarmObject" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="alarmObjectType" type="xs:string" maxOccurs="1" minOccurs="0"/>
 						<xs:element name="valueMap" type="xs:string" maxOccurs="1" minOccurs="0"/>
-						<xs:element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/> <!-- in to_metrics only -->
-						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/> <!-- change to float -->
-						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/> <!-- 3.4-->
-						<xs:element name="triggers" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+						<xs:element name="inventory_link" type="tns:inventory_link" maxOccurs="1" minOccurs="0"/>
+						<!-- in to_metrics only -->
+						<xs:element name="multiplier" type="xs:string" maxOccurs="1" minOccurs="0"/>
+						<!-- change to float -->
+						<xs:element name="preprocessing" type="tns:preprocessing" maxOccurs="unbounded" minOccurs="0"/>
+						<!-- 3.4-->
+						<xs:element name="triggers" minOccurs="0" maxOccurs="1">							<!-- in to_metrics only -->
 							<xs:complexType>
 								<xs:sequence>
 									<xs:element name="trigger" type="tns:trigger" maxOccurs="unbounded" minOccurs="0"/>
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
-						<xs:element name="graphs" minOccurs="0" maxOccurs="1"> <!-- in to_metrics only -->
+						<xs:element name="graphs" minOccurs="0" maxOccurs="1">							<!-- in to_metrics only -->
 							<xs:complexType>
 								<xs:sequence>
 									<xs:element name="graph" type="tns:graphType" maxOccurs="unbounded" minOccurs="0"/>
@@ -435,7 +453,8 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="dependency" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-						<xs:element name="global" type="xs:boolean" maxOccurs="unbounded" minOccurs="0"/> <!-- use global for triggers dependencies between templates (templates must be in the same file though)-->
+						<xs:element name="global" type="xs:boolean" maxOccurs="unbounded" minOccurs="0"/>
+						<!-- use global for triggers dependencies between templates (templates must be in the same file though)-->
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -455,16 +474,18 @@
 			<xs:enumeration value="Status"/>
 			<xs:enumeration value="Disk Arrays"/>
 			<xs:enumeration value="Physical Disks"/>
-            <xs:enumeration value="Virtual Disks"/>
+			<xs:enumeration value="Virtual Disks"/>
 			<xs:enumeration value="Power supply"/>
 			<xs:enumeration value="Fans"/>
 
 			<xs:enumeration value="General"/>
 			<xs:enumeration value="Inventory"/>
 
-			<xs:enumeration value="Network interfaces"/> <!-- Network interfaces -->
+			<xs:enumeration value="Network interfaces"/>
+			<!-- Network interfaces -->
 
-			<xs:enumeration value="Internal Items"/><!-- place items used in calculated items only -->
+			<xs:enumeration value="Internal Items"/>
+			<!-- place items used in calculated items only -->
 
 		</xs:restriction>
 	</xs:simpleType>
@@ -598,7 +619,8 @@
 			<xs:element name="show_3d" type="xs:byte" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="percent_left" type="xs:float" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="percent_right" type="xs:float" maxOccurs="1" minOccurs="1"/>
-			<xs:element name="ymin_type_1" type="xs:byte" maxOccurs="1" minOccurs="1"/> <!-- type_1: 1 fixed, 0- calculated, 2- item -->
+			<xs:element name="ymin_type_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
+			<!-- type_1: 1 fixed, 0- calculated, 2- item -->
 			<xs:element name="ymax_type_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="ymin_item_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
 			<xs:element name="ymax_item_1" type="xs:byte" maxOccurs="1" minOccurs="1"/>
