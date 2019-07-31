@@ -27,8 +27,10 @@ public class Template {
 	@JsonIgnore
 	private ArrayList<String> groups = new ArrayList<String>(0);// groups would be populated in Drools
 
+	@JsonAlias("discovery_rules")
 	private ArrayList<DiscoveryRule> discoveryRules = new ArrayList<DiscoveryRule>(0);
 
+	@JsonAlias("items")
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
 	@JsonIgnore

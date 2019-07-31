@@ -20,6 +20,8 @@ public class DiscoveryRule {
 	private Filter filter;
 	@JsonAlias("lld_macro_paths")
 	private ArrayList<LLDMacroPath> lldMacroPaths = new ArrayList<>(0);
+
+	@JsonAlias("items")
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
 	// Preprocessing
