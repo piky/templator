@@ -12,16 +12,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = MetricDeserializer.class)
 public abstract class Metric {
 	// use this field to match to class
+	@JsonAlias("_prototype")
 	private String prototype;
 
+	@JsonAlias("_id")
 	private String id;
 
 	private String name;
 	private String description;
-	@JsonAlias("vendor_documentation") // TODO deprecate this
+	@JsonAlias("_vendor_documentation") // TODO deprecate this
 	private String vendorDocumentation;
 	private String ref;
-	@JsonAlias("vendor_description")
+	@JsonAlias("_vendor_description")
 	private String vendorDescription;
 	@JsonAlias("key")
 	private String key;

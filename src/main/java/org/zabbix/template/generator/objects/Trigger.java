@@ -12,10 +12,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = TriggerDeserializer.class)
 public class Trigger {
-
+	@JsonAlias("_id")
 	private String id;
 	@JsonAlias("_documentation")
 	private String documentation;
+	@JsonAlias("_prototype")
 	private String prototype;
 	private String name;
 	private String expression;

@@ -49,7 +49,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 	 * ObjectMapper mapper = new ObjectMapper();
 	 * 
 	 * //get prototype name from json String protoName =
-	 * node.get("prototype").textValue(); //get class Class<?> c; c =
+	 * node.get("_prototype").textValue(); //get class Class<?> c; c =
 	 * getMetricClass(protoName);
 	 * 
 	 * //convert from jsonnode to class c Metric out = (Metric) mapper.convertValue(
@@ -58,7 +58,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 	 * 
 	 * 
 	 * 
-	 * String defaultJson = "{\r\n" + "	\"prototype\":\"sensor.temp.value\",\r\n" +
+	 * String defaultJson = "{\r\n" + "	\"_prototype\":\"sensor.temp.value\",\r\n" +
 	 * "	\"name\":\"Temperature\",\r\n" +
 	 * "	\"description\":\"Temperature readings of testpoint: <xsl:value-of select=\\\"resource\\\"/>\",\r\n"
 	 * + "	\"valueType\":\"FLOAT\",\r\n" + "	\"group\":\"Temperature\"\r\n" +
@@ -82,7 +82,7 @@ public class MetricDeserializer extends StdDeserializer<Metric> {
 		// get prototype name from json
 		String protoName;
 		try {
-			protoName = node.get("prototype").textValue();
+			protoName = node.get("_prototype").textValue();
 		} catch (NullPointerException npe) {
 			// assign default as 'none'
 			protoName = "none";

@@ -36,7 +36,7 @@ public class TriggerDeserializer extends StdDeserializer<Trigger> {
 		// get prototype name from json
 		String protoName;
 		try {
-			protoName = node.get("prototype").textValue();
+			protoName = node.get("_prototype").textValue();
 		} catch (NullPointerException npe) {
 			// assign default as 'none'
 			protoName = "none";

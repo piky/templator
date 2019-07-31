@@ -41,6 +41,8 @@ public class Template {
 	private TemplateDocumentation documentation;
 
 	private TreeSet<UserMacro> macros = new TreeSet<>();
+
+	// zabbix template links
 	private TreeSet<String> templates = new TreeSet<>();
 
 	// this method return a list of all unique mibs met in the template.

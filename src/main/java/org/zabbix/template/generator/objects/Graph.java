@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Graph {
 
+	@JsonAlias("_prototype")
 	private String prototype;
 	private String name;
 	private int width = 900;
