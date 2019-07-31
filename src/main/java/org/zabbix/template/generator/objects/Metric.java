@@ -56,7 +56,6 @@ public abstract class Metric {
 
 	@JsonAlias("value_type")
 	private ValueType valueType = ValueType.INTEGER;
-	@JsonAlias({ "itemType", "item_type" })
 	private Type type;
 
 	public enum Group {

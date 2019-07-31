@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class DiscoveryRule {
 	private String name;
+
 	@JsonAlias("snmp_oid")
 	private String oid;
 	private String key;
 
-	@JsonAlias({ "itemType", "item_type" })
 	private Type type;
 	@JsonAlias("update")
 	private String delay = "1h";
