@@ -44,8 +44,8 @@ TODO
 
 ### Choosing template version
 
-`zbx_ver` can be used on template level to choose what template version should be published.  
-Currently, `"zbx_ver" = "3.4"` will generate tempalte for 3.4 and above, i.e. 4.0
+`_zbx_ver` can be used on template level to choose what template version should be published.  
+Currently, `"_zbx_ver" = "3.4"` will generate tempalte for 3.4 and above, i.e. 4.0
 
 ### Adding a metric
 
