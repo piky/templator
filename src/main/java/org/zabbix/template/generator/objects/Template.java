@@ -21,6 +21,7 @@ public class Template {
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
+	@JsonAlias("_classes")
 	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);
 
 	@JsonIgnore
