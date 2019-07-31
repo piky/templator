@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = TriggerDeserializer.class)
@@ -30,13 +31,14 @@ public class Trigger {
 	@JsonAlias({ "recovery_mode" })
 	private RecoveryMode recoveryMode;
 	// dependsOn - populate with trigger ids
-	@JsonAlias({ "depends_on" })
+	@JsonAlias({ "_depends_on" })
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
 	// dependencies - objects to be put onto zabbix_export output
 	private TreeSet<TriggerDependency> dependencies = new TreeSet<TriggerDependency>();
 
 	// this array to store all metrics used apart from parent metric. To be used in
 	// Drools(replace with metric keys)
+	@JsonIgnore
 	private HashSet<String> metricsUsed = new HashSet<>(0);
 
 	// Translations arr

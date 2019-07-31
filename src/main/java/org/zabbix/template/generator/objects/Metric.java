@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
@@ -102,9 +103,9 @@ public abstract class Metric {
 	// Discovery stuff
 	@JsonAlias("discovery_rule")
 	private String discoveryRule;
-	@JsonAlias("resource")
+	@JsonAlias("_resource")
 	private String resource;
-	@JsonAlias("resource_type")
+	@JsonAlias("_resource_type")
 	private String resourceType;
 
 	@JsonAlias("master_item")
@@ -124,6 +125,7 @@ public abstract class Metric {
 
 	// this array to store all metrics used apart from parent metric. To be used in
 	// Drools(replace with metric keys)
+	@JsonIgnore
 	private HashSet<String> metricsUsed = new HashSet<>(0);
 
 	// Generated down below

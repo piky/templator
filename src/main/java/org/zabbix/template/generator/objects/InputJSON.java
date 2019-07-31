@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class InputJSON {
 
 	// this attribute is used to stop templates from further processing if set to
 	// true (from Drools rule for example)
+	@JsonIgnore
 	private boolean failed = false;
 
 	public boolean isFailed() {

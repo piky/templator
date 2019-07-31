@@ -9,10 +9,10 @@ for example in JSON:
                         {
                             "prototype": "sensor.temp.value",
                             "oid": "1.3.6.1.4.1.9.9.13.1.3.1.3.{#SNMPINDEX}",
-                            "snmpObject": "ciscoEnvMonTemperatureValue.{#SNMPINDEX}",
-                            "mib": "CISCO-ENVMON-MIB",
+                            "_snmpObject": "ciscoEnvMonTemperatureValue.{#SNMPINDEX}",
+                            "_mib": "CISCO-ENVMON-MIB",
                             "_vendor_description": "The current measurement of the test point being instrumented.",
-                            "resource": "{#SNMPVALUE}",
+                            "_resource": "{#SNMPVALUE}",
                             "triggers": [
                                 {
                                     "prototype": "tempWarn.combined"
@@ -42,7 +42,7 @@ in expressions used special MACRO: TEMPLATE_NAME:METRIC to reference metric wher
 __metric_id__ to reference any other metric.
 
 ## Composition of trigger name
-resource of the metric is used
+_resource of the metric is used
 
 
 ## prototypes
@@ -58,13 +58,13 @@ In prototype of `system.status` metric only `health.crit` trigger is present:
 ```
     {
         "name": "Overall system health status",
-        "translations": {
+        "_translations": {
             "RU": {
                 "name": "Общий статус системы"
             }
         },
         "id": "system.status",
-        "group": "Status",
+        "_group": "Status",
         "delay": "30s",
         "history": "2w",
         "trends": "0d",
@@ -82,9 +82,9 @@ If you want to have more triggers for this metric, you may actually redefine thi
 {
               "prototype": "system.status",
               "oid": "1.3.6.1.4.1.9.9.719.1.9.35.1.42.{#SNMPINDEX}",
-              "snmpObject": "cucsComputeRackUnitOperState.{#SNMPINDEX}",
-              "mib": "CISCO-UNIFIED-COMPUTING-COMPUTE-MIB",
-              "resource": "{#UNIT_LOCATION}",
+              "_snmpObject": "cucsComputeRackUnitOperState.{#SNMPINDEX}",
+              "_mib": "CISCO-UNIFIED-COMPUTING-COMPUTE-MIB",
+              "_resource": "{#UNIT_LOCATION}",
               "_vendor_description": "Cisco UCS compute:RackUnit:operState managed object property",
               "valueMap": "CISCO-UNIFIED-COMPUTING-TC-MIB::CucsLsOperState",
               "triggers": [
@@ -119,9 +119,9 @@ but you need to redefine trigger expression after that:
             {
               "prototype": "system.hw.diskarray.status",
               "oid": "1.3.6.1.4.1.9.9.719.1.45.1.1.6.{#SNMPINDEX}",
-              "snmpObject": "cucsStorageControllerOperState.{#SNMPINDEX}",
-              "mib": "CISCO-UNIFIED-COMPUTING-STORAGE-MIB",
-              "resource": "{#DISKARRAY_LOCATION}",
+              "_snmpObject": "cucsStorageControllerOperState.{#SNMPINDEX}",
+              "_mib": "CISCO-UNIFIED-COMPUTING-STORAGE-MIB",
+              "_resource": "{#DISKARRAY_LOCATION}",
               "valueMap": "CISCO-UNIFIED-COMPUTING-TC-MIB::CucsEquipmentOperability",
               "triggers":[
                 {
