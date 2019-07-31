@@ -11,7 +11,7 @@ for example in JSON:
                             "oid": "1.3.6.1.4.1.9.9.13.1.3.1.3.{#SNMPINDEX}",
                             "snmpObject": "ciscoEnvMonTemperatureValue.{#SNMPINDEX}",
                             "mib": "CISCO-ENVMON-MIB",
-                            "vendorDescription": "The current measurement of the test point being instrumented.",
+                            "_vendor_description": "The current measurement of the test point being instrumented.",
                             "resource": "{#SNMPVALUE}",
                             "triggers": [
                                 {
@@ -85,7 +85,7 @@ If you want to have more triggers for this metric, you may actually redefine thi
               "snmpObject": "cucsComputeRackUnitOperState.{#SNMPINDEX}",
               "mib": "CISCO-UNIFIED-COMPUTING-COMPUTE-MIB",
               "resource": "{#UNIT_LOCATION}",
-              "vendorDescription": "Cisco UCS compute:RackUnit:operState managed object property",
+              "_vendor_description": "Cisco UCS compute:RackUnit:operState managed object property",
               "valueMap": "CISCO-UNIFIED-COMPUTING-TC-MIB::CucsLsOperState",
               "triggers": [
                 {
