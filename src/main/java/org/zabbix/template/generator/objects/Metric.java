@@ -22,6 +22,7 @@ public abstract class Metric {
 	private String description;
 	@JsonAlias("_vendor_documentation") // TODO deprecate this
 	private String vendorDocumentation;
+	@JsonAlias("_ref")
 	private String ref;
 	@JsonAlias("_vendor_description")
 	private String vendorDescription;
@@ -58,6 +59,7 @@ public abstract class Metric {
 
 	@JsonAlias("value_type")
 	private ValueType valueType = ValueType.INTEGER;
+	// zabbix item type
 	private Type type;
 
 	public enum Group {
@@ -65,6 +67,7 @@ public abstract class Metric {
 		Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless, Nginx, Apache// to be extended
 	};
 
+	@JsonAlias("_group")
 	private Group group;
 	@JsonAlias("application_prototype")
 	private String applicationPrototype;
@@ -74,17 +77,18 @@ public abstract class Metric {
 	private String trends = "365d";
 
 	private String units;
-
-	@JsonAlias({ "logformat", "log_format", "logFormat" })
 	private String logtimefmt;
 
 	// SNMP stuff:
 	private String oid;
 	// TODO snmpObject only used for SNMP keys generation(in LLD). Deprecate
+	@JsonAlias("_snmpObject")
 	private String snmpObject;
+	@JsonAlias("_mib")
 	private String mib;
 
 	// Translations arr
+	@JsonAlias("_translations")
 	private HashMap<String, Translation> translations = new HashMap<>(0);
 
 	public HashMap<String, Translation> getTranslations() {

@@ -40,6 +40,7 @@ public class Trigger {
 	private HashSet<String> metricsUsed = new HashSet<>(0);
 
 	// Translations arr
+	@JsonAlias("_translations")
 	private HashMap<String, Translation> translations = new HashMap<>(0);
 
 	public HashMap<String, Translation> getTranslations() {

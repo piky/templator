@@ -32,11 +32,11 @@ Once referenced, any additional metric fields can be redefined. So metrics can b
 
 Template classes can be defined in `in` files. They serve as tags to activate something.
 For example
-`OS` - adds template to Template/Operating systems group  
-`Network` - adds template to Template/Network devices group  
-`Server` - adds template to Template/Server hardware group  
-`Module` - adds template to Template/Modules group  
-`App` - adds template to Template/Applications group  
+`OS` - adds template to Template/Operating systems _group  
+`Network` - adds template to Template/Network devices _group  
+`Server` - adds template to Template/Server hardware _group  
+`Module` - adds template to Template/Modules _group  
+`App` - adds template to Template/Applications _group  
 
 ### Conventions
 
@@ -81,7 +81,7 @@ TODO
 
 - memory utilization, vfs utilization
 - how metrics are enriched if in LLD (keys, names) What is ALARM_OBJECT, ALARM_OBJECT_TYPE
-- if `application_prototype` is defined, then application is not filled with `group` value. This enforces 'single application guideline'
+- if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'single application guideline'
 - discard preprocessing steps are magically stripped for templates versions < 4.2
 - discard preprocessing steps are magically added for inventory like metrics  and health-checks
 - resets 'trends' to 0 for items with value maps.

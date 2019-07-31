@@ -94,7 +94,7 @@ add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2
 
 ## Other magics: applications, groups and application_prototypes
 
-if `application_prototype` is defined, then application is not filled with `group` value. This enforces 'single application guideline'
+if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'single application guideline'
 
 
 ### why generator is implemented in the first place?
