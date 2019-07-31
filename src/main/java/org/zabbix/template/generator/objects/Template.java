@@ -30,6 +30,7 @@ public class Template {
 
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
+	@JsonIgnore
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); // overall list, regardless discovery or not
 	// private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0);
 	// //overall list, regardless discovery or not
