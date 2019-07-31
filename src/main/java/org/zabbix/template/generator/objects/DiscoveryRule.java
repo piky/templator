@@ -32,6 +32,7 @@ public class DiscoveryRule {
 
 	// if true, It means that only single discovery object is expected. Some
 	// validation rules can be ignored.
+	@JsonAlias("_singleton")
 	private Boolean singleton = false;
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
