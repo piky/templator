@@ -33,6 +33,7 @@ public class Template {
 	private ArrayList<Metric> metricsRegistry = new ArrayList<Metric>(0); // overall list, regardless discovery or not
 	// private ArrayList<Trigger> triggersRegistry = new ArrayList<Trigger>(0);
 	// //overall list, regardless discovery or not
+	@JsonAlias("_documentation")
 	private TemplateDocumentation documentation;
 
 	private TreeSet<UserMacro> macros = new TreeSet<>();

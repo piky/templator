@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public class Trigger {
 
 	private String id;
+	@JsonAlias("_documentation")
 	private String documentation;
 	private String prototype;
 	private String name;
