@@ -26,7 +26,7 @@ public abstract class Metric {
 	@JsonAlias("key")
 	private String key;
 
-	@JsonAlias("zbx_ver")
+	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
 	@JsonAlias("expression_formula")

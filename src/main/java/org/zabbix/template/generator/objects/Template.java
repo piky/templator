@@ -18,7 +18,7 @@ public class Template {
 	private String name;
 	private String description;
 
-	@JsonAlias("zbx_ver")
+	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
 	private ArrayList<TemplateClass> classes = new ArrayList<TemplateClass>(0);

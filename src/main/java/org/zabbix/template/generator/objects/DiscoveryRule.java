@@ -31,7 +31,7 @@ public class DiscoveryRule {
 	// if true, It means that only single discovery object is expected. Some
 	// validation rules can be ignored.
 	private Boolean singleton = false;
-	@JsonAlias("zbx_ver")
+	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
 	public String getName() {
