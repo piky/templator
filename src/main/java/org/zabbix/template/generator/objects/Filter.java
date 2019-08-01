@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 //TODO add enums for evaltype and ooperator.
 public class Filter {
 
-	@JsonAlias("evaltype")
+	@JsonAlias({ "evaltype", "eval_type" })
 	private EvalType evalType;
 	private String formula;
 	private Condition[] conditions;

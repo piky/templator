@@ -9,15 +9,16 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = TriggerDeserializer.class)
 public class Trigger {
-	@JsonAlias("_id")
+	@JsonProperty(value = "_id")
 	private String id;
 	@JsonAlias("_documentation")
 	private String documentation;
-	@JsonAlias("_prototype")
+	@JsonProperty(value = "_prototype")
 	private String prototype;
 	private String name;
 	private String expression;

@@ -9,10 +9,10 @@ public class TemplateDocumentation {
 	private String overview;
 	private ArrayList<Issue> issues = new ArrayList<Issue>(0);
 
-	@JsonProperty(value = "device_setup")
+	@JsonProperty(value = "_device_setup")
 	private String deviceSetup;
 
-	@JsonProperty(value = "known_devices")
+	@JsonProperty(value = "_known_devices")
 	private ArrayList<Device> knownDevices = new ArrayList<Device>(0);
 
 	public String getOverview() {

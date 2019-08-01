@@ -3,8 +3,8 @@ package org.zabbix.template.generator.objects;
 
 import java.util.*;
 import java.util.function.Predicate;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -18,7 +18,7 @@ public class Template {
 	private String name;
 	private String description;
 
-	@JsonAlias("_zbx_ver")
+	@JsonProperty(value = "_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
 	@JsonAlias("_classes")

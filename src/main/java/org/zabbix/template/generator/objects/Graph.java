@@ -40,7 +40,7 @@ public class Graph {
 	@JsonAlias({ "ymin_type" })
 	private YType yMinType = YType.CALCULATED;
 
-	@JsonAlias({ "gitems", "graph_items" })
+	@JsonAlias({ "graph_items" })
 	private ArrayList<GraphItem> graphItems = new ArrayList<GraphItem>(0);
 
 	// for Graph item object

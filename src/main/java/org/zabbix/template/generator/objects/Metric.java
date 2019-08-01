@@ -8,15 +8,16 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
 public abstract class Metric {
 	// use this field to match to class
-	@JsonAlias("_prototype")
+	@JsonProperty(value = "_prototype")
 	private String prototype;
 
-	@JsonAlias("_id")
+	@JsonProperty(value = "_id")
 	private String id;
 
 	private String name;
