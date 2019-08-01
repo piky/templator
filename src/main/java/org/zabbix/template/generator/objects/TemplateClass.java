@@ -14,7 +14,7 @@ public enum TemplateClass {
 	@JsonProperty("Interfaces EtherLike Extension")
 	INTERFACES_ETHERLIKE_EXTENSION, OS, SERVER, NETWORK, MODULE, APP, INTERFACES_SIMPLE, INTERFACES, SNMP_DEVICE,
 	@JsonProperty("SNMPv1")
-	SNMP_V1, @JsonProperty("SNMPv2")
-	SNMP_V2, @JsonProperty("SNMPv3")
-	SNMP_V3;
+	SNMPV1, @JsonProperty("SNMPv2")
+	SNMPV2, @JsonProperty("SNMPv3")
+	SNMPV3;
 }

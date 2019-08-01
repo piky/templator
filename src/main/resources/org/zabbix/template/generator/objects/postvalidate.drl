@@ -149,7 +149,7 @@ rule "Validation rule 10: you should have both masterItem and type=DependentItem
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
-	$m : Metric (masterItem == null, type == Type.DEPENDENT_ITEM )
+	$m : Metric (masterItem == null, type == Type.DEPENDENT )
 	$ij: InputJSON( )
 then
     logger.error(marker,"Please define 'masterItem' for "+$m.id);
@@ -160,7 +160,7 @@ rule "Validation rule 10.1: you should have both masterItem and type=DependentIt
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
-	$dr : DiscoveryRule (masterItem == null, type == Type.DEPENDENT_ITEM )
+	$dr : DiscoveryRule (masterItem == null, type == Type.DEPENDENT )
 	$ij: InputJSON( )
 then
     logger.error(marker,"Please define 'masterItem' for "+$dr.name);

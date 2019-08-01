@@ -174,7 +174,7 @@ rule "Rule: reset delay to 0 for DEPENDENT ITEMS"
 	salience 101
 	dialect "mvel"
 when
-	$m : Metric (type == Type.DEPENDENT_ITEM)
+	$m : Metric (type == Type.DEPENDENT)
 then
     logger.debug(marker,"Resetting delay to 0 for dependent item {}", $m.id);
     $m.delay = 0;
@@ -185,7 +185,7 @@ rule "Rule: reset delay to 0 for DEPENDENT discovery rule"
 	salience 101
 	dialect "mvel"
 when
-	$dr : DiscoveryRule (type == Type.DEPENDENT_ITEM)
+	$dr : DiscoveryRule (type == Type.DEPENDENT)
 then
     logger.debug(marker,"Resetting delay to 0 for dependent discovery rule {}", $dr.name);
     $dr.delay = 0;

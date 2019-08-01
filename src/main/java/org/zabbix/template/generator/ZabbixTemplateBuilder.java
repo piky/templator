@@ -126,7 +126,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				);
 		from("direct:snmpv1")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-						.contains(TemplateClass.SNMP_V1))
+						.contains(TemplateClass.SNMPV1))
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -135,7 +135,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		from("direct:snmpv2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
-						.contains(TemplateClass.SNMP_V2))
+						.contains(TemplateClass.SNMPV2))
 				.setHeader("snmp_item_type", simple("4", String.class))
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -144,8 +144,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		from("direct:other").filter(exchange -> ( // only non SNMP templates here
 		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
-				.anyMatch((a) -> a.equals(TemplateClass.SNMP_V1) || a.equals(TemplateClass.SNMP_V2)
-						|| a.equals(TemplateClass.SNMP_V3)) == false)
+				.anyMatch((a) -> a.equals(TemplateClass.SNMPV1) || a.equals(TemplateClass.SNMPV2)
+						|| a.equals(TemplateClass.SNMPV3)) == false)
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("", String.class))
 				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")

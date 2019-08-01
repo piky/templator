@@ -24,7 +24,7 @@ rule "Rule 1a: generate SNMPvX suffix for templates of class SNMPv1,SNMPv2,SNMPv
 	salience 1
 when
 	$t: Template($classes: classes)
-    exists (TemplateClass(this == TemplateClass.SNMP_V1 || this == TemplateClass.SNMP_V2|| this == TemplateClass.SNMP_V3) from $classes)
+    exists (TemplateClass(this == TemplateClass.SNMPV1 || this == TemplateClass.SNMPV2|| this == TemplateClass.SNMPV3) from $classes)
 then
     logger.info(marker,"Found SNMPv1|v2|v3 class, attaching SNMP suffix to name for "+$t.getName());
     modify($t) {setName($t.getName()+" SNMPvX");};
