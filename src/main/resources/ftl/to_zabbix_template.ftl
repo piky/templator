@@ -322,7 +322,7 @@
                     <condition>
                         <macro>${cond.macro}</macro>
                         <value>${cond.value}</value>
-                        <operator>${cond.operator}</operator>
+                        <operator>${cond.operator.getZabbixValue()}</operator>
                         <formulaid>${cond.formulaid!''}</formulaid>
                     </condition>
                 </#list>

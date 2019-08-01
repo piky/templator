@@ -2,7 +2,6 @@ package org.zabbix.template.generator.objects;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-//TODO add enums for evaltype and ooperator.
 public class Filter {
 
 	@JsonAlias({ "evaltype", "eval_type" })
@@ -12,7 +11,7 @@ public class Filter {
 
 	public enum EvalType implements ZabbixValue {
 
-		AND_OR(0), AND(1), OR(2), CUSTOM_EXPRESSION(3);
+		AND_OR(0), AND(1), OR(2), FORMULA(3);
 
 		private int zabbixValue;
 
@@ -63,7 +62,27 @@ public class Filter {
 		 * Condition operator. Possible values: 8 - (default) matches regular
 		 * expression.
 		 */
-		private int operator = 8;
+		private Operator operator = Operator.MATCHES_REGEX;
+
+		public enum Operator implements ZabbixValue {
+
+			MATCHES_REGEX(8), NOT_MATCHES_REGEX(9);
+
+			private int zabbixValue;
+
+			Operator(int zabbixValue) {
+				this.setZabbixValue(zabbixValue);
+			}
+
+			@Override
+			public int getZabbixValue() {
+				return zabbixValue;
+			}
+
+			public void setZabbixValue(int zabbixValue) {
+				this.zabbixValue = zabbixValue;
+			}
+		};
 
 		private String formulaid;
 
@@ -83,11 +102,12 @@ public class Filter {
 			this.value = value;
 		}
 
-		public int getOperator() {
+		public Operator getOperator() {
 			return operator;
 		}
 
-		public void setOperator(int operator) {
+		public void setOperator(Operator operator) {
+
 			this.operator = operator;
 		}
 
