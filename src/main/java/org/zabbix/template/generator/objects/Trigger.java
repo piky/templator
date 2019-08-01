@@ -24,7 +24,7 @@ public class Trigger {
 	private String expression;
 	@JsonAlias({ "recovery_expression" })
 	private String recoveryExpression;
-	private int priority;
+	private Priority priority = Priority.NOT_CLASSIFIED;
 	private String description;
 	private String url;
 	@JsonAlias({ "manual_close" })
@@ -75,6 +75,26 @@ public class Trigger {
 		private int zabbixValue;
 
 		ManualClose(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	public enum Priority implements ZabbixValue {
+
+		NOT_CLASSIFIED(0), INFO(1), WARNING(2), AVERAGE(3), HIGH(4), DISASTER(5);
+		private int zabbixValue;
+
+		Priority(int zabbixValue) {
 			this.setZabbixValue(zabbixValue);
 		}
 
@@ -169,11 +189,11 @@ public class Trigger {
 		this.recoveryExpression = recoveryExpression;
 	}
 
-	public int getPriority() {
+	public Priority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(int priority) {
+	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
 

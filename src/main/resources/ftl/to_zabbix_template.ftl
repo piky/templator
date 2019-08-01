@@ -410,7 +410,7 @@
     <correlation_tag/>
     ${xml_wrap(tr.url!'','url')}
     <status>0</status>
-    <priority>${tr.priority!'0'}</priority>
+    <priority>${tr.priority.getZabbixValue()}</priority>
     ${xml_wrap(tr.description!'','description')}
     <type>0</type>
     ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
