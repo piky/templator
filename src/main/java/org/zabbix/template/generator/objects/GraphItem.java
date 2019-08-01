@@ -9,7 +9,7 @@ public class GraphItem {
 	private int sortOrder;
 
 	@JsonAlias({ "drawtype" })
-	private DrawType drawType = DrawType.LINE;
+	private DrawType drawType = DrawType.SINGLE_LINE;
 
 	// change to Color enum
 	@JsonAlias({ "colour" })
@@ -30,7 +30,7 @@ public class GraphItem {
 
 	public enum DrawType implements ZabbixValue {
 
-		LINE(0), FILLED_REGION(1), BOLD_LINE(2), DOT(3), DASHED_LINE(4), GRADIENT_LINE(5);
+		SINGLE_LINE(0), FILLED_REGION(1), BOLD_LINE(2), DOTTED_LINE(3), DASHED_LINE(4), GRADIENT_LINE(5);
 		private int zabbixValue;
 
 		DrawType(int zabbixValue) {
