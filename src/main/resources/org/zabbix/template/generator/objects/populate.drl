@@ -221,7 +221,7 @@ end
 //     $m.delay= "30s";
 // 	$m.history= "14d";
 // 	discard = new PreprocessingStep();
-// 	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_WITH_HEARTBEAT;
+// 	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_HEARTBEAT;
 // 	discard.params = "5m";
 // 	$m.preprocessing.add(discard);
 // end
@@ -243,7 +243,7 @@ then
 	$m.delay= "1h";
 	$m.history= "2w";
 	discard = new PreprocessingStep();
-	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_WITH_HEARTBEAT;
+	discard.type = PreprocessingStepType.DISCARD_UNCHANGED_HEARTBEAT;
 	discard.params = "1d";
 	if (!($m.preprocessing contains discard)) {
 		logger.debug(marker,"Preprocessing does not contain {} {}, {}",$m.id, discard.type, $m.preprocessing);
