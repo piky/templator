@@ -1,19 +1,47 @@
 # Zabbix Template Generation tool
+## Install
+
+You will need maven to build.  
+
+then do:
+
+```text
+cd templates
+mvn package
+```
+
+grab jar file in target dir
+
+```text
+cd templates
+java -jar target/zabbix-template-generator-0.15.jar
+```
+
+or
+
+```text
+mkdir /opt/zabbix-template-generator
+cp target/zabbix-template-generator-0.5.jar /opt/zabbix-template-generator
+cp -Rf bin /opt/zabbix-template-generator
+cd /opt/zabbix-template-generator
+chmod u+x zabbix-template-generator-0.5.jar
+./zabbix-template-generator-0.5.jar
+```
 
 ## Overview and why generating
 
 This tool serve to aid with templates generation in Zabbix.
 We suggest to use this tool because we want to achieve the following goals:
-- A dozers or hunders of Templates can be changed in bulk
+
+- A dozens or hundreds of Templates can be changed in bulk
 - Same templates for different versions of Zabbix
 - Same templates for different versions of SNMP(if SNMP)
 - Localized templates. It must be possible to generate identical template in different language(changing metric/trigger names/descriptions). But otherwise it must be the same template.
-- Many metrics in different templates are actually the same. Take `CPU load`, or `Memory utilization` for example. Different devices or OS will have different keys or SNMP oid how to retrieve such metrics - but we want to enforce that these will the be the same metric acros all different templates,systems and devices. With the same set of triggers applied.
-Generator will help us to do so with the concept of `prototypes`
+- Many metrics in different templates are actually the same. Take `CPU load`, or `Memory utilization` for example. Different devices or OS will have different keys or SNMP oid how to retrieve such metrics - but we want to enforce that these will the be the same metric across all different templates, systems and devices. With the same set of triggers applied.  
+Generator will help us to do that with the concept of `prototypes`
 - Same applies to triggers. We use `prototypes` of triggers in this generator to reuse triggers in different templates.
 - We also want to ensure some baseline quality of the template for the new template. For example, if there is a new template for network device - metrics must be defined that collect `CPU load`,`Memory utilization`, `Interface utilization` to reach `Performance` baseline.
 It also must has metrics that collect `Temperature` of at least one temperature sensor to be sure it gets `Fault` baseline. This tool helps to check that template has a decent level of quality.
-
 
 ## Workflow of the tool
 
@@ -80,10 +108,10 @@ TODO
 TODO
 
 - memory utilization, vfs utilization
-- how metrics are enriched if in LLD (keys, names) What is ALARM_OBJECT, ALARM_OBJECT_TYPE
-- if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'single application guideline'
+- how metrics are enriched if in LLD (keys, names) What is RESOURCE, RESOURCE_TYPE
+- if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'Single application guideline'
 - discard preprocessing steps are magically stripped for templates versions < 4.2
-- discard preprocessing steps are magically added for inventory like metrics  and health-checks
+- discard preprocessing steps are magically added for inventory like metrics  and healthchecks
 - resets 'trends' to 0 for items with value maps.
 _____________________________________________------------
 
@@ -93,9 +121,6 @@ _____________________________________________------------
 - custom metric can be added  
 
 ## Conventions used  
-
-metric.prototype must be in dot notation. Metric subclass - in TitleCase.  
-use camelCase for jsonInput (in @JsonAlias({}) add _ notation like in Zabbix API)     
 
 - in discovery filter provide: formulaid in condition
 - arrays must be provided with default value of zero elements.
