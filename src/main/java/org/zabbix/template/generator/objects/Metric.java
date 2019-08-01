@@ -41,7 +41,7 @@ public abstract class Metric {
 
 	public enum ValueType implements ZabbixValue {
 
-		FLOAT(0), CHAR(1), LOG(2), INTEGER(3), TEXT(4);
+		FLOAT(0), CHAR(1), LOG(2), UNSIGNED(3), TEXT(4);
 		private int zabbixValue;
 
 		ValueType(int zabbixValue) {
@@ -60,7 +60,7 @@ public abstract class Metric {
 	};
 
 	@JsonAlias("value_type")
-	private ValueType valueType = ValueType.INTEGER;
+	private ValueType valueType = ValueType.UNSIGNED;
 	// zabbix item type
 	private Type type;
 

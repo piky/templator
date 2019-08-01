@@ -198,7 +198,7 @@ rule "Rule: reset trends to 0 for health-checks(metrics with value_maps) or non-
 when
 	$m : Metric (
 		valueMap != null || 
-		(valueType != ValueType.INTEGER && valueType != ValueType.FLOAT)
+		(valueType != ValueType.UNSIGNED && valueType != ValueType.FLOAT)
 	)
 then
     logger.debug(marker,"Resetting trends to 0 for item {}", $m.id);
