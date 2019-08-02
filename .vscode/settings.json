@@ -1,18 +1,21 @@
 {
     "json.schemas": [
         {
-            "fileMatch":["in/*.json"],
-            "url":"./bin/zabbix_inputjson_schema.json"
+            "fileMatch": [
+                "/in/*.json"
+            ],
+            "url": "./bin/zabbix_inputjson_schema.json"
         },
         {
-            "fileMatch":["prototypes/*.json"],
-            "url":"./bin/zabbix_metric_prototype_schema.json"
+            "fileMatch": [
+                "/prototypes/*.json"
+            ],
+            "url": "./bin/zabbix_metric_prototype_schema.json"
         }
     ],
     "yaml.schemas": {
         "./bin/zabbix_inputjson_schema.json": "/bin/in/*.yaml",
         "./bin/zabbix_metric_prototype_schema.json": "/bin/prototypes/*.yaml"
-
     },
     "files.associations": {
         "*.json": "jsonc"
