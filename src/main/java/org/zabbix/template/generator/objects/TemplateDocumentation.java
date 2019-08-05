@@ -4,17 +4,26 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class TemplateDocumentation {
+
+	@JsonAlias("_overview")
 	private String overview;
+
+	@JsonAlias("_issues")
 	private ArrayList<Issue> issues = new ArrayList<Issue>(0);
 
 	// provide setup instructions here
 	@JsonProperty(value = "_setup")
 	private String setup;
 
-	@JsonProperty(value = "_known_devices")
-	private ArrayList<Device> knownDevices = new ArrayList<Device>(0);
+	// provide zabbix configuration instructions
+	@JsonProperty(value = "_zabbix_config")
+	private String zabbixConfig;
+
+	@JsonProperty(value = "_tested_on")
+	private ArrayList<Resource> testedOn = new ArrayList<Resource>(0);
 
 	public String getOverview() {
 		return overview;
@@ -40,12 +49,20 @@ public class TemplateDocumentation {
 		this.setup = setup;
 	}
 
-	public ArrayList<Device> getKnownDevices() {
-		return knownDevices;
+	public String getZabbixConfig() {
+		return zabbixConfig;
 	}
 
-	public void setKnownDevices(ArrayList<Device> knownDevices) {
-		this.knownDevices = knownDevices;
+	public void setZabbixConfig(String zabbixConfig) {
+		this.zabbixConfig = zabbixConfig;
+	}
+
+	public ArrayList<Resource> getTestedOn() {
+		return testedOn;
+	}
+
+	public void setTestedOn(ArrayList<Resource> testedOn) {
+		this.testedOn = testedOn;
 	}
 
 	public static class Issue {
@@ -79,7 +96,7 @@ public class TemplateDocumentation {
 
 	}
 
-	public static class Device {
+	public static class Resource {
 		private String name;
 		private String version;
 		private String oid;

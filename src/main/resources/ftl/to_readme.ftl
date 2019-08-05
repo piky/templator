@@ -11,6 +11,13 @@ Minimum version: ${zbx_ver}
 <#if t.documentation.overview??>
 ${t.documentation.overview!''}
 </#if>
+<#if (t.documentation.testedOn?size > 0)>
+This template was tested on:
+
+<#list t.documentation.testedOn as tested>
+- ${tested.name}, version ${tested.version!''}
+</#list>
+</#if>
 </#if>
 
 ## Setup
@@ -24,8 +31,8 @@ ${t.documentation.setup!''}
 ## Zabbix configuration
 
 <#if t.documentation??>
-<#if t.documentation.zabbixConfiguration??>
-${t.documentation.zabbixConfiguration!''}
+<#if t.documentation.zabbixConfig??>
+${t.documentation.zabbixConfig!''}
 </#if>
 </#if>
 
