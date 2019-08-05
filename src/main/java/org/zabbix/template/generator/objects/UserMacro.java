@@ -63,7 +63,6 @@ public class UserMacro implements Comparable<UserMacro> {
 
 	@Override
 	public int hashCode() {
-
 		return Objects.hash(macro);
 	}
 
