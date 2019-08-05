@@ -22,6 +22,7 @@ public class TemplateDocumentation {
 	@JsonProperty(value = "_zabbix_config")
 	private String zabbixConfig;
 
+	@JsonAlias("_known_devices") // old name
 	@JsonProperty(value = "_tested_on")
 	private ArrayList<Resource> testedOn = new ArrayList<Resource>(0);
 
