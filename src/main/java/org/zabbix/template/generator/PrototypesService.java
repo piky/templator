@@ -74,6 +74,7 @@ public class PrototypesService {
 
 			for (Resource r : resources) {
 				File file = r.getFile();
+				logger.info("Loaded prototype: " + file.toString());
 				addFileToMap(mapper, file);
 			}
 
