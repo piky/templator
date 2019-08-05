@@ -6,7 +6,7 @@
 
 ## Overview
 
-Minimum version: ${zbx_ver}  
+For Zabbix version: ${zbx_ver}  
 <#if t.documentation??>
 <#if t.documentation.overview??>
 ${t.documentation.overview!''}
@@ -86,11 +86,11 @@ ${t.documentation.zabbixConfig!''}
 
 ## Triggers
 
-|Name|Description|Expression|
-|----|-----------|----|
+|Name|Description|Expression|Severity|
+|----|-----------|----|----|
 <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|${tr.priority}|
     </#list>
 </#list>
 <#--now list metrics triggers from discovery rules -->
@@ -98,7 +98,7 @@ ${t.documentation.zabbixConfig!''}
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
 <#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|${tr.priority}|
     </#list>
 </#list>
 </#list>
