@@ -1,0 +1,86 @@
+<#ftl output_format="plainText">
+<#assign zbx_ver = headers.zbx_ver?string>
+
+<#list body.templates as t>
+# ${t.name}
+
+## Overview
+
+Minimum version: ${zbx_ver}  
+<#if t.documentation??>
+<#if t.documentation.overview??>
+${t.documentation.overview!''}
+</#if>
+</#if>
+
+## Setup
+
+<#if t.documentation??>
+<#if t.documentation.setup??>
+${t.documentation.setup!''}
+</#if>
+</#if>
+
+## Zabbix configuration
+
+<#if t.documentation??>
+<#if t.documentation.zabbixConfiguration??>
+${t.documentation.zabbixConfiguration!''}
+</#if>
+</#if>
+
+<#if (t.macros?size > 0)>
+### Macros used
+
+|Name|Description|Default|
+|----|-----------|-------|
+<#list t.macros as macro>
+|${macro.macro}|-|${macro.value}|
+</#list>
+</#if>
+
+<#if (t.templates?size > 0)>
+## Template links
+|Name|
+|----|
+<#list t.templates as dep>
+|${dep}|
+</#list>
+</#if>
+
+## Discovery rules
+
+<#if (t.discoveryRules?size > 0)>
+|Name|Description|Type|
+|----|-----------|----|
+<#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
+|${dr.name}|${(dr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${dr.type}|
+</#list>
+</#if>
+
+## Items collected
+
+|Name|Description|Type|
+|----|-----------|----|
+<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|
+</#list>
+
+## Triggers
+
+|Name|Description|Expression|
+|----|-----------|----|
+<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+    <#list m.triggers as tr>
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|
+    </#list>
+</#list>
+
+## References
+<#if t.documentation??>
+<#if t.documentation.ref??>
+${t.documentation.ref!''}
+</#if>
+</#if>
+</#list>
+
