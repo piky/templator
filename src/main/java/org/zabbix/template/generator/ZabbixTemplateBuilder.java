@@ -131,7 +131,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
 				.log(LoggingLevel.DEBUG,
 						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
-				.to("direct:zabbix_export");
+				.to("direct:multicaster_export");
 
 		from("direct:snmpv2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
@@ -140,7 +140,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
 				.log(LoggingLevel.DEBUG,
 						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
-				.to("direct:zabbix_export");
+				.to("direct:multicaster_export");
 
 		from("direct:other").filter(exchange -> ( // only non SNMP templates here
 		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
@@ -149,8 +149,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("", String.class))
 				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
-				.to("direct:zabbix_export");
+				.to("direct:multicaster_export");
 
+		from("direct:multicaster_export").to("log:result?level=DEBUG").multicast().parallelProcessing()
+				.to("direct:zabbix_export", "direct:generate_docs"
+				// "direct:remote_service"
+				);
 		// .marshal().json(JsonLibrary.Jackson,true)
 		// .marshal().jacksonxml(true)
 		// .log("${body}")
@@ -160,7 +164,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// Here should be validation: check that if type snmp than snmpobject defined,
 		// for example
 		// Naming restrictions can also be checked for custom metrics
-
 		/* STEP 7(FINAL): export to XML, using freemarker */
 		from("direct:zabbix_export").to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
 				.to("xslt:templates/indent.xsl?saxon=true") // TODO proper indentation for XML file
@@ -187,6 +190,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.when(header("zbx_ver").isEqualTo("3.2")).to("validator:templates/zabbix_export_3.2.xsd")
 
 				.otherwise().log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
+		/* STEP 8(FINAL): generate README.md , using freemarker */
+		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
+				.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
+				.setHeader("CamelOverruleFileName", simple(
+						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.md"))
+				.to("file:bin/out");
 
 	}
 }
