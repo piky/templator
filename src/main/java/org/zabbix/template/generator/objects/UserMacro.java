@@ -2,9 +2,14 @@ package org.zabbix.template.generator.objects;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class UserMacro implements Comparable<UserMacro> {
 	private String macro;
 	private String value;
+
+	@JsonAlias("_description")
+	private String description;
 
 	public String extractMacroName() {
 		// ^\{\$[A-Z0-9_]+(:".+")?\}$
@@ -26,6 +31,14 @@ public class UserMacro implements Comparable<UserMacro> {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	// used in Jackson
