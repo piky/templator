@@ -70,9 +70,19 @@ ${t.documentation.zabbixConfig!''}
 
 |Name|Description|Type|
 |----|-----------|----|
+<#--list metrics without discovery -->
 <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
 |${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|
 </#list>
+<#--now list metrics from discovery rules -->
+<#if (t.discoveryRules?size > 0)>
+<#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
+<#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
+|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|
+</#list>
+</#list>
+</#if>
+
 
 ## Triggers
 
@@ -83,6 +93,16 @@ ${t.documentation.zabbixConfig!''}
 |${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|
     </#list>
 </#list>
+<#--now list metrics triggers from discovery rules -->
+<#if (t.discoveryRules?size > 0)>
+<#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
+<#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
+    <#list m.triggers as tr>
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|
+    </#list>
+</#list>
+</#list>
+</#if>
 
 ## References
 <#if t.documentation??>
