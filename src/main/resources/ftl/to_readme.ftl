@@ -9,13 +9,14 @@
 For Zabbix version: ${zbx_ver}  
 <#if t.documentation??>
 <#if t.documentation.overview??>
-${t.documentation.overview!''}
+${(t.documentation.overview!'')?replace("(\n|\r\n)+","</br>",'r')}
 </#if>
 <#if (t.documentation.testedOn?size > 0)>
+
 This template was tested on:
 
 <#list t.documentation.testedOn as tested>
-- ${tested.name}, version ${tested.version!''}
+- ${tested.name}<#if tested.version??>, version ${tested.version!''}</#if>
 </#list>
 </#if>
 </#if>
@@ -23,17 +24,13 @@ This template was tested on:
 ## Setup
 
 <#if t.documentation??>
-<#if t.documentation.setup??>
-${t.documentation.setup!''}
-</#if>
+${(t.documentation.setup!'Refer to the vendor documentation.')?replace("(\n|\r\n)+","</br>",'r')}
 </#if>
 
 ## Zabbix configuration
 
 <#if t.documentation??>
-<#if t.documentation.zabbixConfig??>
-${t.documentation.zabbixConfig!''}
-</#if>
+${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')?replace("(\n|\r\n)+","</br>",'r')}
 </#if>
 
 <#if (t.macros?size > 0)>
@@ -90,7 +87,7 @@ ${t.documentation.zabbixConfig!''}
 |----|-----------|----|----|
 <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|${tr.priority}|
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|
     </#list>
 </#list>
 <#--now list metrics triggers from discovery rules -->
@@ -98,15 +95,15 @@ ${t.documentation.zabbixConfig!''}
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
 <#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`|${tr.priority}|
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|
     </#list>
 </#list>
 </#list>
 </#if>
 
-## References
 <#if t.documentation??>
 <#if t.documentation.ref??>
+## References
 ${t.documentation.ref!''}
 </#if>
 </#if>
