@@ -9,8 +9,9 @@ public class TemplateDocumentation {
 	private String overview;
 	private ArrayList<Issue> issues = new ArrayList<Issue>(0);
 
-	@JsonProperty(value = "_device_setup")
-	private String deviceSetup;
+	// provide setup instructions here
+	@JsonProperty(value = "_setup")
+	private String setup;
 
 	@JsonProperty(value = "_known_devices")
 	private ArrayList<Device> knownDevices = new ArrayList<Device>(0);
@@ -31,12 +32,12 @@ public class TemplateDocumentation {
 		this.issues = issues;
 	}
 
-	public String getDeviceSetup() {
-		return deviceSetup;
+	public String getSetup() {
+		return setup;
 	}
 
-	public void setDeviceSetup(String deviceSetup) {
-		this.deviceSetup = deviceSetup;
+	public void setSetup(String setup) {
+		this.setup = setup;
 	}
 
 	public ArrayList<Device> getKnownDevices() {
