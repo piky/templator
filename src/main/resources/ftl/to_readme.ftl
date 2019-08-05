@@ -48,6 +48,7 @@ ${t.documentation.zabbixConfig!''}
 
 <#if (t.templates?size > 0)>
 ## Template links
+
 |Name|
 |----|
 <#list t.templates as dep>
