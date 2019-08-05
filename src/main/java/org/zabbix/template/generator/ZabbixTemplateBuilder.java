@@ -193,6 +193,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		/* STEP 8(FINAL): generate README.md , using freemarker */
 		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
 				.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.md"))
 				.to("file:bin/out");
