@@ -43,14 +43,16 @@ ${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')
 </#list>
 </#if>
 
-<#if (t.templates?size > 0)>
 ## Template links
 
+<#if (t.templates?size > 0)>
 |Name|
 |----|
 <#list t.templates as dep>
 |${dep}|
 </#list>
+<#else>
+There are no template links in this template.
 </#if>
 
 ## Discovery rules
