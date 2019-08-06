@@ -259,6 +259,12 @@ For minimum baseline compliance
 
 **Next steps status**: Document all baseline rules
 
+### Generator file filtering
+
+**Implemented as**: Camel route  
+**How to use**: You can define file name filter in `application.properties` file to limit which templates must be generated.  
+**Next steps status**: None
+
 ### XSD validation of the XML template
 
 **Implemented as**: XSD validation in Apache Camel  
