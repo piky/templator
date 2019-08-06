@@ -1,0 +1,17 @@
+Hotkeys:
+
+CTRL+B - hide sidebar
+CTRL+E - search for file
+CTRL+` - close/open console
+CTRL+SHIFT+F - search for in all files
+CTRL+SHIFT+P - run something
+CTRL+F5 - run debug w/o debug
+CTRL+ALT+ENTER - open in extra window to the right
+
+Extensions to use:
+
+https://github.com/redhat-developer/vscode-yaml - for yaml validation and syntax highlight
+https://github.com/Microsoft/vscode-java-pack - for handling java project
+https://github.com/jim-moody/vscode-drools - for highlighting drools files
+https://marketplace.visualstudio.com/items?itemName=dcortes92.FreeMarker - for highlighting freemarker files
+https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint - for preview of markdown readmes
