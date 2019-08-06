@@ -261,8 +261,8 @@ For minimum baseline compliance
 
 ### XSD validation of the XML template
 
-**Implemented as**: XSD validation in Apache Camel
-**How to use**: Tempalte is checked automatically at the end.
+**Implemented as**: XSD validation in Apache Camel  
+**How to use**: Tempalte is checked automatically at the end.  
 **Next steps status**: No longer maintained. Must be removed.
 
 ### More stuff
