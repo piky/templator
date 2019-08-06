@@ -20,7 +20,6 @@
     "files.associations": {
         "*.json": "jsonc"
     },
-    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe",
     "java.configuration.updateBuildConfiguration": "automatic",
     "files.exclude": {
         "**/.classpath": true,
