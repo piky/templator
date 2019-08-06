@@ -542,7 +542,6 @@
             <#local found = true>
             <#local glist = glist + ["Templates/Applications"]>
             <#break>
-          <#default>
           <#case 'DB'>
             <#local found = true>
             <#local glist = glist + ["Templates/Databases"]>
