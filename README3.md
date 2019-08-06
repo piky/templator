@@ -6,7 +6,6 @@ You will need maven to build.
 then do:
 
 ```text
-cd templates
 mvn package
 ```
 
@@ -65,6 +64,7 @@ For example
 `Server` - adds template to Template/Server hardware _group  
 `Module` - adds template to Template/Modules _group  
 `App` - adds template to Template/Applications _group  
+`DB` - adds template to Template/Databases _group  
 
 ### Conventions
 
