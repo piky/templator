@@ -26,6 +26,9 @@ public class TemplateDocumentation {
 	@JsonProperty(value = "_tested_on")
 	private ArrayList<Resource> testedOn = new ArrayList<Resource>(0);
 
+	@JsonProperty("_ref")
+	private String ref;
+
 	public String getOverview() {
 		return overview;
 	}
@@ -126,5 +129,13 @@ public class TemplateDocumentation {
 			this.oid = oid;
 		}
 
+	}
+
+	public String getRef() {
+		return ref;
+	}
+
+	public void setRef(String ref) {
+		this.ref = ref;
 	}
 }
