@@ -82,6 +82,7 @@ public class RuleChecker implements Processor {
             agenda.getAgendaGroup("baseline").setFocus();
             agenda.getAgendaGroup("postvalidate").setFocus();
 
+            agenda.getAgendaGroup("populate.screens").setFocus();
             agenda.getAgendaGroup("populate.graph.keys").setFocus();
             agenda.getAgendaGroup("populate.masteritem.keys").setFocus();
 

@@ -1,0 +1,65 @@
+package org.zabbix.template.generator.objects
+
+
+
+rule "Bind graphs(non LLD) with screen items"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $m : Metric ($graphs: graphs, discoveryRule == null)
+	$gr: Graph ($id: id != null) from $graphs
+    
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem (graphId == $id) from $scrItems
+then
+    $scrItem.resource.add(new ScreenResource($gr.name, $t.name));
+    $scrItem.resourceType = ScreenResourceType.GRAPH;
+end
+
+rule "Bind graphs(LLD) with screen items"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $m : Metric ($graphs: graphs, discoveryRule != null)
+	$gr: Graph ($id: id != null) from $graphs
+    
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem (graphId == $id) from $scrItems
+then
+    $scrItem.resource.add(new ScreenResource($gr.name, $t.name));
+    $scrItem.resourceType = ScreenResourceType.GRAPH_PROTOTYPE;
+end
+
+
+
+rule "Bind metrics(non LLD) with screen items"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $m : Metric ($id: id != null, $graphs: graphs, discoveryRule == null)
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem (metricId == $id) from $scrItems
+then
+    $scrItem.resource.add(new ScreenResource($m.key, $t.name));
+    $scrItem.resourceType = ScreenResourceType.SIMPLE_GRAPH;
+end
+
+rule "Bind metrics(LLD) with screen items"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $m : Metric ($id: id != null, $graphs: graphs, discoveryRule != null)
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem (metricId == $id) from $scrItems
+then
+    $scrItem.resource.add(new ScreenResource($m.key, $t.name));
+    $scrItem.resourceType = ScreenResourceType.SIMPLE_GRAPH_PROTOTYPE;
+end
