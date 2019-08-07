@@ -20,14 +20,13 @@ public class Graph {
 	@JsonAlias({ "percent_right" })
 	private float percentRight = 0;
 	@JsonAlias({ "show_3d" })
-	private int show3d = 0;
+	private YesNo show3d = YesNo.NO;
 	@JsonAlias({ "show_legend" })
-	private int showLegend = 1;
+	private YesNo showLegend = YesNo.YES;
 	@JsonAlias({ "show_triggers" })
-	private int showTriggers = 1;
+	private YesNo showTriggers = YesNo.YES;
 	@JsonAlias({ "show_work_period" })
-	private int showWorkPeriod = 1;
-
+	private YesNo showWorkPeriod = YesNo.YES;
 	@JsonAlias({ "yaxismax" })
 	private float yAxisMax = 100;
 
@@ -44,7 +43,6 @@ public class Graph {
 	private ArrayList<GraphItem> graphItems = new ArrayList<GraphItem>(0);
 
 	// for Graph item object
-
 	public enum GraphType implements ZabbixValue {
 
 		NORMAL(0), STACKED(1), PIE(2), EXPLODED(3);
@@ -62,7 +60,6 @@ public class Graph {
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
-
 	};
 
 	// for ymax_type,ymin_type
@@ -142,35 +139,35 @@ public class Graph {
 		this.percentRight = percentRight;
 	}
 
-	public int getShow3d() {
+	public YesNo getShow3d() {
 		return show3d;
 	}
 
-	public void setShow3d(int show3d) {
+	public void setShow3d(YesNo show3d) {
 		this.show3d = show3d;
 	}
 
-	public int getShowLegend() {
+	public YesNo getShowLegend() {
 		return showLegend;
 	}
 
-	public void setShowLegend(int showLegend) {
+	public void setShowLegend(YesNo showLegend) {
 		this.showLegend = showLegend;
 	}
 
-	public int getShowTriggers() {
+	public YesNo getShowTriggers() {
 		return showTriggers;
 	}
 
-	public void setShowTriggers(int showTriggers) {
+	public void setShowTriggers(YesNo showTriggers) {
 		this.showTriggers = showTriggers;
 	}
 
-	public int getShowWorkPeriod() {
+	public YesNo getShowWorkPeriod() {
 		return showWorkPeriod;
 	}
 
-	public void setShowWorkPeriod(int showWorkPeriod) {
+	public void setShowWorkPeriod(YesNo showWorkPeriod) {
 		this.showWorkPeriod = showWorkPeriod;
 	}
 

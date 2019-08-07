@@ -434,11 +434,11 @@
             ${xml_wrap(g.height?c,'height')}
             ${xml_wrap(g.yAxisMin?c,'yaxismin')}
             ${xml_wrap(g.yAxisMax?c,'yaxismax')}            
-			${xml_wrap(g.showWorkPeriod?c,'show_work_period')}
-			${xml_wrap(g.showTriggers?c,'show_triggers')}
+			${xml_wrap(g.showWorkPeriod.getZabbixValue()?c,'show_work_period')}
+			${xml_wrap(g.showTriggers.getZabbixValue()?c,'show_triggers')}
 			${xml_wrap(g.graphType.getZabbixValue()?c,'type')}
-			${xml_wrap(g.showLegend?c,'show_legend')}
-			${xml_wrap(g.show3d?c,'show_3d')}
+			${xml_wrap(g.showLegend.getZabbixValue()?c,'show_legend')}
+			${xml_wrap(g.show3d.getZabbixValue()?c,'show_3d')}
 			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
 			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right')}			
 			${xml_wrap(g.yMinType.getZabbixValue()?c,'ymin_type_1')}
