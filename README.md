@@ -224,6 +224,38 @@ end
 
 **Next steps status**: Consider to drop this magic in favor of explicitly defining macros. Or at least document all of them.
 
+### Ability to add screens 
+
+**Implemented as**: Drools populate.screens.drl  
+**How to use**: Graphs and Simple graphs are supported. Prototypes vs nonprototypes are choosen automatically.  
+Add `screens` section into template. Don't forget to define `hsize`, `vsize` and `x`, `y` for each `screen_item`.  
+use `_graph_id` to reference existing graphs by `_id`
+use `_metric_id_` to reference existing metric by `_id` (for simple graphs)
+
+```json
+"screens": [
+                {
+                    "name": "Test",
+                    "hsize": 2,
+                    "vsize": 4,
+                    "screen_items": [
+                        {
+                            "x": 0,
+                            "y": 0,
+                            "_graph_id": "graph.nginx.current.connections"
+                        },
+                        {
+                            "x": 1,
+                            "y": 0,
+                            "_metric_id": "nginx.connections.writing"
+                        }
+                    ]
+                }
+            ]
+```
+
+**Next steps status**: None
+
 ### SNMPvX
 
 **Implemented as**: In Apache Camel rule  

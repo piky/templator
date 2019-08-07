@@ -76,7 +76,17 @@
             <#else>
             <templates/>
             </#if>
+            <#if (t.screens?size > 0)>
+            <screens>
+            <#list t.screens as s>
+                <screen>
+                    <@screen s/>
+                </screen>
+            </#list>
+            </screens>
+            <#else>
             <screens/>
+            </#if>
             <#if zbx_ver == '4.2'>
             <tags/>
             </#if>
@@ -465,6 +475,47 @@
             </graph_items>
 
 </#macro>
+
+<#macro screen s>
+            ${xml_wrap(s.name,'name')}
+            ${xml_wrap(s.hsize?c,'hsize')}
+            ${xml_wrap(s.vsize?c,'vsize')}
+            <screen_items>
+            	<#list s.screenItems as si>
+            	<screen_item>
+            		${xml_wrap(si.resourceType.getZabbixValue()?c,'resourcetype')}
+            		${xml_wrap(si.width?c,'width')}
+                    ${xml_wrap(si.height?c,'height')}
+                    ${xml_wrap(si.x?c,'x')}
+                    ${xml_wrap(si.y?c,'y')}
+                    ${xml_wrap(si.colspan?c,'colspan')}
+                    ${xml_wrap(si.rowspan?c,'rowspan')}
+                    ${xml_wrap(si.elements?c,'elements')}
+                    ${xml_wrap(si.valign.getZabbixValue()?c,'valign')}
+                    ${xml_wrap(si.halign.getZabbixValue()?c,'halign')}
+                    ${xml_wrap(si.style?c,'style')}
+                    ${xml_wrap(si.url!'','url')}
+            		${xml_wrap(si.dynamic.getZabbixValue()?c,'dynamic')}
+            		${xml_wrap(si.sortTriggers?c,'sort_triggers')}
+                    <#--graph/ graph proto -->
+                    <#if (si.resourceType.getZabbixValue() == 0 || si.resourceType.getZabbixValue() == 20)>
+                    <resource>
+                        <name>${si.resource[0].name}</name>
+                        <host>${si.resource[0].host}</host> 
+                    </resource>
+                    <#else> <#--simple graph, plain text...-->
+                    <resource>
+                        <key>${si.resource[0].name}</key>
+                        <host>${si.resource[0].host}</host> 
+                    </resource>
+                    </#if>
+            		${xml_wrap(si.maxColumns?c,'max_columns')}
+                    ${xml_wrap(si.application!'','application')}
+            	</screen_item>
+            	</#list>
+            </screen_items>
+</#macro>
+
 
 <#macro master_item m tag>
         <#-- m is metric or discovery -->

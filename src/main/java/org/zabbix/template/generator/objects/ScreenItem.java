@@ -22,6 +22,8 @@ public class ScreenItem {
 
     @JsonProperty("_graph_id")
     private String graphId;
+    @JsonProperty("_metric_id")
+    private String metricId;
     /*
      * Screen item display option.
      * 
@@ -63,28 +65,7 @@ public class ScreenItem {
     private String application;
 
     @JsonAlias("resource")
-    private ArrayList<Resource> resource = new ArrayList<Resource>(0);
-
-    public class Resource {
-        private String name;
-        private String host;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getHost() {
-            return host;
-        }
-
-        public void setHost(String host) {
-            this.host = host;
-        }
-    }
+    private ArrayList<ScreenResource> resource = new ArrayList<ScreenResource>(0);
 
     public enum Dynamic implements ZabbixValue {
 
@@ -277,11 +258,11 @@ public class ScreenItem {
         this.application = application;
     }
 
-    public ArrayList<Resource> getResource() {
+    public ArrayList<ScreenResource> getResource() {
         return resource;
     }
 
-    public void setResource(ArrayList<Resource> resource) {
+    public void setResource(ArrayList<ScreenResource> resource) {
         this.resource = resource;
     }
 
@@ -291,6 +272,14 @@ public class ScreenItem {
 
     public void setGraphId(String graphId) {
         this.graphId = graphId;
+    }
+
+    public String getMetricId() {
+        return metricId;
+    }
+
+    public void setMetricId(String metricId) {
+        this.metricId = metricId;
     };
 
 }
