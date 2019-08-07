@@ -3,11 +3,14 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Graph {
 
-	@JsonAlias("_prototype")
+	@JsonProperty("_prototype")
 	private String prototype;
+	@JsonProperty("_id")
+	private String id;
 	private String name;
 	private int width = 900;
 	private int height = 200;
@@ -211,6 +214,14 @@ public class Graph {
 
 	public void setGraphItems(ArrayList<GraphItem> graphItems) {
 		this.graphItems = graphItems;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	};
 
 }

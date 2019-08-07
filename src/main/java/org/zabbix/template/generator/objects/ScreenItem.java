@@ -2,6 +2,7 @@ package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ScreenItem {
 
@@ -19,6 +20,8 @@ public class ScreenItem {
     private Valign valign = Valign.MIDDLE;
     private Halign halign = Halign.CENTER;
 
+    @JsonProperty("_graph_id")
+    private String graphId;
     /*
      * Screen item display option.
      * 
@@ -280,6 +283,14 @@ public class ScreenItem {
 
     public void setResource(ArrayList<Resource> resource) {
         this.resource = resource;
+    }
+
+    public String getGraphId() {
+        return graphId;
+    }
+
+    public void setGraphId(String graphId) {
+        this.graphId = graphId;
     };
 
 }

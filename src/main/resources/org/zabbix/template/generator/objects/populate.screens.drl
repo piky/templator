@@ -1,0 +1,21 @@
+package org.zabbix.template.generator.objects
+
+
+
+rule "Change for each screen"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $m : Metric ($graphs: graphs)
+	$gr: Graph ($id: id != null) from $graphs
+	//$gitem: GraphItem () from $gitems
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem (graphId == $id) from $scrItems
+then
+    logger.warn(marker,"Found screen item "+ $scrItem.elements + " " + $gr.id );
+    //now replace gitem.metricKey with actual metric key:
+    $scrItem.
+    //$gitem.setMetricKey($m2.getKey());
+end

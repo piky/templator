@@ -30,6 +30,8 @@ public class Template {
 	@JsonAlias("discovery_rules")
 	private ArrayList<DiscoveryRule> discoveryRules = new ArrayList<DiscoveryRule>(0);
 
+	private ArrayList<Screen> screens = new ArrayList<Screen>(0);
+
 	@JsonAlias("items")
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
@@ -242,6 +244,14 @@ public class Template {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public ArrayList<Screen> getScreens() {
+		return screens;
+	}
+
+	public void setScreens(ArrayList<Screen> screens) {
+		this.screens = screens;
 	}
 
 }
