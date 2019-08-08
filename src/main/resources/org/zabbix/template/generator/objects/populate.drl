@@ -252,3 +252,18 @@ then
 		logger.debug(marker,"Preprocessing contains {} {}, {}",$m.id, discard.type, $m.preprocessing);
 	}
 end
+
+
+// Don't forget to generate {#SINGLETON macro in LLD preprocessing (such as JS preproccessing)}
+rule "Rule: generate each graph name for singletons(discovery rules, add {#SINGLETON} suffix)"
+	agenda-group "populate"
+	dialect "mvel"
+	no-loop
+when
+	$dr : DiscoveryRule ($metrics: metrics, singleton == true)
+    $m : Metric (discoveryRule !=null, $graphs: graphs) from $metrics
+    $gr: Graph () from $graphs
+then
+    logger.info(marker,"Adding {#SINGLETON} macro to graph name for "+ $gr.name);
+	$gr.name = $gr.name+"{#SINGLETON}";
+end

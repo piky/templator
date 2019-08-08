@@ -224,7 +224,30 @@ end
 
 **Next steps status**: Consider to drop this magic in favor of explicitly defining macros. Or at least document all of them.
 
-### Ability to add screens 
+### Singleton LLD support
+
+**Implemented as**: Drools: see `populate.drl`  
+**How to use**: you may set `_singleton`: true for any discovery rule. This will add macro {#SINGLETON} as a suffix to all graphs inside this Discovery rule. Just make sure you generate such empty macro {#SINGLETON} in LLD preprocessing. For example:
+
+```yaml
+      - name: CPU discovery
+        type: DEPENDENT
+        master_item: system.cpu.num
+        key: snmp.cpu.discovery
+        description: This discovery will create set of per core CPU metrics from UCD-SNMP-MIB, using {#CPUNUM} in preprocessing. That's the only reason why LLD is used.
+        _singleton: true
+        _zbx_ver: "4.2"
+        preprocessing:
+          - type: JAVASCRIPT
+            params: |
+              //count the number of CPU cores
+              return JSON.stringify([{"{#CPUNUM}": value, "{#SNMPINDEX}": 0, "{#SINGLETON}":""}])
+
+```
+
+**Next steps status**: None
+
+### Ability to add screens
 
 **Implemented as**: Drools populate.screens.drl  
 **How to use**: Graphs and Simple graphs are supported. Prototypes vs nonprototypes are choosen automatically.  
