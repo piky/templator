@@ -317,3 +317,4 @@ Describe in more detail, TODO:
 - If trigger uses multiple metrics, you only need to define this trigger inside first metric
 - Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown.
 - Macros validation - if macro is used in the metric key or trigger expression but user macro itself cannot be found - validation error is thrown.
+- Inventory links purking if in LLD
