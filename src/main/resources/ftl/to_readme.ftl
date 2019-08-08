@@ -9,7 +9,7 @@
 For Zabbix version: ${zbx_ver}  
 <#if t.documentation??>
 <#if t.documentation.overview??>
-${(t.documentation.overview!'')?replace("(\n|\r\n)+","</br>",'r')}
+${(t.documentation.overview!'')}
 </#if>
 <#if (t.documentation.testedOn?size > 0)>
 
@@ -24,13 +24,13 @@ This template was tested on:
 ## Setup
 
 <#if t.documentation??>
-${(t.documentation.setup!'Refer to the vendor documentation.')?replace("(\n|\r\n)+","</br>",'r')}
+${(t.documentation.setup!'Refer to the vendor documentation.')}
 </#if>
 
 ## Zabbix configuration
 
 <#if t.documentation??>
-${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')?replace("(\n|\r\n)+","</br>",'r')}
+${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')}
 </#if>
 
 <#if (t.macros?size > 0)>
