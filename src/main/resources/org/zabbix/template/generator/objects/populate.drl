@@ -88,7 +88,7 @@ when
     $m : Metric ($key: key != null, resource != null, $graphs: graphs)
     $gr: Graph () from $graphs
 then
-    logger.info(marker,"Generating graph name for "+ $gr);
+    logger.info(marker,"Generating graph name for "+ $gr.name);
     $gr.name = $m.resource + ": " + $gr.name;
 end
 
