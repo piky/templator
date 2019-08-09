@@ -57,7 +57,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		 */
 
 		/* STEP 1: LOAD INPUT FILE */
-		from("file:bin/in?noop=true&include={{filter}}&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
+		from("file:bin/in?noop=true&include={{filter}}&readLock=none&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
 				.setHeader("template_ver", simple("{{version}}", String.class))
 
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")

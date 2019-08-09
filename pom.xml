@@ -178,6 +178,12 @@
 			<version>1.2</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/io.github.hengyunabc/zabbix-api -->
+		<dependency>
+			<groupId>io.github.hengyunabc</groupId>
+			<artifactId>zabbix-api</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 
 	</dependencies>
 	<build>

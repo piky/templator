@@ -201,6 +201,13 @@ For example to link templates:
 
 **Next steps status**: Consider to drop this magic in favor of explicitly defining template links
 
+### Auto importing templates into running Zabbix
+
+**Implemented as**: Camel route: see `ZabbixTemplateImporter.java`  
+**How to use**: Set `zabbix.enable=true` in application.properties file to autoimport templates. Use other `zabbix.*` attributes to define where the zabbix is.
+
+**Next steps status**: Nnoe
+
 ### Macros automatically added for specific metrics
 
 **Implemented as**: Drools: see `populate.templates.drl`  

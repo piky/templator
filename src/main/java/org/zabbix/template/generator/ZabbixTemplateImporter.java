@@ -1,0 +1,36 @@
+package org.zabbix.template.generator;
+
+import org.apache.camel.builder.RouteBuilder;
+
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.zabbix.api.ZabbixService;
+
+@ConditionalOnProperty(value = "zabbix.enabled")
+@Component
+public class ZabbixTemplateImporter extends RouteBuilder {
+
+	private static final Logger logger = LogManager.getLogger(ZabbixTemplateBuilder.class.getName());
+	private static final Marker TEMPLATE_IMPORTER = MarkerManager.getMarker("TEMPLATE_IMPORTER");
+
+	@Autowired(required = true)
+	private ZabbixService zabbixService;
+
+	@Override
+	public void configure() throws Exception {
+
+		/* ASYNC LOAD TEMPLATES TO ZABBIX(experimental feature) */
+		from("file:bin/out?noop=true&include={{filter}}&readLock=markerFile&recursive=true&initialDelay={{zabbix.delay}}&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
+				.filter().simple("${file:name.ext} == 'xml'").filter()
+				.simple("${file:parent} contains '{{zabbix.template_language}}'").filter()
+				.simple("${file:parent} contains '{{zabbix.version}}'")
+				.log("Loading template into Zabbix: ${in.headers.CamelFileNameOnly}")
+				.bean(zabbixService, "importTemplate");
+
+	}
+}
