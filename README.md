@@ -206,7 +206,7 @@ For example to link templates:
 **Implemented as**: Camel route: see `ZabbixTemplateImporter.java`  
 **How to use**: Set `zabbix.enable=true` in application.properties file to autoimport templates. Use other `zabbix.*` attributes to define where the zabbix is.
 
-**Next steps status**: Nnoe
+**Next steps status**: None
 
 ### Macros automatically added for specific metrics
 
@@ -288,7 +288,7 @@ use `_metric_id_` to reference existing metric by `_id` (for simple graphs)
 
 ### SNMPvX
 
-**Implemented as**: In Apache Camel rule  
+**Implemented as**: In Apache Camel route  
 **How to use**: `SNMPvX` is added automatically to all templates with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3.  
 **Next steps status**: Consider to drop this magic to explicitly defining such suffix.
 
