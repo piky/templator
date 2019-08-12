@@ -152,7 +152,7 @@ when
 	$m : Metric (masterItem == null, type == Type.DEPENDENT )
 	$ij: InputJSON( )
 then
-    logger.error(marker,"Please define 'masterItem' for "+$m.id);
+    logger.error(marker,"Please define 'master_item' for "+$m.id);
 	$ij.failed = true;
 end
 
@@ -163,6 +163,6 @@ when
 	$dr : DiscoveryRule (masterItem == null, type == Type.DEPENDENT )
 	$ij: InputJSON( )
 then
-    logger.error(marker,"Please define 'masterItem' for "+$dr.name);
+    logger.error(marker,"Please define 'master_item' for "+$dr.name);
 	$ij.failed = true;
 end
