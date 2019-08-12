@@ -97,19 +97,20 @@ when
 	$t: Template(macros != null)
 	UserMacro( $macro: macro not matches "^\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}$") from $t.macros
 then
-    logger.error(marker,"Bad User Macro found {} in template {}",$macro, $t.name);
+    logger.error(marker,"Bad User Macro found {} in template {}", $macro, $t.name);
 end
 
 //TODO: Works only if single macro used in trigger expression. Broken(not tested) if multiple macros used in trigger expression
-rule "Validation rule 7: Macro used in triggers but not defined"
+rule "Validation rule 7: Macro is used in triggers but not defined"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
       $t: Template ()
       $tr: Trigger  ( expression matches ".+\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.+")
-      forall ( UserMacro( $macro: macro) from $t.macros
-        Trigger( this == $tr, expression not contains $macro)
-        Trigger( this == $tr, recoveryExpression not contains $macro)
+      forall (
+		$macro: UserMacro() from $t.macros
+        Trigger( this == $tr, expression not contains $macro.extractMacroName())
+        Trigger( this == $tr, recoveryExpression not contains $macro.extractMacroName())
       )
 then
     logger.error(marker,"User Macro is used in the trigger but not defined: {} in template {}", $tr.expression, $t.name);
@@ -117,14 +118,14 @@ end
 
 
 //TODO: Works only if single macro used in item key. Broken if multiple macros used in item key
-rule "Validation rule 8: Macro used in item keys but not defined"
+rule "Validation rule 8: Macro is used in item keys but not defined"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
       $t: Template ()
       $m: Metric ( key matches ".+\\{\\$[A-Z0-9_\\.],+(:\".+\")?\\}.+")
-      forall ( UserMacro( $macro: macro) from $t.macros
-        Metric( this == $m, key not contains $macro)
+      forall ( $macro: UserMacro() from $t.macros
+        Metric( this == $m, key not contains $macro.extractMacroName())
       )
 then
     logger.error(marker,"User Macro is used in the item key but not defined: {} in template {}", $m.key, $t.name);
@@ -137,8 +138,8 @@ rule "Validation rule 9: Macro used in item url but not defined"
 when
       $t: Template ()
       $m: Metric ( url matches ".+\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.+")
-      forall ( UserMacro( $macro: macro) from $t.macros
-        Metric( this == $m, url not contains $macro)
+      forall ( $macro: UserMacro() from $t.macros
+        Metric( this == $m, url not contains $macro.extractMacroName())
       )
 then
     logger.error(marker,"User Macro is used in the url but not defined: {} in template {}", $m.url, $t.name);
