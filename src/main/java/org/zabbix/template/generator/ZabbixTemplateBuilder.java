@@ -177,10 +177,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 																									// with SNMPv2 or
 																									// SNMPv1 lang
 
-				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
+				.when(header("template_suffix").isEqualTo(""))
+				.setHeader("CamelOverruleFileName", simple(
+						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.xml"))
+				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-				.to("file:bin/out")
+				.end().to("file:bin/out")
 
 				.choice().when(header("zbx_ver").isEqualTo("4.2"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
@@ -193,10 +197,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		/* STEP 8(FINAL): generate README.md , using freemarker */
 		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
 				.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
-				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
+				.when(header("template_suffix").isEqualTo(""))
+				.setHeader("CamelOverruleFileName", simple(
+						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.md"))
+				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.md"))
-				.to("file:bin/out");
+				.end().to("file:bin/out");
 
 	}
 }
