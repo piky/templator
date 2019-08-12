@@ -310,7 +310,7 @@ Metric (id =='system.hw.firmware') and
 Metric (id =='system.hw.version')
 ```
 
-To get full compliance and at least this:
+To get full compliance add at least this:
 
 ```text
 Metric (id =='system.hw.model') and
