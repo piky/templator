@@ -184,9 +184,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-				.end().to("file:bin/out").to("direct:xsd");
+				.end().to("file:bin/out");
 
-		// templates XSD validation, deprecated.
+		// templates XSD validation, deprecated. remove after some time.
 		from("direct:xsd").choice().when(header("zbx_ver").isEqualTo("4.2"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
 				.when(header("zbx_ver").isEqualTo("4.0"))
