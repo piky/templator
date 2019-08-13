@@ -29,6 +29,9 @@ public class TemplateDocumentation {
 	@JsonProperty("_ref")
 	private String ref;
 
+	@JsonProperty("_zabbix_forum_url")
+	private String zabbixForumUrl;
+
 	public String getOverview() {
 		return overview;
 	}
@@ -137,5 +140,13 @@ public class TemplateDocumentation {
 
 	public void setRef(String ref) {
 		this.ref = ref;
+	}
+
+	public String getZabbixForumUrl() {
+		return zabbixForumUrl;
+	}
+
+	public void setZabbixForumUrl(String zabbixForumUrl) {
+		this.zabbixForumUrl = zabbixForumUrl;
 	}
 }

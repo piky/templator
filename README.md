@@ -75,7 +75,7 @@ string constants are used for Zabbix enums. All enumeration constatns are syncro
 ### Autodocs
 
 **Implemented as**: Freemarker template  
-**How to use**: In the template, define special section called `_documentation`. There you can define `_overview`, `_tested_on`, `_zabbix_config`, `_setup`, `_refs`. After generation their contents will be used to generate this template README file in markdown.  Lists of items, discoveries, triggers will be taken from the template resulting tempalte.  
+**How to use**: In the template, define special section called `_documentation`. There you can define `_overview`, `_tested_on`, `_zabbix_config`, `_setup`, `_refs`, `_zabbix_forum_url`. After generation their contents will be used to generate this template README file in markdown.  Lists of items, discoveries, triggers will be taken from the template resulting tempalte.  
 There is also additional field in `macros`, called `_description` that must be used to provide the description how this macros is used.  
 **Next steps status**: Update JSON Schema accordingly.
 

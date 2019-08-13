@@ -103,6 +103,16 @@ There are no template links in this template.
 </#list>
 </#if>
 
+## Feedback
+Please report any issues with the template at https://support.zabbix.com
+
+<#if t.documentation??>
+<#if t.documentation.zabbixForumUrl??>
+You can also provide feedback, discuss the template or ask for help with it at
+[ZABBIX forums](${t.documentation.zabbixForumUrl}).
+</#if>
+</#if>
+
 <#if t.documentation??>
 <#if t.documentation.ref??>
 ## References
