@@ -57,7 +57,7 @@ when
 	$m: Metric(type == null)
 	$ij: InputJSON( )
 then
-    logger.error(marker,"No 'type' defined for {}",$m.id);
+    logger.error(marker,"No 'type' defined for {}", $m.id);
 	$ij.failed = true;
 end
 
@@ -66,9 +66,9 @@ rule "Validation rule 4.1: check Type (discovery rule)"
 	dialect "mvel"
 when
 	$dr: DiscoveryRule(type == null)
-	$ij: InputJSON( )
+	$ij: InputJSON()
 then
-    logger.error(marker,"No 'type' defined for {}",$dr.name);
+    logger.error(marker,"No 'type' defined for {}", $dr.name);
 	$ij.failed = true;
 end
 
@@ -165,5 +165,18 @@ when
 	$ij: InputJSON( )
 then
     logger.error(marker,"Please define 'master_item' for "+$dr.name);
+	$ij.failed = true;
+end
+
+rule "Validation rule: check resourceType (screen items)"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	Template($screens: screens)
+	$s: Screen($si: screenItems) from $screens
+	ScreenItem(resourceType == null) from $si
+	$ij: InputJSON( )
+then
+    logger.error(marker,"No 'resource_type' defined for screen {}. This is probably due to _graph_id or _metric_id not defined properly", $s.name);
 	$ij.failed = true;
 end
