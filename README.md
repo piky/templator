@@ -150,7 +150,7 @@ For example:
 ### Special variables to use in template and prototype definitions
 
 **Implemented as**: Freemarker + Drools  
-**How to use**: 
+**How to use**:
 
 - Since trigger is defined inside the metric, you can safely use `TEMPLATE_NAME:METRIC` macro instead of metric and template name in trigger expressions.
 - Use `__<item._id>__` macro in trigger expressions and graph items to reference some items.
