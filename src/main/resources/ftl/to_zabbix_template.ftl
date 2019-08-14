@@ -614,12 +614,14 @@ ${t.description!''} version: ${headers.template_ver}
 Overview: ${t.documentation.overview!''}
 </#if>
 </#if>
+<#if headers.template_type == 'SNMP'>
 <#assign mibs = t.getUniqueMibs(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
 <#if (mibs?size>0)>
 MIBs used:
 <#list mibs as mib>
 ${mib}
 </#list>
+</#if>
 </#if>
 <#if t.documentation??>
 <#if (t.documentation.issues?size>0)>

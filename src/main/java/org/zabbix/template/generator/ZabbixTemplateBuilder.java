@@ -129,6 +129,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.contains(TemplateClass.SNMPV1))
 				.setHeader("snmp_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
+				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
 						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:multicaster_export");
@@ -138,6 +139,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.contains(TemplateClass.SNMPV2))
 				.setHeader("snmp_item_type", simple("4", String.class))
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
+				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
 						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:multicaster_export");
@@ -146,8 +148,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
 				.anyMatch((a) -> a.equals(TemplateClass.SNMPV1) || a.equals(TemplateClass.SNMPV2)
 						|| a.equals(TemplateClass.SNMPV3)) == false)
-				.setHeader("snmp_item_type", simple("1", String.class))
+				.setHeader("snmp_item_type", simple("0", String.class))
 				.setHeader("template_suffix", simple("", String.class))
+				.setHeader("template_type", simple("OTHER", String.class))
 				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
 				.to("direct:multicaster_export");
 
