@@ -628,13 +628,13 @@ ${mib}
 Known Issues:
 <#list t.documentation.issues as i>
 <#if i.description??>
-description : ${i.description!''}
+Description: ${i.description!''}
 </#if>
 <#if i.version??>
-version : ${i.version!''}
+Version: ${i.version!''}
 </#if>
 <#if i.version??>
-device : ${i.device!''}
+Device: ${i.device!''}
 </#if>
 </#list>
 </#if>
