@@ -110,7 +110,7 @@ rule "Rule 9: generate each item description(mib)"
 	agenda-group "populate"
 	salience 100
 when
-	$m : Metric (mib != null)
+	$m : Metric (mib != null, type == Type.SNMP)
 then
     logger.debug(marker,"Generating description(mib) for "+$m);
 	if ($m.getDescription() != null) {
