@@ -75,11 +75,11 @@ There are no template links in this template.
 
 ## Triggers
 
-|Name|Description|Expression|Severity|
-|----|-----------|----|----|
+|Name|Description|Expression|Severity|Dependencies and additional info|
+|----|-----------|----|----|----|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|
+|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|<#if (tr.manualClose == 'YES')>Manual close: YES</br></#if><#if (tr.dependencies?size>0)>**Depends on**:</br><#list tr.dependencies as dep> - ${dep.name}</br></#list></#if>|
     </#list>
 </#list>
 
