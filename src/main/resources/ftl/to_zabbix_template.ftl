@@ -17,7 +17,7 @@
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
-            <description><@generate_template_description t/></description>       
+            <description><@generate_template_description t/></description>
             <groups>
                 <#list generate_groups(t.classes![]) as g>
                     <group>

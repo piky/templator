@@ -25,7 +25,7 @@ public class DiscoveryRule {
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
 	// Preprocessing
-	private ArrayList<PreprocessingStep> preprocessing;
+	private ArrayList<PreprocessingStep> preprocessing = new ArrayList<PreprocessingStep>(0);
 
 	@JsonAlias("master_item")
 	private String masterItem;

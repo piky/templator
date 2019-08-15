@@ -58,56 +58,37 @@ There are no template links in this template.
 ## Discovery rules
 
 <#if (t.discoveryRules?size > 0)>
-|Name|Description|Type|
-|----|-----------|----|
+|Name|Description|Type|Key and additional info|
+|----|-----------|----|----|
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-|${dr.name}|${(dr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${dr.type}|
+|${dr.name}|${(dr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${dr.type}|${dr.key}<#if (dr.preprocessing?size>0)></br>**Preprocessing**:<#list dr.preprocessing as prep></br> - ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if><#if (dr.filter??)></br>**Filter**: ${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond></br> - ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if>|
 </#list>
 </#if>
 
 ## Items collected
 
-|Name|Description|Type|
-|----|-----------|----|
-<#--list metrics without discovery -->
-<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
-|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|
+|Group|Name|Description|Type|Key and additional info|
+|-----|----|-----------|----|---------------------|
+<#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
+|${m.group}|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)></br>**Preprocessing**:<#list m.preprocessing as prep></br> - ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if><#if (m.expressionFormula??)></br>**Expression**:</br>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
 </#list>
-<#--now list metrics from discovery rules -->
-<#if (t.discoveryRules?size > 0)>
-<#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-<#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
-|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|
-</#list>
-</#list>
-</#if>
-
 
 ## Triggers
 
 |Name|Description|Expression|Severity|
 |----|-----------|----|----|
-<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+<#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
 |${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|
     </#list>
 </#list>
-<#--now list metrics triggers from discovery rules -->
-<#if (t.discoveryRules?size > 0)>
-<#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-<#list t.getMetricsByZbxVer(dr.metrics,zbx_ver) as m>
-    <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|
-    </#list>
-</#list>
-</#list>
-</#if>
 
 ## Feedback
-Please report any issues with the template at https://support.zabbix.com
 
+Please report any issues with the template at https://support.zabbix.com
 <#if t.documentation??>
 <#if t.documentation.zabbixForumUrl??>
+
 You can also provide feedback, discuss the template or ask for help with it at
 [ZABBIX forums](${t.documentation.zabbixForumUrl}).
 </#if>
@@ -116,8 +97,8 @@ You can also provide feedback, discuss the template or ask for help with it at
 <#if t.documentation??>
 <#if t.documentation.ref??>
 ## References
+
 ${t.documentation.ref!''}
 </#if>
 </#if>
 </#list>
-
