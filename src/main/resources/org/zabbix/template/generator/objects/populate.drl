@@ -205,6 +205,19 @@ then
     $m.trends = "0";
 end
 
+rule "Rule: reset oid field for non SNMP items"
+	agenda-group "populate"
+	salience -1
+	dialect "mvel"
+when
+	$m : Metric (type != Type.SNMP, oid != null)
+then
+    logger.debug(marker,"Resetting oid for {}", $m.id);
+	modify( $m ) {
+		oid = null;
+	};
+end
+
 // commented out to avoid broken graphs
 // rule "Rule: set update interval to 30s for health-checks(metrics with value_maps) and add discard with 5m"
 // 	agenda-group "populate"
