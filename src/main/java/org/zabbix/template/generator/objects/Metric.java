@@ -77,7 +77,7 @@ public abstract class Metric {
 	private String applicationPrototype;
 	@JsonAlias("update")
 	private String delay = "5m";
-	private String history = "90d";
+	private String history = "7d";
 	private String trends = "365d";
 
 	private String units;
