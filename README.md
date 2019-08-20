@@ -341,10 +341,11 @@ Describe in more detail, TODO:
 - how metrics are enriched if in LLD (keys, names) What is RESOURCE, RESOURCE_TYPE
 - if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'Single application guideline'
 - discard preprocessing steps are magically stripped for templates versions < 4.2
-- discard preprocessing steps are magically added for inventory like metrics  and healthchecks
+- discard preprocessing steps are magically added for inventory like metrics and healthchecks
 - Generator automatically resets 'trends' to 0 for non-numeric items (TEXT, LOG...)
 - use `TEMPLATE_NAME:METRIC` instead of real trigger keys in expressions/recovery_expressions use `__metric_id__` to replace other metrics used in trigger expressions.
 - If trigger uses multiple metrics, you only need to define this trigger inside first metric
 - Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown.
 - Macros validation - if macro is used in the metric key or trigger expression but user macro itself cannot be found - validation error is thrown.
-- Inventory links purging if in LLD
+- Inventory links purging if in LLD. If item is in LLD - them inventory link is removed
+
