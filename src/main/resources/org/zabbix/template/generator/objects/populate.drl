@@ -122,7 +122,7 @@ then
 		modify( $m ) {
 			setDescription( "MIB: " + $m.getMib()+"\n" )
 		};
-	}    	
+	}
 end
 
 rule "Rule 10: generate each item description"
@@ -163,7 +163,8 @@ rule "Rule: purge inventory_link for item prototypes"
 	agenda-group "populate"
 	salience 101
 when
-	$m : Metric (discoveryRule != null,inventoryLink != InventoryLink.NONE)
+	$dr: DiscoveryRule(singleton !=true)
+	$m : Metric (discoveryRule != null, inventoryLink != InventoryLink.NONE) from $dr.metrics
 then
     logger.warn(marker,"Purging inventory link for item prototype:"+$m.getId());
     $m.setInventoryLink(InventoryLink.NONE);

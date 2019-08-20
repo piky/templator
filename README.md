@@ -249,7 +249,6 @@ end
             params: |
               //count the number of CPU cores
               return JSON.stringify([{"{#CPUNUM}": value, "{#SNMPINDEX}": 0, "{#SINGLETON}":""}])
-
 ```
 
 **Next steps status**: None
@@ -347,5 +346,4 @@ Describe in more detail, TODO:
 - If trigger uses multiple metrics, you only need to define this trigger inside first metric
 - Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown.
 - Macros validation - if macro is used in the metric key or trigger expression but user macro itself cannot be found - validation error is thrown.
-- Inventory links purging if in LLD. If item is in LLD - them inventory link is removed
-
+- Inventory links purging if in LLD. If item is in LLD - then inventory link is removed. This rule is ignored if `_singleton` is set to true
