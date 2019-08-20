@@ -191,13 +191,12 @@ then
     $dr.delay = 0;
 end
 
-rule "Rule: reset trends to 0 for health-checks(metrics with value_maps) or non-numeric values"
+rule "Rule: reset trends to 0 non-numeric values"
 	agenda-group "populate"
 	salience -100
 	dialect "mvel"
 when
 	$m : Metric (
-		valueMap != null || 
 		(valueType != ValueType.UNSIGNED && valueType != ValueType.FLOAT)
 	)
 then
