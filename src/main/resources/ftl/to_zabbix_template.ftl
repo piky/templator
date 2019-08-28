@@ -610,6 +610,7 @@
 <#macro generate_template_description t>
 <#if t.description??>
 ${t.description!''}
+
 </#if>
 <#if headers.template_type == 'SNMP'>
 <#assign mibs = t.getUniqueMibs(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
@@ -618,6 +619,7 @@ MIBs used:
 <#list mibs as mib>
 ${mib}
 </#list>
+
 </#if>
 </#if>
 <#if t.documentation??>
@@ -635,13 +637,16 @@ Known Issues:
   Device: ${i.device!''}
 </#if>
 </#list>
+
 </#if>
-Please report any issues or suggest an improvement at https://support.zabbix.com
 <#if t.documentation.zabbixForumUrl??>
-You can also discuss this template or leave feedback at our forum ${t.documentation.zabbixForumUrl}
+You can discuss this template or leave feedback on our forum ${t.documentation.zabbixForumUrl}
+
 </#if>
 </#if>
+<#-- Please report any issues or suggest an improvement on https://support.zabbix.com -->
 Template tooling version used: ${headers.template_ver}
+
 </#macro>
 
  <#function time_suffix_to_seconds time>
