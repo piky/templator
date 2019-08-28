@@ -96,6 +96,24 @@ You can also provide feedback, discuss the template or ask for help with it at
 
 <#if t.documentation??>
 <#if t.documentation.ref??>
+
+<#if (t.documentation.issues?size>0)>
+## Known Issues
+<#list t.documentation.issues as i>
+
+<#if i.description??>
+- Description: ${i.description!''}
+</#if>
+<#if i.version??>
+  - Version: ${i.version!''}
+</#if>
+<#if i.device??>
+  - Device: ${i.device!''}
+</#if>
+</#list>
+
+</#if>
+
 ## References
 
 ${t.documentation.ref!''}
