@@ -608,11 +608,8 @@
  </#function>
 
 <#macro generate_template_description t>
-${t.description!''} version: ${headers.template_ver}
-<#if t.documentation??>
-<#if t.documentation.overview??>
-Overview: ${t.documentation.overview!''}
-</#if>
+<#if t.description??>
+${t.description!''}
 </#if>
 <#if headers.template_type == 'SNMP'>
 <#assign mibs = t.getUniqueMibs(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
@@ -627,18 +624,24 @@ ${mib}
 <#if (t.documentation.issues?size>0)>
 Known Issues:
 <#list t.documentation.issues as i>
+
 <#if i.description??>
-Description: ${i.description!''}
+  Description: ${i.description!''}
 </#if>
 <#if i.version??>
-Version: ${i.version!''}
+  Version: ${i.version!''}
 </#if>
-<#if i.version??>
-Device: ${i.device!''}
+<#if i.device??>
+  Device: ${i.device!''}
 </#if>
 </#list>
 </#if>
+Please report any issues or suggest an improvement at https://support.zabbix.com
+<#if t.documentation.zabbixForumUrl??>
+You can also discuss this template or leave feedback at our forum ${t.documentation.zabbixForumUrl}
 </#if>
+</#if>
+Template tooling version used: ${headers.template_ver}
 </#macro>
 
  <#function time_suffix_to_seconds time>
