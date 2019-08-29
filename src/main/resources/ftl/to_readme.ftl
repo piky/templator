@@ -95,8 +95,6 @@ You can also provide feedback, discuss the template or ask for help with it at
 </#if>
 
 <#if t.documentation??>
-<#if t.documentation.ref??>
-
 <#if (t.documentation.issues?size>0)>
 ## Known Issues
 <#list t.documentation.issues as i>
@@ -113,6 +111,7 @@ You can also provide feedback, discuss the template or ask for help with it at
 </#list>
 
 </#if>
+<#if t.documentation.ref??>
 
 ## References
 
