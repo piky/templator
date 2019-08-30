@@ -163,8 +163,8 @@ when
 then
     logger.info(marker,"Found vfs.fs.inode.pfree, adding additional MACRO...");
     modify($t) {
-    	getMacros().add(new UserMacro("{$INODE_PFREE_WARN}","20")),
-    	getMacros().add(new UserMacro("{$INODE_PFREE_CRIT}","10"));
+    	getMacros().add(new UserMacro("{$VFS.FS.INODE.PFREE.MIN.WARN}","20")),
+    	getMacros().add(new UserMacro("{$VFS.FS.INODE.PFREE.MIN.CRIT}","10"));
     };
 end
 
