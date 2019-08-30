@@ -39,7 +39,7 @@ ${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')
 |Name|Description|Default|
 |----|-----------|-------|
 <#list t.macros as macro>
-|${macro.macro}|${(macro.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${macro.value}|
+|${macro.macro}|${(macro.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${macro.value}|
 </#list>
 </#if>
 
@@ -61,7 +61,7 @@ There are no template links in this template.
 |Name|Description|Type|Key and additional info|
 |----|-----------|----|----|
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-|${dr.name}|${(dr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${dr.type}|${dr.key}<#if (dr.preprocessing?size>0)></br>**Preprocessing**:<#list dr.preprocessing as prep></br> - ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if><#if (dr.filter??)></br>**Filter**: ${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond></br> - ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if>|
+|${dr.name}|${(dr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${dr.type}|${dr.key}<#if (dr.preprocessing?size>0)><p>**Preprocessing**:</p><#list dr.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if><#if (dr.filter??)><p>**Filter**:</p>${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond><p>- ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if>|
 </#list>
 </#if>
 
@@ -70,7 +70,7 @@ There are no template links in this template.
 |Group|Name|Description|Type|Key and additional info|
 |-----|----|-----------|----|---------------------|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
-|${m.group}|${m.name}|${(m.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)></br>**Preprocessing**:<#list m.preprocessing as prep></br> - ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</#if></#list></#if><#if (m.expressionFormula??)></br>**Expression**:</br>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
+|${m.group}|${m.name}|${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
 </#list>
 
 ## Triggers
@@ -79,7 +79,7 @@ There are no template links in this template.
 |----|-----------|----|----|----|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
-|${tr.name}|${(tr.description!'-')?replace("(\n|\r\n)+","</br>",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??></br>Recovery expression: `${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|<#if (tr.manualClose == 'YES')>Manual close: YES</br></#if><#if (tr.dependencies?size>0)>**Depends on**:</br><#list tr.dependencies as dep> - ${dep.name}</br></#list></#if>|
+|${tr.name}|${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if>|
     </#list>
 </#list>
 
