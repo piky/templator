@@ -223,8 +223,8 @@ when
 then
     logger.info(marker,"Found vfs.fs.pused metric, adding additional MACRO...");
     modify($t) {
-        getMacros().add(new UserMacro("{$STORAGE_UTIL_CRIT}","90")),
-        getMacros().add(new UserMacro("{$STORAGE_UTIL_WARN}","80"));
+        getMacros().add(new UserMacro("{$VFS.FS.PUSED.MAX.CRIT}","90")),
+        getMacros().add(new UserMacro("{$VFS.FS.PUSED.MAX.WARN}","80"));
     };
 end
 ```
