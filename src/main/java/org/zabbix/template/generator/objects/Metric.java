@@ -34,7 +34,7 @@ public abstract class Metric {
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
-	@JsonAlias("expression_formula")
+	@JsonAlias({ "_expression_formula", "expression_formula", "params" })
 	private String expressionFormula;
 	@JsonAlias("inventory_link")
 	private InventoryLink inventoryLink = InventoryLink.NONE;
