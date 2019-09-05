@@ -170,25 +170,25 @@ then
     $m.setInventoryLink(InventoryLink.NONE);
 end
 
-rule "Rule: reset delay to 0 for DEPENDENT ITEMS"
+rule "Rule: reset delay to 0 for DEPENDENT or zabbix trapper ITEMS"
 	agenda-group "populate"
 	salience 101
 	dialect "mvel"
 when
-	$m : Metric (type == Type.DEPENDENT)
+	$m : Metric (type == Type.DEPENDENT || type == Type.TRAP)
 then
-    logger.debug(marker,"Resetting delay to 0 for dependent item {}", $m.id);
+    logger.debug(marker,"Resetting delay to 0 for item {} of type {}", $m.id, $m.type);
     $m.delay = 0;
 end
 
-rule "Rule: reset delay to 0 for DEPENDENT discovery rule"
+rule "Rule: reset delay to 0 for DEPENDENT or zabbix trapper discovery rule"
 	agenda-group "populate"
 	salience 101
 	dialect "mvel"
 when
-	$dr : DiscoveryRule (type == Type.DEPENDENT)
+	$dr : DiscoveryRule (type == Type.DEPENDENT || type == Type.TRAP)
 then
-    logger.debug(marker,"Resetting delay to 0 for dependent discovery rule {}", $dr.name);
+    logger.debug(marker,"Resetting delay to 0 for for discovery {} of type {}", $dr.name, $dr.type);
     $dr.delay = 0;
 end
 
