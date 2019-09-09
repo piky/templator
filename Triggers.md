@@ -69,7 +69,7 @@ In prototype of `system.status` metric only `health.crit` trigger is present:
         "_group": "Status",
         "update": "30s",
         "history": "2w",
-        "trends": "0d",
+        "trends": "0",
         "triggers": [
             {
                 "_prototype":"health.crit"
