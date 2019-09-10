@@ -671,6 +671,14 @@ Template tooling version used: ${headers.template_ver}
      <#if zbx_ver='3.2'>
          <#if time?ends_with('d')><#return time?keep_before('d')>
          <#elseif time?ends_with('w')><#return ((time?keep_before('w')?number)*7)?c>
+         <#elseif time?ends_with('h')>
+            <#if (time?keep_before('h')?number) < 24>
+                <#-- reset to 1d -->
+                <#return 1>
+            <#else>
+                <#-- converts to closest number in days -->
+                <#return ((time?keep_before('h')?number)/24)?round>
+            </#if>
          <#else><#return time>
          </#if>
      <#else> <#-- 3.4 || 4.0 --><#--as is, but add 'd' if no suffix-->
