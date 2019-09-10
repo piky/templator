@@ -188,6 +188,7 @@ public class Template {
 		}
 	}
 
+	// TODO Refactor these functions
 	public ArrayList<Metric> getMetricsByDiscovery(Metric[] metrics, String discoveryName) {
 		Predicate<Metric> metricPredicate = m -> m.getDiscoveryRule() == discoveryName;
 		return getMetrics((ArrayList<Metric>) Arrays.asList(metrics), metricPredicate);
@@ -196,6 +197,16 @@ public class Template {
 	public ArrayList<Metric> getMetricsByZbxVer(Metric[] metrics, String zbxVer) {
 		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
 		return getMetrics(Arrays.asList(metrics), filter_by_min_version);
+	}
+
+	public ArrayList<Metric> getMetricsInternalByZbxVer(Metric[] metrics, String zbxVer) {
+		Predicate<Metric> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
+		return getMetricsInternal(getMetrics(Arrays.asList(metrics), filter_by_min_version));
+	}
+
+	public ArrayList<Metric> getMetricsInternal(ArrayList<Metric> metrics) {
+		Predicate<Metric> filter_by_external = m -> (m.getExternal() == false);
+		return getMetrics(metrics, filter_by_external);
 	}
 
 	public ArrayList<DiscoveryRule> getDiscoveryRulesByZbxVer(DiscoveryRule[] drules, String zbxVer) {

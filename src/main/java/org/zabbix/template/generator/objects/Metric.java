@@ -31,6 +31,11 @@ public abstract class Metric {
 	@JsonAlias("key")
 	private String key;
 
+	// if true, It means that this item is only defined to be referenced in
+	// triggers, graphs, screens.
+	// drools validations and text template building can be safely ignored.
+	@JsonAlias("_external")
+	private Boolean external = false;
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
@@ -42,6 +47,7 @@ public abstract class Metric {
 	public enum ValueType implements ZabbixValue {
 
 		FLOAT(0), CHAR(1), LOG(2), UNSIGNED(3), TEXT(4);
+
 		private int zabbixValue;
 
 		ValueType(int zabbixValue) {
@@ -586,6 +592,7 @@ public abstract class Metric {
 	public enum RetrieveMode implements ZabbixValue {
 
 		BODY(0), HEADERS(1), BODY_AND_HEADERS(2);
+
 		private int zabbixValue;
 
 		RetrieveMode(int zabbixValue) {
@@ -606,6 +613,7 @@ public abstract class Metric {
 	public enum RequestMethod implements ZabbixValue {
 
 		GET(0), POST(1), PUT(2), HEAD(3);
+
 		private int zabbixValue;
 
 		RequestMethod(int zabbixValue) {
@@ -629,6 +637,7 @@ public abstract class Metric {
 	public enum OutputFormat implements ZabbixValue {
 
 		RAW(0), JSON(1);
+
 		private int zabbixValue;
 
 		OutputFormat(int zabbixValue) {
@@ -704,6 +713,14 @@ public abstract class Metric {
 
 	public void setMetrics(HashSet<String> metricsUsed) {
 		this.metricsUsed = metricsUsed;
+	}
+
+	public Boolean getExternal() {
+		return external;
+	}
+
+	public void setExternal(Boolean external) {
+		this.external = external;
 	}
 
 }
