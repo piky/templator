@@ -1,5 +1,7 @@
 package org.zabbix.template.generator.objects;
 
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Filter {
@@ -7,7 +9,7 @@ public class Filter {
 	@JsonAlias({ "evaltype", "eval_type" })
 	private EvalType evalType;
 	private String formula;
-	private Condition[] conditions;
+	private ArrayList<Condition> conditions = new ArrayList<Condition>(0);
 
 	public enum EvalType implements ZabbixValue {
 
@@ -45,11 +47,11 @@ public class Filter {
 		this.formula = formula;
 	}
 
-	public Condition[] getConditions() {
+	public ArrayList<Condition> getConditions() {
 		return conditions;
 	}
 
-	public void setConditions(Condition[] conditions) {
+	public void setConditions(ArrayList<Condition> conditions) {
 		this.conditions = conditions;
 	}
 

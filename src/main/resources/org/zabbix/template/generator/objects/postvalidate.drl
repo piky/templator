@@ -77,12 +77,17 @@ rule "Validation rule 5: Macro defined but never used in triggers or item keys"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
+
 	$t: Template (macros != null)
 	$macro: UserMacro() from $t.macros
-    not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
-    not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
+	not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
+	not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
 	not $metric: Metric ( key contains $macro.extractMacroName() )
 	not $metric: Metric ( url contains $macro.extractMacroName() ) // http url for http agent
+	not (
+		DiscoveryRule ($filter: filter != null )
+		and (Filter$Condition(value contains $macro.extractMacroName() ) from $filter.conditions) //discovery filters
+	)
 then
     logger.warn(marker,"User Macro found but never used in triggers or item keys|item http url: {} in template {}", $macro.macro, $t.name);
 end
@@ -130,6 +135,21 @@ when
 then
     logger.error(marker,"User Macro is used in the item key but not defined: {} in template {}", $m.key, $t.name);
 end
+
+// TODO broken, fix
+// rule "Validation rule: Macro is used in discovery filter condition but not defined"
+// 	agenda-group "postvalidate"
+// 	dialect "mvel"
+// when
+//     $t: Template ()
+// 	$dr: DiscoveryRule ($filter: filter != null )
+//     $cond: Filter$Condition(value matches ".*\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.*") from $filter.conditions
+// 	forall ( $macro: UserMacro() from $t.macros
+//     	Filter$Condition(macro == $cond.macro, formulaid == $cond.formulaid, value not contains $macro.extractMacroName()) from $filter.conditions
+// 	)
+// then
+//     logger.error(marker,"User Macro is used in the discovery filter condition but not defined: {} in template {}", $dr.name, $t.name);
+// end
 
 //TODO: Works only if single macro used in item key. Broken if multiple macros used in item key
 rule "Validation rule 9: Macro used in item url but not defined"
