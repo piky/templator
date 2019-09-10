@@ -174,11 +174,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 																				// nodes //REFACTOR with DEV-827 below
 				// https://support.zabbix.com/browse/DEV-827
 				.to("xslt:templates/to_zabbix_add_carriage_return.xsl?saxon=true")
-				.setBody(body().regexReplaceAll("&#xD;", simple("&#13;")))
+				.transform(body().regexReplaceAll("&#xD;", simple("&#13;")))
 
-				.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
-																									// with SNMPv2 or
-																									// SNMPv1 lang
+				.transform(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
+																										// with SNMPv2
+																										// or
+																										// SNMPv1 lang
 
 				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
 				.when(header("template_suffix").isEqualTo(""))
@@ -200,7 +201,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		/* STEP 8(FINAL): generate README.md , using freemarker */
 		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
-				.setBody(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
+				.transform(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
 				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
 				.when(header("template_suffix").isEqualTo(""))
 				.setHeader("CamelOverruleFileName", simple(
