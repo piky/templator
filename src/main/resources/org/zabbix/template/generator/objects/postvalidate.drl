@@ -54,7 +54,7 @@ rule "Validation rule 4: check Type"
 	agenda-group "postvalidate"
 	dialect "mvel"
 when
-	$m: Metric(type == null, external == false)
+	$m: Metric(type == null)
 	$ij: InputJSON( )
 then
     logger.error(marker,"No 'type' defined for {}", $m.id);

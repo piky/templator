@@ -4,7 +4,7 @@ rule "Validation rule: check name"
 	agenda-group "prevalidate"
 when
     $i : InputJSON()
-	$m : Metric (name == null, external == false)
+	$m : Metric (name == null)
 then
     logger.error(marker,"There is no 'name' for "+$m);
     modify($i){
@@ -18,7 +18,7 @@ rule "Validation rule: check group"
 	agenda-group "prevalidate"
 when
 	$i : InputJSON()
-	$m : Metric (group == null, external == false)
+	$m : Metric (group == null)
 then
     logger.error(marker,"There is no 'group' for "+$m.getName());
     modify($i){
@@ -43,7 +43,7 @@ rule "Validation rule: check valueType"
 	agenda-group "prevalidate"
 when
 	$i : InputJSON()
-	$m : Metric (valueType == null, external == false)
+	$m : Metric (valueType == null)
 then
     logger.error(marker,"There is no 'valueType' for "+$m.getName());
     modify($i){

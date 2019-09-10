@@ -26,14 +26,14 @@
                 </#list>
             </groups>
             <applications>
-                <#list distinct_by_key(t.getMetricsInternalByZbxVer(t.getMetricsRegistry(),zbx_ver),'group') as g>
+                <#list distinct_by_key(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver),'group') as g>
                 <application>
                     <name>${g?replace('_',' ')}</name>
                 </application>
                 </#list>
             </applications>
             <items>
-                <#list t.getMetricsInternalByZbxVer(t.metrics,zbx_ver) as m>
+                <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
                 <item>
                     <@item m/>
                 </item>
@@ -95,7 +95,7 @@
     </templates>
     <graphs>
         <#list body.templates as t>
-        	<#list t.getMetricsInternalByZbxVer(t.metrics,zbx_ver) as m>
+        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
         		<#list m.graphs as g>
                 <graph>
                     <@graph g t/>
@@ -106,7 +106,7 @@
     </graphs>
     <triggers>
         <#list body.templates as t>
-        	<#list t.getMetricsInternalByZbxVer(t.metrics,zbx_ver) as m>
+        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
         		<#list m.triggers as tr>
                 <trigger>
                     <@trigger tr t/>
@@ -288,7 +288,7 @@
 </#macro>
 
 <#macro discovery_rule dr t>
-            <#assign metrics = t.getMetricsInternalByZbxVer(dr.metrics,zbx_ver)>
+            <#assign metrics = t.getMetricsByZbxVer(dr.metrics,zbx_ver)>
             <name>${dr.name}</name>
             <#if dr.type == 'SNMP'>
             <type>${headers.snmp_item_type}</type>
@@ -613,7 +613,7 @@ ${t.description!''}
 
 </#if>
 <#if headers.template_type == 'SNMP'>
-<#assign mibs = t.getUniqueMibs(t.getMetricsInternalByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
+<#assign mibs = t.getUniqueMibs(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver))![]>
 <#if (mibs?size>0)>
 MIBs used:
 <#list mibs as mib>

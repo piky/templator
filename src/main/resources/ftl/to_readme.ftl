@@ -69,7 +69,7 @@ There are no template links in this template.
 
 |Group|Name|Description|Type|Key and additional info|
 |-----|----|-----------|----|---------------------|
-<#list t.getMetricsInternalByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
+<#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
 |${m.group}|${m.name}|${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
 </#list>
 
@@ -77,7 +77,7 @@ There are no template links in this template.
 
 |Name|Description|Expression|Severity|Dependencies and additional info|
 |----|-----------|----|----|----|
-<#list t.getMetricsInternalByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
+<#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
 |${tr.name}|${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if>|${tr.priority}|<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if>|
     </#list>
