@@ -106,7 +106,7 @@ rule "Validation rule 7: Macro is used in triggers but not defined"
 	dialect "mvel"
 when
       $t: Template ()
-      $tr: Trigger  ( expression matches ".+\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.+")
+      $tr: Trigger  ( expression matches ".*\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.*")
       forall (
 		$macro: UserMacro() from $t.macros
         Trigger( this == $tr, expression not contains $macro.extractMacroName())
@@ -123,7 +123,7 @@ rule "Validation rule 8: Macro is used in item keys but not defined"
 	dialect "mvel"
 when
       $t: Template ()
-      $m: Metric ( key matches ".+\\{\\$[A-Z0-9_\\.],+(:\".+\")?\\}.+")
+      $m: Metric ( key matches ".*\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.*")
       forall ( $macro: UserMacro() from $t.macros
         Metric( this == $m, key not contains $macro.extractMacroName())
       )
@@ -137,7 +137,7 @@ rule "Validation rule 9: Macro used in item url but not defined"
 	dialect "mvel"
 when
       $t: Template ()
-      $m: Metric ( url matches ".+\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.+")
+      $m: Metric ( url matches ".*\\{\\$[A-Z0-9_\\.]+(:\".+\")?\\}.*")
       forall ( $macro: UserMacro() from $t.macros
         Metric( this == $m, url not contains $macro.extractMacroName())
       )
