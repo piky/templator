@@ -1,10 +1,17 @@
 package org.zabbix.template.generator.objects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ScreenResource {
+
+    @JsonAlias("key")
     private String name;
     private String host;
 
-    public ScreenResource(String name, String host) {
+    @JsonCreator
+    public ScreenResource(@JsonProperty("name") String name, @JsonProperty("host") String host) {
         this.name = name;
         this.host = host;
     }

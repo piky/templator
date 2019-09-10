@@ -177,6 +177,6 @@ when
 	ScreenItem(resourceType == null) from $si
 	$ij: InputJSON( )
 then
-    logger.error(marker,"No 'resource_type' defined for screen {}. This is probably due to _graph_id or _metric_id not defined properly", $s.name);
+    logger.error(marker,"No 'resource_type' defined for screen {}. This is probably due to _graph_id or _metric_id not defined properly. If you trying to reference graph or metric from linked template - you need to define it statically instead.", $s.name);
 	$ij.failed = true;
 end

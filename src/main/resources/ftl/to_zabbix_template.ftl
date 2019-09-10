@@ -506,7 +506,7 @@
                     <#else> <#--simple graph, plain text...-->
                     <resource>
                         <key>${si.resource[0].name}</key>
-                        <host>${si.resource[0].host}</host> 
+                        <host>${si.resource[0].host}</host>
                     </resource>
                     </#if>
             		${xml_wrap(si.maxColumns?c,'max_columns')}

@@ -63,3 +63,17 @@ then
     $scrItem.resource.add(new ScreenResource($m.key, $t.name));
     $scrItem.resourceType = ScreenResourceType.SIMPLE_GRAPH_PROTOTYPE;
 end
+
+rule "Add template name automatically if missing for screen items"
+	agenda-group "populate.screens"
+    dialect "mvel"
+	no-loop
+when
+    $t : Template ($screens: screens)
+	$scr: Screen ($scrItems: screenItems) from $screens
+	$scrItem: ScreenItem ($scrResources: resource) from $scrItems
+    $scrResource: ScreenResource(host == null) from $scrResources
+then
+    logger.debug(marker,"Setting 'host' to this template name: {} in {} ", $t.name, $scr.name);
+    $scrResource.host = $t.name;
+end
