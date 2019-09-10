@@ -283,6 +283,31 @@ use `_metric_id_` to reference existing metric by `_id` (for simple graphs)
             ]
 ```
 
+use `resourcetype` and `resource` attributes(just like in Zabbix API) when you need to reference graphs/items from linked templates as `_graph_id/_metric_id` would not work with objects from linked template.
+
+```yaml
+    screens:
+      - name: System performance
+        hsize: 2
+        vsize: 4
+        screen_items:
+          - resourcetype: GRAPH
+            resource:
+              - name: System load
+            x: 0
+            y: 0
+          - resourcetype: GRAPH_PROTOTYPE
+            resource:
+              - name: CPU usage{#SINGLETON}
+            x: 1
+            y: 0
+          - resourcetype: GRAPH
+            resource:
+              - name: Memory usage
+            x: 0
+            y: 1
+```
+
 **Next steps status**: None
 
 ### SNMPvX
