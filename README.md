@@ -162,7 +162,7 @@ For example:
 ### Loose trigger dependencies
 
 **Implemented as**: Drools: see `populate.trigger.dependencies.drl`  
-**How to use**: In triggers you can define trigger dependencies using `__<trigger._id>__`. Trigger dependencies are loose. If trigger mentioned in dependency is not defined in the same scope (i.e. `_resource`) then no dependency is made and no error is given.  
+**How to use**: In triggers you can define trigger dependencies using `__<trigger._id>__`. Trigger dependencies are loose. If trigger mentioned in dependency is not defined in the same scope (i.e. `_resource` + `discoveryRule`) then no dependency is made and no error is given.  
 For example temperature warning trigger:
 
 ```json
