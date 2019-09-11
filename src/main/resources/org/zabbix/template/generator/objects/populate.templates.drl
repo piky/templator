@@ -91,7 +91,7 @@ when
     exists (Metric(id == "vm.memory.pused") from $metrics)
 then
     logger.info(marker,"Found vm.memory.pused metric, adding additional MACRO...");
-    modify($t) {getMacros().add(new UserMacro("{$MEMORY_UTIL_MAX}","90"));};
+    modify($t) {getMacros().add(new UserMacro("{$MEMORY.UTIL.MAX}","90"));};
 end
 
 rule "Rule 5.1: generate additional macros"
@@ -102,7 +102,7 @@ when
     exists (Metric(id == "vm.memory.available") from $metrics)
 then
     logger.info(marker,"Found vm.memory.available metric, adding additional MACRO...");
-    modify($t) {getMacros().add(new UserMacro("{$MEMORY_AVAILABLE_MIN}","20M"));};
+    modify($t) {getMacros().add(new UserMacro("{$MEMORY.AVAILABLE.MIN}","20M"));};
 end
 
 rule "Rule 5.2: generate additional macros"
@@ -113,7 +113,7 @@ when
     exists (Metric(id == "system.swap.pfree") from $metrics)
 then
     logger.info(marker,"Found system.swap.pfree metric, adding additional MACRO...");
-    modify($t) {getMacros().add(new UserMacro("{$SWAP_PFREE_WARN}","50"));};
+    modify($t) {getMacros().add(new UserMacro("{$SWAP.PFREE.MIN.WARN}","50"));};
 end
 
 
