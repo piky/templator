@@ -80,7 +80,7 @@ when
     exists (Metric(id == "system.cpu.util") from $metrics)
 then
     logger.info(marker,"Found system.cpu.util metric, adding additional MACRO...");
-    modify($t) {getMacros().add(new UserMacro("{$CPU_UTIL_MAX}","90"));};
+    modify($t) {getMacros().add(new UserMacro("{$CPU.UTIL.CRIT}","90"));};
 end
 
 rule "Rule 5: generate additional macros"
