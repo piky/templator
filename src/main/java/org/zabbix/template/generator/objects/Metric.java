@@ -42,6 +42,7 @@ public abstract class Metric {
 	public enum ValueType implements ZabbixValue {
 
 		FLOAT(0), CHAR(1), LOG(2), UNSIGNED(3), TEXT(4);
+
 		private int zabbixValue;
 
 		ValueType(int zabbixValue) {
@@ -206,6 +207,11 @@ public abstract class Metric {
 
 	public String getKey() {
 		return key;
+	}
+
+	// useful for calculated expressions formulas
+	public String getKeyQuotesEscaped() {
+		return key.replace("\"", "\\\"");
 	}
 
 	public void setKey(String key) {
@@ -586,6 +592,7 @@ public abstract class Metric {
 	public enum RetrieveMode implements ZabbixValue {
 
 		BODY(0), HEADERS(1), BODY_AND_HEADERS(2);
+
 		private int zabbixValue;
 
 		RetrieveMode(int zabbixValue) {
@@ -606,6 +613,7 @@ public abstract class Metric {
 	public enum RequestMethod implements ZabbixValue {
 
 		GET(0), POST(1), PUT(2), HEAD(3);
+
 		private int zabbixValue;
 
 		RequestMethod(int zabbixValue) {
@@ -629,6 +637,7 @@ public abstract class Metric {
 	public enum OutputFormat implements ZabbixValue {
 
 		RAW(0), JSON(1);
+
 		private int zabbixValue;
 
 		OutputFormat(int zabbixValue) {

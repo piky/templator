@@ -159,7 +159,7 @@ when
     $m2: Metric (key != null, discoveryRule == $m.discoveryRule, $m2.id memberOf $metricsUsed )
 then
     logger.warn(marker,"REPLACING metric "+$m2.getId()+" in expressionFormula: "+ $m.id);
-    $m.expressionFormula =  $expression.replace("__"+$m2.id+"__",$m2.key);
+    $m.expressionFormula =  $expression.replace("__"+$m2.id+"__",$m2.getKeyQuotesEscaped());
 end
 //
 rule "Rule: replaces __RESOURCE__ macro in expression formula"

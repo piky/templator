@@ -372,3 +372,5 @@ Describe in more detail, TODO:
 - Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown.
 - Macros validation - if macro is used in the metric key or trigger expression but user macro itself cannot be found - validation error is thrown.
 - Inventory links purging if in LLD. If item is in LLD - then inventory link is removed. This rule is ignored if `_singleton` is set to true
+- Quotes is present in item parameters are properly escaped in calculated item formula. More on this https://www.zabbix.com/documentation/current/manual/config/items/itemtypes/calculated
+

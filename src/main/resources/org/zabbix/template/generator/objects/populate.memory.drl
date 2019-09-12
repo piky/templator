@@ -13,7 +13,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.total and vm.memory.used found "+$m.getId());
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
 	};
 end
 
@@ -29,7 +29,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.units.total and vm.memory.units.used found "+$m.getId());
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/last("+$m_total.getKey()+"))*100" )
+		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
 	};
 end
 
@@ -44,7 +44,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.total and vm.memory.free found "+$m.getId());
     modify( $m ) { 
-		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
+		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_free.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
 	};
 end
 
@@ -61,7 +61,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.total and vm.memory.free,vm.memory.cached,vm.memory.buffers found: " + $m.getId());
     modify( $m ) { 
-		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_free.getKey()+")-last("+$m_cached.getKey()+")-last("+$m_buffers.getKey()+"))/last("+$m_total.getKey()+"))*100" )
+		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_free.getKeyQuotesEscaped()+"\042)-last(\042"+$m_cached.getKeyQuotesEscaped()+"\042)-last(\042"+$m_buffers.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
 	};
 end
 
@@ -76,7 +76,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.total and vm.memory.availble found: " + $m.getId());
     modify( $m ) { 
-		setExpressionFormula( "((last("+$m_total.getKey()+")-last("+$m_available.getKey()+"))/last("+$m_total.getKey()+"))*100" )
+		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_available.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
 	};
 end
 
@@ -93,7 +93,7 @@ when
 then
     logger.debug(marker,"There are vm.memory.used and vm.memory.free found "+$m);
     modify( $m ) { 
-		setExpressionFormula( "(last("+$m_used.getKey()+")/(last("+$m_free.getKey()+")+last("+$m_used.getKey()+")))*100" )
+		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/(last(\042"+$m_free.getKeyQuotesEscaped()+"\042)+last(\042"+$m_used.getKeyQuotesEscaped()+"\042)))*100" )
 	};
 end
 
@@ -108,7 +108,7 @@ when
 then
     logger.info(marker,"There are vm.memory.units.total and vm.memory.units found ");
     modify( $m ) {
-		setExpressionFormula( "(last("+$m_u_total.getKey()+")*last("+$m_u.getKey()+"))" )
+		setExpressionFormula( "(last(\042"+$m_u_total.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
 	};
 end
 
@@ -122,6 +122,6 @@ when
 then
     logger.info(marker,"There are vm.memory.units.used and vm.memory.units found ");
     modify( $m ) {
-		setExpressionFormula( "(last("+$m_u_used.getKey()+")*last("+$m_u.getKey()+"))" )
+		setExpressionFormula( "(last(\042"+$m_u_used.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
 	};
 end
