@@ -26,6 +26,11 @@ public class Trigger {
 	private String recoveryExpression;
 	private Priority priority = Priority.NOT_CLASSIFIED;
 	private String description;
+
+	// 4.4
+	@JsonProperty(value = "operational_data")
+	private String operationalData;
+
 	private String url;
 	@JsonAlias({ "manual_close" })
 	private ManualClose manualClose = ManualClose.NO;
@@ -72,6 +77,7 @@ public class Trigger {
 	public enum ManualClose implements ZabbixValue {
 
 		YES(1), NO(0);
+
 		private int zabbixValue;
 
 		ManualClose(int zabbixValue) {
@@ -92,6 +98,7 @@ public class Trigger {
 	public enum Priority implements ZabbixValue {
 
 		NOT_CLASSIFIED(0), INFO(1), WARNING(2), AVERAGE(3), HIGH(4), DISASTER(5);
+
 		private int zabbixValue;
 
 		Priority(int zabbixValue) {
@@ -112,6 +119,7 @@ public class Trigger {
 	public enum RecoveryMode implements ZabbixValue {
 
 		EXPRESSION(0), RECOVERY_EXPRESSION(1), NONE(2);
+
 		private int zabbixValue;
 
 		RecoveryMode(int zabbixValue) {
@@ -263,6 +271,14 @@ public class Trigger {
 
 	public void setMetrics(HashSet<String> metricsUsed) {
 		this.metricsUsed = metricsUsed;
+	}
+
+	public String getOperationalData() {
+		return operationalData;
+	}
+
+	public void setOperationalData(String operationalData) {
+		this.operationalData = operationalData;
 	}
 
 }
