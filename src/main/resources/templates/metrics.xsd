@@ -108,7 +108,7 @@
 									<xs:element name="vm.memory.total" type="tns:metricType" maxOccurs="1" minOccurs="0"/>
 								</xs:sequence>
 							</xs:choice>
-							<xs:element name="vm.memory.pused" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
+							<xs:element name="vm.memory.util" type="tns:metricType" maxOccurs="1" minOccurs="1"/>
 						</xs:sequence>
 						<xs:sequence>							<!-- Template General and System Info -->
 							<xs:element name="system.uptime" type="tns:metricType"/>

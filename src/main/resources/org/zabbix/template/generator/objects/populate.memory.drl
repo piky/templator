@@ -2,12 +2,12 @@ package org.zabbix.template.generator.objects;
 
 
 
-rule "Rule 4: generate vm.memory.pused"
+rule "Rule 4: generate vm.memory.util"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -50
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_used: Metric ( id == 'vm.memory.used')
 	$m_total: Metric ( id == 'vm.memory.total')
 then
@@ -18,12 +18,12 @@ then
 end
 
 
-rule "Rule 5: generate vm.memory.pused"
+rule "Rule 5: generate vm.memory.util"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -50
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_used: Metric ( id == 'vm.memory.units.used')
 	$m_total: Metric ( id == 'vm.memory.units.total')
 then
@@ -33,12 +33,12 @@ then
 	};
 end
 
-rule "Rule 6: generate vm.memory.pused"
+rule "Rule 6: generate vm.memory.util"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -50
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_free: Metric ( id == 'vm.memory.free')
 	$m_total: Metric ( id == 'vm.memory.total')
 then
@@ -48,12 +48,12 @@ then
 	};
 end
 
-rule "Rule: generate vm.memory.pused(Linux)"
+rule "Rule: generate vm.memory.util(Linux)"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -25
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_free: Metric ( id == 'vm.memory.free')
 	$m_cached: Metric ( id == 'vm.memory.cached')
 	$m_buffers: Metric ( id == 'vm.memory.buffers')
@@ -65,12 +65,12 @@ then
 	};
 end
 
-rule "Rule: generate vm.memory.pused using vm.memory.available(Linux)"
+rule "Rule: generate vm.memory.util using vm.memory.available(Linux)"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -35
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_available: Metric ( id == 'vm.memory.available')
 	$m_total: Metric ( id == 'vm.memory.total')
 then
@@ -82,12 +82,12 @@ end
 
 
 
-rule "Rule 7: generate vm.memory.pused"
+rule "Rule 7: generate vm.memory.util"
 	agenda-group "populate"
-	activation-group "vm.memory.pused"
+	activation-group "vm.memory.util"
 	salience -50
 when
-	$m : Metric ( id == 'vm.memory.pused')
+	$m : Metric ( id == 'vm.memory.util')
 	$m_free: Metric ( id == 'vm.memory.free')
 	$m_used: Metric ( id == 'vm.memory.used')
 then

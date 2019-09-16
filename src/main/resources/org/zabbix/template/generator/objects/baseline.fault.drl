@@ -14,7 +14,7 @@ when
 		Metric (id == 'vm.memory.total') and 
 		//metrics below are not recommended:
 		not (
-			Metric (id =='vm.memory.pused') or
+			Metric (id =='vm.memory.util') or
 			Metric (id =='vm.memory.free')
 		 )
 	) do [notBadgeFull]
@@ -43,7 +43,7 @@ when
 */
 	not (
 		Metric (id =='system.cpu.util') and
-		Metric (id =='vm.memory.pused')
+		Metric (id =='vm.memory.util')
 	) do [notBadgeBase]
 then
 	//

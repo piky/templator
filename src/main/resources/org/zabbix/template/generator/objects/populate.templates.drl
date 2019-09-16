@@ -88,9 +88,9 @@ rule "Rule 5: generate additional macros"
 	no-loop
 when
 	$t: Template($metrics: metricsRegistry)
-    exists (Metric(id == "vm.memory.pused") from $metrics)
+    exists (Metric(id == "vm.memory.util") from $metrics)
 then
-    logger.info(marker,"Found vm.memory.pused metric, adding additional MACRO...");
+    logger.info(marker,"Found vm.memory.util metric, adding additional MACRO...");
     modify($t) {getMacros().add(new UserMacro("{$MEMORY.UTIL.MAX}","90"));};
 end
 
