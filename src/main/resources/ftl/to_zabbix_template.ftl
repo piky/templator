@@ -209,9 +209,9 @@
                     <#if zbx_ver == '3.2'>
                     <data_type>0</data_type>
                     </#if>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
+                    ${xml_wrap(m.authType.getZabbixValue()?c,'authtype')}
+                    ${xml_wrap(m.username!'','username')}
+                    ${xml_wrap(m.password!'','password')}
                     <publickey/>
                     <privatekey/>
                     <port/>
