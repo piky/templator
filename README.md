@@ -361,7 +361,7 @@ For minimum baseline compliance
 
 Describe in more detail, TODO:
 
-- memory utilization, vfs.fs utilization formula automatically created (see Drools)
+- vfs.fs utilization formula automatically created (see Drools)
 - how metrics are enriched if in LLD (keys, names) What is RESOURCE, RESOURCE_TYPE
 - if `application_prototype` is defined, then application is not filled with `_group` value. This enforces 'Single application guideline'
 - discard preprocessing steps are magically stripped for templates versions < 4.2
