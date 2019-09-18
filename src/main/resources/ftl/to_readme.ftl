@@ -39,7 +39,7 @@ ${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')
 |Name|Description|Default|
 |----|-----------|-------|
 <#list t.macros as macro>
-|${macro.macro}|${(macro.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${macro.value}|
+|${macro.macro}|${(macro.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|`${macro.value}`|
 </#list>
 </#if>
 
