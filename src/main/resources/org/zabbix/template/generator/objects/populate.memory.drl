@@ -1,127 +1,126 @@
-package org.zabbix.template.generator.objects;
+// package org.zabbix.template.generator.objects;
 
 
 
-rule "Rule 4: generate vm.memory.util"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -50
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_used: Metric ( id == 'vm.memory.used')
-	$m_total: Metric ( id == 'vm.memory.total')
-then
-    logger.debug(marker,"There are vm.memory.total and vm.memory.used found "+$m.getId());
-    modify( $m ) { 
-		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
-	};
-end
+// rule "Rule 4: generate vm.memory.util"
+// 	agenda-group "populate"
+// 	activation-group "vm.memory.util"
+// 	salience -50
+// when
+// 	$m : Metric ( id == 'vm.memory.util')
+// 	$m_used: Metric ( id == 'vm.memory.used')
+// 	$m_total: Metric ( id == 'vm.memory.total')
+// then
+//     logger.debug(marker,"There are vm.memory.total and vm.memory.used found "+$m.getId());
+//     modify( $m ) { 
+// 		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
+// 	};
+// end
 
 
-rule "Rule 5: generate vm.memory.util"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -50
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_used: Metric ( id == 'vm.memory.units.used')
-	$m_total: Metric ( id == 'vm.memory.units.total')
-then
-    logger.debug(marker,"There are vm.memory.units.total and vm.memory.units.used found "+$m.getId());
-    modify( $m ) { 
-		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
-	};
-end
+// rule "Rule 5: generate vm.memory.util"
+// 	agenda-group "populate"
+// 	activation-group "vm.memory.util"
+// 	salience -50
+// when
+// 	$m : Metric ( id == 'vm.memory.util')
+// 	$m_used: Metric ( id == 'vm.memory.units.used')
+// 	$m_total: Metric ( id == 'vm.memory.units.total')
+// then
+//     logger.debug(marker,"There are vm.memory.units.total and vm.memory.units.used found "+$m.getId());
+//     modify( $m ) { 
+// 		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
+// 	};
+// end
 
-rule "Rule 6: generate vm.memory.util"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -50
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_free: Metric ( id == 'vm.memory.free')
-	$m_total: Metric ( id == 'vm.memory.total')
-then
-    logger.debug(marker,"There are vm.memory.total and vm.memory.free found "+$m.getId());
-    modify( $m ) { 
-		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_free.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
-	};
-end
+// rule "Rule 6: generate vm.memory.util"
+// 	agenda-group "populate"
+// 	activation-group "vm.memory.util"
+// 	salience -50
+// when
+// 	$m : Metric ( id == 'vm.memory.util')
+// 	$m_available: Metric ( id == 'vm.memory.available')
+// 	$m_total: Metric ( id == 'vm.memory.total')
+// then
+//     logger.debug(marker,"There are vm.memory.total and vm.memory.available found "+$m.getId());
+//     modify( $m ) { 
+// 		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_available.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
+// 	};
+// end
 
-rule "Rule: generate vm.memory.util(Linux)"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -25
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_free: Metric ( id == 'vm.memory.free')
-	$m_cached: Metric ( id == 'vm.memory.cached')
-	$m_buffers: Metric ( id == 'vm.memory.buffers')
-	$m_total: Metric ( id == 'vm.memory.total')
-then
-    logger.debug(marker,"There are vm.memory.total and vm.memory.free,vm.memory.cached,vm.memory.buffers found: " + $m.getId());
-    modify( $m ) { 
-		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_free.getKeyQuotesEscaped()+"\042)-last(\042"+$m_cached.getKeyQuotesEscaped()+"\042)-last(\042"+$m_buffers.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
-	};
-end
+// rule "Rule: generate vm.memory.util(Linux)"
+// 	agenda-group "populate"
+// 	activation-group "vm.memory.util"
+// 	salience -25
+// when
+// 	$m : Metric ( id == 'vm.memory.util')
+// 	$m_free: Metric ( id == 'vm.memory.free')
+// 	$m_cached: Metric ( id == 'vm.memory.cached')
+// 	$m_buffers: Metric ( id == 'vm.memory.buffers')
+// 	$m_total: Metric ( id == 'vm.memory.total')
+// then
+//     logger.debug(marker,"There are vm.memory.total and vm.memory.available,vm.memory.cached,vm.memory.buffers found: " + $m.getId());
+//     modify( $m ) { 
+// 		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_free.getKeyQuotesEscaped()+"\042)-last(\042"+$m_cached.getKeyQuotesEscaped()+"\042)-last(\042"+$m_buffers.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
+// 	};
+// end
 
-rule "Rule: generate vm.memory.util using vm.memory.available(Linux)"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -35
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_available: Metric ( id == 'vm.memory.available')
-	$m_total: Metric ( id == 'vm.memory.total')
-then
-    logger.debug(marker,"There are vm.memory.total and vm.memory.availble found: " + $m.getId());
-    modify( $m ) { 
-		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_available.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
-	};
-end
-
-
-
-rule "Rule 7: generate vm.memory.util"
-	agenda-group "populate"
-	activation-group "vm.memory.util"
-	salience -50
-when
-	$m : Metric ( id == 'vm.memory.util')
-	$m_free: Metric ( id == 'vm.memory.free')
-	$m_used: Metric ( id == 'vm.memory.used')
-then
-    logger.debug(marker,"There are vm.memory.used and vm.memory.free found "+$m);
-    modify( $m ) { 
-		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/(last(\042"+$m_free.getKeyQuotesEscaped()+"\042)+last(\042"+$m_used.getKeyQuotesEscaped()+"\042)))*100" )
-	};
-end
+// // rule "Rule: generate vm.memory.util using vm.memory.available(Linux)"
+// // 	agenda-group "populate"
+// // 	activation-group "vm.memory.util"
+// // 	salience -35
+// // when
+// // 	$m : Metric ( id == 'vm.memory.util')
+// // 	$m_available: Metric ( id == 'vm.memory.available')
+// // 	$m_total: Metric ( id == 'vm.memory.total')
+// // then
+// //     logger.debug(marker,"There are vm.memory.total and vm.memory.availble found: " + $m.getId());
+// //     modify( $m ) { 
+// // 		setExpressionFormula( "((last(\042"+$m_total.getKeyQuotesEscaped()+"\042)-last(\042"+$m_available.getKeyQuotesEscaped()+"\042))/last(\042"+$m_total.getKeyQuotesEscaped()+"\042))*100" )
+// // 	};
+// // end
 
 
-rule "Rule 8: generate vm.memory.total"
-	agenda-group "populate"
-	salience -50
-when
-    $m : Metric ( id == 'vm.memory.total')
-	$m_u_total : Metric ( id == 'vm.memory.units.total')
-	$m_u: Metric ( id == 'vm.memory.units')
-then
-    logger.info(marker,"There are vm.memory.units.total and vm.memory.units found ");
-    modify( $m ) {
-		setExpressionFormula( "(last(\042"+$m_u_total.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
-	};
-end
+// rule "Rule 7: generate vm.memory.util"
+// 	agenda-group "populate"
+// 	activation-group "vm.memory.util"
+// 	salience -50
+// when
+// 	$m : Metric ( id == 'vm.memory.util')
+// 	$m_available: Metric ( id == 'vm.memory.available')
+// 	$m_used: Metric ( id == 'vm.memory.used')
+// then
+//     logger.debug(marker,"There are vm.memory.used and vm.memory.available found "+$m);
+//     modify( $m ) { 
+// 		setExpressionFormula( "(last(\042"+$m_used.getKeyQuotesEscaped()+"\042)/(last(\042"+$m_available.getKeyQuotesEscaped()+"\042)+last(\042"+$m_used.getKeyQuotesEscaped()+"\042)))*100" )
+// 	};
+// end
 
-rule "Rule 9: generate vm.memory.used"
-	agenda-group "populate"
-	salience -50
-when
-    $m : Metric ( id == 'vm.memory.used')
-	$m_u_used : Metric ( id == 'vm.memory.units.used')
-	$m_u: Metric ( id == 'vm.memory.units')
-then
-    logger.info(marker,"There are vm.memory.units.used and vm.memory.units found ");
-    modify( $m ) {
-		setExpressionFormula( "(last(\042"+$m_u_used.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
-	};
-end
+
+// rule "Rule 8: generate vm.memory.total"
+// 	agenda-group "populate"
+// 	salience -50
+// when
+//     $m : Metric ( id == 'vm.memory.total')
+// 	$m_u_total : Metric ( id == 'vm.memory.units.total')
+// 	$m_u: Metric ( id == 'vm.memory.units')
+// then
+//     logger.info(marker,"There are vm.memory.units.total and vm.memory.units found ");
+//     modify( $m ) {
+// 		setExpressionFormula( "(last(\042"+$m_u_total.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
+// 	};
+// end
+
+// rule "Rule 9: generate vm.memory.used"
+// 	agenda-group "populate"
+// 	salience -50
+// when
+//     $m : Metric ( id == 'vm.memory.used')
+// 	$m_u_used : Metric ( id == 'vm.memory.units.used')
+// 	$m_u: Metric ( id == 'vm.memory.units')
+// then
+//     logger.info(marker,"There are vm.memory.units.used and vm.memory.units found ");
+//     modify( $m ) {
+// 		setExpressionFormula( "(last(\042"+$m_u_used.getKeyQuotesEscaped()+"\042)*last(\042"+$m_u.getKeyQuotesEscaped()+"\042))" )
+// 	};
+// end
