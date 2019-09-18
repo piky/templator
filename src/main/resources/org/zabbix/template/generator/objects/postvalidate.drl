@@ -200,3 +200,14 @@ then
     logger.error(marker,"No 'resource_type' defined for screen {}. This is probably due to _graph_id or _metric_id not defined properly. If you trying to reference graph or metric from linked template - you need to define it statically instead.", $s.name);
 	$ij.failed = true;
 end
+
+rule "Validation rule: check expressionFormula(params)"
+	agenda-group "postvalidate"
+	dialect "mvel"
+when
+	$m: Metric(expressionFormula == null, (type == Type.CALCULATED || type == Type.SSH || type == Type.TELNET || type == Type.ODBC ))
+	$ij: InputJSON( )
+then
+    logger.error(marker,"No 'params' defined for metric {} of type {}", $m.id, $m.type);
+	$ij.failed = true;
+end
