@@ -576,6 +576,36 @@ public abstract class Metric {
 	}
 
 	/**
+	 * @return the authType
+	 */
+	public AuthType getAuthType() {
+		return authType;
+	}
+
+	/**
+	 * @param authType the authType to set
+	 */
+	public void setAuthType(AuthType authType) {
+		this.authType = authType;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
 	 * @return the retrieveMode
 	 */
 	public RequestMethod getRequestMethod() {
@@ -596,6 +626,27 @@ public abstract class Metric {
 		private int zabbixValue;
 
 		RetrieveMode(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	public enum AuthType implements ZabbixValue {
+
+		NONE(0), BASIC(1), NTLM(2);
+
+		private int zabbixValue;
+
+		AuthType(int zabbixValue) {
 			this.setZabbixValue(zabbixValue);
 		}
 
@@ -682,6 +733,12 @@ public abstract class Metric {
 
 	@JsonAlias("retrieve_mode")
 	private RetrieveMode retrieveMode = RetrieveMode.BODY;
+
+	@JsonAlias("auth_type")
+	private AuthType authType = AuthType.NONE;
+
+	private String username;
+	private String password;
 
 	@JsonAlias("request_method")
 	private RequestMethod requestMethod = RequestMethod.GET;
