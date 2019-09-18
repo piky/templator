@@ -642,7 +642,10 @@ public abstract class Metric {
 
 	public enum AuthType implements ZabbixValue {
 
-		NONE(0), BASIC(1), NTLM(2);
+		// HTTP:
+		NONE(0), BASIC(1), NTLM(2), KERBEROS(3),
+		// SSH
+		PASSWORD(0), PUBLIC_KEY(1);
 
 		private int zabbixValue;
 
@@ -734,7 +737,7 @@ public abstract class Metric {
 	@JsonAlias("retrieve_mode")
 	private RetrieveMode retrieveMode = RetrieveMode.BODY;
 
-	@JsonAlias("auth_type")
+	@JsonAlias({ "authtype", "auth_type" })
 	private AuthType authType = AuthType.NONE;
 
 	private String username;
