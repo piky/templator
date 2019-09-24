@@ -541,8 +541,8 @@
                     <type>${p.type.getZabbixValue()}</type>
                     <params>${p.params!''}</params>
                     <#if zbx_ver == '4.2'>
-                    <error_handler>0</error_handler>
-                    <error_handler_params/>
+                    ${xml_wrap(p.errorHandler.getZabbixValue()?c,'error_handler')}
+                    ${xml_wrap(p.errorHandlerParams!'','error_handler_params')}
                     </#if>
                 </step>
             </#list>
