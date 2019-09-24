@@ -170,8 +170,8 @@ then
     logger.info(marker,"Found IF_MIB class, adding additional MACRO");
     modify($t) {
     	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
-    	getMacros().add(new UserMacro("{$IF_UTIL_MAX}","90")),
-    	getMacros().add(new UserMacro("{$IF_ERRORS_WARN}","2"));	
+    	getMacros().add(new UserMacro("{$IF.UTIL.MAX}","90")),
+    	getMacros().add(new UserMacro("{$IF.ERRORS.WARN}","2"));	
     };
 end
 
