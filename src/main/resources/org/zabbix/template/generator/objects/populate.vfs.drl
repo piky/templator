@@ -7,7 +7,7 @@ rule "Rule 4: generate vfs.fs.pused"
 	salience -25
 	dialect "mvel"
 when
-	$m : Metric ( id == 'vfs.fs.pused')
+	$m : Metric ( id == 'vfs.fs.pused', type == Type.CALCULATED)
 	$m_used: Metric ( id == 'vfs.fs.used')
 	$m_total: Metric ( id == 'vfs.fs.total')
 then
@@ -24,7 +24,7 @@ rule "Rule 5: generate vfs.fs.pused"
 	salience -5
 	dialect "mvel"
 when
-	$m : Metric ( id == 'vfs.fs.pused')
+	$m : Metric ( id == 'vfs.fs.pused', type == Type.CALCULATED)
 	$m_used: Metric ( id == 'vfs.fs.units.used')
 	$m_total: Metric ( id == 'vfs.fs.units.total')
 then
@@ -40,7 +40,7 @@ rule "Rule 6: generate vfs.fs.pused"
 	salience -35
 	dialect "mvel"
 when
-	$m : Metric ( id == 'vfs.fs.pused')
+	$m : Metric ( id == 'vfs.fs.pused', type == Type.CALCULATED)
 	$m_free: Metric ( id == 'vfs.fs.free')
 	$m_total: Metric ( id == 'vfs.fs.total')
 then
@@ -57,7 +57,7 @@ rule "Rule 7: generate vfs.fs.pused"
 	salience -50
 	dialect "mvel"
 when
-	$m : Metric ( id == 'vfs.fs.pused')
+	$m : Metric ( id == 'vfs.fs.pused', type == Type.CALCULATED)
 	$m_free: Metric ( id == 'vfs.fs.free')
 	$m_used: Metric ( id == 'vfs.fs.used')
 then
@@ -74,7 +74,7 @@ rule "Rule 8: generate vfs.fs.total"
 	salience -5
 	dialect "mvel"
 when
-    $m : Metric ( id == 'vfs.fs.total')
+    $m : Metric ( id == 'vfs.fs.total', type == Type.CALCULATED)
 	$m_u_total : Metric ( id == 'vfs.fs.units.total')
 	$m_u: Metric ( id == 'vfs.fs.units')
 then
@@ -90,7 +90,7 @@ rule "Rule 9: generate vfs.fs.used"
 	salience -5
 	dialect "mvel"
 when
-    $m : Metric ( id == 'vfs.fs.used')
+    $m : Metric ( id == 'vfs.fs.used', type == Type.CALCULATED)
 	  $m_u_used : Metric ( id == 'vfs.fs.units.used')
 	  $m_u: Metric ( id == 'vfs.fs.units')
 then
@@ -107,7 +107,7 @@ rule "Rule 10: generate vfs.fs.used"
 	salience -50
 	dialect "mvel"
 when
-    $m : Metric ( id == 'vfs.fs.used')
+    $m : Metric ( id == 'vfs.fs.used', type == Type.CALCULATED)
 	$m_total : Metric ( id == 'vfs.fs.total')
 	$m_free: Metric ( id == 'vfs.fs.free')
 then
