@@ -28,7 +28,7 @@ public class Trigger {
 	private String description;
 
 	// 4.4
-	@JsonProperty(value = "operational_data")
+	@JsonProperty(value = "opdata")
 	private String operationalData;
 
 	private String url;
