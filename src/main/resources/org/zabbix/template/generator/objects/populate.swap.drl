@@ -4,12 +4,12 @@ rule "generate system.swap.pused"
 	agenda-group "populate"
 	salience -50
 when
-	$m : Metric ( id == 'system.swap.pfree')
+	$m : Metric ( id == 'system.swap.pfree', type == Type.CALCULATED)
 	$m_free: Metric ( id == 'system.swap.free')
 	$m_total: Metric ( id == 'system.swap.total')
 then
     logger.debug(marker,"There are system.swap.total and system.swap.free found "+$m);
     modify( $m ) { 
-			setExpressionFormula( "((last("+$m_free.getKey()+"))/last("+$m_total.getKey()+"))*100" )
-	  };
+			setExpressionFormula("last(\042"+$m_free.getKeyQuotesEscaped()+"\042)/last(\042"+$m_total.getKeyQuotesEscaped()+"\042)*100")
+	};
 end
