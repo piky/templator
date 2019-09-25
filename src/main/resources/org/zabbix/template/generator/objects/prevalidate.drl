@@ -12,7 +12,29 @@ then
     }
 end
 
+rule "Validation rule: check trigger name"
+	agenda-group "prevalidate"
+when
+    $i : InputJSON()
+	$tr : Trigger (name == null)
+then
+    logger.error(marker,"There is no 'name' for "+$tr.getId());
+    modify($i){
+        setFailed(true);
+    }
+end
 
+rule "Validation rule: check trigger expression"
+	agenda-group "prevalidate"
+when
+    $i : InputJSON()
+	$tr : Trigger (expression == null)
+then
+    logger.error(marker,"There is no 'expression' for "+$tr.getId());
+    modify($i){
+        setFailed(true);
+    }
+end
 
 rule "Validation rule: check group"
 	agenda-group "prevalidate"
