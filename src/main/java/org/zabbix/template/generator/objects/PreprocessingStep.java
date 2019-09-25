@@ -74,7 +74,7 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		PreprocessingStep that = (PreprocessingStep) o;
-		return Objects.equals(type, that.type) && Objects.equals(params, that.params);
+		return Objects.equals(type, that.type);
 	}
 
 	@Override
