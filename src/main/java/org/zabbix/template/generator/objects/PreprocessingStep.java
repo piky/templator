@@ -10,14 +10,14 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 	private String params;
 
 	@JsonAlias({ "error_handler" })
-	private PreprocessingStepErrorHandler errorHandler = PreprocessingStepErrorHandler.NONE;
+	private PreprocessingStepErrorHandler errorHandler = PreprocessingStepErrorHandler.ORIGINAL_ERROR;
 
 	@JsonAlias({ "error_handler_params" })
 	private String errorHandlerParams;
 
 	public enum PreprocessingStepErrorHandler implements ZabbixValue {
 
-	    NONE(0), DISCARD_VALUE(1), SET_VALUE_TO(2), SET_ERROR_TO(3);
+	    ORIGINAL_ERROR(0), DISCARD_VALUE(1), CUSTOM_VALUE(2), CUSTOM_ERROR(3);
 	    private int zabbixValue;
 
 	    PreprocessingStepErrorHandler(int zabbixValue) {
