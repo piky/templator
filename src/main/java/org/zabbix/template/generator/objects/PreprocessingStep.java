@@ -2,14 +2,38 @@ package org.zabbix.template.generator.objects;
 
 import java.util.Objects;
 import java.util.Comparator;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class PreprocessingStep implements Comparable<PreprocessingStep> {
-	// TODO add error handler:
-	// <error_handler>0</error_handler>
-	// <error_handler_params/>
 
 	private PreprocessingStepType type;
 	private String params;
+
+	@JsonAlias({ "error_handler" })
+	private PreprocessingStepErrorHandler errorHandler = PreprocessingStepErrorHandler.ORIGINAL_ERROR;
+
+	@JsonAlias({ "error_handler_params" })
+	private String errorHandlerParams;
+
+	public enum PreprocessingStepErrorHandler implements ZabbixValue {
+
+	    ORIGINAL_ERROR(0), DISCARD_VALUE(1), CUSTOM_VALUE(2), CUSTOM_ERROR(3);
+	    private int zabbixValue;
+
+	    PreprocessingStepErrorHandler(int zabbixValue) {
+	        this.setZabbixValue(zabbixValue);
+	    }
+
+	    @Override
+	    public int getZabbixValue() {
+	        return zabbixValue;
+	    }
+
+	    public void setZabbixValue(int zabbixValue) {
+	        this.zabbixValue = zabbixValue;
+	    }
+
+	}
 
 	public PreprocessingStepType getType() {
 		return type;
@@ -25,6 +49,22 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 
 	public void setParams(String params) {
 		this.params = params;
+	}
+
+	public PreprocessingStepErrorHandler getErrorHandler() {
+		return errorHandler;
+	}
+
+	public void setErrorHandler(PreprocessingStepErrorHandler errorHandler) {
+		this.errorHandler = errorHandler;
+	}
+
+	public String getErrorHandlerParams() {
+		return errorHandlerParams;
+	}
+
+	public void setErrorHandlerParams(String errorHandlerParams) {
+		this.errorHandlerParams = errorHandlerParams;
 	}
 
 	@Override
@@ -50,3 +90,5 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 				.thenComparing(PreprocessingStep::getParams, nullSafeStringComparator).compare(this, ps);
 	}
 }
+
+

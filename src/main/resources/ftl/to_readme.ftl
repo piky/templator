@@ -70,7 +70,7 @@ There are no template links in this template.
 |Group|Name|Description|Type|Key and additional info|
 |-----|----|-----------|----|---------------------|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
-|${m.group}|${m.name}|${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
+|${m.group}|${m.name}|${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')}|${m.type}|${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p><#if (prep.errorHandler!="ORIGINAL_ERROR")><p>⛔️ON_FAIL: `${prep.errorHandler} -> ${prep.errorHandlerParams!''}`</#if></p></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')}`</#if>|
 </#list>
 
 ## Triggers
