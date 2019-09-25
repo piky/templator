@@ -17,21 +17,22 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 
 	public enum PreprocessingStepErrorHandler implements ZabbixValue {
 
-	    ORIGINAL_ERROR(0), DISCARD_VALUE(1), CUSTOM_VALUE(2), CUSTOM_ERROR(3);
-	    private int zabbixValue;
+		ORIGINAL_ERROR(0), DISCARD_VALUE(1), CUSTOM_VALUE(2), CUSTOM_ERROR(3);
 
-	    PreprocessingStepErrorHandler(int zabbixValue) {
-	        this.setZabbixValue(zabbixValue);
-	    }
+		private int zabbixValue;
 
-	    @Override
-	    public int getZabbixValue() {
-	        return zabbixValue;
-	    }
+		PreprocessingStepErrorHandler(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
 
-	    public void setZabbixValue(int zabbixValue) {
-	        this.zabbixValue = zabbixValue;
-	    }
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
 
 	}
 
@@ -90,5 +91,3 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 				.thenComparing(PreprocessingStep::getParams, nullSafeStringComparator).compare(this, ps);
 	}
 }
-
-
