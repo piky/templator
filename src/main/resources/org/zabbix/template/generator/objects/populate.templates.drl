@@ -146,19 +146,6 @@ then
     };
 end
 
-rule "Rule 8: generate additional macros (General class)"
-	agenda-group "populate"
-	no-loop
-when
-	$t: Template($classes: classes)
-    exists (TemplateClass(this == TemplateClass.GENERAL) from $classes)
-then
-    logger.info(marker,"Found GENERAL class, adding additional MACRO");
-    modify($t) {
-    	getMacros().add(new UserMacro("{$SNMP_TIMEOUT}","3m"));	
-    };
-end
-
 
 rule "Rule 9: generate additional macros (IF_MIB class)"
 	agenda-group "populate"
