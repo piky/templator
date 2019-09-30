@@ -45,7 +45,7 @@ when
 	$ij: InputJSON( )
 	not ValueMap(name == $vm_name) from $ij.valueMaps
 then
-    logger.error(marker,"No value map found for " + $vm_name + ". It used in " +$m.id);
+    logger.error(marker,"No value map found for " + $vm_name + ". It is used in " +$m.id);
 	$ij.failed = true;
 end
 
