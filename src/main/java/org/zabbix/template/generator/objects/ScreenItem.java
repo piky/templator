@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ScreenItem {
 
-    // https://www.zabbix.com/documentation/4.2/manual/api/reference/screenitem/object#screen_item
+    // https://www.zabbix.com/documentation/current/manual/api/reference/screenitem/object#screen_item
     @JsonAlias({ "resourcetype", "resource_type" })
     private ScreenResourceType resourceType;
 

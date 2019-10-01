@@ -51,7 +51,7 @@
             <#else>
             <discovery_rules/>
             </#if>                    
-            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
             <httptests/>
             </#if>
             <#if (t.macros?size > 0)>
@@ -88,7 +88,7 @@
             <#else>
             <screens/>
             </#if>
-            <#if zbx_ver == '4.2'>
+            <#if zbx_ver == '4.2' || zbx_ver == '4.4'>
             <tags/>
             </#if>
         </template>
@@ -245,10 +245,10 @@
                     <valuemap/>
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt')}
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
                     <@preprocessing m zbx_ver/>
                     </#if>
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
                     <jmx_endpoint/>
                     </#if>
                     <#if m.discoveryRule??><#-- item prototype-->
@@ -262,7 +262,7 @@
                     <application_prototypes/>
                         </#if>
                     </#if>
-                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <#if zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
                     ${xml_wrap(m.timeout!'3s','timeout')}
                     ${xml_wrap(m.url!'','url')}
                     <query_fields/>
@@ -289,7 +289,7 @@
                             <@master_item m 'master_item'/>
                         </#if>
                     </#if>
-                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <#if zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
                             <@master_item m 'master_item'/>
                     </#if>
 
@@ -382,10 +382,10 @@
 			</graph_prototypes>
             <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
-            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
             <jmx_endpoint/>
             </#if>
-            <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+            <#if zbx_ver == '4.0' || zbx_ver == '4.2' || zbx_ver == '4.4'>
             <timeout>3s</timeout>
             <url/>
             <query_fields/>
@@ -404,7 +404,7 @@
             <verify_peer>0</verify_peer>
             <verify_host>0</verify_host>
             </#if>
-            <#if zbx_ver == '4.2'>
+            <#if zbx_ver == '4.2' || zbx_ver == '4.4'>
             <@lld_macro_paths dr/>
             <@preprocessing dr zbx_ver/>
             <@master_item dr 'master_item'/>
@@ -550,7 +550,7 @@
                 <step>
                     <type>${p.type.getZabbixValue()}</type>
                     <params>${p.params!''}</params>
-                    <#if zbx_ver == '4.2'>
+                    <#if zbx_ver == '4.2' || zbx_ver = '4.4'>
                     ${xml_wrap(p.errorHandler.getZabbixValue()?c,'error_handler')}
                     ${xml_wrap(p.errorHandlerParams!'','error_handler_params')}
                     </#if>

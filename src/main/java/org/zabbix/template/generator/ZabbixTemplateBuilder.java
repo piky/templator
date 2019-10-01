@@ -95,9 +95,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:drools").process(ruleChecker).choice().when(body().method("isFailed"))
 				.log(LoggingLevel.ERROR, "STOPPING").stop().otherwise().to("direct:multicaster_version");
 
-		/* STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0, 4.2) */
+		/* STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0, 4.2, 4.4) */
 		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4",
-				"direct:zbx4.0", "direct:zbx4.2");
+				"direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4");
 
 		from("direct:zbx3.2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
@@ -119,6 +119,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.2")) <= 0)))
 				.setHeader("zbx_ver", simple("4.2", String.class)).to("direct:multicaster_snmp");
 
+		from("direct:zbx4.4")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.4")) <= 0)))
+				.setHeader("zbx_ver", simple("4.4", String.class)).to("direct:multicaster_snmp");
 		/* STEP 6: multicast to different SNMP versions (and ICMP) */
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:snmpv1", "direct:snmpv2", "direct:other", "direct:zabbix_active"
@@ -205,7 +209,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.end().to("file:bin/out");
 
 		// templates XSD validation, deprecated. remove after some time.
-		from("direct:xsd").choice().when(header("zbx_ver").isEqualTo("4.2"))
+		from("direct:xsd").choice().when(header("zbx_ver").isEqualTo("4.4"))
+				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.4 Zabbix")
+				.when(header("zbx_ver").isEqualTo("4.2"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
 				.when(header("zbx_ver").isEqualTo("4.0"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
