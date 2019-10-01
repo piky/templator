@@ -318,6 +318,13 @@ use `resourcetype` and `resource` attributes(just like in Zabbix API) when you n
 
 add to all template names with SNMP items. This gets rewritten to SNMPv1, SNMPv2 or SNMPv3. (currently in camel route)  
 
+### Zabbix agent active auto template generation
+
+**Implemented as**: In Apache Camel route and freemarker  
+**How to use**: Add special template `class` into `_classes` named `ZABBIX_ACTIVE`. Additional `by Zabbix active` template will be generated automatically. Make sure template name ends with `by Zabbix agent`.
+If there is a link to template `Template Module Zabbix agent` then link is changed to `Template Module Zabbix agent active` too.  
+**Next steps status**: Implementation is rather a complete hack. Should be changed.
+
 ### Baseline validation of templates
 
 **Implemented as**: Drools rules, see baseline.*.drl files  

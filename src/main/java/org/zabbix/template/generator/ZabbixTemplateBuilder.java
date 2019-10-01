@@ -121,13 +121,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		/* STEP 6: multicast to different SNMP versions (and ICMP) */
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
-				.to("direct:snmpv1", "direct:snmpv2", "direct:other"
+				.to("direct:snmpv1", "direct:snmpv2", "direct:other", "direct:zabbix_active"
 				// "direct:remote_service"
 				);
 		from("direct:snmpv1")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV1))
-				.setHeader("snmp_item_type", simple("1", String.class))
+				.setHeader("default_item_type", simple("1", String.class))
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
 				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -137,7 +137,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:snmpv2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV2))
-				.setHeader("snmp_item_type", simple("4", String.class))
+				.setHeader("default_item_type", simple("4", String.class))
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
 				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -148,10 +148,20 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
 				.anyMatch((a) -> a.equals(TemplateClass.SNMPV1) || a.equals(TemplateClass.SNMPV2)
 						|| a.equals(TemplateClass.SNMPV3)) == false)
-				.setHeader("snmp_item_type", simple("0", String.class))
+				.setHeader("default_item_type", simple("0", String.class))
 				.setHeader("template_suffix", simple("", String.class))
 				.setHeader("template_type", simple("OTHER", String.class))
 				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
+				.to("direct:multicaster_export");
+
+		from("direct:zabbix_active")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
+						.contains(TemplateClass.ZABBIX_ACTIVE))
+				.setHeader("default_item_type", simple("7", String.class))
+				.setHeader("template_suffix", simple("active", String.class))
+				.setHeader("template_type", simple("ZABBIX_ACTIVE", String.class))
+				.log(LoggingLevel.DEBUG,
+						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:multicaster_export");
 
 		from("direct:multicaster_export").to("log:result?level=DEBUG").multicast().parallelProcessing()
@@ -180,9 +190,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 																										// with SNMPv2
 																										// or
 																										// SNMPv1 lang
-
-				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
-				.when(header("template_suffix").isEqualTo(""))
+				.choice().when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
+				.transform(body().regexReplaceAll("by Zabbix agent",
+						simple("by Zabbix agent ${in.headers.template_suffix}")))
+				.transform(
+						body().regexReplaceAll("Template Module Zabbix agent", simple("Template Module Zabbix agent")))
+				.end().setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
+				.choice().when(header("template_suffix").isEqualTo(""))
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.xml"))
 				.otherwise()
@@ -200,7 +214,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
 
 		/* STEP 8(FINAL): generate README.md , using freemarker */
-		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
+		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false").choice()
+				.when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
+				.transform(body().regexReplaceAll("by Zabbix agent",
+						simple("by Zabbix agent ${in.headers.template_suffix}")))
+				.transform(
+						body().regexReplaceAll("Template Module Zabbix agent", simple("Template Module Zabbix agent")))
+				.transform(body().regexReplaceAll("ZABBIX_PASSIVE", simple("ZABBIX_ACTIVE"))).end()
+
 				.transform(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
 				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
 				.when(header("template_suffix").isEqualTo(""))

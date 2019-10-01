@@ -1,5 +1,6 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = headers.zbx_ver?string>
+<#assign template_type = headers.template_type?string>
 <#assign snmp_community = '{$SNMP_COMMUNITY}'>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
@@ -140,7 +141,9 @@
 <#macro item m>
                     <name>${m.name}</name>
                     <#if m.type == 'SNMP'>
-                    <type>${headers.snmp_item_type}</type>
+                    <type>${headers.default_item_type}</type>
+                    <#elseif m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key != 'system.localtime'>
+                    <type>${headers.default_item_type}</type>
                     <#else>
                     <type>${m.type.getZabbixValue()!'none'}</type>
                     </#if>
@@ -166,7 +169,12 @@
                     <delay>${time_suffix_to_seconds(m.delay)}</delay>
                     <history>${time_suffix_to_days(m.history)}</history>
                     <trends>${time_suffix_to_days(m.trends)}</trends>
+                    <#-- forced disabling of key=system.localtime for zabbix active template, since it is not supported that way -->
+                    <#if m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key == 'system.localtime'>
+                    <status>1</status>
+                    <#else>
                     <status>0</status>
+                    </#if>
                     <value_type>${m.valueType.getZabbixValue()}</value_type>
                     <allowed_hosts/>
                     ${xml_wrap((prepare_units(m.units!'')),'units')}
@@ -291,7 +299,9 @@
             <#assign metrics = t.getMetricsByZbxVer(dr.metrics,zbx_ver)>
             <name>${dr.name}</name>
             <#if dr.type == 'SNMP'>
-            <type>${headers.snmp_item_type}</type>
+            <type>${headers.default_item_type}</type>
+            <#elseif dr.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE'>
+            <type>${headers.default_item_type}</type>
             <#else>
             <type>${dr.type.getZabbixValue()!'none'}</type>
             </#if>

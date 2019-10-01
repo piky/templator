@@ -16,5 +16,5 @@ public enum TemplateClass {
 	@JsonProperty("SNMPv1")
 	SNMPV1, @JsonProperty("SNMPv2")
 	SNMPV2, @JsonProperty("SNMPv3")
-	SNMPV3;
+	SNMPV3, ZABBIX_ACTIVE;
 }
