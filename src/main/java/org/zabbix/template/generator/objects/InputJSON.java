@@ -5,7 +5,10 @@ import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class InputJSON {
 
 	// this attribute is used to stop templates from further processing if set to
@@ -43,6 +46,7 @@ public class InputJSON {
 
 	// this method return a list of all unique groups met in the templates. This is
 	// required for FreeMarker generation of zabbix_export.groups
+	@JsonIgnore
 	public HashSet<TemplateClass> getUniqueTemplateClasses() {
 
 		HashSet<TemplateClass> set = new HashSet<TemplateClass>(0);

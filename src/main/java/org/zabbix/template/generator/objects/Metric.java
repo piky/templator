@@ -8,10 +8,13 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
+@JsonInclude(value = Include.NON_EMPTY)
 public abstract class Metric {
 	// use this field to match to class
 	@JsonProperty(value = "_prototype")

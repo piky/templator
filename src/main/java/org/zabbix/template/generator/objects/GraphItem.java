@@ -3,7 +3,11 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class GraphItem {
 	@JsonAlias({ "sortorder" })
 	private int sortOrder;
@@ -57,6 +61,7 @@ public class GraphItem {
 
 	};
 
+	@JsonIgnore
 	private ArrayList<String> graphColors = new ArrayList<String>(Arrays.asList("1A7C11", "2774A4", "F63100", "A54F10",
 			"FC6EA3", "6C59DC", "AC8C14", "611F27", "F230E0", "FFAD40", "40CDFF", "40FFA0", "AE4500"));
 

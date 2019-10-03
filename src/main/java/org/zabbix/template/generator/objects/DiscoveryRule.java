@@ -1,9 +1,11 @@
 package org.zabbix.template.generator.objects;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class DiscoveryRule {
 	private String name;
 

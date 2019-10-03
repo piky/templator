@@ -12,6 +12,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * 
  *	This is a Class that defines model for Zabbix template
  */
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value = Include.NON_EMPTY)
 @JsonDeserialize(using = TemplateDeserializer.class)
 public class Template {
 

@@ -3,7 +3,10 @@ package org.zabbix.template.generator.objects;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class UserMacro implements Comparable<UserMacro> {
 	private String macro;
 	private String value;

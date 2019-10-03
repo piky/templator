@@ -1,5 +1,9 @@
 package org.zabbix.template.generator.objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value = Include.NON_EMPTY)
 public enum ScreenResourceType implements ZabbixValue {
 
     GRAPH(0), SIMPLE_GRAPH(1), MAP(2), PLAIN_TEXT(3), HOSTS_INFO(4), TRIGGERS_INFO(5), SYSTEM_INFORMATION(6), CLOCK(7),
