@@ -629,7 +629,7 @@ public abstract class Metric {
 
 	public enum RetrieveMode implements ZabbixValue {
 
-		BODY(0), HEADERS(1), BODY_AND_HEADERS(2);
+		BODY(0), HEADERS(1), BOTH(2);
 
 		private int zabbixValue;
 
