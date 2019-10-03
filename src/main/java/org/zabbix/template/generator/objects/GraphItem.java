@@ -31,6 +31,7 @@ public class GraphItem {
 	public enum DrawType implements ZabbixValue {
 
 		SINGLE_LINE(0), FILLED_REGION(1), BOLD_LINE(2), DOTTED_LINE(3), DASHED_LINE(4), GRADIENT_LINE(5);
+
 		private int zabbixValue;
 
 		DrawType(int zabbixValue) {
@@ -40,6 +41,14 @@ public class GraphItem {
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
+		}
+
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
 		}
 
 		public void setZabbixValue(int zabbixValue) {
@@ -66,6 +75,14 @@ public class GraphItem {
 			return zabbixValue;
 		}
 
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
+		}
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -85,6 +102,14 @@ public class GraphItem {
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
+		}
+
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
 		}
 
 		public void setZabbixValue(int zabbixValue) {
@@ -107,6 +132,14 @@ public class GraphItem {
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
+		}
+
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
 		}
 
 		public void setZabbixValue(int zabbixValue) {

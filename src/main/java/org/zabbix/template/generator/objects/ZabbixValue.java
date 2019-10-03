@@ -6,4 +6,6 @@ public interface ZabbixValue {
 	// value
 	int getZabbixValue();
 
+	String getZabbixValue(String version);
+
 }

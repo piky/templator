@@ -82,6 +82,14 @@ public class ScreenItem {
             return zabbixValue;
         }
 
+        public String getZabbixValue(String version) {
+            if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+                return this.toString();
+            } else {
+                return new Integer(zabbixValue).toString();
+            }
+        }
+
         public void setZabbixValue(int zabbixValue) {
             this.zabbixValue = zabbixValue;
         }
@@ -103,6 +111,14 @@ public class ScreenItem {
             return zabbixValue;
         }
 
+        public String getZabbixValue(String version) {
+            if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+                return this.toString();
+            } else {
+                return new Integer(zabbixValue).toString();
+            }
+        }
+
         public void setZabbixValue(int zabbixValue) {
             this.zabbixValue = zabbixValue;
         }
@@ -122,6 +138,14 @@ public class ScreenItem {
         @Override
         public int getZabbixValue() {
             return zabbixValue;
+        }
+
+        public String getZabbixValue(String version) {
+            if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+                return this.toString();
+            } else {
+                return new Integer(zabbixValue).toString();
+            }
         }
 
         public void setZabbixValue(int zabbixValue) {

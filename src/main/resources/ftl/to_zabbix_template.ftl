@@ -145,7 +145,7 @@
                     <#elseif m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key != 'system.localtime'>
                     <type>${headers.default_item_type}</type>
                     <#else>
-                    <type>${m.type.getZabbixValue()!'none'}</type>
+                    <type>${m.type.getZabbixValue(zbx_ver)!'none'}</type>
                     </#if>
                     <#if m.type == 'SNMP'>
                     <snmp_community>${snmp_community}</snmp_community>
@@ -175,7 +175,7 @@
                     <#else>
                     <status>0</status>
                     </#if>
-                    <value_type>${m.valueType.getZabbixValue()}</value_type>
+                    <value_type>${m.valueType.getZabbixValue(zbx_ver)}</value_type>
                     <allowed_hosts/>
                     ${xml_wrap((prepare_units(m.units!'')),'units')}
                     <#if zbx_ver == '3.2'>
@@ -217,14 +217,14 @@
                     <#if zbx_ver == '3.2'>
                     <data_type>0</data_type>
                     </#if>
-                    ${xml_wrap(m.authType.getZabbixValue()?c,'authtype')}
+                    ${xml_wrap(m.authType.getZabbixValue(zbx_ver),'authtype')}
                     ${xml_wrap(m.username!'','username')}
                     ${xml_wrap(m.password!'','password')}
                     <publickey/>
                     <privatekey/>
                     <port/>
                     ${xml_wrap(m.description!'','description')}
-                    <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
+                    <inventory_link>${m.inventoryLink.getZabbixValue(zbx_ver)}</inventory_link>
                     <#if m.applicationPrototype??>
                     <applications/>
                     <#else>
@@ -272,8 +272,8 @@
                     ${xml_wrap(m.postType!'0','post_type')}
                     ${xml_wrap(m.httpProxy!'','http_proxy')}
                     ${xml_wrap(m.headers!'','headers')}
-                    ${xml_wrap(m.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
-                    ${xml_wrap(m.requestMethod.getZabbixValue()?c,'request_method')}
+                    ${xml_wrap(m.retrieveMode.getZabbixValue(zbx_ver),'retrieve_mode')}
+                    ${xml_wrap(m.requestMethod.getZabbixValue(zbx_ver),'request_method')}
                     <output_format>0</output_format>
                     <allow_traps>0</allow_traps>
                     <ssl_cert_file/>
@@ -303,7 +303,7 @@
             <#elseif dr.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE'>
             <type>${headers.default_item_type}</type>
             <#else>
-            <type>${dr.type.getZabbixValue()!'none'}</type>
+            <type>${dr.type.getZabbixValue(zbx_ver)!'none'}</type>
             </#if>
             <#if dr.type == 'SNMP'>
             <snmp_community>${snmp_community}</snmp_community>
@@ -335,14 +335,14 @@
             <port/>
             <filter>
             <#if dr.filter??>
-                <evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
+                <evaltype>${dr.filter.evalType.getZabbixValue(zbx_ver)}</evaltype>
                 ${xml_wrap(dr.filter.formula!'','formula')}
                 <conditions>
                 <#list dr.filter.conditions as cond>
                     <condition>
                         <macro>${cond.macro}</macro>
                         <value>${cond.value}</value>
-                        <operator>${cond.operator.getZabbixValue()}</operator>
+                        <operator>${cond.operator.getZabbixValue(zbx_ver)}</operator>
                         <formulaid>${cond.formulaid!''}</formulaid>
                     </condition>
                 </#list>
@@ -419,7 +419,7 @@
 	<#if tr.recoveryExpression??>
 		<#local recovery_mode = 1>
 	<#elseif tr.recoveryMode??>
-		<#local recovery_mode = tr.recoveryMode.getZabbixValue()>
+		<#local recovery_mode = tr.recoveryMode.getZabbixValue(zbx_ver)>
 	<#else>	
 		<#local recovery_mode = 0>
 	</#if>
@@ -430,10 +430,10 @@
     <correlation_tag/>
     ${xml_wrap(tr.url!'','url')}
     <status>0</status>
-    <priority>${tr.priority.getZabbixValue()}</priority>
+    <priority>${tr.priority.getZabbixValue(zbx_ver)}</priority>
     ${xml_wrap(tr.description!'','description')}
     <type>0</type>
-    ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
+    ${xml_wrap(tr.manualClose.getZabbixValue(zbx_ver),'manual_close')}
 	<dependencies>
 		<#list tr.dependencies as trd>
 		<dependency>
@@ -454,15 +454,15 @@
             ${xml_wrap(g.height?c,'height')}
             ${xml_wrap(g.yAxisMin?c,'yaxismin')}
             ${xml_wrap(g.yAxisMax?c,'yaxismax')}            
-			${xml_wrap(g.showWorkPeriod.getZabbixValue()?c,'show_work_period')}
-			${xml_wrap(g.showTriggers.getZabbixValue()?c,'show_triggers')}
-			${xml_wrap(g.graphType.getZabbixValue()?c,'type')}
-			${xml_wrap(g.showLegend.getZabbixValue()?c,'show_legend')}
-			${xml_wrap(g.show3d.getZabbixValue()?c,'show_3d')}
+			${xml_wrap(g.showWorkPeriod.getZabbixValue(zbx_ver),'show_work_period')}
+			${xml_wrap(g.showTriggers.getZabbixValue(zbx_ver),'show_triggers')}
+			${xml_wrap(g.graphType.getZabbixValue(zbx_ver),'type')}
+			${xml_wrap(g.showLegend.getZabbixValue(zbx_ver),'show_legend')}
+			${xml_wrap(g.show3d.getZabbixValue(zbx_ver),'show_3d')}
 			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
 			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right')}			
-			${xml_wrap(g.yMinType.getZabbixValue()?c,'ymin_type_1')}
-			${xml_wrap(g.yMaxType.getZabbixValue()?c,'ymax_type_1')}
+			${xml_wrap(g.yMinType.getZabbixValue(zbx_ver),'ymin_type_1')}
+			${xml_wrap(g.yMaxType.getZabbixValue(zbx_ver),'ymax_type_1')}
 			<#-- ymin type with not implemented--> 
             <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>
@@ -470,15 +470,15 @@
             	<#list g.graphItems as gi>
             	<graph_item>
             		<sortorder>${gi?index}</sortorder>
-            		${xml_wrap(gi.drawType.getZabbixValue()?c,'drawtype')}
+            		${xml_wrap(gi.drawType.getZabbixValue(zbx_ver),'drawtype')}
             		${xml_wrap(gi.color!(gi.graphColors[gi?index]),'color')}
-            		${xml_wrap(gi.yAxisSide.getZabbixValue()?c,'yaxisside')}
-            		${xml_wrap(gi.calcFnc.getZabbixValue()?c,'calc_fnc')}
-            		${xml_wrap(gi.type.getZabbixValue()?c,'type')}
+            		${xml_wrap(gi.yAxisSide.getZabbixValue(zbx_ver),'yaxisside')}
+            		${xml_wrap(gi.calcFnc.getZabbixValue(zbx_ver),'calc_fnc')}
+            		${xml_wrap(gi.type.getZabbixValue(zbx_ver),'type')}
                     <item>
                         <host>${t.name}</host> 
                         <key>${gi.metricKey}</key>
-                        <#-- ${xml_wrap(gi.type.getZabbixValue()?c,'discoveryRule')} -->
+                        <#-- ${xml_wrap(gi.type.getZabbixValue(zbx_ver),'discoveryRule')} -->
                     </item>
             	</graph_item>
             	</#list>    
@@ -493,7 +493,7 @@
             <screen_items>
             	<#list s.screenItems as si>
             	<screen_item>
-            		${xml_wrap(si.resourceType.getZabbixValue()?c,'resourcetype')}
+            		${xml_wrap(si.resourceType.getZabbixValue(zbx_ver),'resourcetype')}
             		${xml_wrap(si.width?c,'width')}
                     ${xml_wrap(si.height?c,'height')}
                     ${xml_wrap(si.x?c,'x')}
@@ -501,11 +501,11 @@
                     ${xml_wrap(si.colspan?c,'colspan')}
                     ${xml_wrap(si.rowspan?c,'rowspan')}
                     ${xml_wrap(si.elements?c,'elements')}
-                    ${xml_wrap(si.valign.getZabbixValue()?c,'valign')}
-                    ${xml_wrap(si.halign.getZabbixValue()?c,'halign')}
+                    ${xml_wrap(si.valign.getZabbixValue(zbx_ver),'valign')}
+                    ${xml_wrap(si.halign.getZabbixValue(zbx_ver),'halign')}
                     ${xml_wrap(si.style?c,'style')}
                     ${xml_wrap(si.url!'','url')}
-            		${xml_wrap(si.dynamic.getZabbixValue()?c,'dynamic')}
+            		${xml_wrap(si.dynamic.getZabbixValue(zbx_ver),'dynamic')}
             		${xml_wrap(si.sortTriggers?c,'sort_triggers')}
                     <#--graph/ graph proto -->
                     <#if (si.resourceType.getZabbixValue() == 0 || si.resourceType.getZabbixValue() == 20)>
@@ -543,15 +543,15 @@
         <#if m.preprocessing??>
             <preprocessing>
             <#list m.preprocessing as p>
-                <#if (zbx_ver='3.4' || zbx_ver='3.2' || zbx_ver='4.0') && (p.type.getZabbixValue() == 19 || p.type.getZabbixValue() == 20)>
+                <#if (zbx_ver='3.4' || zbx_ver='3.2' || zbx_ver='4.0') && (p.type.getZabbixValue()?c == 19 || p.type.getZabbixValue()?c == 20)>
                 <#-- skip discards preprocessing for template versions < 4.2-->
                     <#continue>
                 </#if>
                 <step>
-                    <type>${p.type.getZabbixValue()}</type>
+                    <type>${p.type.getZabbixValue(zbx_ver)}</type>
                     <params>${p.params!''}</params>
                     <#if zbx_ver == '4.2' || zbx_ver = '4.4'>
-                    ${xml_wrap(p.errorHandler.getZabbixValue()?c,'error_handler')}
+                    ${xml_wrap(p.errorHandler.getZabbixValue(zbx_ver),'error_handler')}
                     ${xml_wrap(p.errorHandlerParams!'','error_handler_params')}
                     </#if>
                 </step>

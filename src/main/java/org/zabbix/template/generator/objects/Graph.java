@@ -49,6 +49,7 @@ public class Graph {
 	public enum GraphType implements ZabbixValue {
 
 		NORMAL(0), STACKED(1), PIE(2), EXPLODED(3);
+
 		private int zabbixValue;
 
 		GraphType(int zabbixValue) {
@@ -60,6 +61,14 @@ public class Graph {
 			return zabbixValue;
 		}
 
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
+		}
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -69,6 +78,7 @@ public class Graph {
 	public enum YType implements ZabbixValue {
 
 		CALCULATED(0), FIXED(1), ITEM(3);
+
 		private int zabbixValue;
 
 		YType(int zabbixValue) {
@@ -78,6 +88,14 @@ public class Graph {
 		@Override
 		public int getZabbixValue() {
 			return zabbixValue;
+		}
+
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
 		}
 
 		public void setZabbixValue(int zabbixValue) {

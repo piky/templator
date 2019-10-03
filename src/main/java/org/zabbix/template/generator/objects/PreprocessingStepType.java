@@ -6,6 +6,7 @@ public enum PreprocessingStepType implements ZabbixValue {
     SIMPLE_CHANGE(9), CHANGE_PER_SECOND(10), XMLPATH(11), JSONPATH(12), IN_RANGE(13), MATCHES_REGEX(14),
     NOT_MATCHES_REGEX(15), CHECK_JSON_ERROR(16), CHECK_XML_ERROR(17), CHECK_REGEX_ERROR(18), DISCARD_UNCHANGED(19),
     DISCARD_UNCHANGED_HEARTBEAT(20), JAVASCRIPT(21), PROMETHEUS_PATTERN(22), PROMETHEUS_TO_JSON(23);
+
     private int zabbixValue;
 
     PreprocessingStepType(int zabbixValue) {
@@ -15,6 +16,14 @@ public enum PreprocessingStepType implements ZabbixValue {
     @Override
     public int getZabbixValue() {
         return zabbixValue;
+    }
+
+    public String getZabbixValue(String version) {
+        if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+            return this.toString();
+        } else {
+            return new Integer(zabbixValue).toString();
+        }
     }
 
     public void setZabbixValue(int zabbixValue) {
