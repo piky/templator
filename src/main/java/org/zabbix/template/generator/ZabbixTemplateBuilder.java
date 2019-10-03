@@ -193,8 +193,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.choice().when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
 				.transform(body().regexReplaceAll("by Zabbix agent",
 						simple("by Zabbix agent ${in.headers.template_suffix}")))
-				.transform(
-						body().regexReplaceAll("Template Module Zabbix agent", simple("Template Module Zabbix agent")))
+				.transform(body().regexReplaceAll("Template Module Zabbix agent",
+						simple("Template Module Zabbix agent active")))
 				.end().setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
 				.choice().when(header("template_suffix").isEqualTo(""))
 				.setHeader("CamelOverruleFileName", simple(
