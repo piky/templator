@@ -83,16 +83,16 @@ then
     modify($t) {getMacros().add(new UserMacro("{$CPU.UTIL.CRIT}","90"));};
 end
 
-rule "Rule 5.2: generate additional macros"
-	agenda-group "populate"
-	no-loop
-when
-	$t: Template($metrics: metricsRegistry)
-    exists (Metric(id == "system.swap.pfree") from $metrics)
-then
-    logger.info(marker,"Found system.swap.pfree metric, adding additional MACRO...");
-    modify($t) {getMacros().add(new UserMacro("{$SWAP.PFREE.MIN.WARN}","50"));};
-end
+// rule "Rule 5.2: generate additional macros"
+// 	agenda-group "populate"
+// 	no-loop
+// when
+// 	$t: Template($metrics: metricsRegistry)
+//     exists (Metric(id == "system.swap.pfree") from $metrics)
+// then
+//     logger.info(marker,"Found system.swap.pfree metric, adding additional MACRO...");
+//     modify($t) {getMacros().add(new UserMacro("{$SWAP.PFREE.MIN.WARN}","50"));};
+// end
 
 
 
