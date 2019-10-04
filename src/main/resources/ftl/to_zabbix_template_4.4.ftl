@@ -28,7 +28,6 @@
             </#list>
             </templates>
             </#if>
-
             <groups>
                 <#list generate_groups(t.classes![]) as g>
                     <group>
