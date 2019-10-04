@@ -431,7 +431,13 @@
     ${xml_wrap(tr.url!'','url')}
     <status>0</status>
     <priority>${tr.priority.getZabbixValue()}</priority>
-    ${xml_wrap(tr.description!'','description')}
+    <#assign description =''>
+    <#if tr.operationalData??>
+    <#assign description = tr.operationalData+'\n' >
+    <#else>
+    <#assign description = 'Last value: {ITEM.LASTVALUE1}\n'>
+    </#if>
+    ${xml_wrap(description+tr.description!'','description')}
     <type>0</type>
     ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
 	<dependencies>
