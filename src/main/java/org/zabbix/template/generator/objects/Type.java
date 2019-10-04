@@ -12,13 +12,7 @@ public enum Type implements ZabbixValue {
 		this.setZabbixValue(zabbixValue);
 	}
 
-	public String getZabbixValue(String version) {
-		if (new Version(version).compareTo(new Version("4.4")) >= 0) {
-			return this.toString();
-		} else {
-			return new Integer(zabbixValue).toString();
-		}
-	}
+
 
 	@Override
 	public int getZabbixValue() {
