@@ -145,8 +145,6 @@
         </value_map>
     </#list>
     </value_maps>
-    <#else>
-    <value_maps/>
     </#if>
 </zabbix_export>
 

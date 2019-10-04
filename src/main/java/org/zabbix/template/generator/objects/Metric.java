@@ -556,20 +556,6 @@ public abstract class Metric {
 	}
 
 	/**
-	 * @return the followRedirects
-	 */
-	public String getFollowRedirects() {
-		return followRedirects;
-	}
-
-	/**
-	 * @param followRedirects the followRedirects to set
-	 */
-	public void setFollowRedirects(String followRedirects) {
-		this.followRedirects = followRedirects;
-	}
-
-	/**
 	 * @return the postType
 	 */
 	public String getPostType() {
