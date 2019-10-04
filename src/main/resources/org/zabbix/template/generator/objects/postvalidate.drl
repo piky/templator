@@ -84,12 +84,14 @@ when
 	not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
 	not $metric: Metric ( key contains $macro.extractMacroName() )
 	not $metric: Metric ( url contains $macro.extractMacroName() ) // http url for http agent
+	not $metric: Metric ( password contains $macro.extractMacroName() )
+	not $metric: Metric ( username contains $macro.extractMacroName() )
 	not (
 		DiscoveryRule ($filter: filter != null )
 		and (Filter$Condition(value contains $macro.extractMacroName() ) from $filter.conditions) //discovery filters
 	)
 then
-    logger.warn(marker,"User Macro found but never used in triggers or item keys|item http url: {} in template {}", $macro.macro, $t.name);
+    logger.warn(marker,"User Macro found but never used in triggers or item key, url, password, username: {} in template {}", $macro.macro, $t.name);
 end
 
 

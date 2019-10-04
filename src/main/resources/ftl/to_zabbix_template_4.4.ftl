@@ -74,6 +74,7 @@
                 <macro>
                     ${xml_wrap(macro.macro,'macro','')}
                     ${xml_wrap(macro.value,'value','')}
+                    ${xml_wrap(macro.description!'','description','')}
                 </macro>
                 </#list>
             </macros>
@@ -380,6 +381,7 @@
     ${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression','')}
     </#if>
     <name>${tr.name}</name>
+    ${xml_wrap(tr.operationalData!'','opdata','')}
     <#--  <correlation_mode>0</correlation_mode>
     <correlation_tag/>  -->
     ${xml_wrap(tr.url!'','url','')}
