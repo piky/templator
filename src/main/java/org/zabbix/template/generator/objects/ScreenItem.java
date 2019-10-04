@@ -3,10 +3,13 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class ScreenItem {
 
-    // https://www.zabbix.com/documentation/4.2/manual/api/reference/screenitem/object#screen_item
+    // https://www.zabbix.com/documentation/current/manual/api/reference/screenitem/object#screen_item
     @JsonAlias({ "resourcetype", "resource_type" })
     private ScreenResourceType resourceType;
 
@@ -82,6 +85,8 @@ public class ScreenItem {
             return zabbixValue;
         }
 
+
+
         public void setZabbixValue(int zabbixValue) {
             this.zabbixValue = zabbixValue;
         }
@@ -103,6 +108,8 @@ public class ScreenItem {
             return zabbixValue;
         }
 
+
+
         public void setZabbixValue(int zabbixValue) {
             this.zabbixValue = zabbixValue;
         }
@@ -123,6 +130,7 @@ public class ScreenItem {
         public int getZabbixValue() {
             return zabbixValue;
         }
+
 
         public void setZabbixValue(int zabbixValue) {
             this.zabbixValue = zabbixValue;

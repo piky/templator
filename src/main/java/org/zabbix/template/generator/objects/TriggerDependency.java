@@ -3,8 +3,17 @@ package org.zabbix.template.generator.objects;
 import java.util.Comparator;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value = Include.NON_EMPTY)
 public class TriggerDependency implements Comparable<TriggerDependency> {
-	public TriggerDependency(String name, String expression, String recoveryExpression) {
+
+	@JsonCreator
+	public TriggerDependency(@JsonProperty("name") String name, @JsonProperty("expression") String expression,
+			@JsonProperty("recoveryExpression") String recoveryExpression) {
 		super();
 		this.name = name;
 		this.expression = expression;

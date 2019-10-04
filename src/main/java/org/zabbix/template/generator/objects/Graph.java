@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class Graph {
 
 	@JsonProperty("_prototype")
@@ -49,6 +52,7 @@ public class Graph {
 	public enum GraphType implements ZabbixValue {
 
 		NORMAL(0), STACKED(1), PIE(2), EXPLODED(3);
+
 		private int zabbixValue;
 
 		GraphType(int zabbixValue) {
@@ -60,6 +64,8 @@ public class Graph {
 			return zabbixValue;
 		}
 
+
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -69,6 +75,7 @@ public class Graph {
 	public enum YType implements ZabbixValue {
 
 		CALCULATED(0), FIXED(1), ITEM(3);
+
 		private int zabbixValue;
 
 		YType(int zabbixValue) {
@@ -79,6 +86,8 @@ public class Graph {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;

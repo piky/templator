@@ -25,6 +25,8 @@ public enum InventoryLink implements ZabbixValue {
         return zabbixValue;
     }
 
+
+
     public void setZabbixValue(int zabbixValue) {
         this.zabbixValue = zabbixValue;
     }

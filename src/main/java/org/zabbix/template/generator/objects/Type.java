@@ -12,6 +12,8 @@ public enum Type implements ZabbixValue {
 		this.setZabbixValue(zabbixValue);
 	}
 
+
+
 	@Override
 	public int getZabbixValue() {
 		return zabbixValue;

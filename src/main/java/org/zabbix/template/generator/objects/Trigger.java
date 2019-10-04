@@ -11,7 +11,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 @JsonDeserialize(using = TriggerDeserializer.class)
 public class Trigger {
 	@JsonProperty(value = "_id")
@@ -61,13 +64,13 @@ public class Trigger {
 
 	public void constructMetricsUsed() {
 
-		Matcher m = Pattern.compile("__(.+?)__").matcher(this.expression);
+		Matcher m = Pattern.compile(":__(.+?)__").matcher(this.expression);
 		while (m.find()) {
 			this.metricsUsed.add(m.group(1));
 		}
 
 		if (this.recoveryExpression != null) {
-			m = Pattern.compile("__(.+?)__").matcher(this.recoveryExpression);
+			m = Pattern.compile(":__(.+?)__").matcher(this.recoveryExpression);
 			while (m.find()) {
 				this.metricsUsed.add(m.group(1));
 			}
@@ -88,6 +91,8 @@ public class Trigger {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
@@ -110,6 +115,8 @@ public class Trigger {
 			return zabbixValue;
 		}
 
+
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -130,6 +137,8 @@ public class Trigger {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;

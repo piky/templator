@@ -1,5 +1,9 @@
 package org.zabbix.template.generator.objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value = Include.NON_EMPTY)
 public class Translation {
 
     String name;

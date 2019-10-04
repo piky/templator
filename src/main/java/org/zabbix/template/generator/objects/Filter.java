@@ -3,7 +3,10 @@ package org.zabbix.template.generator.objects;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value = Include.NON_EMPTY)
 public class Filter {
 
 	@JsonAlias({ "evaltype", "eval_type" })
@@ -25,6 +28,8 @@ public class Filter {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
@@ -80,6 +85,7 @@ public class Filter {
 			public int getZabbixValue() {
 				return zabbixValue;
 			}
+
 
 			public void setZabbixValue(int zabbixValue) {
 				this.zabbixValue = zabbixValue;

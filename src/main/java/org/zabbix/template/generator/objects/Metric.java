@@ -8,10 +8,13 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = MetricDeserializer.class)
+@JsonInclude(value = Include.NON_EMPTY)
 public abstract class Metric {
 	// use this field to match to class
 	@JsonProperty(value = "_prototype")
@@ -20,6 +23,38 @@ public abstract class Metric {
 	@JsonProperty(value = "_id")
 	private String id;
 
+	public enum Status implements ZabbixValue {
+
+		ENABLED(0), DISABLED(1);
+
+		private int zabbixValue;
+
+		Status(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+
+
+		// public String getZabbixValueDefault(String version) {
+		// 	if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+		// 		return ENABLED.toString();
+		// 	} else {
+		// 		return new Integer(zabbixValue).toString();
+		// 	}
+		// }
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	private Status status = Status.ENABLED;
 	private String name;
 	private String description;
 	@JsonAlias("_vendor_documentation") // TODO deprecate this
@@ -53,6 +88,8 @@ public abstract class Metric {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
@@ -210,6 +247,7 @@ public abstract class Metric {
 	}
 
 	// useful for calculated expressions formulas
+	@JsonIgnore
 	public String getKeyQuotesEscaped() {
 		return key.replace("\"", "\\\"");
 	}
@@ -506,20 +544,6 @@ public abstract class Metric {
 	}
 
 	/**
-	 * @return the followRedirects
-	 */
-	public String getFollowRedirects() {
-		return followRedirects;
-	}
-
-	/**
-	 * @param followRedirects the followRedirects to set
-	 */
-	public void setFollowRedirects(String followRedirects) {
-		this.followRedirects = followRedirects;
-	}
-
-	/**
 	 * @return the postType
 	 */
 	public String getPostType() {
@@ -621,7 +645,7 @@ public abstract class Metric {
 
 	public enum RetrieveMode implements ZabbixValue {
 
-		BODY(0), HEADERS(1), BODY_AND_HEADERS(2);
+		BODY(0), HEADERS(1), BOTH(2);
 
 		private int zabbixValue;
 
@@ -633,6 +657,8 @@ public abstract class Metric {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
@@ -658,6 +684,8 @@ public abstract class Metric {
 			return zabbixValue;
 		}
 
+
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -678,6 +706,8 @@ public abstract class Metric {
 		public int getZabbixValue() {
 			return zabbixValue;
 		}
+
+
 
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
@@ -703,6 +733,8 @@ public abstract class Metric {
 			return zabbixValue;
 		}
 
+
+
 		public void setZabbixValue(int zabbixValue) {
 			this.zabbixValue = zabbixValue;
 		}
@@ -723,7 +755,7 @@ public abstract class Metric {
 	private String statusCodes;
 
 	@JsonAlias("follow_redirects")
-	private String followRedirects;
+	private YesNo followRedirects = YesNo.YES;
 
 	@JsonAlias("post_type")
 	private String postType;
@@ -773,6 +805,22 @@ public abstract class Metric {
 
 	public void setMetrics(HashSet<String> metricsUsed) {
 		this.metricsUsed = metricsUsed;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public YesNo getFollowRedirects() {
+		return followRedirects;
+	}
+
+	public void setFollowRedirects(YesNo followRedirects) {
+		this.followRedirects = followRedirects;
 	}
 
 }
