@@ -27,7 +27,10 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-    "editor.formatOnSave": true,
     "java.format.settings.url": "eclipse-formatter.xml",
-    "java.debug.settings.console": "internalConsole"
+    "java.debug.settings.console": "internalConsole",
+    "editor.formatOnSave": true,
+    "[java]": {
+        "editor.formatOnSave": false
+    }
 }
