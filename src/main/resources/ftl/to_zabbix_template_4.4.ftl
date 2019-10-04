@@ -36,7 +36,7 @@
             <items>
                 <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
                 <item>
-                    <@item m/>
+                    <@item m t/>
                 </item>
                 </#list>
             </items>
@@ -50,16 +50,13 @@
             </discovery_rules>
             <#else>
             <discovery_rules/>
-            </#if>                    
-            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
-            <httptests/>
             </#if>
             <#if (t.macros?size > 0)>
             <macros>
                 <#list t.macros as macro>
                 <macro>
-                    ${xml_wrap(macro.macro,'macro')}
-                    ${xml_wrap(macro.value,'value')}
+                    ${xml_wrap(macro.macro,'macro','')}
+                    ${xml_wrap(macro.value,'value','')}
                 </macro>
                 </#list>
             </macros>
@@ -74,8 +71,6 @@
                 </template>
             </#list>
             </templates>
-            <#else>
-            <templates/>
             </#if>
             <#if (t.screens?size > 0)>
             <screens>
@@ -87,9 +82,6 @@
             </screens>
             <#else>
             <screens/>
-            </#if>
-            <#if zbx_ver == '4.2'>
-            <tags/>
             </#if>
         </template>
       </#list>
@@ -106,12 +98,15 @@
         </#list>    
     </graphs>
     <triggers>
+    <#--TODO add getTriggersComplex expression -->
         <#list body.templates as t>
         	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
         		<#list m.triggers as tr>
+                <#if (tr.getMetricsUsed()?size > 0)> <#-- only complex triggers -->
                 <trigger>
-                    <@trigger tr t/>
+                    <@trigger tr m t/>
                 </trigger>
+                </#if>
                 </#list>
             </#list>
         </#list>
@@ -138,93 +133,35 @@
 </zabbix_export>
 
 <#-- m - metric-->
-<#macro item m>
+<#macro item m t>
                     <name>${m.name}</name>
                     <#if m.type == 'SNMP'>
                     <type>${headers.default_item_type}</type>
                     <#elseif m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key != 'system.localtime'>
                     <type>${headers.default_item_type}</type>
-                    <#else>
-                    <type>${m.type.getZabbixValue()!'none'}</type>
+                    <#elseif m.type != 'ZABBIX_PASSIVE'> <#-- default -->
+                    <type>${m.type}</type>
                     </#if>
                     <#if m.type == 'SNMP'>
                     <snmp_community>${snmp_community}</snmp_community>
-                    <#else>
-                    <snmp_community/>
                     </#if>
-                    <#if zbx_ver == '3.2'>
-                        <#local multiplier_value = 0>
-                    <#if m.preprocessing??>
-                        <#list m.preprocessing as p>
-                            <#if p.type == 'MULTIPLIER'>
-                                <#local multiplier_value = 1>
-                                <#break>
-                            </#if>
-                        </#list>
-                    </#if>
-                    <multiplier>${multiplier_value}</multiplier>
-                    </#if>
-                    ${xml_wrap(m.oid!'','snmp_oid')}
+                    ${xml_wrap(m.oid!'','snmp_oid','')}
                     <key>${m.key}</key>
-                    <delay>${time_suffix_to_seconds(m.delay)}</delay>
-                    <history>${time_suffix_to_days(m.history)}</history>
-                    <trends>${time_suffix_to_days(m.trends)}</trends>
+                    ${xml_wrap(time_suffix_to_seconds(m.delay!''),'delay','1m')}
+                    ${xml_wrap(time_suffix_to_days(m.history!''),'history','30d')}
+                    ${xml_wrap(time_suffix_to_days(m.trends!''),'trends','365d')}
                     <#-- forced disabling of key=system.localtime for zabbix active template, since it is not supported that way -->
                     <#if m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key == 'system.localtime'>
-                    <status>1</status>
-                    <#else>
-                    <status>0</status>
+                    <status>DISABLED</status>
                     </#if>
-                    <value_type>${m.valueType.getZabbixValue()}</value_type>
-                    <allowed_hosts/>
-                    ${xml_wrap((prepare_units(m.units!'')),'units')}
-                    <#if zbx_ver == '3.2'>
-                        <#local delta_value = 0>
-                    <#if m.preprocessing??>
-                        <#list m.preprocessing as p>
-                            <#if p.type == 'CHANGE_PER_SECOND'>
-                                <#local delta_value = 1>
-                                <#break>
-                            </#if>
-                        </#list>
-                    </#if>
-                    <delta>${delta_value}</delta>
-                    </#if>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <#if zbx_ver == '3.2'>
-                        <#local formula_value = 0>
-                    <#if m.preprocessing??>
-                        <#list m.preprocessing as p>
-                            <#if p.type == 'MULTIPLIER'>
-                                <#local formula_value = p.params>
-                                <#break>
-                            </#if>
-                        </#list>
-                    </#if>
-                    <formula>${formula_value}</formula>
-                    </#if>
-                    <#if zbx_ver == '3.2'>
-                    <delay_flex/>
-                    </#if>
-                    ${xml_wrap(m.expressionFormula!'','params')}
-                    <ipmi_sensor/>
-                    <#if zbx_ver == '3.2'>
-                    <data_type>0</data_type>
-                    </#if>
-                    ${xml_wrap(m.authType.getZabbixValue()?c,'authtype')}
-                    ${xml_wrap(m.username!'','username')}
-                    ${xml_wrap(m.password!'','password')}
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    ${xml_wrap(m.description!'','description')}
-                    <inventory_link>${m.inventoryLink.getZabbixValue()}</inventory_link>
+                    ${xml_wrap(m.valueType!'','value_type','UNSIGNED')}
+                    ${xml_wrap((prepare_units(m.units!'')),'units','')}
+                    ${xml_wrap(m.expressionFormula!'','params','')}
+                    ${xml_wrap(m.authType!'','authtype','NONE')}
+                    ${xml_wrap(m.username!'','username','')}
+                    ${xml_wrap(m.password!'','password','')}
+                    ${xml_wrap(m.description!'','description','')}
+                    ${xml_wrap(m.inventoryLink!'','inventory_link','NONE')}
                     <#if m.applicationPrototype??>
                     <applications/>
                     <#else>
@@ -241,16 +178,9 @@
                     <valuemap>
                         <name>${m.valueMap}</name>
                     </valuemap>
-                    <#else>
-                    <valuemap/>
                     </#if>
-                    ${xml_wrap(m.logtimefmt!'','logtimefmt')}
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    ${xml_wrap(m.logtimefmt!'','logtimefmt','')}
                     <@preprocessing m zbx_ver/>
-                    </#if>
-                    <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
-                    <jmx_endpoint/>
-                    </#if>
                     <#if m.discoveryRule??><#-- item prototype-->
                         <#if m.applicationPrototype??>
                     <application_prototypes>
@@ -258,39 +188,35 @@
                             <name>${m.applicationPrototype}</name>
                         </application_prototype>
                     </application_prototypes>
-                        <#else>
-                    <application_prototypes/>
                         </#if>
                     </#if>
-                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
-                    ${xml_wrap(m.timeout!'3s','timeout')}
-                    ${xml_wrap(m.url!'','url')}
-                    <query_fields/>
-                    <posts/>
-                    ${xml_wrap(m.statusCodes!'200','status_codes')}
-                    ${xml_wrap(m.followRedirects.getZabbixValue()!'1','follow_redirects')}
-                    ${xml_wrap(m.postType!'0','post_type')}
-                    ${xml_wrap(m.httpProxy!'','http_proxy')}
-                    ${xml_wrap(m.headers!'','headers')}
-                    ${xml_wrap(m.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
-                    ${xml_wrap(m.requestMethod.getZabbixValue()?c,'request_method')}
-                    <output_format>0</output_format>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
+                    ${xml_wrap(m.timeout!'3s','timeout','3s')}
+                    ${xml_wrap(m.url!'','url','')}
+                    ${xml_wrap(m.statusCodes!'200','status_codes','200')}
+                    ${xml_wrap(m.followRedirects,'follow_redirects','YES')}
+                    ${xml_wrap(m.postType!'0','post_type','0')}
+                    ${xml_wrap(m.httpProxy!'','http_proxy','')}
+                    ${xml_wrap(m.headers!'','headers','')}
+                    ${xml_wrap(m.retrieveMode!'','retrieve_mode','BODY')}
+                    ${xml_wrap(m.requestMethod!'','request_method','GET')}
+                    <@master_item m 'master_item'/>
+                    
+                    
+                    <#if (m.triggers?size>0)>
+                    <#if m.discoveryRule??>
+                        <#assign trigger_tag = 'trigger_prototype'>
+                    <#else>
+                        <#assign trigger_tag = 'trigger'>
                     </#if>
-                    <#if zbx_ver == '3.4'>
-                        <#if m.discoveryRule??>
-                            <@master_item m 'master_item_prototype'/>
-                        <#else><#-- normal item -->
-                            <@master_item m 'master_item'/>
+                    <${trigger_tag}s>
+                    <#list m.triggers as tr>
+                        <#if (tr.getMetricsUsed()?size == 0)>
+                        <${trigger_tag}>
+                            <@trigger tr m t/>
+                        </${trigger_tag}>
                         </#if>
-                    </#if>
-                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
-                            <@master_item m 'master_item'/>
+                    </#list>
+                    </${trigger_tag}s>
                     </#if>
 
 </#macro>
@@ -303,18 +229,17 @@
             <#elseif dr.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE'>
             <type>${headers.default_item_type}</type>
             <#else>
-            <type>${dr.type.getZabbixValue()!'none'}</type>
+            <type>${dr.type!'none'}</type>
             </#if>
             <#if dr.type == 'SNMP'>
             <snmp_community>${snmp_community}</snmp_community>
             <#else>
-            <snmp_community/>
             </#if>
-            ${xml_wrap(dr.oid!'','snmp_oid')}
+            ${xml_wrap(dr.oid!'','snmp_oid','')}
             <key>${dr.key}</key>
-            <delay>${time_suffix_to_seconds(dr.delay)}</delay>
-            <status>0</status>
-            <allowed_hosts/>
+            ${xml_wrap(time_suffix_to_seconds(dr.delay!''),'delay','1h')}
+            <#--  <status>0</status>  -->
+            <#--  <allowed_hosts/>
             <snmpv3_contextname/>
             <snmpv3_securityname/>
             <snmpv3_securitylevel>0</snmpv3_securitylevel>
@@ -322,9 +247,6 @@
             <snmpv3_authpassphrase/>
             <snmpv3_privprotocol>0</snmpv3_privprotocol>
             <snmpv3_privpassphrase/>
-            <#if zbx_ver == '3.2'>
-            <delay_flex/>
-            </#if>
             <params/>
             <ipmi_sensor/>
             <authtype>0</authtype>
@@ -332,44 +254,44 @@
             <password/>
             <publickey/>
             <privatekey/>
-            <port/>
-            <filter>
+            <port/>  -->
             <#if dr.filter??>
-                <evaltype>${dr.filter.evalType.getZabbixValue()}</evaltype>
-                ${xml_wrap(dr.filter.formula!'','formula')}
+            <filter>
+                <evaltype>${dr.filter.evalType}</evaltype>
+                ${xml_wrap(dr.filter.formula!'','formula','')}
                 <conditions>
                 <#list dr.filter.conditions as cond>
                     <condition>
                         <macro>${cond.macro}</macro>
                         <value>${cond.value}</value>
-                        <operator>${cond.operator.getZabbixValue()}</operator>
+                        <operator>${cond.operator}</operator>
                         <formulaid>${cond.formulaid!''}</formulaid>
                     </condition>
                 </#list>
                 </conditions>
-            <#else>
-                <evaltype>0</evaltype>
-                <formula/>
-                <conditions/>
-            </#if>
             </filter>
-            <lifetime>${time_suffix_to_days(dr.lifetime)}</lifetime>
-            ${xml_wrap(dr.description!'','description')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
+            </#if>
+            ${xml_wrap(time_suffix_to_days(dr.lifetime!''),'lifetime','30d')}
+            ${xml_wrap(dr.description!'','description','')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
                 <#list metrics as m>
                     <item_prototype>
-                        <@item m/>
+                        <@item m t/>
                     </item_prototype>
                 </#list>
             </item_prototypes>
             <trigger_prototypes>
-            	<#list metrics as m>
-            		<#list m.triggers as tr>
-                    <trigger_prototype>
-                        <@trigger tr t/>
-                    </trigger_prototype>
+            <#list metrics as m>
+                <#if (m.triggers?size>0)>
+                    <#list m.triggers as tr>
+                    <#if (tr.getMetricsUsed()?size > 0)> <#-- only complex triggers -->
+                        <trigger_prototype>
+                            <@trigger tr m t/>
+                        </trigger_prototype>
+                    </#if>
                     </#list>
-                </#list>
+                </#if>
+            </#list>
             </trigger_prototypes>
             <graph_prototypes>
         	<#list metrics as m>
@@ -380,13 +302,7 @@
                 </#list>
             </#list>    
 			</graph_prototypes>
-            <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
-            <host_prototypes/>
-            <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
-            <jmx_endpoint/>
-            </#if>
-            <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
-            <timeout>3s</timeout>
+            <#--  <timeout>3s</timeout>
             <url/>
             <query_fields/>
             <posts/>
@@ -402,83 +318,90 @@
             <ssl_key_file/>
             <ssl_key_password/>
             <verify_peer>0</verify_peer>
-            <verify_host>0</verify_host>
-            </#if>
-            <#if zbx_ver == '4.2'>
+            <verify_host>0</verify_host>  -->
             <@lld_macro_paths dr/>
-            <@preprocessing dr zbx_ver/>
             <@master_item dr 'master_item'/>
-            </#if>
+            <@preprocessing dr zbx_ver/>
  </#macro>
 
 <#-- tr - trigger-->
-<#macro trigger tr t>
-	
-	<expression>${tr.expression?replace('TEMPLATE_NAME',t.name)}</expression>
-	<#local recovery_mode = 0>
+<#-- TODO remove  m --> 
+<#macro trigger tr m t>
+    <#-- no other metrics used -->
+    <#if (tr.getMetricsUsed()?size == 0)>
+	<expression>${tr.expression?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r')}</expression>
+    <#else>
+    <expression>${tr.expression?replace('TEMPLATE_NAME',t.name)}</expression>
+    </#if>
+	<#local recovery_mode = 'EXPRESSION'>
 	<#if tr.recoveryExpression??>
-		<#local recovery_mode = 1>
+		<#local recovery_mode = 'RECOVERY_EXPRESSION'>
 	<#elseif tr.recoveryMode??>
-		<#local recovery_mode = tr.recoveryMode.getZabbixValue()>
+		<#local recovery_mode = tr.recoveryMode>
 	<#else>	
-		<#local recovery_mode = 0>
+		<#local recovery_mode = 'EXPRESSION'>
 	</#if>
-	${xml_wrap(recovery_mode!0,'recovery_mode')}
-	${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression')}
+	${xml_wrap(recovery_mode,'recovery_mode','EXPRESSION')}
+    <#if (tr.getMetricsUsed()?size == 0)>
+    ${xml_wrap((tr.recoveryExpression!'')?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r'),'recovery_expression','')}
+    <#else>
+    ${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression','')}
+    </#if>
     <name>${tr.name}</name>
-    <correlation_mode>0</correlation_mode>
-    <correlation_tag/>
-    ${xml_wrap(tr.url!'','url')}
-    <status>0</status>
-    <priority>${tr.priority.getZabbixValue()}</priority>
-    ${xml_wrap(tr.description!'','description')}
-    <type>0</type>
-    ${xml_wrap(tr.manualClose.getZabbixValue(),'manual_close')}
+    <#--  <correlation_mode>0</correlation_mode>
+    <correlation_tag/>  -->
+    ${xml_wrap(tr.url!'','url','')}
+    <#--  <status>0</status>  -->
+    <priority>${tr.priority}</priority>
+    ${xml_wrap(tr.description!'','description','')}
+    <#--  <type>0</type>  -->
+    ${xml_wrap(tr.manualClose,'manual_close','NO')}
+    <#if (tr.dependencies?size>0)>
 	<dependencies>
 		<#list tr.dependencies as trd>
 		<dependency>
-			${xml_wrap(trd.name!'','name')}
-			${xml_wrap((trd.expression!'')?replace('TEMPLATE_NAME',t.name),'expression')}
-			${xml_wrap((trd.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression')}
+			${xml_wrap(trd.name!'','name','')}
+			${xml_wrap((trd.expression!'')?replace('TEMPLATE_NAME',t.name),'expression','')}
+			${xml_wrap((trd.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression','')}
 		</dependency>
 		</#list>
     </dependencies>
-    <tags/>
-	
+    </#if>
+    <#--  <tags/>  -->
 </#macro>
 
 <#-- g - graph , t - current template -->
 <#macro graph g t>
-            ${xml_wrap(g.name,'name')}
-            ${xml_wrap(g.width?c,'width')}
-            ${xml_wrap(g.height?c,'height')}
-            ${xml_wrap(g.yAxisMin?c,'yaxismin')}
-            ${xml_wrap(g.yAxisMax?c,'yaxismax')}            
-			${xml_wrap(g.showWorkPeriod.getZabbixValue()?c,'show_work_period')}
-			${xml_wrap(g.showTriggers.getZabbixValue()?c,'show_triggers')}
-			${xml_wrap(g.graphType.getZabbixValue()?c,'type')}
-			${xml_wrap(g.showLegend.getZabbixValue()?c,'show_legend')}
-			${xml_wrap(g.show3d.getZabbixValue()?c,'show_3d')}
-			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left')}
-			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right')}			
-			${xml_wrap(g.yMinType.getZabbixValue()?c,'ymin_type_1')}
-			${xml_wrap(g.yMaxType.getZabbixValue()?c,'ymax_type_1')}
+            ${xml_wrap(g.name,'name','')}
+            ${xml_wrap(g.width?c,'width','900')}
+            ${xml_wrap(g.height?c,'height','200')}
+            ${xml_wrap(g.yAxisMin?c,'yaxismin','0')}
+            ${xml_wrap(g.yAxisMax?c,'yaxismax','100')}            
+			${xml_wrap(g.showWorkPeriod!'YES','show_work_period','YES')}
+			${xml_wrap(g.showTrigger!'YES','show_triggers','YES')}
+			${xml_wrap(g.graphType!'','type','NORMAL')}
+			${xml_wrap(g.showLegend!'YES','show_legend','YES')}
+			${xml_wrap(g.show3d!'NO','show_3d','NO')}
+			${xml_wrap(g.percentLeft?string("0.0000;; decimalSeparator='.'"),'percent_left','0.0000')}
+			${xml_wrap(g.percentRight?string("0.0000;; decimalSeparator='.'"),'percent_right','0.0000')}			
+			${xml_wrap(g.yMinType!'','ymin_type_1','CALCULATED')}
+			${xml_wrap(g.yMaxType!'','ymax_type_1','CALCULATED')}
 			<#-- ymin type with not implemented--> 
-            <ymin_item_1>0</ymin_item_1>
-            <ymax_item_1>0</ymax_item_1>
+            <#--  <ymin_item_1>0</ymin_item_1>
+            <ymax_item_1>0</ymax_item_1>  -->
             <graph_items>
             	<#list g.graphItems as gi>
             	<graph_item>
-            		<sortorder>${gi?index}</sortorder>
-            		${xml_wrap(gi.drawType.getZabbixValue()?c,'drawtype')}
-            		${xml_wrap(gi.color!(gi.graphColors[gi?index]),'color')}
-            		${xml_wrap(gi.yAxisSide.getZabbixValue()?c,'yaxisside')}
-            		${xml_wrap(gi.calcFnc.getZabbixValue()?c,'calc_fnc')}
-            		${xml_wrap(gi.type.getZabbixValue()?c,'type')}
+                    ${xml_wrap(gi?index,'sortorder','0')}
+            		${xml_wrap(gi.drawType!'','drawtype','SINGLE_LINE')}
+            		${xml_wrap(gi.color!(gi.graphColors[gi?index]),'color','')}
+            		${xml_wrap(gi.yAxisSide!'','yaxisside','LEFT')}
+            		${xml_wrap(gi.calcFnc!'','calc_fnc','AVG')}
+            		${xml_wrap(gi.type!'','type','SIMPLE')}
                     <item>
                         <host>${t.name}</host> 
                         <key>${gi.metricKey}</key>
-                        <#-- ${xml_wrap(gi.type.getZabbixValue()?c,'discoveryRule')} -->
+                        <#-- ${xml_wrap(gi.type!'','discoveryRule','')} -->
                     </item>
             	</graph_item>
             	</#list>    
@@ -487,28 +410,16 @@
 </#macro>
 
 <#macro screen s>
-            ${xml_wrap(s.name,'name')}
-            ${xml_wrap(s.hsize?c,'hsize')}
-            ${xml_wrap(s.vsize?c,'vsize')}
+            ${xml_wrap(s.name,'name','')}
+            ${xml_wrap(s.hsize?c,'hsize','')}
+            ${xml_wrap(s.vsize?c,'vsize','')}
             <screen_items>
             	<#list s.screenItems as si>
             	<screen_item>
-            		${xml_wrap(si.resourceType.getZabbixValue()?c,'resourcetype')}
-            		${xml_wrap(si.width?c,'width')}
-                    ${xml_wrap(si.height?c,'height')}
-                    ${xml_wrap(si.x?c,'x')}
-                    ${xml_wrap(si.y?c,'y')}
-                    ${xml_wrap(si.colspan?c,'colspan')}
-                    ${xml_wrap(si.rowspan?c,'rowspan')}
-                    ${xml_wrap(si.elements?c,'elements')}
-                    ${xml_wrap(si.valign.getZabbixValue()?c,'valign')}
-                    ${xml_wrap(si.halign.getZabbixValue()?c,'halign')}
-                    ${xml_wrap(si.style?c,'style')}
-                    ${xml_wrap(si.url!'','url')}
-            		${xml_wrap(si.dynamic.getZabbixValue()?c,'dynamic')}
-            		${xml_wrap(si.sortTriggers?c,'sort_triggers')}
+            		${xml_wrap(si.resourceType.getZabbixValue()?c,'resourcetype','')}
+                    ${xml_wrap(si.style?c,'style','')}
                     <#--graph/ graph proto -->
-                    <#if (si.resourceType.getZabbixValue() == 0 || si.resourceType.getZabbixValue() == 20)>
+                    <#if (si.resourceType == 'GRAPH' || si.resourceType == 'GRAPH_PROTOTYPE')>
                     <resource>
                         <name>${si.resource[0].name}</name>
                         <host>${si.resource[0].host}</host> 
@@ -519,8 +430,21 @@
                         <host>${si.resource[0].host}</host>
                     </resource>
                     </#if>
-            		${xml_wrap(si.maxColumns?c,'max_columns')}
-                    ${xml_wrap(si.application!'','application')}
+            		${xml_wrap(si.width?c,'width','')}
+                    ${xml_wrap(si.height?c,'height','')}
+                    ${xml_wrap(si.x?c,'x','')}
+                    ${xml_wrap(si.y?c,'y','')}
+                    ${xml_wrap(si.colspan?c,'colspan','')}
+                    ${xml_wrap(si.rowspan?c,'rowspan','')}
+                    ${xml_wrap(si.elements?c,'elements','')}
+                    ${xml_wrap(si.valign.getZabbixValue()?c,'valign','')}
+                    ${xml_wrap(si.halign.getZabbixValue()?c,'halign','')}
+                    ${xml_wrap(si.dynamic.getZabbixValue()!'','dynamic','')}
+                    ${xml_wrap(si.sortTriggers!'0','sort_triggers','')}
+                    ${xml_wrap(si.url!'','url','SHOW_ALWAYS')}
+                    ${xml_wrap(si.application!'','application','SHOW_ALWAYS')}
+            		${xml_wrap(si.maxColumns?c,'max_columns','')}
+
             	</screen_item>
             	</#list>
             </screen_items>
@@ -531,39 +455,33 @@
         <#-- m is metric or discovery -->
         <#if m.masterItem??>
             <${tag}>
-                ${xml_wrap(m.masterItem,'key')}
+                ${xml_wrap(m.masterItem,'key','')}
             </${tag}>
-        <#else>
-            <${tag}/>
         </#if>
 </#macro>
 
 <#macro preprocessing m zbx_ver>
         <#-- m is metric or discovery -->
-        <#if m.preprocessing??>
+        <#if (m.preprocessing?size>0)>
             <preprocessing>
             <#list m.preprocessing as p>
-                <#if (zbx_ver='3.4' || zbx_ver='3.2' || zbx_ver='4.0') && (p.type.getZabbixValue() == 19 || p.type.getZabbixValue() == 20)>
+                <#if (zbx_ver='3.4' || zbx_ver='3.2' || zbx_ver='4.0') && (p.type == 19 || p.type == 20)>
                 <#-- skip discards preprocessing for template versions < 4.2-->
                     <#continue>
                 </#if>
                 <step>
-                    <type>${p.type.getZabbixValue()}</type>
+                    <type>${p.type}</type>
                     <params>${p.params!''}</params>
-                    <#if zbx_ver == '4.2'>
-                    ${xml_wrap(p.errorHandler.getZabbixValue()?c,'error_handler')}
-                    ${xml_wrap(p.errorHandlerParams!'','error_handler_params')}
-                    </#if>
+                    ${xml_wrap(p.errorHandler!'','error_handler','ORIGINAL_ERROR')}
+                    ${xml_wrap(p.errorHandlerParams!'','error_handler_params','')}
                 </step>
             </#list>
             </preprocessing>
-        <#else>
-            <preprocessing/>
         </#if>
 </#macro>
 
 <#macro lld_macro_paths dr>
-    <#if dr.lldMacroPaths??>
+    <#if (dr.lldMacroPaths?size>0)>
         <lld_macro_paths>
         <#list dr.lldMacroPaths as lld_path>
             <lld_macro_path>
@@ -572,8 +490,6 @@
             </lld_macro_path>
         </#list>
         </lld_macro_paths>
-    <#else>
-        <lld_macro_paths/>
     </#if>
 </#macro>
 
@@ -720,11 +636,12 @@ Template tooling version used: ${headers.template_ver}
     </#list>
     <#return (dlist?values)?sort>
  </#function>
- <#function xml_wrap var tag>
-     <#if var?string != ''>
-     <#local string><${tag}>${var?trim}</${tag}></#local>
+
+ <#function xml_wrap var tag default>
+     <#if var?string == default?string>
+        <#local string></#local>
      <#else>
-     <#local string><${tag}/></#local>
+        <#local string><${tag}>${var?trim}</${tag}></#local>
      </#if>
      <#return string>
  </#function>

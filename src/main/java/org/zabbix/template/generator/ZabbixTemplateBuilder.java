@@ -101,8 +101,21 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.log(LoggingLevel.ERROR, "STOPPING").stop().otherwise().to("direct:multicaster_version");
 
 		/* STEP 5: multicast to different zabbix versions (3.2, 3.4, 4.0, 4.2, 4.4) */
-		from("direct:multicaster_version").multicast().parallelProcessing().to("direct:zbx3.2", "direct:zbx3.4",
-				"direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4");
+		from("direct:multicaster_version").multicast()
+		// .onPrepare(new Processor() {
+
+		// 	@Override
+		// 	public void process(Exchange exchange) throws Exception {
+		// 		InputJSON ij = ((InputJSON) exchange.getIn().getBody());
+		// 		ObjectMapper objectMapper = new ObjectMapper();
+		// 		log.warn(objectMapper.writeValueAsString(ij));
+		// 		InputJSON ijDeepClone = objectMapper.readValue(objectMapper.writeValueAsString(ij), InputJSON.class);
+		// 		exchange.getIn().setBody(ijDeepClone);
+		// 		log.error(objectMapper.writeValueAsString(ijDeepClone));
+
+		// 	}
+		// })
+		.to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4");
 
 		from("direct:zbx3.2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
@@ -136,7 +149,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:snmpv1")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV1))
-				.setHeader("default_item_type", simple("1", String.class))
+				.choice()
+					.when(header("zbx_ver").isEqualTo("4.4"))	
+						.setHeader("default_item_type", simple("SNMPV1", String.class))
+					.otherwise()
+						.setHeader("default_item_type", simple("1", String.class))
+				.end()
 				.setHeader("template_suffix", simple("SNMPv1", String.class))
 				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -146,7 +164,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:snmpv2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV2))
-				.setHeader("default_item_type", simple("4", String.class))
+				.choice()
+						.when(header("zbx_ver").isEqualTo("4.4"))	
+								.setHeader("default_item_type", simple("SNMPV2", String.class))
+						.otherwise()
+								.setHeader("default_item_type", simple("4", String.class))
+				.end()
 				.setHeader("template_suffix", simple("SNMPv2", String.class))
 				.setHeader("template_type", simple("SNMP", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -157,7 +180,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		(InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses().stream()
 				.anyMatch((a) -> a.equals(TemplateClass.SNMPV1) || a.equals(TemplateClass.SNMPV2)
 						|| a.equals(TemplateClass.SNMPV3)) == false)
-				.setHeader("default_item_type", simple("0", String.class))
+				.choice()
+					.when(header("zbx_ver").isEqualTo("4.4"))	
+							.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
+					.otherwise()
+							.setHeader("default_item_type", simple("0", String.class))
+				.end()
 				.setHeader("template_suffix", simple("", String.class))
 				.setHeader("template_type", simple("OTHER", String.class))
 				.log(LoggingLevel.DEBUG, "Going to do ${in.headers.lang} ${in.headers.zbx_ver} template")
@@ -166,7 +194,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:zabbix_active")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.ZABBIX_ACTIVE))
-				.setHeader("default_item_type", simple("7", String.class))
+				.choice()
+					.when(header("zbx_ver").isEqualTo("4.4"))	
+						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
+					.otherwise()
+						.setHeader("default_item_type", simple("7", String.class))
+				.end()
 				.setHeader("template_suffix", simple("active", String.class))
 				.setHeader("template_type", simple("ZABBIX_ACTIVE", String.class))
 				.log(LoggingLevel.DEBUG,
@@ -187,7 +220,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// for example
 		// Naming restrictions can also be checked for custom metrics
 		/* STEP 7(FINAL): export to XML, using freemarker */
-		from("direct:zabbix_export").to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
+		from("direct:zabbix_export")
+				.choice()
+					.when(header("zbx_ver").isEqualTo("4.4"))	
+						.to("freemarker:ftl/to_zabbix_template_4.4.ftl?contentCache=false")
+					.otherwise()
+						.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
+				.end()
 				.to("xslt:templates/indent.xsl?saxon=true") // TODO proper indentation for XML file
 				.to("xslt:templates/to_metrics_strip_whitespace.xsl?saxon=true")// trim whitespace on some multiline
 																				// nodes //REFACTOR with DEV-827 below
@@ -214,14 +253,18 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.end().to("file:bin/out");
 
 		// templates XSD validation, deprecated. remove after some time.
-		from("direct:xsd").choice().when(header("zbx_ver").isEqualTo("4.4"))
+		from("direct:xsd").choice()
+			.when(header("zbx_ver").isEqualTo("4.4"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.4 Zabbix")
-				.when(header("zbx_ver").isEqualTo("4.2"))
+			.when(header("zbx_ver").isEqualTo("4.2"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
-				.when(header("zbx_ver").isEqualTo("4.0"))
+			.when(header("zbx_ver").isEqualTo("4.0"))
 				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
-				.when(header("zbx_ver").isEqualTo("3.4")).to("validator:templates/zabbix_export_3.4.xsd")
-				.when(header("zbx_ver").isEqualTo("3.2")).to("validator:templates/zabbix_export_3.2.xsd").otherwise()
+			.when(header("zbx_ver").isEqualTo("3.4"))
+				.to("validator:templates/zabbix_export_3.4.xsd")
+			.when(header("zbx_ver").isEqualTo("3.2"))
+				.to("validator:templates/zabbix_export_3.2.xsd")
+			.otherwise()
 				.log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
 
 		/* STEP 8(FINAL): generate README.md , using freemarker */

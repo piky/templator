@@ -49,5 +49,4 @@ public class Screen {
 		this.screenItems = screenItems;
 	}
 
-	
 }

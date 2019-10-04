@@ -23,6 +23,44 @@ public abstract class Metric {
 	@JsonProperty(value = "_id")
 	private String id;
 
+	public enum Status implements ZabbixValue {
+
+		ENABLED(0), DISABLED(1);
+
+		private int zabbixValue;
+
+		Status(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public String getZabbixValue(String version) {
+			if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+				return this.toString();
+			} else {
+				return new Integer(zabbixValue).toString();
+			}
+		}
+
+		// public String getZabbixValueDefault(String version) {
+		// 	if (new Version(version).compareTo(new Version("4.4")) >= 0) {
+		// 		return ENABLED.toString();
+		// 	} else {
+		// 		return new Integer(zabbixValue).toString();
+		// 	}
+		// }
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
+	private Status status = Status.ENABLED;
 	private String name;
 	private String description;
 	@JsonAlias("_vendor_documentation") // TODO deprecate this
@@ -221,6 +259,7 @@ public abstract class Metric {
 	}
 
 	// useful for calculated expressions formulas
+	@JsonIgnore
 	public String getKeyQuotesEscaped() {
 		return key.replace("\"", "\\\"");
 	}
@@ -766,7 +805,7 @@ public abstract class Metric {
 	private String statusCodes;
 
 	@JsonAlias("follow_redirects")
-	private String followRedirects;
+	private YesNo followRedirects = YesNo.YES;
 
 	@JsonAlias("post_type")
 	private String postType;
@@ -816,6 +855,22 @@ public abstract class Metric {
 
 	public void setMetrics(HashSet<String> metricsUsed) {
 		this.metricsUsed = metricsUsed;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public YesNo getFollowRedirects() {
+		return followRedirects;
+	}
+
+	public void setFollowRedirects(YesNo followRedirects) {
+		this.followRedirects = followRedirects;
 	}
 
 }
