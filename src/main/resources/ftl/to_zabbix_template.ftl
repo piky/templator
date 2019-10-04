@@ -268,7 +268,7 @@
                     <query_fields/>
                     <posts/>
                     ${xml_wrap(m.statusCodes!'200','status_codes')}
-                    ${xml_wrap(m.followRedirects.getZabbixValue()!'1','follow_redirects')}
+                    ${xml_wrap(m.followRedirects.getZabbixValue()?c,'follow_redirects')}
                     ${xml_wrap(m.postType!'0','post_type')}
                     ${xml_wrap(m.httpProxy!'','http_proxy')}
                     ${xml_wrap(m.headers!'','headers')}

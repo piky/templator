@@ -14,11 +14,21 @@
         </#list>
     </groups>
     <templates>
-    <#list body.templates as t>
+    <#list body.templates?sort_by("name") as t>
         <template>
             <template>${t.name}</template>
             <name>${t.name}</name>
             <description><@generate_template_description t/></description>
+            <#if (t.templates?size > 0)>
+            <templates>
+            <#list t.templates?sort as dep>
+                <template>
+                   <name>${dep}</name>
+                </template>
+            </#list>
+            </templates>
+            </#if>
+
             <groups>
                 <#list generate_groups(t.classes![]) as g>
                     <group>
@@ -26,91 +36,99 @@
                     </group>
                 </#list>
             </groups>
+            <#assign applications = distinct_by_key(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver),'group')>
+            <#if (applications?size>0)>
             <applications>
-                <#list distinct_by_key(t.getMetricsByZbxVer(t.getMetricsRegistry(),zbx_ver),'group') as g>
+                <#list applications as g>
                 <application>
                     <name>${g?replace('_',' ')}</name>
                 </application>
                 </#list>
             </applications>
+            </#if>
+
+            <#assign metrics = t.getMetricsByZbxVer(t.metrics,zbx_ver)?sort_by("key")>
+            <#if (metrics?size>0)>
             <items>
-                <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+                <#list metrics?sort_by("key") as m>
                 <item>
                     <@item m t/>
                 </item>
                 </#list>
             </items>
-            <#if (t.discoveryRules?size > 0)>
+            </#if>
+
+            <#assign discoveryRules = t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver)>
+            <#if (discoveryRules?size > 0)>
             <discovery_rules>
-	            <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
+	            <#list discoveryRules?sort_by("key") as dr>
 	            <discovery_rule>
 	                <@discovery_rule dr t/>
 	            </discovery_rule>
                 </#list>
             </discovery_rules>
-            <#else>
-            <discovery_rules/>
             </#if>
+
             <#if (t.macros?size > 0)>
             <macros>
-                <#list t.macros as macro>
+                <#list t.macros?sort_by("macro") as macro>
                 <macro>
                     ${xml_wrap(macro.macro,'macro','')}
                     ${xml_wrap(macro.value,'value','')}
                 </macro>
                 </#list>
             </macros>
-            <#else>
-            <macros/>
-            </#if>
-            <#if (t.templates?size > 0)>
-            <templates>
-            <#list t.templates as dep>
-                <template>
-                   <name>${dep}</name>
-                </template>
-            </#list>
-            </templates>
             </#if>
             <#if (t.screens?size > 0)>
             <screens>
-            <#list t.screens as s>
+            <#list t.screens?sort_by("name") as s>
                 <screen>
                     <@screen s/>
                 </screen>
             </#list>
             </screens>
-            <#else>
-            <screens/>
             </#if>
         </template>
       </#list>
     </templates>
-    <graphs>
-        <#list body.templates as t>
-        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
-        		<#list m.graphs as g>
-                <graph>
-                    <@graph g t/>
-                </graph>
-                </#list>
-            </#list>
-        </#list>    
-    </graphs>
-    <triggers>
-    <#--TODO add getTriggersComplex expression -->
-        <#list body.templates as t>
-        	<#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
-        		<#list m.triggers as tr>
+    
+    <#assign triggers = []>
+    <#list body.templates as t>
+        <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+            <#list m.triggers as tr>
                 <#if (tr.getMetricsUsed()?size > 0)> <#-- only complex triggers -->
-                <trigger>
-                    <@trigger tr m t/>
-                </trigger>
+                    <#assign triggers = triggers + [{"trigger": tr, "metric": m, "template": t}]>
                 </#if>
-                </#list>
             </#list>
         </#list>
+    </#list>
+    <#if (triggers?size>0)>
+    <triggers>
+        <#list triggers?sort_by(["trigger","name"]) as tr>
+        <trigger>
+            <@trigger tr.trigger tr.metric tr.template/>
+        </trigger>
+        </#list>
 	</triggers>
+    </#if>
+
+    <#assign graphs = []>
+    <#list body.templates as t>
+        <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
+            <#list m.graphs as g>
+                <#assign graphs = graphs + [{"graph":g, "template": t}]>
+            </#list>
+        </#list>
+    </#list>
+    <#if (graphs?size>0)>
+    <graphs>
+        <#list graphs?sort_by(["graph","name"]) as g>
+        <graph>
+            <@graph g.graph g.template/>
+        </graph>
+        </#list>
+    </graphs>
+    </#if>
     <#if (body.valueMaps?size > 0)>
     <value_maps>
     <#list body.valueMaps as vm>
@@ -163,7 +181,13 @@
                     ${xml_wrap(m.description!'','description','')}
                     ${xml_wrap(m.inventoryLink!'','inventory_link','NONE')}
                     <#if m.applicationPrototype??>
-                    <applications/>
+                    <#if m.discoveryRule??><#-- item prototype-->
+                    <application_prototypes>
+                        <application_prototype>
+                            <name>${m.applicationPrototype}</name>
+                        </application_prototype>
+                    </application_prototypes>
+                    </#if>
                     <#else>
                     <applications>
                     <#-- change group to array in Java? -->
@@ -181,15 +205,6 @@
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt','')}
                     <@preprocessing m zbx_ver/>
-                    <#if m.discoveryRule??><#-- item prototype-->
-                        <#if m.applicationPrototype??>
-                    <application_prototypes>
-                        <application_prototype>
-                            <name>${m.applicationPrototype}</name>
-                        </application_prototype>
-                    </application_prototypes>
-                        </#if>
-                    </#if>
                     ${xml_wrap(m.timeout!'3s','timeout','3s')}
                     ${xml_wrap(m.url!'','url','')}
                     ${xml_wrap(m.statusCodes!'200','status_codes','200')}
@@ -201,21 +216,25 @@
                     ${xml_wrap(m.requestMethod!'','request_method','GET')}
                     <@master_item m 'master_item'/>
                     
-                    
-                    <#if (m.triggers?size>0)>
+                    <#-- inline trigggers -->
+                    <#assign triggers = []>
                     <#if m.discoveryRule??>
                         <#assign trigger_tag = 'trigger_prototype'>
                     <#else>
                         <#assign trigger_tag = 'trigger'>
                     </#if>
-                    <${trigger_tag}s>
                     <#list m.triggers as tr>
                         <#if (tr.getMetricsUsed()?size == 0)>
-                        <${trigger_tag}>
-                            <@trigger tr m t/>
-                        </${trigger_tag}>
+                            <#assign triggers = triggers + [{"trigger": tr, "metric":m, "template":t}]>
                         </#if>
                     </#list>
+                    <#if (triggers?size>0)>
+                    <${trigger_tag}s>
+                        <#list triggers as tr>
+                        <${trigger_tag}>
+                            <@trigger tr.trigger tr.metric tr.template/>
+                        </${trigger_tag}>
+                        </#list>
                     </${trigger_tag}s>
                     </#if>
 
@@ -237,7 +256,7 @@
             </#if>
             ${xml_wrap(dr.oid!'','snmp_oid','')}
             <key>${dr.key}</key>
-            ${xml_wrap(time_suffix_to_seconds(dr.delay!''),'delay','1h')}
+            ${xml_wrap(time_suffix_to_seconds(dr.delay!''),'delay','')}
             <#--  <status>0</status>  -->
             <#--  <allowed_hosts/>
             <snmpv3_contextname/>
@@ -264,7 +283,7 @@
                     <condition>
                         <macro>${cond.macro}</macro>
                         <value>${cond.value}</value>
-                        <operator>${cond.operator}</operator>
+                        ${xml_wrap(cond.operator!'MATCHES_REGEX','operator','MATCHES_REGEX')}
                         <formulaid>${cond.formulaid!''}</formulaid>
                     </condition>
                 </#list>
@@ -274,34 +293,50 @@
             ${xml_wrap(time_suffix_to_days(dr.lifetime!''),'lifetime','30d')}
             ${xml_wrap(dr.description!'','description','')}<#-- <xsl:value-of select="replace(./description, '^\s+|\s+$', '')"/> -->
             <item_prototypes>
-                <#list metrics as m>
+                <#list metrics?sort_by("key") as m>
                     <item_prototype>
                         <@item m t/>
                     </item_prototype>
                 </#list>
             </item_prototypes>
-            <trigger_prototypes>
+
+            <#-- trigger -->
+            <#assign triggers = []>
             <#list metrics as m>
                 <#if (m.triggers?size>0)>
                     <#list m.triggers as tr>
-                    <#if (tr.getMetricsUsed()?size > 0)> <#-- only complex triggers -->
-                        <trigger_prototype>
-                            <@trigger tr m t/>
-                        </trigger_prototype>
-                    </#if>
+                        <#if (tr.getMetricsUsed()?size > 0)> <#-- only complex triggers -->
+                            <#assign triggers = triggers + [{"trigger":tr, "metric":m, "template": t}]>
+                        </#if>
                     </#list>
                 </#if>
             </#list>
+            <#if (triggers?size>0)>
+            <trigger_prototypes>
+                    <#list triggers?sort_by(["trigger","name"]) as tr>
+                    <trigger_prototype>
+                        <@trigger tr.trigger tr.metric tr.template/>
+                    </trigger_prototype>
+                    </#list>
             </trigger_prototypes>
-            <graph_prototypes>
+            </#if>
+            
+            <#-- graphs -->
+            <#assign graphs = []>
         	<#list metrics as m>
         		<#list m.graphs as g>
-                <graph_prototype>
+                    <#assign graphs = graphs + [g]>
+                </#list>
+            </#list>
+            <#if (graphs?size>0)>
+            <graph_prototypes>
+            <#list graphs?sort_by("name") as g>
+                 <graph_prototype>
                     <@graph g t/>
                 </graph_prototype>
-                </#list>
-            </#list>    
+            </#list>
 			</graph_prototypes>
+            </#if>
             <#--  <timeout>3s</timeout>
             <url/>
             <query_fields/>
@@ -319,8 +354,8 @@
             <ssl_key_password/>
             <verify_peer>0</verify_peer>
             <verify_host>0</verify_host>  -->
-            <@lld_macro_paths dr/>
             <@master_item dr 'master_item'/>
+            <@lld_macro_paths dr/>
             <@preprocessing dr zbx_ver/>
  </#macro>
 

@@ -64,13 +64,13 @@ public class Trigger {
 
 	public void constructMetricsUsed() {
 
-		Matcher m = Pattern.compile("__(.+?)__").matcher(this.expression);
+		Matcher m = Pattern.compile(":__(.+?)__").matcher(this.expression);
 		while (m.find()) {
 			this.metricsUsed.add(m.group(1));
 		}
 
 		if (this.recoveryExpression != null) {
-			m = Pattern.compile("__(.+?)__").matcher(this.recoveryExpression);
+			m = Pattern.compile(":__(.+?)__").matcher(this.recoveryExpression);
 			while (m.find()) {
 				this.metricsUsed.add(m.group(1));
 			}
