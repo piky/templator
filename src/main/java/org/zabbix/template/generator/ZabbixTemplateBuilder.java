@@ -1,26 +1,20 @@
 package org.zabbix.template.generator;
 
-import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.kie.RuleChecker;
 import org.zabbix.template.generator.objects.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 @Component
 public class ZabbixTemplateBuilder extends RouteBuilder {
@@ -69,11 +63,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.to("direct:lang");
 
 		/* STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
-		from("direct:lang")
-				// .to("direct:RU")
-				.to("direct:EN");
-
-		// , "direct:RU").parallelProcessing();
+		from("direct:lang").multicast().parallelProcessing()
+				.to(
+					"direct:EN"
+				   //,"direct:RU"
+				);
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
 				// .stop(); // RU is stopped as objects are not deep-cloned
