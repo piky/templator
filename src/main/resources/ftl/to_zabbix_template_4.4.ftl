@@ -424,7 +424,7 @@
             <#--  <ymin_item_1>0</ymin_item_1>
             <ymax_item_1>0</ymax_item_1>  -->
             <graph_items>
-            	<#list g.graphItems as gi>
+                <#list g.getGraphItemsByZbxVer(g.graphItems,zbx_ver) as gi>
             	<graph_item>
                     ${xml_wrap(gi?index,'sortorder','0')}
             		${xml_wrap(gi.drawType!'','drawtype','SINGLE_LINE')}

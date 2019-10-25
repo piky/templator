@@ -19,6 +19,9 @@ public class GraphItem {
 	@JsonAlias({ "colour" })
 	private String color;
 
+	@JsonAlias({"_zbx_ver"})
+	private Version zbxVer = new Version("3.0");
+
 	@JsonAlias({ "yaxisside" })
 	private YAxisSide yAxisSide = YAxisSide.LEFT;
 
@@ -191,6 +194,14 @@ public class GraphItem {
 
 	public void setGraphColors(ArrayList<String> graphColors) {
 		this.graphColors = graphColors;
+	}
+
+	public Version getZbxVer() {
+		return zbxVer;
+	}
+
+	public void setZbxVer(Version zbxVer) {
+		this.zbxVer = zbxVer;
 	};
 
 }

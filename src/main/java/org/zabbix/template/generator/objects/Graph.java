@@ -1,6 +1,9 @@
 package org.zabbix.template.generator.objects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,6 +73,21 @@ public class Graph {
 			this.zabbixValue = zabbixValue;
 		}
 	};
+
+	public ArrayList<GraphItem> getGraphItemsByZbxVer(GraphItem[] graphItems, String zbxVer) {
+		Predicate<GraphItem> filter_by_min_version = m -> (m.getZbxVer().compareTo(new Version(zbxVer)) <= 0);
+		return getGraphItems(Arrays.asList(graphItems), filter_by_min_version);
+	}
+
+	public ArrayList<GraphItem> getGraphItems(List<GraphItem> graphItems, Predicate<GraphItem> graphItemPredicate) {
+
+		ArrayList<GraphItem> toReturn = new ArrayList<>();
+		for (GraphItem gi : graphItems.stream().filter(graphItemPredicate).toArray(GraphItem[]::new)) {
+			toReturn.add(gi);
+		}
+		return toReturn;
+	}
+
 
 	// for ymax_type,ymin_type
 	public enum YType implements ZabbixValue {

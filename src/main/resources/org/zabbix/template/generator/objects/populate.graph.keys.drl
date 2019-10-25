@@ -1,7 +1,7 @@
 package org.zabbix.template.generator.objects
 
 
-
+//also appends m2 version restriction
 rule "Change for each graph: metric id with actual metric key"
 	agenda-group "populate.graph.keys"
 	no-loop
@@ -19,4 +19,5 @@ then
     logger.debug(marker,"Found graph "+$gr.getName()+" : replace metric id "+$gitem.getMetricKey() + " with " + $m2.getKey());
     //now replace gitem.metricKey with actual metric key:
     $gitem.setMetricKey($m2.getKey());
+	$gitem.setZbxVer($m2.getZbxVer());
 end

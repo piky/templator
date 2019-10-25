@@ -143,8 +143,8 @@ For example:
 
 ### Define Zabbix version required in the template
 
-**Implemented as**: Freemarker + Java  
-**How to use**: Use `_zbx_ver` attribute on the template level to define minimum Zabbix version required to run this template. Older templates will not be generated. You can also define `_zbx_ver` on the item level. Such metric will be skipped for older templates.  
+**Implemented as**: Freemarker + Java + Drools
+**How to use**: Use `_zbx_ver` attribute on the template level to define minimum Zabbix version required to run this template. Older templates will not be generated. You can also define `_zbx_ver` on the item level. Such metric will be skipped for older templates and will be removed from any graphs.
 **Next steps status**: None
 
 ### Special variables to use in template and prototype definitions
