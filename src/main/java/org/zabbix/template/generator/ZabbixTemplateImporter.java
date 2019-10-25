@@ -25,7 +25,7 @@ public class ZabbixTemplateImporter extends RouteBuilder {
 	public void configure() throws Exception {
 
 		/* ASYNC LOAD TEMPLATES TO ZABBIX(experimental feature) */
-		from("file:bin/out?noop=true&include={{filter}}&readLock=markerFile&recursive=true&initialDelay={{zabbix.delay}}&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
+		from("file:{{dir.out}}?noop=true&include={{filter}}&readLock=markerFile&recursive=true&initialDelay={{zabbix.delay}}&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
 				.filter().simple("${file:name.ext} == 'xml'").filter()
 				.simple("${file:parent} contains '{{zabbix.template_language}}'").filter()
 				.simple("${file:parent} contains '{{zabbix.version}}'")

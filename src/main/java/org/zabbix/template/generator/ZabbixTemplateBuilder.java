@@ -43,7 +43,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		// Catch wrong metric prototypes spelling
 		onException(org.zabbix.template.generator.objects.MetricPrototypeNotFoundException.class)
-				.log(LoggingLevel.ERROR, "${file:name}: Please check metric prototype: ${exception.message}");
+				.log(LoggingLevel.ERROR, "${file:name}: Please check metric prototype: ${exception.message}").handled(true);
 
 		onException(Exception.class)
 				.log(LoggingLevel.ERROR, "${file:name}: ${exception.message} ${exception.stacktrace}").handled(true);
@@ -56,7 +56,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		 */
 
 		/* STEP 1: LOAD INPUT FILE */
-		from("file:bin/in?noop=true&include={{filter}}&readLock=none&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
+		from("file:{{dir.in}}?noop=true&include={{filter}}&readLock=none&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
 				.setHeader("template_ver", simple("{{version}}", String.class))
 
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
@@ -70,10 +70,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				);
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
-				// .stop(); // RU is stopped as objects are not deep-cloned
-				.to("direct:create_template");
+			// .stop(); // RU is stopped as objects are not deep-cloned
+			.to("direct:create_template");
 
-		from("direct:EN").setHeader("lang", simple("EN", String.class)).to("direct:create_template");
+		from("direct:EN").setHeader("lang", simple("EN", String.class))
+			.to("direct:create_template");
 
 		/*
 		 * STEP 3: CREATE INPUTJSON object from yaml or json merging between prototype
@@ -82,10 +83,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:create_template")
 				// JSON - YAML Chooser
 				.choice().when(simple("${file:ext} == 'yaml'"))
-				// .log("Try YAML....")
-				.unmarshal(yamlJackson).to("direct:drools").when(simple("${file:ext} == 'json'"))
-				// .log("Try JSON....")
-				.unmarshal(jsonJackson).to("direct:drools");
+					// .log("Try YAML....")
+					.unmarshal(yamlJackson).to("direct:drools")
+				.when(simple("${file:ext} == 'json'"))
+					// .log("Try JSON....")
+					.unmarshal(jsonJackson).to("direct:drools");
 
 		/*
 		 * STEP 4: evaluate drools rules. note that drools rules come in different
@@ -237,14 +239,17 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						simple("by Zabbix agent ${in.headers.template_suffix}")))
 				.transform(body().regexReplaceAll("Template Module Zabbix agent",
 						simple("Template Module Zabbix agent active")))
-				.end().setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
-				.choice().when(header("template_suffix").isEqualTo(""))
-				.setHeader("CamelOverruleFileName", simple(
+				.end()
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
+				.choice()
+				.when(header("template_suffix").isEqualTo(""))
+					.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.xml"))
 				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
-				.end().to("file:bin/out");
+				.end()
+				.to("file:{{dir.out}}");
 
 
 		/* STEP 8(FINAL): generate README.md , using freemarker */
@@ -264,7 +269,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.md"))
-				.end().to("file:bin/out");
+				.end().to("file:{{dir.out}}");
 
 	}
 }

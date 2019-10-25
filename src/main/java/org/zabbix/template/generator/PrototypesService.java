@@ -11,9 +11,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +24,9 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 @Service("prototypesService")
 public class PrototypesService {
+	
+	@Value("${dir.prototypes}")
+	private String prototypesDir;
 
 	private static HashMap<String, JsonNode> prototypes = new HashMap<String, JsonNode>();
 	private static final Logger logger = LogManager.getLogger(PrototypesService.class.getName());
@@ -63,19 +67,25 @@ public class PrototypesService {
 	public void init() {
 		try {
 
-			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-					.getResources("file:bin/prototypes/*");
+			// Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+			// 		.getResources("file:"+prototypesDir+"/**");
+			PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+			Resource[] resources = resolver.getResources("file:"+prototypesDir+"/**");
 			// mapper JSON
 			// create factory to enable comments for json
 			JsonFactory f = new JsonFactory();
 			f.enable(JsonParser.Feature.ALLOW_COMMENTS);
+			f.enable(JsonParser.Feature.ALLOW_TRAILING_COMMA);
 
 			ObjectMapper mapper = new ObjectMapper(f);
 
 			for (Resource r : resources) {
-				File file = r.getFile();
-				logger.info("Loaded prototype: " + file.toString());
-				addFileToMap(mapper, file);
+				
+				if(r.isReadable()) {
+					File file = r.getFile();
+					logger.info("Loaded prototype: " + file.toString());
+					addFileToMap(mapper, file);
+				}
 			}
 
 			logger.info("Prototypes map was loaded successfully.");
