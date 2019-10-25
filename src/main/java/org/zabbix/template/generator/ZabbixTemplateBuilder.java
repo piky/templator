@@ -246,20 +246,6 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
 				.end().to("file:bin/out");
 
-		// templates XSD validation, deprecated. remove after some time.
-		from("direct:xsd").choice()
-			.when(header("zbx_ver").isEqualTo("4.4"))
-				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.4 Zabbix")
-			.when(header("zbx_ver").isEqualTo("4.2"))
-				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.2 Zabbix")
-			.when(header("zbx_ver").isEqualTo("4.0"))
-				.log(LoggingLevel.DEBUG, "XSD Validation is not implemented for 4.0 Zabbix")
-			.when(header("zbx_ver").isEqualTo("3.4"))
-				.to("validator:templates/zabbix_export_3.4.xsd")
-			.when(header("zbx_ver").isEqualTo("3.2"))
-				.to("validator:templates/zabbix_export_3.2.xsd")
-			.otherwise()
-				.log(LoggingLevel.ERROR, "Unknown zbx_ver provided").end();
 
 		/* STEP 8(FINAL): generate README.md , using freemarker */
 		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false").choice()
