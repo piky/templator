@@ -13,18 +13,18 @@ mvn package
 grab jar file in target dir
 
 ```text
-java -jar target/zabbix-template-generator-0.15.jar
+java -jar target/zabbix-template-generator-0.33.jar
 ```
 
 or
 
 ```text
 mkdir /opt/zabbix-template-generator
-cp target/zabbix-template-generator-0.5.jar /opt/zabbix-template-generator
+cp target/zabbix-template-generator-0.33.jar /opt/zabbix-template-generator
 cp -Rf bin /opt/zabbix-template-generator
 cd /opt/zabbix-template-generator
-chmod u+x zabbix-template-generator-0.5.jar
-./zabbix-template-generator-0.5.jar
+chmod u+x zabbix-template-generator-0.33.jar
+./zabbix-template-generator-0.33.jar
 ```
 
 ## Overview
