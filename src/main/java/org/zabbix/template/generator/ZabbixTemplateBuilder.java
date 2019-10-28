@@ -58,7 +58,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		/* STEP 1: LOAD INPUT FILE */
 		from("file:{{dir.in}}?noop=true&include={{filter}}&readLock=none&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
 				.setHeader("template_ver", simple("{{version}}", String.class))
-
+				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
+				.setHeader("subfolder2", simple("${in.headers.CamelFileNameOnly.replaceFirst('[\\d]*template_.+?_','').replaceFirst('\\.(yaml|json)','')}", String.class))
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 				.to("direct:lang");
 
@@ -66,7 +67,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("direct:lang").multicast().parallelProcessing()
 				.to(
 					"direct:EN"
-				   //,"direct:RU"
+				   ,"direct:RU"
 				);
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
@@ -202,7 +203,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						"Going to do ${in.headers.lang} ${in.headers.zbx_ver} template for ${in.headers.template_suffix}")
 				.to("direct:multicaster_export");
 
-		from("direct:multicaster_export").to("log:result?level=DEBUG").multicast().parallelProcessing()
+		from("direct:multicaster_export")
+				.to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:zabbix_export", "direct:generate_docs"
 				// "direct:remote_service"
 				);
@@ -234,41 +236,40 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 																										// with SNMPv2
 																										// or
 																										// SNMPv1 lang
-				.choice().when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
-				.transform(body().regexReplaceAll("by Zabbix agent",
-						simple("by Zabbix agent ${in.headers.template_suffix}")))
-				.transform(body().regexReplaceAll("Template Module Zabbix agent",
-						simple("Template Module Zabbix agent active")))
-				.end()
-				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
 				.choice()
-				.when(header("template_suffix").isEqualTo(""))
-					.setHeader("CamelOverruleFileName", simple(
-						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.xml"))
+					.when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
+						.transform(body().regexReplaceAll("by Zabbix agent", simple("by Zabbix agent ${in.headers.template_suffix}")))
+						.transform(body().regexReplaceAll("Template Module Zabbix agent", simple("Template Module Zabbix agent active")))
+				.end()
+				.choice()
+					.when(header("template_suffix").isEqualTo(""))
+				.setHeader("CamelOverruleFileName", simple(
+							"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${in.headers.subfolder2}/${file:onlyname.noext}.xml"))
 				.otherwise()
 				.setHeader("CamelOverruleFileName", simple(
-						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.xml"))
+							"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${in.headers.subfolder2}_${in.headers.template_suffix.toLowerCase()}/${file:onlyname.noext}_${in.headers.template_suffix.toLowerCase()}.xml"))
 				.end()
 				.to("file:{{dir.out}}");
 
-
 		/* STEP 8(FINAL): generate README.md , using freemarker */
-		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false").choice()
+		from("direct:generate_docs").to("freemarker:ftl/to_readme.ftl?contentCache=false")
+				.choice()
 				.when(header("template_type").isEqualTo("ZABBIX_ACTIVE"))
 				.transform(body().regexReplaceAll("by Zabbix agent",
 						simple("by Zabbix agent ${in.headers.template_suffix}")))
 				.transform(
 						body().regexReplaceAll("Template Module Zabbix agent", simple("Template Module Zabbix agent")))
-				.transform(body().regexReplaceAll("ZABBIX_PASSIVE", simple("ZABBIX_ACTIVE"))).end()
-
-				.transform(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
-				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class)).choice()
-				.when(header("template_suffix").isEqualTo(""))
-				.setHeader("CamelOverruleFileName", simple(
-						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.lang}.md"))
-				.otherwise()
-				.setHeader("CamelOverruleFileName", simple(
-						"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${file:onlyname.noext}_${in.headers.template_suffix}_${in.headers.lang}.md"))
+						.transform(body().regexReplaceAll("ZABBIX_PASSIVE", simple("ZABBIX_ACTIVE")))
+				.end()
+						.transform(body().regexReplaceAll("SNMPvX", simple("${in.headers.template_suffix}"))) // replace SNMPvX
+				.choice()
+					.when(header("template_suffix").isEqualTo(""))
+						.setHeader("CamelOverruleFileName", simple(
+							"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${in.headers.subfolder2}/README.md"))
+					.otherwise()
+						.setHeader("CamelOverruleFileName", simple(
+							"${in.headers.zbx_ver}/${in.headers.lang}/${in.headers.subfolder}/${in.headers.subfolder2}_${in.headers.template_suffix.toLowerCase()}/README.md"))
+				.end()
 				.end().to("file:{{dir.out}}");
 
 	}
