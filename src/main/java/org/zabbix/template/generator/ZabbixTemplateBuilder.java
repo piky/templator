@@ -59,7 +59,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		from("file:{{dir.in}}?noop=true&include={{filter}}&readLock=none&recursive=true&delay=1000&idempotentKey=${file:name}-${file:modified}&backoffErrorThreshold=1&backoffMultiplier=60")
 				.setHeader("template_ver", simple("{{version}}", String.class))
 				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
-				.setHeader("subfolder2", simple("${in.headers.CamelFileNameOnly.replaceFirst('[\\d]*template_.+?_','').replaceFirst('\\.(yaml|json)','')}", String.class))
+				.setHeader("subfolder2", simple("${in.headers.CamelFileNameOnly.replaceFirst('template_.+?_','').replaceFirst('\\.(yaml|json)','')}", String.class))
 				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 				.to("direct:lang");
 
