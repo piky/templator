@@ -60,11 +60,12 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.setHeader("template_ver", simple("{{version}}", String.class))
 				.setHeader("subfolder", simple("${in.headers.CamelFileNameOnly.split('_')[1]}", String.class))
 				.setHeader("subfolder2", simple("${in.headers.CamelFileNameOnly.replaceFirst('template_.+?_','').replaceFirst('\\.(yaml|json)','')}", String.class))
-				.log("======================================Loading file: ${in.headers.CamelFileNameOnly}======================================")
 				.to("direct:lang");
 
 		/* STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
-		from("direct:lang").multicast().parallelProcessing()
+		from("direct:lang").multicast()
+				//disabled parallel for better logs in output 
+				//.parallelProcessing()
 				.to(
 					"direct:EN"
 				   ,"direct:RU"
@@ -72,9 +73,11 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
 			// .stop(); // RU is stopped as objects are not deep-cloned
+			.log("======================================Loading file: RU ${in.headers.CamelFileNameOnly}======================================")
 			.to("direct:create_template");
 
 		from("direct:EN").setHeader("lang", simple("EN", String.class))
+			.log("======================================Loading file: EN ${in.headers.CamelFileNameOnly}======================================")
 			.to("direct:create_template");
 
 		/*
