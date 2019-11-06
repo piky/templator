@@ -91,7 +91,7 @@ when
 		and (Filter$Condition(value contains $macro.extractMacroName() ) from $filter.conditions) //discovery filters
 	)
 then
-    logger.warn(marker,"User Macro found but never used in triggers or item key, url, password, username: {} in template {}", $macro.macro, $t.name);
+    logger.error(marker,"User Macro found but never used in triggers or item key, url, password, username: {} in template {}", $macro.macro, $t.name);
 end
 
 
