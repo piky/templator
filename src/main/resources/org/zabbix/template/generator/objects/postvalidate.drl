@@ -86,6 +86,7 @@ when
 	not $metric: Metric ( url contains $macro.extractMacroName() ) // http url for http agent
 	not $metric: Metric ( password contains $macro.extractMacroName() )
 	not $metric: Metric ( username contains $macro.extractMacroName() )
+	not $discoveryRule: DiscoveryRule ( key contains $macro.extractMacroName() )
 	not (
 		DiscoveryRule ($filter: filter != null )
 		and (Filter$Condition(value contains $macro.extractMacroName() ) from $filter.conditions) //discovery filters
