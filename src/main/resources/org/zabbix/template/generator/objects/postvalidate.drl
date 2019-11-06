@@ -79,7 +79,7 @@ rule "Validation rule 5: Macro defined but never used in triggers or item keys"
 when
 
 	$t: Template (macros != null)
-	$macro: UserMacro() from $t.macros
+	$macro: UserMacro(override == false) from $t.macros
 	not $tr:  Trigger  ( expression contains $macro.extractMacroName() )
 	not $tr2: Trigger  ( recoveryExpression contains $macro.extractMacroName() )
 	not $metric: Metric ( key contains $macro.extractMacroName() )

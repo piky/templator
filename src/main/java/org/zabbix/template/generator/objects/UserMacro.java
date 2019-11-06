@@ -14,6 +14,11 @@ public class UserMacro implements Comparable<UserMacro> {
 	@JsonAlias("_description")
 	private String description;
 
+	// In case user macro is defined to override linked template value - 
+	// Use this property (override = true) to bypass macro usage validation.
+	@JsonAlias("_override")
+	private boolean override = false;
+
 	public String extractMacroName() {
 		// ^\{\$[A-Z0-9_]+(:".+")?\}$
 		// returns macro name without {$:"context"}
@@ -72,5 +77,13 @@ public class UserMacro implements Comparable<UserMacro> {
 	@Override
 	public int compareTo(UserMacro o) {
 		return this.getMacro().compareTo(o.getMacro());
+	}
+
+	public boolean isOverride() {
+		return override;
+	}
+
+	public void setOverride(boolean override) {
+		this.override = override;
 	}
 }

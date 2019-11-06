@@ -376,8 +376,8 @@ Describe in more detail, TODO:
 - Generator automatically resets 'trends' to 0 for non-numeric items (TEXT, LOG...)
 - use `TEMPLATE_NAME:METRIC` instead of real trigger keys in expressions/recovery_expressions use `__metric_id__` to replace other metrics used in trigger expressions.
 - If trigger uses multiple metrics, you only need to define this trigger inside first metric
-- Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown.
+- Value maps validation - if value map is used in the metric but value map itself cannot be found - validation error is thrown
 - Macros validation - if macro is used in the metric key or trigger expression but user macro itself cannot be found - validation error is thrown.
+- Macros validation - if macro is defined but not used anywhere - validation error is thrown. To bypass it, add `_override: true` to macro
 - Inventory links purging if in LLD. If item is in LLD - then inventory link is removed. This rule is ignored if `_singleton` is set to true
 - Quotes is present in item parameters are properly escaped in calculated item formula. More on this https://www.zabbix.com/documentation/current/manual/config/items/itemtypes/calculated
-
