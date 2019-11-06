@@ -156,10 +156,46 @@ when
 then
     logger.info(marker,"Found IF_MIB class, adding additional MACRO");
     modify($t) {
-    	getMacros().add(new UserMacro("{$IFCONTROL}","1")),
-    	getMacros().add(new UserMacro("{$IF.UTIL.MAX}","90")),
-    	getMacros().add(new UserMacro("{$IF.ERRORS.WARN}","2"));	
+    	//getMacros().add(new UserMacro("{$IFCONTROL}","1")),
+    	// getMacros().add(new UserMacro("{$IF.UTIL.MAX}","90")),
+    	// getMacros().add(new UserMacro("{$IF.ERRORS.WARN}","2"));
     };
+end
+
+rule "Rule: generate {$IF.UTIL.MAX}"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+	$m : Metric ($triggers: triggers)
+	exists (Trigger (id == "net.if.util_high") from $triggers)
+then
+    logger.info(marker,"Found net.if.util_high trigger, adding additional MACRO...");
+    modify($t) {getMacros().add(new UserMacro("{$IF.UTIL.MAX}","90"));};
+end
+
+rule "Rule: generate {$IF.ERRORS.WARN}"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+	$m : Metric ($triggers: triggers)
+	exists (Trigger (id == "net.if.errors") from $triggers)
+then
+    logger.info(marker,"Found net.if.errors trigger, adding additional MACRO...");
+    modify($t) {getMacros().add(new UserMacro("{$IF.ERRORS.WARN}","2"));};
+end
+
+rule "Rule: generate {$IFCONTROL}"
+	agenda-group "populate"
+	no-loop
+when
+	$t: Template($metrics: metricsRegistry)
+	$m : Metric ($triggers: triggers)
+	exists (Trigger (id == "net.if.down") from $triggers)
+then
+    logger.info(marker,"Found net.if.down trigger, adding additional MACRO...");
+    modify($t) {getMacros().add(new UserMacro("{$IFCONTROL}","1"));};
 end
 
 
