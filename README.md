@@ -39,13 +39,13 @@ We suggest to use this tool because we want to achieve the following goals:
 - Many metrics in different templates are actually the same. Take `CPU load`, or `Memory utilization` for example. Different devices or OS will have different keys or SNMP oid how to retrieve such metrics - but we want to enforce that these will the be the same metric across all different templates, systems and devices. With the same set of triggers applied.  
 Generator will help us to do that with the concept of `prototypes`
 - Same applies to triggers. We use `prototypes` of triggers in this generator to reuse triggers in different templates.
-- We also want to ensure some baseline quality of the template for the new template. For example, if there is a new template for network device - metrics must be defined that collect `CPU load`,`Memory utilization`, `Interface utilization` to reach `Performance` baseline.
+- We also want to ensure some baseline quality of the template for the new template. For example, if there is a new template for network device - metrics must be defined that collect `CPU load`, `Memory utilization`, `Interface utilization` to reach `Performance` baseline.
 It also must has metrics that collect `Temperature` of at least one temperature sensor to be sure it gets `Fault` baseline. This tool helps to check that template has a decent level of quality.
 - Template guidelines also can be enforced.
 
 ## Under the hood
 
-Template generator is the java app with `Apache Camel` framework at its heart used to define templates building flow. See ZabbixTemplateBuilder.java. What's also involved:
+Template generator is the java app with `Apache Camel` framework at its core used to define templates building flow. See ZabbixTemplateBuilder.java. What's also involved:
 
 - JSON, YAML schema validation for `in` and `prototype` files.
 - Drools to define rules to do all the magic, transformation, validation and baselining.
@@ -381,3 +381,4 @@ Describe in more detail, TODO:
 - Macros validation - if macro is defined but not used anywhere - validation error is thrown. To bypass it, add `_override: true` to macro
 - Inventory links purging if in LLD. If item is in LLD - then inventory link is removed. This rule is ignored if `_singleton` is set to true
 - Quotes is present in item parameters are properly escaped in calculated item formula. More on this https://www.zabbix.com/documentation/current/manual/config/items/itemtypes/calculated
+- Ability to override `_resource` concatenation in item, trigger and graph names. use `__RESOURCE__` in prototype name instead for more beatiful names

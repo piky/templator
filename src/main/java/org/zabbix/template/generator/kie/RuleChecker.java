@@ -88,6 +88,7 @@ public class RuleChecker implements Processor {
 
             // should go after trigger names, expressions, recovery are ready
             agenda.getAgendaGroup("populate.trigger.dependencies").setFocus();
+            agenda.getAgendaGroup("populate.macro").setFocus();
             agenda.getAgendaGroup("populate").setFocus();
             agenda.getAgendaGroup("prevalidate").setFocus();
             agenda.getAgendaGroup("language").setFocus();

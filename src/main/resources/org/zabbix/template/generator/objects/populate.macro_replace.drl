@@ -5,7 +5,7 @@ METRICS
 */
 //
 rule "Rule: replaces __RESOURCE__ macro in metrics"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when    
     $m : Metric ($key: key != null,  $resource: resource != null) 
@@ -17,7 +17,7 @@ then
 end
 
 rule "Rule: replaces __RESOURCE_TYPE__ macro in metrics"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when    
     $m : Metric ($key: key != null, $resourceType: resourceType != null) 
@@ -36,7 +36,7 @@ TRIGGERS
 //replaces TEMPLATE_NAME:METRIC name
 // TEMPLATE_NAME is left intact. To be replaced later on. For cases like cross template dependencies(icmp ping -> NO_SNMP)
 rule "Rule: generate each trigger expression"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when
     $m : Metric ($key: key != null, $triggers: triggers)
@@ -56,7 +56,7 @@ TRIGGERS REPLACE METRICS in expressions
 */
 //replaces TEMPLATE_NAME:__metricID__ name
 rule "Rule: replace metrics in expression"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when
     
@@ -77,7 +77,7 @@ end
 
 //
 rule "Rule: replaces __RESOURCE__ macro in expressions"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when    
     $m : Metric ($key: key != null, $triggers: triggers, $resource: resource != null)
@@ -95,7 +95,7 @@ then
 end
 
 rule "Rule: replaces ____RESOURCE_TYPE__ macro in expressions"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
 when    
     $m : Metric ($key: key != null, $triggers: triggers, $resourceType: resourceType != null)
@@ -116,7 +116,7 @@ end
 
 //
 rule "Rule: replaces __RESOURCE__ macro in applicationPrototype"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
     dialect "mvel"
 when    
@@ -127,7 +127,7 @@ then
 end
 
 rule "Rule: replaces __RESOURCE_TYPE__ macro in applicationPrototype"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
     dialect "mvel"
 when    
@@ -149,7 +149,7 @@ CALCULATED EXPRESSIONS REPLACE METRICS in expressions
 
 //replaces TEMPLATE_NAME:__metricID__ name
 rule "Rule: replace metrics in expression formula"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
     dialect "mvel"
 when
@@ -163,7 +163,7 @@ then
 end
 //
 rule "Rule: replaces __RESOURCE__ macro in expression formula"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
     dialect "mvel"
 when    
@@ -174,7 +174,7 @@ then
 end
 
 rule "Rule: replaces __RESOURCE_TYPE__ macro in expression formula"
-	agenda-group "populate"
+	agenda-group "populate.macro"
 	no-loop
     dialect "mvel"
 when    
@@ -182,4 +182,29 @@ when
 then
     logger.debug(marker,"Generating formula expression for CALCULATED (changing __RESOURCE_TYPE__) for "+ $m.id);
     $m.expressionFormula = $m.expressionFormula.replace("__RESOURCE_TYPE__",$resourceType);
+end
+
+
+
+//
+rule "Rule: replaces __RESOURCE__ macro in graph names"
+	agenda-group "populate.macro"
+	no-loop
+when    
+    $m : Metric ($key: key != null, $graphs: graphs, $resource: resource != null)
+    $g: Graph () from $graphs 
+then
+    logger.debug(marker,"Generating graph names (changing __RESOURCE__) for "+ $g.getName());
+    $g.setName( $g.getName().replace("__RESOURCE__",$resource));
+end
+
+rule "Rule: replaces ____RESOURCE_TYPE__ macro in graph names"
+	agenda-group "populate.macro"
+	no-loop
+when    
+    $m : Metric ($key: key != null, $graphs: graphs, $resourceType: resourceType != null)
+    $g: Graph () from $graphs 
+then
+    logger.debug(marker,"Generating graph names (changing __RESOURCE_TYPE__) for "+ $g.getName());
+    $g.setName( $g.getName().replace("__RESOURCE_TYPE__",$resourceType));
 end

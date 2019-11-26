@@ -59,10 +59,11 @@ end
 rule "Rule 3: prefix Name with resource"
 	agenda-group "populate"
 	dialect "mvel"
+	no-loop
 when
-	$m : Metric ( resource != null)
+	$m : Metric ( resource != null, name not contains '__RESOURCE__')
 then
-    logger.debug(marker,"RULE3: Changing name to 'resource: $m.name' for "+$m);
+    logger.debug(marker,"RULE3: Changing name to 'resource: $m.name' for "+$m.name);
     modify( $m ) { 
     		name = $m.resource + ": " + $m.name
     	};
@@ -74,7 +75,7 @@ rule "Rule 3a: generate each trigger name(discovery rules, prefix with resource)
 	no-loop
 when
     $m : Metric ($key: key != null, resource != null, $triggers: triggers)
-    $tr: Trigger ($e: expression!=null) from $triggers 
+    $tr: Trigger ($e: expression!=null, name not contains '__RESOURCE__') from $triggers 
 then
     logger.debug(marker,"Generating trigger name for "+ $tr.name);
     $tr.name = $m.resource + ": " + $tr.name;
@@ -86,7 +87,7 @@ rule "Rule 3b: generate each graph name(discovery rules, prefix with resource)"
 	no-loop
 when
     $m : Metric ($key: key != null, resource != null, $graphs: graphs)
-    $gr: Graph () from $graphs
+    $gr: Graph (name not contains '__RESOURCE__') from $graphs
 then
     logger.info(marker,"Generating graph name for "+ $gr.name);
     $gr.name = $m.resource + ": " + $gr.name;
