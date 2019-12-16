@@ -50,7 +50,7 @@
             </discovery_rules>
             <#else>
             <discovery_rules/>
-            </#if>                    
+            </#if>
             <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
             <httptests/>
             </#if>
@@ -325,11 +325,11 @@
             <#if zbx_ver == '3.2'>
             <delay_flex/>
             </#if>
-            <params/>
+            ${xml_wrap(dr.expressionFormula!'','params')}
             <ipmi_sensor/>
             <authtype>0</authtype>
-            <username/>
-            <password/>
+            ${xml_wrap(dr.username!'','username')}
+            ${xml_wrap(dr.password!'','password')}
             <publickey/>
             <privatekey/>
             <port/>
@@ -380,7 +380,6 @@
                 </#list>
             </#list>    
 			</graph_prototypes>
-            <#-- <xsl:apply-templates select="../../metrics/*[discoveryRule = $disc_name]/graphs/graph"/>  -->
             <host_prototypes/>
             <#if zbx_ver == '3.4' || zbx_ver == '4.0' || zbx_ver == '4.2'>
             <jmx_endpoint/>

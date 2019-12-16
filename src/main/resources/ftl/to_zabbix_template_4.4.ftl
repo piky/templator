@@ -263,13 +263,13 @@
             <snmpv3_authprotocol>0</snmpv3_authprotocol>
             <snmpv3_authpassphrase/>
             <snmpv3_privprotocol>0</snmpv3_privprotocol>
-            <snmpv3_privpassphrase/>
-            <params/>
-            <ipmi_sensor/>
-            <authtype>0</authtype>
-            <username/>
-            <password/>
-            <publickey/>
+            <snmpv3_privpassphrase/>-->
+            ${xml_wrap(dr.expressionFormula!'','params','')}
+            <#--  <ipmi_sensor/>  -->
+            <#--  <authtype>0</authtype>  -->
+            ${xml_wrap(dr.username!'','username','')}
+            ${xml_wrap(dr.password!'','password','')}
+            <#--  <publickey/>
             <privatekey/>
             <port/>  -->
             <#if dr.filter??>

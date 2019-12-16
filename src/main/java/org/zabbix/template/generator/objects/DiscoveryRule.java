@@ -31,6 +31,9 @@ public class DiscoveryRule {
 
 	@JsonAlias("master_item")
 	private String masterItem;
+	
+	private String username;
+	private String password;
 
 	// if true, It means that only single discovery object is expected. Some
 	// validation rules can be ignored.
@@ -39,6 +42,9 @@ public class DiscoveryRule {
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
 
+	@JsonAlias({ "_expression_formula", "expression_formula", "params" })
+	private String expressionFormula;
+	
 	public String getName() {
 		return name;
 	}
@@ -123,6 +129,30 @@ public class DiscoveryRule {
 
 	public void setMasterItem(String masterItem) {
 		this.masterItem = masterItem;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getExpressionFormula() {
+		return expressionFormula;
+	}
+
+	public void setExpressionFormula(String expressionFormula) {
+		this.expressionFormula = expressionFormula;
 	}
 
 	public Filter getFilter() {
