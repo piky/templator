@@ -177,7 +177,12 @@
 			<artifactId>commons-text</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<!-- fixes https://github.com/alibaba/fastjson/issues/276 when importing templates to Zabbix -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.46</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.github.hengyunabc/zabbix-api -->
 		<dependency>
 			<groupId>io.github.hengyunabc</groupId>
