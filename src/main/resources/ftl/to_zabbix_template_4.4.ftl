@@ -1,11 +1,12 @@
 <#ftl output_format="XML">
 <#assign zbx_ver = headers.zbx_ver?string>
+<#assign aDateTime = .now>
 <#assign template_type = headers.template_type?string>
 <#assign snmp_community = '{$SNMP_COMMUNITY}'>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
-    <date>2015-12-30T14:41:30Z</date>
+    <date>${aDateTime?iso("UTC")}</date>
     <groups>
         <#list generate_groups(body.getUniqueTemplateClasses()![]) as g>
             <group>
