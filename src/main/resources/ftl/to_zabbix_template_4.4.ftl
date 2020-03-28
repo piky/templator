@@ -80,6 +80,7 @@
                 </#list>
             </macros>
             </#if>
+
             <#if (t.screens?size > 0)>
             <screens>
             <#list t.screens?sort_by("name") as s>
@@ -210,7 +211,29 @@
                     ${xml_wrap(m.followRedirects,'follow_redirects','YES')}
                     ${xml_wrap(m.postType!'0','post_type','0')}
                     ${xml_wrap(m.httpProxy!'','http_proxy','')}
-                    ${xml_wrap(m.headers!'','headers','')}
+                    <#--  ${xml_wrap(m.headers!'','headers','')}  -->
+                    <#if (m.headers?size > 0)>
+                    <headers>
+                        <#list m.headers as hd>
+                        <header>
+                            ${xml_wrap(hd.name,'name','')}
+                            ${xml_wrap(hd.value,'value','')}
+                        </header>
+                        </#list>
+                    </headers>
+                    </#if>
+
+                    <#if (m.query_fields?size > 0)>
+                    <query_fields>
+                        <#list m.query_fields as qf>
+                        <query_field>
+                            ${xml_wrap(qf.name,'name','')}
+                            ${xml_wrap(qf.value,'value','')}
+                        </query_field>
+                        </#list>
+                    </query_fields>
+                    </#if>
+
                     ${xml_wrap(m.retrieveMode!'','retrieve_mode','BODY')}
                     ${xml_wrap(m.requestMethod!'','request_method','GET')}
                     <@master_item m 'master_item'/>
