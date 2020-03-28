@@ -161,6 +161,10 @@ public abstract class Metric {
 
 	// Triggers
 	private ArrayList<Trigger> triggers = new ArrayList<Trigger>(0);
+	// Query_fields
+	private ArrayList<Query_field> query_fields = new ArrayList<Query_field>(0);
+	// Headers
+	private ArrayList<Header> headers = new ArrayList<Header>(0);
 	// Graphs
 	private ArrayList<Graph> graphs = new ArrayList<Graph>(0);
 
@@ -428,6 +432,34 @@ public abstract class Metric {
 		this.triggers = triggers;
 	}
 
+	/**
+	 * @return the headers
+	 */
+	public ArrayList<Header> getHeaders() {
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers to set
+	 */
+	public void setHeaders(ArrayList<Header> headers) {
+		this.headers = headers;
+	}
+
+	/**
+	 * @return the query_fields
+	 */
+	public ArrayList<Query_field> getQuery_fields() {
+		return query_fields;
+	}
+
+	/**
+	 * @param query_fields the query_fields to set
+	 */
+	public void setQuery_fields(ArrayList<Query_field> query_fields) {
+		this.query_fields = query_fields;
+	}
+
 	public ArrayList<Graph> getGraphs() {
 		return graphs;
 	}
@@ -574,16 +606,16 @@ public abstract class Metric {
 	/**
 	 * @return the headers
 	 */
-	public String getHeaders() {
-		return headers;
-	}
+	// public String getHeaders() {
+	// 	return headers;
+	// }
 
 	/**
 	 * @param headers the headers to set
 	 */
-	public void setHeaders(String headers) {
-		this.headers = headers;
-	}
+	// public void setHeaders(String headers) {
+	// 	this.headers = headers;
+	// }
 
 	/**
 	 * @return the retrieveMode
@@ -745,7 +777,7 @@ public abstract class Metric {
 	private String timeout;
 	private String url;
 
-	@JsonAlias("query_fields")
+	// @JsonAlias("query_fields")
 	private String queryFields;
 
 	@JsonAlias("posts")
@@ -763,8 +795,8 @@ public abstract class Metric {
 	@JsonAlias("http_proxy")
 	private String httpProxy;
 
-	@JsonAlias("headers")
-	private String headers;
+	// @JsonAlias("headers")
+	// private String headers;
 
 	@JsonAlias("retrieve_mode")
 	private RetrieveMode retrieveMode = RetrieveMode.BODY;
