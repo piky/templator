@@ -272,7 +272,31 @@
                     ${xml_wrap(m.followRedirects.getZabbixValue()?c,'follow_redirects')}
                     ${xml_wrap(m.postType!'0','post_type')}
                     ${xml_wrap(m.httpProxy!'','http_proxy')}
-                    ${xml_wrap(m.headers!'','headers')}
+                    <#--  ${xml_wrap(m.headers!'','headers')}  -->
+
+                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
+                    <#if (m.headers?size > 0)>
+                    <headers>
+                        <#list m.headers as hd>
+                        <header>
+                            ${xml_wrap(hd.name,'name')}
+                            ${xml_wrap(hd.value,'value')}
+                        </header>
+                        </#list>
+                    </headers>
+                    </#if>
+                    <#if (m.query_fields?size > 0)>
+                    <query_fields>
+                        <#list m.query_fields as qf>
+                        <query_field>
+                            ${xml_wrap(qf.name,'name')}
+                            ${xml_wrap(qf.value,'value')}
+                        </query_field>
+                        </#list>
+                    </query_fields>
+                    </#if>
+                    </#if>
+
                     ${xml_wrap(m.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
                     ${xml_wrap(m.requestMethod.getZabbixValue()?c,'request_method')}
                     <output_format>0</output_format>
