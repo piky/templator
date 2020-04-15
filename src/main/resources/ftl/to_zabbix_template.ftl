@@ -266,25 +266,6 @@
                     <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
                     ${xml_wrap(m.timeout!'3s','timeout')}
                     ${xml_wrap(m.url!'','url')}
-                    <query_fields/>
-                    <posts/>
-                    ${xml_wrap(m.statusCodes!'200','status_codes')}
-                    ${xml_wrap(m.followRedirects.getZabbixValue()?c,'follow_redirects')}
-                    ${xml_wrap(m.postType!'0','post_type')}
-                    ${xml_wrap(m.httpProxy!'','http_proxy')}
-                    <#--  ${xml_wrap(m.headers!'','headers')}  -->
-
-                    <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
-                    <#if (m.headers?size > 0)>
-                    <headers>
-                        <#list m.headers as hd>
-                        <header>
-                            ${xml_wrap(hd.name,'name')}
-                            ${xml_wrap(hd.value,'value')}
-                        </header>
-                        </#list>
-                    </headers>
-                    </#if>
                     <#if (m.query_fields?size > 0)>
                     <query_fields>
                         <#list m.query_fields as qf>
@@ -294,9 +275,27 @@
                         </query_field>
                         </#list>
                     </query_fields>
+                    <#else>
+                    <query_fields/>
                     </#if>
+                    <posts/>
+                    ${xml_wrap(m.statusCodes!'200','status_codes')}
+                    ${xml_wrap(m.followRedirects.getZabbixValue()?c,'follow_redirects')}
+                    ${xml_wrap(m.postType!'0','post_type')}
+                    ${xml_wrap(m.httpProxy!'','http_proxy')}
+                    <#--  ${xml_wrap(m.headers!'','headers')}  -->
+                   <#if (m.headers?size > 0)>
+                    <headers>
+                        <#list m.headers as hd>
+                        <header>
+                            ${xml_wrap(hd.name,'name')}
+                            ${xml_wrap(hd.value,'value')}
+                        </header>
+                        </#list>
+                    </headers>
+                    <#else>
+                    <headers/>
                     </#if>
-
                     ${xml_wrap(m.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
                     ${xml_wrap(m.requestMethod.getZabbixValue()?c,'request_method')}
                     <output_format>0</output_format>
