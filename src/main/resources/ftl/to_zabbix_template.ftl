@@ -351,7 +351,7 @@
             </#if>
             ${xml_wrap(dr.expressionFormula!'','params')}
             <ipmi_sensor/>
-            <authtype>0</authtype>
+            ${xml_wrap(dr.authType.getZabbixValue()?c,'authtype')}
             ${xml_wrap(dr.username!'','username')}
             ${xml_wrap(dr.password!'','password')}
             <publickey/>
@@ -409,17 +409,39 @@
             <jmx_endpoint/>
             </#if>
             <#if zbx_ver == '4.0' || zbx_ver == '4.2'>
-            <timeout>3s</timeout>
-            <url/>
-            <query_fields/>
             <posts/>
-            <status_codes>200</status_codes>
-            <follow_redirects>1</follow_redirects>
-            <post_type>0</post_type>
-            <http_proxy/>
+            ${xml_wrap(dr.timeout!'3s','timeout')}
+            ${xml_wrap(dr.url!'','url')}
+            ${xml_wrap(dr.statusCodes!'200','status_codes')}
+            ${xml_wrap(dr.followRedirects.getZabbixValue()?c,'follow_redirects')}
+            ${xml_wrap(dr.postType!'0','post_type')}
+            ${xml_wrap(dr.httpProxy!'','http_proxy')}
+            <#if (dr.headers?size > 0)>
+            <headers>
+                <#list dr.headers as hd>
+                <header>
+                    ${xml_wrap(hd.name,'name')}
+                    ${xml_wrap(hd.value,'value')}
+                </header>
+                </#list>
+            </headers>
+            <#else>
             <headers/>
-            <retrieve_mode>0</retrieve_mode>
-            <request_method>0</request_method>
+            </#if>
+            <#if (dr.query_fields?size > 0)>
+            <query_fields>
+                <#list dr.query_fields as qf>
+                <query_field>
+                    ${xml_wrap(qf.name,'name')}
+                    ${xml_wrap(qf.value,'value')}
+                </query_field>
+                </#list>
+            </query_fields>
+            <#else>
+            <query_fields/>
+            </#if>
+            ${xml_wrap(dr.retrieveMode.getZabbixValue()?c,'retrieve_mode')}
+            ${xml_wrap(dr.requestMethod.getZabbixValue()?c,'request_method')}
             <allow_traps>0</allow_traps>
             <ssl_cert_file/>
             <ssl_key_file/>

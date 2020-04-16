@@ -290,9 +290,46 @@
             <snmpv3_privpassphrase/>-->
             ${xml_wrap(dr.expressionFormula!'','params','')}
             <#--  <ipmi_sensor/>  -->
-            <#--  <authtype>0</authtype>  -->
+            ${xml_wrap(dr.authType!'','authtype','NONE')}
             ${xml_wrap(dr.username!'','username','')}
             ${xml_wrap(dr.password!'','password','')}
+            ${xml_wrap(dr.timeout!'3s','timeout','3s')}
+            ${xml_wrap(dr.url!'','url','')}
+            ${xml_wrap(dr.statusCodes!'200','status_codes','200')}
+            ${xml_wrap(dr.followRedirects,'follow_redirects','YES')}
+            ${xml_wrap(dr.postType!'0','post_type','0')}
+            ${xml_wrap(dr.httpProxy!'','http_proxy','')}
+            <#if (dr.headers?size > 0)>
+            <headers>
+                <#list dr.headers as hd>
+                <header>
+                    ${xml_wrap(hd.name,'name','')}
+                    ${xml_wrap(hd.value,'value','')}
+                </header>
+                </#list>
+            </headers>
+            </#if>
+            <#if (dr.query_fields?size > 0)>
+            <query_fields>
+                <#list dr.query_fields as qf>
+                <query_field>
+                    ${xml_wrap(qf.name,'name','')}
+                    ${xml_wrap(qf.value,'value','')}
+                </query_field>
+                </#list>
+            </query_fields>
+            </#if>
+            ${xml_wrap(dr.retrieveMode!'','retrieve_mode','BODY')}
+            ${xml_wrap(dr.requestMethod!'','request_method','GET')}
+            <#--
+            <posts/>
+            <allow_traps>0</allow_traps>
+            <ssl_cert_file/>
+            <ssl_key_file/>
+            <ssl_key_password/>
+            <verify_peer>0</verify_peer>
+            <verify_host>0</verify_host>  -->
+
             <#--  <publickey/>
             <privatekey/>
             <port/>  -->
@@ -359,23 +396,6 @@
             </#list>
 			</graph_prototypes>
             </#if>
-            <#--  <timeout>3s</timeout>
-            <url/>
-            <query_fields/>
-            <posts/>
-            <status_codes>200</status_codes>
-            <follow_redirects>1</follow_redirects>
-            <post_type>0</post_type>
-            <http_proxy/>
-            <headers/>
-            <retrieve_mode>0</retrieve_mode>
-            <request_method>0</request_method>
-            <allow_traps>0</allow_traps>
-            <ssl_cert_file/>
-            <ssl_key_file/>
-            <ssl_key_password/>
-            <verify_peer>0</verify_peer>
-            <verify_host>0</verify_host>  -->
             <@master_item dr 'master_item'/>
             <@lld_macro_paths dr/>
             <@preprocessing dr zbx_ver/>

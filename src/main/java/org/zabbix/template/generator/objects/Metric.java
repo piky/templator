@@ -68,6 +68,8 @@ public abstract class Metric {
 
 	@JsonAlias("_zbx_ver")
 	private Version zbxVer = new Version("3.0");
+	@JsonAlias("header")
+	private String header;
 
 	@JsonAlias({ "_expression_formula", "expression_formula", "params" })
 	private String expressionFormula;
@@ -795,9 +797,6 @@ public abstract class Metric {
 
 	@JsonAlias("http_proxy")
 	private String httpProxy;
-
-	// @JsonAlias("headers")
-	// private String headers;
 
 	@JsonAlias("retrieve_mode")
 	private RetrieveMode retrieveMode = RetrieveMode.BODY;
