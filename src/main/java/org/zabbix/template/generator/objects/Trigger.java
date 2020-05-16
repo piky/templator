@@ -29,7 +29,7 @@ public class Trigger {
 	private String recoveryExpression;
 	private Priority priority = Priority.NOT_CLASSIFIED;
 	private String description;
-
+	
 	// 4.4
 	@JsonProperty(value = "opdata")
 	private String operationalData;
@@ -44,6 +44,9 @@ public class Trigger {
 	private ArrayList<String> dependsOn = new ArrayList<String>(0);
 	// dependencies - objects to be put onto zabbix_export output
 	private TreeSet<TriggerDependency> dependencies = new TreeSet<TriggerDependency>();
+
+	// 5.0
+	private String discover;
 
 	// this array to store all metrics used apart from parent metric. To be used in
 	// Drools(replace with metric keys)
@@ -290,4 +293,11 @@ public class Trigger {
 		this.operationalData = operationalData;
 	}
 
+	public String getDiscover() {
+		return discover;
+	}
+
+	public void setDiscover(String discover) {
+		this.discover = discover;
+	}
 }

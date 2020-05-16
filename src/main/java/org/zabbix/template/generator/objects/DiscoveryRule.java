@@ -117,6 +117,8 @@ public class DiscoveryRule {
 	@JsonAlias({ "_expression_formula", "expression_formula", "params" })
 	private String expressionFormula;
 	
+	private ArrayList<Overrides> overrides = new ArrayList<Overrides>(0);
+	
 	/**
 	 * @return the header
 	 */
@@ -552,4 +554,13 @@ public class DiscoveryRule {
 		}
 
 	};
+
+	public ArrayList<Overrides> getOverrides() {
+		return overrides;
+	}
+
+	public void setOverrides(ArrayList<Overrides> overrides) {
+		this.overrides = overrides;
+	}
+	
 }
