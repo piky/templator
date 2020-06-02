@@ -94,6 +94,9 @@ public class DiscoveryRule {
 	private String username;
 	private String password;
 
+	@JsonAlias("jmx_endpoint")
+	private String jmxEndpoint;
+
 	@JsonAlias("request_method")
 	private RequestMethod requestMethod = RequestMethod.GET;
 
@@ -445,6 +448,14 @@ public class DiscoveryRule {
 		this.password = password;
 	}
 
+	public String getJmxEndpoint() {
+		return jmxEndpoint;
+	}
+
+	public void setJmxEndpoint(String jmxEndpoint) {
+		this.jmxEndpoint = jmxEndpoint;
+	}
+	
 	/**
 	 * @return the retrieveMode
 	 */

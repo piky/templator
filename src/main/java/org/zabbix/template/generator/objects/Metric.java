@@ -664,6 +664,14 @@ public abstract class Metric {
 		this.password = password;
 	}
 
+	public String getJmxEndpoint() {
+		return jmxEndpoint;
+	}
+
+	public void setJmxEndpoint(String jmxEndpoint) {
+		this.jmxEndpoint = jmxEndpoint;
+	}
+
 	/**
 	 * @return the retrieveMode
 	 */
@@ -806,6 +814,9 @@ public abstract class Metric {
 
 	private String username;
 	private String password;
+
+	@JsonAlias("jmx_endpoint")
+	private String jmxEndpoint;
 
 	@JsonAlias("request_method")
 	private RequestMethod requestMethod = RequestMethod.GET;

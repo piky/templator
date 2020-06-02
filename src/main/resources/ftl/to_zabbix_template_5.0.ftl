@@ -201,6 +201,7 @@
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt','')}
                     <@preprocessing m zbx_ver/>
+                    ${xml_wrap(m.jmxEndpoint!'','jmx_endpoint','')}
                     ${xml_wrap(m.timeout!'3s','timeout','3s')}
                     ${xml_wrap(m.url!'','url','')}
                     ${xml_wrap(m.statusCodes!'200','status_codes','200')}
@@ -277,6 +278,7 @@
             ${xml_wrap(dr.authType!'','authtype','NONE')}
             ${xml_wrap(dr.username!'','username','')}
             ${xml_wrap(dr.password!'','password','')}
+            ${xml_wrap(dr.jmxEndpoint!'','jmx_endpoint','')}
             ${xml_wrap(dr.timeout!'3s','timeout','3s')}
             ${xml_wrap(dr.url!'','url','')}
             ${xml_wrap(dr.statusCodes!'200','status_codes','200')}
