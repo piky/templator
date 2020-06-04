@@ -13,7 +13,7 @@ public class ScreenItem {
     @JsonAlias({ "resourcetype", "resource_type" })
     private ScreenResourceType resourceType;
 
-    private int width = 750;
+    private int width = 500;
     private int height = 100;
     private int x = 0;
     private int y = 0;
