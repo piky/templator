@@ -26,12 +26,16 @@ This template was tested on:
 
 <#if t.documentation??>
 ${(t.documentation.setup!'Refer to the vendor documentation.')}
+<#else>
+Refer to the vendor documentation.
 </#if>
 
 ## Zabbix configuration
 
 <#if t.documentation??>
 ${(t.documentation.zabbixConfig!'No specific Zabbix configuration is required.')}
+<#else>
+No specific Zabbix configuration is required.
 </#if>
 
 <#if (t.macros?size > 0)>
