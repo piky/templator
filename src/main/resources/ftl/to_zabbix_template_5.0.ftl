@@ -259,8 +259,54 @@
 
 </#macro>
 
+<#macro hostPrototype hp t>
+                    <host>${hp.host}</host>
+                    <name>${hp.name}</name>
+                    <status>${hp.status}</status>
+                    <discover>${hp.discover}</discover>
+                    <group_links>
+                        <group_link>
+                            <#list generate_groups(hp.groups![]) as g>
+                                <group>
+                                    <name>${g?replace('_',' ')}</name>
+                                </group>
+                            </#list>
+                        </group_link>
+                    </group_links>
+                    <#if (hp.groupPrototypes?size > 0)>
+                    <group_prototypes>
+                        <#list hp.groupPrototypes as gp>
+                        <group_prototype>
+                            <name>${gp}</name>
+                        </group_prototype>
+                        </#list>
+                    </group_prototypes>
+                    </#if>
+                    <#if (hp.templates?size > 0)>
+                    <templates>
+                        <#list hp.templates as t>
+                        <template>
+                            <name>${t}</name>
+                        </template>
+                        </#list>
+                    </templates>
+                    </#if>
+                    <#if (hp.macros?size > 0)>
+                    <macros>
+                        <#list hp.macros?sort_by("macro") as macro>
+                        <macro>
+                            ${xml_wrap(macro.macro,'macro','')}
+                            ${xml_wrap(macro.value,'value','')}
+                            ${xml_wrap(macro.description!'','description','')}
+                        </macro>
+                        </#list>
+                    </macros>
+                    </#if>
+</#macro>
+
 <#macro discovery_rule dr t>
             <#assign metrics = t.getMetricsByZbxVer(dr.metrics,zbx_ver)>
+            <#assign hostPrototypes = dr.hostPrototypes>
             <name>${dr.name}</name>
             <#if dr.type == 'SNMP'>
             <type>${headers.default_item_type}</type>
@@ -344,6 +390,13 @@
                     </item_prototype>
                 </#list>
             </item_prototypes>
+            <host_prototypes>
+                <#list hostPrototypes as hp>
+                    <host_prototype>
+                        <@hostPrototype hp t/>
+                    </host_prototype>
+                </#list>
+            </host_prototypes>
 
             <#-- trigger -->
             <#assign triggers = []>

@@ -26,6 +26,9 @@ public class DiscoveryRule {
 	@JsonAlias("items")
 	private ArrayList<Metric> metrics = new ArrayList<>(0);
 
+	@JsonAlias("host_prototypes")
+	private ArrayList<HostPrototype> hostPrototypes = new ArrayList<>(0);
+
 	// Preprocessing
 	private ArrayList<PreprocessingStep> preprocessing = new ArrayList<PreprocessingStep>(0);
 
@@ -198,6 +201,14 @@ public class DiscoveryRule {
 
 	public void setMetrics(ArrayList<Metric> metrics) {
 		this.metrics = metrics;
+	}
+
+	public ArrayList<HostPrototype> getHostPrototypes() {
+		return hostPrototypes;
+	}
+
+	public void setHostPrototypes(ArrayList<HostPrototype> hostPrototypes) {
+		this.hostPrototypes = hostPrototypes;
 	}
 
 	public ValueType getValueType() {
