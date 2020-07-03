@@ -32,6 +32,9 @@ public class TemplateDocumentation {
 	@JsonProperty("_zabbix_forum_url")
 	private String zabbixForumUrl;
 
+	@JsonProperty("_template_type")
+	private String templateType;
+
 	public String getOverview() {
 		return overview;
 	}
@@ -148,5 +151,13 @@ public class TemplateDocumentation {
 
 	public void setZabbixForumUrl(String zabbixForumUrl) {
 		this.zabbixForumUrl = zabbixForumUrl;
+	}
+
+	public String getTemplateType() {
+		return templateType;
+	}
+
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
 }

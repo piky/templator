@@ -2,6 +2,9 @@
 <#ftl output_format="plainText">
 <#assign zbx_ver = headers.zbx_ver?string>
 
+<#assign template_op_link = "https://www.zabbix.com/documentation/current/manual/config/templates_out_of_the_box">
+<#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks"}>
+
 <#list body.templates as t>
 # ${t.name}
 
@@ -24,6 +27,12 @@ This template was tested on:
 
 ## Setup
 
+<#if t.documentation?? && t.documentation.templateType??>
+<#if template_op_type_section_map["${t.documentation.templateType}"]??>
+> See [Zabbix template operation](${template_op_link}/${template_op_type_section_map["${t.documentation.templateType}"]}) for basic instructions.
+
+</#if>
+</#if>
 <#if t.documentation??>
 ${(t.documentation.setup!'Refer to the vendor documentation.')}
 <#else>

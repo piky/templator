@@ -107,8 +107,8 @@ public abstract class Metric {
 	public enum Group {
 		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Zabbix_raw_items, Inventory, Storage,
 		General, Fans, Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless, Nginx, Apache,
-		MySQL, PostgreSQL, RabbitMQ, Redis, Security, Monitoring_agent, Services, HAProxy, Docker, Memcached, Clickhouse,
-		ES_cluster, MSSQL, Etcd, IIS, JMX
+		MySQL, PostgreSQL, RabbitMQ, Redis, Security, Monitoring_agent, Services, HAProxy, Docker, Memcached,
+		ClickHouse, ClickHouse_ZooKeeper, ES_cluster, MSSQL, Etcd, IIS, JMX
 		// to be extended
 	};
 
