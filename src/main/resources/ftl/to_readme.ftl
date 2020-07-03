@@ -3,7 +3,7 @@
 <#assign zbx_ver = headers.zbx_ver?string>
 
 <#assign template_op_link = "https://www.zabbix.com/documentation/current/manual/config/templates_out_of_the_box">
-<#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks"}>
+<#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks", "IPMI": "ipmi"}>
 
 <#list body.templates as t>
 # ${t.name}
