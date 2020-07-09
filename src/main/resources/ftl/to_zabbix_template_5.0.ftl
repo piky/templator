@@ -438,6 +438,7 @@
             <@master_item dr 'master_item'/>
             <@lld_macro_paths dr/>
             <@preprocessing dr zbx_ver/>
+            <@overrides dr zbx_ver/>
  </#macro>
 
 <#-- tr - trigger-->
@@ -595,6 +596,48 @@
             </#list>
             </preprocessing>
         </#if>
+</#macro>
+
+<#macro overrides m zbx_ver>
+    <#-- m is metric or discovery -->
+    <#if (m.overrides?size>0)>
+        <overrides>
+        <#list m.overrides as o>
+            <override>
+                ${xml_wrap(o.name!'','name','')}
+                ${xml_wrap(o.step!'','step','')}
+                <#if o.filter??>
+                <filter>
+                    <#if (o.filter.conditions?size>0)>
+                    <conditions>
+                    <#list o.filter.conditions as cond>
+                        <condition>
+                            ${xml_wrap(cond.macro!'','macro','')}
+                            ${xml_wrap(cond.value!'','value','')}
+                            ${xml_wrap(cond.formulaid!'','formulaid','')}
+                        </condition>
+                    </#list>
+                    </conditions>
+                    </#if>
+                </filter>
+                </#if>
+                <#if (o.operations?size>0)>
+                <operations>
+                <#list o.operations as oper>
+                    <operation>
+                        ${xml_wrap(oper.operationobject!'','operationobject','')}
+                        ${xml_wrap(oper.operator!'','operator','')}
+                        ${xml_wrap(oper.value!'','value','')}
+                        ${xml_wrap(oper.status!'','status','')}
+                        ${xml_wrap(oper.discover!'','discover','')}
+                    </operation>
+                </#list>
+                </operations>
+                </#if>
+            </override>
+        </#list>
+        </overrides>
+    </#if>
 </#macro>
 
 <#macro lld_macro_paths dr>

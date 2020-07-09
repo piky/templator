@@ -68,7 +68,7 @@ public class Overrides {
 		private Discover discover = Discover.DISCOVER;
 		public enum Discover {
 			DISCOVER,
-			NOT_DISCOVER
+			NO_DISCOVER
 		}
 		
 
