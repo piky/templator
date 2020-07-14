@@ -263,7 +263,6 @@
                     <host>${hp.host}</host>
                     <name>${hp.name}</name>
                     <status>${hp.status}</status>
-                    <discover>${hp.discover}</discover>
                     <group_links>
                         <group_link>
                             <#list generate_groups(hp.groups![]) as g>

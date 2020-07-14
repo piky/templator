@@ -115,7 +115,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		// 	}
 		// })
-		.to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4", "direct:zbx5.0");
+		.to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4", "direct:zbx5.0", "direct:zbx5.2");
 
 		from("direct:zbx3.2")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
@@ -145,6 +145,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
 						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("5.0")) <= 0)))
 				.setHeader("zbx_ver", simple("5.0", String.class)).to("direct:multicaster_snmp");
+		from("direct:zbx5.2")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("5.2")) <= 0)))
+				.setHeader("zbx_ver", simple("5.2", String.class)).to("direct:multicaster_snmp");
 		/* STEP 6: multicast to different SNMP versions (and ICMP) */
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:snmpv1", "direct:snmpv2", "direct:other", "direct:zabbix_active"
@@ -158,6 +162,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.setHeader("default_item_type", simple("SNMPV1", String.class))
 						.setHeader("template_suffix", simple("SNMPv1", String.class))
 					.when(header("zbx_ver").isEqualTo("5.0"))	
+						.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
+						.setHeader("template_suffix", simple("SNMP", String.class))
+					.when(header("zbx_ver").isEqualTo("5.2"))	
 						.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 						.setHeader("template_suffix", simple("SNMP", String.class))
 					.otherwise()
@@ -179,6 +186,9 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.when(header("zbx_ver").isEqualTo("5.0"))	
 							.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 							.setHeader("template_suffix", simple("SNMP", String.class))
+						.when(header("zbx_ver").isEqualTo("5.2"))	
+							.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
+							.setHeader("template_suffix", simple("SNMP", String.class))
 						.otherwise()
 							.setHeader("default_item_type", simple("4", String.class))
 							.setHeader("template_suffix", simple("SNMPv2", String.class))
@@ -197,6 +207,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
 					.when(header("zbx_ver").isEqualTo("5.0"))	
 						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
+					.when(header("zbx_ver").isEqualTo("5.2"))	
+						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
 					.otherwise()
 						.setHeader("default_item_type", simple("0", String.class))
 				.end()
@@ -212,6 +224,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 					.when(header("zbx_ver").isEqualTo("4.4"))
 						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
 					.when(header("zbx_ver").isEqualTo("5.0"))
+						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
+					.when(header("zbx_ver").isEqualTo("5.2"))
 						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
 					.otherwise()
 						.setHeader("default_item_type", simple("7", String.class))
@@ -243,6 +257,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 						.to("freemarker:ftl/to_zabbix_template_4.4.ftl?contentCache=false")
 					.when(header("zbx_ver").isEqualTo("5.0"))	
 						.to("freemarker:ftl/to_zabbix_template_5.0.ftl?contentCache=false")
+					.when(header("zbx_ver").isEqualTo("5.2"))	
+						.to("freemarker:ftl/to_zabbix_template_5.2.ftl?contentCache=false")
 					.otherwise()
 						.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
 				.end()
