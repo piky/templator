@@ -105,11 +105,63 @@ public abstract class Metric {
 	private Type type;
 
 	public enum Group {
-		CPU, Memory, Status, Temperature, Network_interfaces, Internal_items, Zabbix_raw_items, Inventory, Storage,
-		General, Fans, Power_supply, Physical_disks, Virtual_disks, Disk_arrays, Filesystems, Wireless, Nginx, Apache,
-		MySQL, PostgreSQL, RabbitMQ, Redis, Security, Monitoring_agent, Services, HAProxy, Docker, Memcached,
-		ClickHouse, ClickHouse_ZooKeeper, ES_cluster, MSSQL, Etcd, IIS, JMX, Oracle, VMware
+		CPU("CPU"),
+		Memory("Memory"),
+		Status("Status"),
+		Network_interfaces("Network_interfaces"),
+		Internal_items("Internal_items"),
+		Zabbix_raw_items("Zabbix_raw_items"),
+		Inventory("Inventory"),
+		Storage("Storage"),
+		General("General"),
+		Fans("Fans"),
+		Power_supply("Power_supply"),
+		Physical_disks("Physical_disks"),
+		Virtual_disks("Virtual_disks"),
+		Disk_arrays("Disk_arrays"),
+		Filesystems("Filesystems"),
+		Wireless("Wireless"),
+		Nginx("Nginx"),
+		Apache("Apache"),
+		MySQL("MySQL"),
+		PostgreSQL("PostgreSQL"),
+		RabbitMQ("RabbitMQ"),
+		Redis("Redis"),
+		Security("Security"),
+		Monitoring_agent("Monitoring_agent"),
+		Services("Services"),
+		HAProxy("HAProxy"),
+		Docker("Docker"),
+		Memcached("Memcached"),
+		ClickHouse("ClickHouse"),
+		ClickHouse_ZooKeeper("ClickHouse_ZooKeeper"),
+		ES_cluster("ES_cluster"),
+		MSSQL("MSSQL"),
+		Etcd("Etcd"), 
+		IIS("IIS"),
+		JMX("JMX"),
+		Oracle("Oracle"),
+		VMware("Oracle"),
+		Temperature("Temperature"),
+		Array("Array"),
+		Battery("Battery"),
+		Load("Load"),
+		Counter("Counter"),
+		Diversion("Diversion"),
+		PHPFPM("PHP-FPM");
+
 		// to be extended
+
+		public final String label;
+
+		Group(String label) {
+			this.label = label;
+		}
+
+		@Override
+		public String toString() {
+			return this.label;
+		}
 	};
 
 	@JsonAlias("_group")
