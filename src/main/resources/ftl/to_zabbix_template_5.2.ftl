@@ -2,7 +2,6 @@
 <#assign zbx_ver = headers.zbx_ver?string>
 <#assign aDateTime = .now>
 <#assign template_type = headers.template_type?string>
-<#assign snmp_community = '{$SNMP_COMMUNITY}'>
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>${zbx_ver}</version>
@@ -160,9 +159,6 @@
                     <#elseif m.type != 'ZABBIX_PASSIVE'> <#-- default -->
                     <type>${m.type}</type>
                     </#if>
-                    <#if m.type == 'SNMP'>
-                    <snmp_community>${snmp_community}</snmp_community>
-                    </#if>
                     ${xml_wrap(m.oid!'','snmp_oid','')}
                     <key>${m.key}</key>
                     ${xml_wrap(time_suffix_to_seconds(m.delay!''),'delay','1m')}
@@ -205,6 +201,7 @@
                     </#if>
                     ${xml_wrap(m.logtimefmt!'','logtimefmt','')}
                     <@preprocessing m zbx_ver/>
+                    ${xml_wrap(m.jmxEndpoint!'','jmx_endpoint','')}
                     ${xml_wrap(m.timeout!'3s','timeout','3s')}
                     ${xml_wrap(m.url!'','url','')}
                     ${xml_wrap(m.statusCodes!'200','status_codes','200')}
@@ -266,6 +263,7 @@
                     <host>${hp.host}</host>
                     <name>${hp.name}</name>
                     <status>${hp.status}</status>
+                    <discover>${hp.discover}</discover>
                     <group_links>
                         <group_link>
                             <#list generate_groups(hp.groups![]) as g>
@@ -317,27 +315,16 @@
             <#else>
             <type>${dr.type!'none'}</type>
             </#if>
-            <#if dr.type == 'SNMP'>
-            <snmp_community>${snmp_community}</snmp_community>
-            <#else>
-            </#if>
             ${xml_wrap(dr.oid!'','snmp_oid','')}
             <key>${dr.key}</key>
             ${xml_wrap(time_suffix_to_seconds(dr.delay!''),'delay','')}
             <#--  <status>0</status>  -->
-            <#--  <allowed_hosts/>
-            <snmpv3_contextname/>
-            <snmpv3_securityname/>
-            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-            <snmpv3_authpassphrase/>
-            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-            <snmpv3_privpassphrase/>-->
             ${xml_wrap(dr.expressionFormula!'','params','')}
             <#--  <ipmi_sensor/>  -->
             ${xml_wrap(dr.authType!'','authtype','NONE')}
             ${xml_wrap(dr.username!'','username','')}
             ${xml_wrap(dr.password!'','password','')}
+            ${xml_wrap(dr.jmxEndpoint!'','jmx_endpoint','')}
             ${xml_wrap(dr.timeout!'3s','timeout','3s')}
             ${xml_wrap(dr.url!'','url','')}
             ${xml_wrap(dr.statusCodes!'200','status_codes','200')}
@@ -487,9 +474,6 @@
     ${xml_wrap(tr.description!'','description','')}
     <#--  <type>0</type>  -->
     ${xml_wrap(tr.manualClose,'manual_close','NO')}
-    <#if zbx_ver == '5.0'>
-    ${xml_wrap(tr.discover!'','discover','')}
-    </#if>
     <#if (tr.dependencies?size>0)>
 	<dependencies>
 		<#list tr.dependencies as trd>
@@ -615,46 +599,44 @@
 </#macro>
 
 <#macro overrides m zbx_ver>
-    <#if (zbx_ver='5.0')>
-        <#-- m is metric or discovery -->
-        <#if (m.overrides?size>0)>
-            <overrides>
-            <#list m.overrides as o>
-                <override>
-                    ${xml_wrap(o.name!'','name','')}
-                    ${xml_wrap(o.step!'','step','')}
-                    <#if o.filter??>
-                    <filter>
-                        <#if (o.filter.conditions?size>0)>
-                        <conditions>
-                        <#list o.filter.conditions as cond>
-                            <condition>
-                                ${xml_wrap(cond.macro!'','macro','')}
-                                ${xml_wrap(cond.value!'','value','')}
-                                ${xml_wrap(cond.formulaid!'','formulaid','')}
-                            </condition>
-                        </#list>
-                        </conditions>
-                        </#if>
-                    </filter>
-                    </#if>
-                    <#if (o.operations?size>0)>
-                    <operations>
-                    <#list o.operations as oper>
-                        <operation>
-                            ${xml_wrap(oper.operationobject!'','operationobject','')}
-                            ${xml_wrap(oper.operator!'','operator','')}
-                            ${xml_wrap(oper.value!'','value','')}
-                            ${xml_wrap(oper.status!'','status','')}
-                            ${xml_wrap(oper.discover!'','discover','')}
-                        </operation>
+    <#-- m is metric or discovery -->
+    <#if (m.overrides?size>0)>
+        <overrides>
+        <#list m.overrides as o>
+            <override>
+                ${xml_wrap(o.name!'','name','')}
+                ${xml_wrap(o.step!'','step','')}
+                <#if o.filter??>
+                <filter>
+                    <#if (o.filter.conditions?size>0)>
+                    <conditions>
+                    <#list o.filter.conditions as cond>
+                        <condition>
+                            ${xml_wrap(cond.macro!'','macro','')}
+                            ${xml_wrap(cond.value!'','value','')}
+                            ${xml_wrap(cond.formulaid!'','formulaid','')}
+                        </condition>
                     </#list>
-                    </operations>
+                    </conditions>
                     </#if>
-                </override>
-            </#list>
-            </overrides>
-        </#if>
+                </filter>
+                </#if>
+                <#if (o.operations?size>0)>
+                <operations>
+                <#list o.operations as oper>
+                    <operation>
+                        ${xml_wrap(oper.operationobject!'','operationobject','')}
+                        ${xml_wrap(oper.operator!'','operator','')}
+                        ${xml_wrap(oper.value!'','value','')}
+                        ${xml_wrap(oper.status!'','status','')}
+                        ${xml_wrap(oper.discover!'','discover','')}
+                    </operation>
+                </#list>
+                </operations>
+                </#if>
+            </override>
+        </#list>
+        </overrides>
     </#if>
 </#macro>
 
