@@ -141,7 +141,7 @@ public abstract class Metric {
 		IIS("IIS"),
 		JMX("JMX"),
 		Oracle("Oracle"),
-		VMware("Oracle"),
+		VMware("VMware"),
 		Temperature("Temperature"),
 		Array("Array"),
 		Battery("Battery"),
