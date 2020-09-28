@@ -2,15 +2,15 @@
 <#ftl output_format="plainText">
 <#assign zbx_ver = headers.zbx_ver?string>
 
-<#assign template_op_link = "https://www.zabbix.com/documentation/current/manual/config/templates_out_of_the_box">
-<#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks", "IPMI": "ipmi"}>
+<#assign template_op_link = "https://www.zabbix.com/documentation/${zbx_ver}/manual/config/templates_out_of_the_box">
+<#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks", "IPMI": "ipmi", "JMX": "jmx"}>
 
 <#list body.templates as t>
 # ${t.name}
 
 ## Overview
 
-For Zabbix version: ${zbx_ver}  
+For Zabbix version: ${zbx_ver} and higher
 <#if t.documentation??>
 <#if t.documentation.overview??>
 ${(t.documentation.overview!'')}
