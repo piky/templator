@@ -75,7 +75,7 @@ There are no template links in this template.
 |Name|Description|Type|Key and additional info|
 |----|-----------|----|----|
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-|${dr.name} |${(dr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${dr.type} |${dr.key}<#if (dr.preprocessing?size>0)><p>**Preprocessing**:</p><#list dr.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if><#if (dr.filter??)><p>**Filter**:</p>${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond><p>- ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if> |
+|${dr.name} |${(dr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${dr.type} |${dr.key}<#if (dr.preprocessing?size>0)><p>**Preprocessing**:</p><#list dr.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep .params?length>50)>Text is too long. Please see in the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p></#if></#list></#if><#if (dr.filter??)><p>**Filter**:</p>${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond><p>- ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if> |
 </#list>
 </#if>
 
@@ -84,7 +84,7 @@ There are no template links in this template.
 |Group|Name|Description|Type|Key and additional info|
 |-----|----|-----------|----|---------------------|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
-|${m.group} |${m.name} |${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${m.type} |${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}`</p><#if (prep.errorHandler!="ORIGINAL_ERROR")><p>⛔️ON_FAIL: `${prep.errorHandler} -> ${prep.errorHandlerParams!''}`</p></#if></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')?replace(r"\|\|",r"\\|\\|","rm")}`</#if> |
+|${m.group} |${m.name} |${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${m.type} |${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep.params?length>50)>Text is too long. Please see the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p><#if (prep.errorHandler!="ORIGINAL_ERROR")><p>⛔️ON_FAIL: `${prep.errorHandler} -> ${prep.errorHandlerParams!''}`</p></#if></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`<#if (m.expressionFormula?length>50)>Text is too long. Please see the template.<#else>${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')?replace(r"\|\|",r"\\|\\|","rm")}</#if>`</#if> |
 </#list>
 
 ## Triggers
