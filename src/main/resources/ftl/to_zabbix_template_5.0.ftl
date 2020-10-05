@@ -682,6 +682,10 @@
             <#local found = true>
             <#local glist = glist + ["Templates/Databases"]>
             <#break>
+          <#case 'TEL'>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Telephony"]>
+            <#break>
           <#default>
         </#switch>
     </#list>
