@@ -16,8 +16,8 @@
     <templates>
     <#list body.templates?sort_by("name") as t>
         <template>
-            <template>${t.name}</template>
-            <name>${t.name}</name>
+            <template>${t.name?replace(r'Template\s+\w+\s+','','r')}</template>
+            <name>${t.name?replace(r'Template\s+\w+\s+','','r')}</name>
             <description><@generate_template_description t/></description>
             <#if (t.templates?size > 0)>
             <templates>
@@ -448,7 +448,7 @@
     <#if (tr.getMetricsUsed()?size == 0)>
 	<expression>${tr.expression?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r')}</expression>
     <#else>
-    <expression>${tr.expression?replace('TEMPLATE_NAME',t.name)}</expression>
+    <expression>${tr.expression?replace('TEMPLATE_NAME',t.name)?replace(r'Template\s+\w+\s+','','r')}</expression>
     </#if>
 	<#local recovery_mode = 'EXPRESSION'>
 	<#if tr.recoveryExpression??>
@@ -462,7 +462,7 @@
     <#if (tr.getMetricsUsed()?size == 0)>
     ${xml_wrap((tr.recoveryExpression!'')?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r'),'recovery_expression','')}
     <#else>
-    ${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression','')}
+    ${xml_wrap((tr.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name)?replace(r'Template\s+\w+\s+','','r'),'recovery_expression','')}
     </#if>
     <name>${tr.name}</name>
     ${xml_wrap(tr.operationalData!'','opdata','')}
@@ -479,8 +479,8 @@
 		<#list tr.dependencies as trd>
 		<dependency>
 			${xml_wrap(trd.name!'','name','')}
-			${xml_wrap((trd.expression!'')?replace('TEMPLATE_NAME',t.name),'expression','')}
-			${xml_wrap((trd.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name),'recovery_expression','')}
+			${xml_wrap((trd.expression!'')?replace('TEMPLATE_NAME',t.name)?replace(r'Template\s+\w+\s+','','r'),'expression','')}
+			${xml_wrap((trd.recoveryExpression!'')?replace('TEMPLATE_NAME',t.name)?replace(r'Template\s+\w+\s+','','r'),'recovery_expression','')}
 		</dependency>
 		</#list>
     </dependencies>
@@ -517,7 +517,7 @@
             		${xml_wrap(gi.calcFnc!'','calc_fnc','AVG')}
             		${xml_wrap(gi.type!'','type','SIMPLE')}
                     <item>
-                        <host>${t.name}</host> 
+                        <host>${t.name?replace(r'Template\s+\w+\s+','','r')}</host> 
                         <key>${gi.metricKey}</key>
                         <#-- ${xml_wrap(gi.type!'','discoveryRule','')} -->
                     </item>

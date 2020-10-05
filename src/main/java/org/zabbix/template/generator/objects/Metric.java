@@ -148,7 +148,9 @@ public abstract class Metric {
 		Load("Load"),
 		Counter("Counter"),
 		Diversion("Diversion"),
-		PHPFPM("PHP-FPM");
+		FPM("PHP-FPM"),
+		Aranet("Aranet"),
+		Squid("Squid");
 
 		// to be extended
 
