@@ -10,10 +10,10 @@
 
 ## Overview
 
-For Zabbix version: ${zbx_ver} and higher
+For Zabbix version: ${zbx_ver} and higher  
 <#if t.documentation??>
 <#if t.documentation.overview??>
-${(t.documentation.overview!'')}
+${(t.documentation.overview?replace(r'Template\s+\w+\s+','','r'))}
 </#if>
 <#if (t.documentation.testedOn?size > 0)>
 
