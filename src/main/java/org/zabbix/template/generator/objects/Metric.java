@@ -149,7 +149,8 @@ public abstract class Metric {
 		Counter("Counter"),
 		Diversion("Diversion"),
 		FPM("PHP-FPM"),
-		Aranet("Aranet");
+		Aranet("Aranet"),
+		Squid("Squid");
 
 		// to be extended
 

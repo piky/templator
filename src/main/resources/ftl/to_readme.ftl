@@ -6,7 +6,7 @@
 <#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks", "IPMI": "ipmi", "JMX": "jmx"}>
 
 <#list body.templates as t>
-# ${t.name}
+# ${t.name?replace(r'Template\s+\w+\s+','','r')}
 
 ## Overview
 
@@ -75,7 +75,7 @@ There are no template links in this template.
 |Name|Description|Type|Key and additional info|
 |----|-----------|----|----|
 <#list t.getDiscoveryRulesByZbxVer(t.discoveryRules,zbx_ver) as dr>
-|${dr.name} |${(dr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${dr.type} |${dr.key}<#if (dr.preprocessing?size>0)><p>**Preprocessing**:</p><#list dr.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep .params?length>50)>Text is too long. Please see in the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p></#if></#list></#if><#if (dr.filter??)><p>**Filter**:</p>${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond><p>- ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if> |
+|${dr.name} |${(dr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${dr.type} |${dr.key}<#if (dr.preprocessing?size>0)><p>**Preprocessing**:</p><#list dr.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep.params?length>100)>Text is too long. Please see the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p></#if></#list></#if><#if (dr.filter??)><p>**Filter**:</p>${dr.filter.evalType} ${dr.filter.formula!''}<#list dr.filter.conditions as cond><p>- ${cond.formulaid}: ${cond.macro} <#if cond.value??>${cond.operator} `${(cond.value!'')?replace("(\n|\r\n)+"," ",'r')}`</p></#if></#list></#if> |
 </#list>
 </#if>
 
@@ -84,7 +84,7 @@ There are no template links in this template.
 |Group|Name|Description|Type|Key and additional info|
 |-----|----|-----------|----|---------------------|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
-|${m.group} |${m.name} |${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${m.type} |${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep.params?length>50)>Text is too long. Please see the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p><#if (prep.errorHandler!="ORIGINAL_ERROR")><p>⛔️ON_FAIL: `${prep.errorHandler} -> ${prep.errorHandlerParams!''}`</p></#if></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`<#if (m.expressionFormula?length>50)>Text is too long. Please see the template.<#else>${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')?replace(r"\|\|",r"\\|\\|","rm")}</#if>`</#if> |
+|${m.group} |${m.name} |${(m.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |${m.type} |${m.key}<#if (m.preprocessing?size>0)><p>**Preprocessing**:</p><#list m.preprocessing as prep><p>- ${prep.type}<#if prep.params??>: `<#if (prep.type=="JAVASCRIPT" && prep.params?length>100)>Text is too long. Please see the template.<#else>${(prep.params!'')?replace("(\n|\r\n)+"," ",'r')}</#if>`</p><#if (prep.errorHandler!="ORIGINAL_ERROR")><p>⛔️ON_FAIL: `${prep.errorHandler} -> ${prep.errorHandlerParams!''}`</p></#if></#if></#list></#if><#if (m.expressionFormula??)><p>**Expression**:</p>`<#if (m.type=="ODBC" && m.expressionFormula?length>100)>Text is too long. Please see the template.<#else>${(m.expressionFormula!'')?replace("(\n|\r\n)+"," ",'r')?replace(r"\|\|",r"\\|\\|","rm")}</#if>`</#if> |
 </#list>
 
 ## Triggers
@@ -93,7 +93,7 @@ There are no template links in this template.
 |----|-----------|----|----|----|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
-|${tr.name} |${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if> |${tr.priority} |<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if> |
+|${tr.name} |${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')?replace(r'Template\s+\w+\s+','','r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if> |${tr.priority} |<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if> |
     </#list>
 </#list>
 
