@@ -150,7 +150,8 @@ public abstract class Metric {
 		Diversion("Diversion"),
 		FPM("PHP-FPM"),
 		Aranet("Aranet"),
-		Squid("Squid");
+		Squid("Squid"),
+		Ceph("Ceph");
 
 		// to be extended
 
