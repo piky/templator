@@ -87,10 +87,22 @@ rule "Rule 3b: generate each graph name(discovery rules, prefix with resource)"
 	no-loop
 when
     $m : Metric ($key: key != null, resource != null, $graphs: graphs)
-    $gr: Graph (name not contains '__RESOURCE__') from $graphs
+    $gr: Graph (resource == null, name not contains '__RESOURCE__') from $graphs
 then
     logger.info(marker,"Generating graph name for "+ $gr.name);
     $gr.name = $m.resource + ": " + $gr.name;
+end
+
+rule "Rule 3c: override each graph name(discovery rules, prefix with resource)"
+	agenda-group "populate"
+	dialect "mvel"
+	no-loop
+when
+    $m : Metric ($key: key != null, resource != null, $graphs: graphs)
+    $gr: Graph (resource != null, name not contains '__RESOURCE__') from $graphs
+then
+    logger.info(marker,"Generating overrided graph name for "+ $gr.name);
+    $gr.name = $gr.resource + ": " + $gr.name;
 end
 
 

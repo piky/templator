@@ -18,6 +18,10 @@ public class Graph {
 	@JsonProperty("_id")
 	private String id;
 	private String name;
+	
+	@JsonAlias("_resource")
+	private String resource;
+
 	private int width = 900;
 	private int height = 200;
 
@@ -249,6 +253,14 @@ public class Graph {
 
 	public void setId(String id) {
 		this.id = id;
+	};
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
 	};
 
 }
