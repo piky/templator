@@ -151,7 +151,6 @@ public abstract class Metric {
 		FPM("PHP-FPM"),
 		Aranet("Aranet"),
 		Squid("Squid"),
-		PHPFPM("PHP-FPM"),
 		Ceph("Ceph"),
 		Asterisk("Asterisk");
 

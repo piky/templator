@@ -23,7 +23,7 @@
             <templates>
             <#list t.templates?sort as dep>
                 <template>
-                   <name>${dep}</name>
+                   <name>${dep?replace(r'Template\s+\w+\s+','','r')}</name>
                 </template>
             </#list>
             </templates>
@@ -286,7 +286,7 @@
                     <templates>
                         <#list hp.templates as t>
                         <template>
-                            <name>${t}</name>
+                            <name>${t?replace(r'Template\s+\w+\s+','','r')}</name>
                         </template>
                         </#list>
                     </templates>
@@ -446,7 +446,7 @@
 <#macro trigger tr m t>
     <#-- no other metrics used -->
     <#if (tr.getMetricsUsed()?size == 0)>
-	<expression>${tr.expression?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r')}</expression>
+	<expression>${tr.expression?replace('(TEMPLATE_NAME):(.+?)\\.([a-z]+\\(.*?\\))\\s*(})',"$3$4",'r')?replace(r'Template\s+\w+\s+','','r')}</expression>
     <#else>
     <expression>${tr.expression?replace('TEMPLATE_NAME',t.name)?replace(r'Template\s+\w+\s+','','r')}</expression>
     </#if>
@@ -540,12 +540,12 @@
                     <#if (si.resourceType == 'GRAPH' || si.resourceType == 'GRAPH_PROTOTYPE')>
                     <resource>
                         <name>${si.resource[0].name}</name>
-                        <host>${si.resource[0].host}</host> 
+                        <host>${si.resource[0].host?replace(r'Template\s+\w+\s+','','r')}</host> 
                     </resource>
                     <#else> <#--simple graph, plain text...-->
                     <resource>
                         <key>${si.resource[0].name}</key>
-                        <host>${si.resource[0].host}</host>
+                        <host>${si.resource[0].host?replace(r'Template\s+\w+\s+','','r')}</host>
                     </resource>
                     </#if>
             		${xml_wrap(si.width?c,'width','')}

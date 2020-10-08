@@ -6,6 +6,7 @@
 <#assign template_op_type_section_map = {"AGENT": "zabbix_agent", "AGENT2": "zabbix_agent2", "HTTP": "http", "ODBC": "odbc_checks", "IPMI": "ipmi", "JMX": "jmx"}>
 
 <#list body.templates as t>
+<#--  # ${t.name}  -->
 # ${t.name?replace(r'Template\s+\w+\s+','','r')}
 
 ## Overview
@@ -13,7 +14,7 @@
 For Zabbix version: ${zbx_ver} and higher  
 <#if t.documentation??>
 <#if t.documentation.overview??>
-${(t.documentation.overview?replace(r'Template\s+\w+\s+','','r'))}
+${(t.documentation.overview!'')}
 </#if>
 <#if (t.documentation.testedOn?size > 0)>
 
@@ -63,7 +64,7 @@ No specific Zabbix configuration is required.
 |Name|
 |----|
 <#list t.templates as dep>
-|${dep} |
+|${dep?replace(r'Template\s+\w+\s+','','r')} |
 </#list>
 <#else>
 There are no template links in this template.
@@ -93,7 +94,8 @@ There are no template links in this template.
 |----|-----------|----|----|----|
 <#list t.getMetricsByZbxVer(t.metricsRegistry,zbx_ver)?sort_by("group") as m>
     <#list m.triggers as tr>
-|${tr.name} |${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')?replace(r'Template\s+\w+\s+','','r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if> |${tr.priority} |<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if> |
+<#--  |${tr.name} |${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')}`</#if> |${tr.priority} |<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name}</p></#list></#if> |  -->
+|${tr.name} |${(tr.description!'-')?replace("^(.+)$","<p>$1</p>",'rm')?replace("(\n|\r\n)+","",'r')} |`${(tr.expression!'-')?replace("(\n|\r\n)+"," ",'r')?replace(r'Template\s+\w+\s+','','r')}`<#if tr.recoveryExpression??><p>Recovery expression:</p>`${(tr.recoveryExpression!'-')?replace("(\n|\r\n)+"," ",'r')?replace(r'Template\s+\w+\s+','','r')}`</#if> |${tr.priority} |<#if (tr.manualClose == 'YES')><p>Manual close: YES</p></#if><#if (tr.dependencies?size>0)><p>**Depends on**:</p><#list tr.dependencies as dep><p>- ${dep.name?replace(r'Template\s+\w+\s+','','r')}</p></#list></#if> |
     </#list>
 </#list>
 
