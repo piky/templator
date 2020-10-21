@@ -57,7 +57,9 @@ public class Overrides {
 		private Operator operator = Operator.LIKE;
 		public enum Operator {
 			LIKE,
-			NOT_LIKE
+			NOT_LIKE,
+			REGEXP,
+			NOT_REGEXP
 		}
 		private String value;
 		private Status status = Status.ENABLED;
