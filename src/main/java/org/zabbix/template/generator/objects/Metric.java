@@ -115,6 +115,7 @@ public abstract class Metric {
 		Storage("Storage"),
 		General("General"),
 		Fans("Fans"),
+		Voltage("Voltage"),
 		Power_supply("Power_supply"),
 		Physical_disks("Physical_disks"),
 		Virtual_disks("Virtual_disks"),
@@ -152,7 +153,8 @@ public abstract class Metric {
 		Aranet("Aranet"),
 		Squid("Squid"),
 		Ceph("Ceph"),
-		Asterisk("Asterisk");
+		Asterisk("Asterisk"),
+		ActiveMQ("ActiveMQ");
 
 		// to be extended
 
