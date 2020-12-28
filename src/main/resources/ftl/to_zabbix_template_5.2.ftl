@@ -589,7 +589,17 @@
                 </#if>
                 <step>
                     <type>${p.type}</type>
-                    <params>${p.params!''}</params>
+                    <parameters>
+                    <#if p.params??>
+                    <#list p.params?split("\n") as param>
+                        ${xml_wrap(param!'','parameter','parameter')}
+                    </#list>
+                    <#elseif p.parameters??>
+                    <#list p.parameters as param>
+                        ${xml_wrap(param!'','parameter','parameter')}
+                    </#list>
+                    </#if>
+                    </parameters>
                     ${xml_wrap(p.errorHandler!'','error_handler','ORIGINAL_ERROR')}
                     ${xml_wrap(p.errorHandlerParams!'','error_handler_params','')}
                 </step>

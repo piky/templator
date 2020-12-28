@@ -154,7 +154,8 @@ public abstract class Metric {
 		Squid("Squid"),
 		Ceph("Ceph"),
 		Asterisk("Asterisk"),
-		ActiveMQ("ActiveMQ");
+		ActiveMQ("ActiveMQ"),
+		Vault("Vault");
 
 		// to be extended
 
