@@ -167,6 +167,11 @@
                     <#-- forced disabling of key=system.localtime for zabbix active template, since it is not supported that way -->
                     <#if m.type == 'ZABBIX_PASSIVE' && template_type == 'ZABBIX_ACTIVE' && m.key == 'system.localtime'>
                     <status>DISABLED</status>
+                    <#else>
+                    ${xml_wrap(m.status!'','status','')}
+                    </#if>
+                    <#if m.discover == 'NO_DISCOVER'>
+                    <discover>${m.discover}</discover>
                     </#if>
                     ${xml_wrap(m.valueType!'','value_type','UNSIGNED')}
                     ${xml_wrap((prepare_units(m.units!'')),'units','')}
