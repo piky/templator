@@ -117,7 +117,7 @@ public class ZabbixService extends DefaultZabbixApi {
 				put("createMissing", true);
 			}
 		});
-		rules.put("templateScreens", new HashMap<String, Object>() {
+		rules.put("screens", new HashMap<String, Object>() {
 			{
 				put("createMissing", true);
 				put("updateExisting", true);

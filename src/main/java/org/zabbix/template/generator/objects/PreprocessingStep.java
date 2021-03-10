@@ -1,5 +1,7 @@
 package org.zabbix.template.generator.objects;
 
+import java.util.ArrayList;
+
 import java.util.Objects;
 import java.util.Comparator;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -11,6 +13,8 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 
 	private PreprocessingStepType type;
 	private String params;
+
+	private ArrayList<String> parameters = new ArrayList<String>(0);
 
 	@JsonAlias({ "error_handler" })
 	private PreprocessingStepErrorHandler errorHandler = PreprocessingStepErrorHandler.ORIGINAL_ERROR;
@@ -55,6 +59,14 @@ public class PreprocessingStep implements Comparable<PreprocessingStep> {
 
 	public void setParams(String params) {
 		this.params = params;
+	}
+
+	public ArrayList<String> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(ArrayList<String> parameters) {
+		this.parameters = parameters;
 	}
 
 	public PreprocessingStepErrorHandler getErrorHandler() {

@@ -68,7 +68,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				//.parallelProcessing()
 				.to(
 					"direct:EN"
-				   ,"direct:RU"
+				//    ,"direct:RU"
 				);
 
 		from("direct:RU").setHeader("lang", simple("RU", String.class))
@@ -115,32 +115,33 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		// 	}
 		// })
-		.to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4", "direct:zbx5.0", "direct:zbx5.2");
+		// .to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4", "direct:zbx5.0", "direct:zbx5.2");
+		.to("direct:zbx5.0", "direct:zbx5.2");
 
-		from("direct:zbx3.2")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
-						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.2")) <= 0)))
-				.setHeader("zbx_ver", simple("3.2", String.class)).to("direct:multicaster_snmp");
+		// from("direct:zbx3.2")
+		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+		// 				.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.2")) <= 0)))
+		// 		.setHeader("zbx_ver", simple("3.2", String.class)).to("direct:multicaster_snmp");
 
-		from("direct:zbx3.4")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
-						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)))
-				.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
+		// from("direct:zbx3.4")
+		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+		// 				.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("3.4")) <= 0)))
+		// 		.setHeader("zbx_ver", simple("3.4", String.class)).to("direct:multicaster_snmp");
 
-		from("direct:zbx4.0")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
-						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.0")) <= 0)))
-				.setHeader("zbx_ver", simple("4.0", String.class)).to("direct:multicaster_snmp");
+		// from("direct:zbx4.0")
+		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+		// 				.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.0")) <= 0)))
+		// 		.setHeader("zbx_ver", simple("4.0", String.class)).to("direct:multicaster_snmp");
 
-		from("direct:zbx4.2")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
-						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.2")) <= 0)))
-				.setHeader("zbx_ver", simple("4.2", String.class)).to("direct:multicaster_snmp");
+		// from("direct:zbx4.2")
+		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+		// 				.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.2")) <= 0)))
+		// 		.setHeader("zbx_ver", simple("4.2", String.class)).to("direct:multicaster_snmp");
 
-		from("direct:zbx4.4")
-				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
-						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.4")) <= 0)))
-				.setHeader("zbx_ver", simple("4.4", String.class)).to("direct:multicaster_snmp");
+		// from("direct:zbx4.4")
+		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+		// 				.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("4.4")) <= 0)))
+		// 		.setHeader("zbx_ver", simple("4.4", String.class)).to("direct:multicaster_snmp");
 		from("direct:zbx5.0")
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
 						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("5.0")) <= 0)))
