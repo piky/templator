@@ -54,7 +54,29 @@ public abstract class Metric {
 
 	};
 
+	public enum Discover implements ZabbixValue {
+
+		DISCOVER(0), NO_DISCOVER(1);
+
+		private int zabbixValue;
+
+		Discover(int zabbixValue) {
+			this.setZabbixValue(zabbixValue);
+		}
+
+		@Override
+		public int getZabbixValue() {
+			return zabbixValue;
+		}
+
+		public void setZabbixValue(int zabbixValue) {
+			this.zabbixValue = zabbixValue;
+		}
+
+	};
+
 	private Status status = Status.ENABLED;
+	private Discover discover = Discover.DISCOVER;
 	private String name;
 	private String description;
 	@JsonAlias("_vendor_documentation") // TODO deprecate this
@@ -155,7 +177,10 @@ public abstract class Metric {
 		Ceph("Ceph"),
 		Asterisk("Asterisk"),
 		ActiveMQ("ActiveMQ"),
-		Vault("Vault");
+		Vault("Vault"),
+		MongoDB("MongoDB"),
+		Mongos("Mongos"),
+		Mongod("Mongod");
 
 		// to be extended
 
@@ -915,6 +940,14 @@ public abstract class Metric {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Discover getDiscover() {
+		return discover;
+	}
+
+	public void setDiscover(Discover discover) {
+		this.discover = discover;
 	}
 
 	public YesNo getFollowRedirects() {
