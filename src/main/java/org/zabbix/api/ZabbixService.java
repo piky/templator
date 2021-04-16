@@ -23,14 +23,16 @@ public class ZabbixService extends DefaultZabbixApi {
 	private boolean login;
 	private String auth;
 	private static final Logger logger = LogManager.getLogger(ZabbixService.class.getName());
+	private float version;
 
 	@Autowired
 	public ZabbixService(@Value("${zabbix.login}") String zabbix_login, @Value("${zabbix.password}") String zabbix_pass,
-			@Value("${zabbix.url.api}") String url) {
+			@Value("${zabbix.url.api}") String url, @Value("${zabbix.version}") String ver) {
 		super(url);
 
 		this.init();
 		this.login = login(zabbix_login, zabbix_pass);
+		this.version = Float.parseFloat(ver);
 	}
 
 	/*
@@ -117,13 +119,6 @@ public class ZabbixService extends DefaultZabbixApi {
 				put("createMissing", true);
 			}
 		});
-		rules.put("screens", new HashMap<String, Object>() {
-			{
-				put("createMissing", true);
-				put("updateExisting", true);
-				put("deleteMissing", true);
-			}
-		});
 		rules.put("applications", new HashMap<String, Object>() {
 			{
 				put("createMissing", true);
@@ -158,12 +153,22 @@ public class ZabbixService extends DefaultZabbixApi {
 				put("deleteMissing", true);
 			}
 		});
-		rules.put("screens", new HashMap<String, Object>() {
-			{
-				put("createMissing", true);
-				put("updateExisting", true);
-			}
-		});
+		// change to "screens" for version 5.2 and later
+		if (this.version < 5.2f) {
+			rules.put("templateScreens", new HashMap<String, Object>() {
+				{
+					put("createMissing", true);
+					put("updateExisting", true);
+				}
+			});
+		} else {
+			rules.put("screens", new HashMap<String, Object>() {
+				{
+					put("createMissing", true);
+					put("updateExisting", true);
+				}
+			});
+		}
 		rules.put("maps", new HashMap<String, Object>() {
 			{
 				put("createMissing", true);

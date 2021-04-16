@@ -619,6 +619,7 @@
                             ${xml_wrap(cond.macro!'','macro','')}
                             ${xml_wrap(cond.value!'','value','')}
                             ${xml_wrap(cond.formulaid!'','formulaid','')}
+                            ${xml_wrap(cond.operator!'','operator','')}
                         </condition>
                     </#list>
                     </conditions>
@@ -690,6 +691,14 @@
           <#case 'TEL'>
             <#local found = true>
             <#local glist = glist + ["Templates/Telephony"]>
+            <#break>
+          <#case 'SAN'>
+            <#local found = true>
+            <#local glist = glist + ["Templates/SAN"]>
+            <#break>
+          <#case 'POWER'>
+            <#local found = true>
+            <#local glist = glist + ["Templates/Power"]>
             <#break>
           <#default>
         </#switch>
