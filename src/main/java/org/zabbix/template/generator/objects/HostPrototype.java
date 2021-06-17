@@ -66,6 +66,8 @@ public class HostPrototype {
 	@JsonAlias("custom_interfaces")
 	private String customInterfaces;
 
+    private TreeSet<HostPrototypeInterface> interfaces = new TreeSet<>();
+
     public ArrayList<TemplateClass> getGroups() {
 		return groups;
 	}
@@ -137,5 +139,13 @@ public class HostPrototype {
 	public void setCustomInterfaces(String customInterfaces) {
 		this.customInterfaces = customInterfaces;
 	}
+
+    public TreeSet<HostPrototypeInterface> getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(TreeSet<HostPrototypeInterface> interfaces) {
+		this.interfaces = interfaces;
+    }
 
 }
