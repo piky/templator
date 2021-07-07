@@ -89,10 +89,27 @@
             </#list>
             </dashboards>
             </#if>
+            <#if (body.valueMaps?size > 0)>
+            <valuemaps>
+            <#list body.valueMaps as vm>
+                <valuemap>
+                    <name>${vm.name}</name>
+                    <mappings>
+                        <#list vm.mappings as mapping>
+                        <mapping>
+                            <value>${mapping.value}</value>
+                            <newvalue>${mapping.newValue}</newvalue>
+                        </mapping>
+                        </#list>
+                    </mappings>
+                </valuemap>
+            </#list>
+            </valuemaps>
+            </#if>
         </template>
       </#list>
     </templates>
-    
+
     <#assign triggers = []>
     <#list body.templates as t>
         <#list t.getMetricsByZbxVer(t.metrics,zbx_ver) as m>
@@ -129,23 +146,6 @@
         </graph>
         </#list>
     </graphs>
-    </#if>
-    <#if (body.valueMaps?size > 0)>
-    <value_maps>
-    <#list body.valueMaps as vm>
-        <value_map>
-            <name>${vm.name}</name>
-            <mappings>
-                <#list vm.mappings as mapping>
-                <mapping>
-                    <value>${mapping.value}</value>
-                    <newvalue>${mapping.newValue}</newvalue>
-                </mapping>
-                </#list>
-            </mappings>
-        </value_map>
-    </#list>
-    </value_maps>
     </#if>
 </zabbix_export>
 
