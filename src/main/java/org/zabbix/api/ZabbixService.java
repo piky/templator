@@ -1,16 +1,25 @@
 package org.zabbix.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import org.apache.camel.Exchange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import javax.xml.xpath.*;
+
+import java.io.*;
+import org.xml.sax.SAXException;
 
 import io.github.hengyunabc.zabbix.api.DefaultZabbixApi;
 import io.github.hengyunabc.zabbix.api.Request;
@@ -37,11 +46,11 @@ public class ZabbixService extends DefaultZabbixApi {
 
 	/*
 	 * public boolean login(String user, String password) {
-	 * 
+	 *
 	 * try { logger.info("Logging into Zabbix"); return super.login(user, password);
 	 * } catch (Exception e){
 	 * logger.error("Failed to login to Zabbix, try again later"); return false; }
-	 * 
+	 *
 	 * }
 	 */
 
@@ -71,10 +80,14 @@ public class ZabbixService extends DefaultZabbixApi {
 
 		if (this.login) {
 			logger.info("Logging out from Zabbix...");
-
 			Request getRequest = RequestBuilder.newBuilder().method("user.logout").build();
-			JSONObject getResponse = this.call(getRequest);
 
+			try {
+				JSONObject getResponse = this.call(getRequest);
+				checkResponse(getResponse, getRequest);
+			} catch (Exception e) {
+				logger.error("Failed to logout from Zabbix, try again later");
+			}
 		}
 		this.destroy();
 	}
@@ -84,7 +97,72 @@ public class ZabbixService extends DefaultZabbixApi {
 		this.destroy();
 	}
 
-	public void importTemplate(String configuration) throws zabbixAuthException, zabbixResponseException {
+	public void exportTemplate(Exchange exchange) throws zabbixAuthException, zabbixResponseException, ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = builder.parse(new ByteArrayInputStream(exchange.getProperty("xmlTemplate").toString().getBytes()));
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList list = (NodeList)xpath.evaluate("/zabbix_export/version", document, XPathConstants.NODESET);
+		Node node = list.item(0);
+
+		Element element = (Element)node;
+		Float zabbixVersion = Float.parseFloat(element.getTextContent());
+
+		if (zabbixVersion > 5.2f){
+
+			JSONObject templates = new JSONObject();
+			List<String> arrTemplates = new ArrayList<String>();
+
+			list = (NodeList)xpath.evaluate("/zabbix_export/templates/template/template", document, XPathConstants.NODESET);
+			int length = list.getLength();
+
+			for (int i = 0; i < length; i++)
+			{
+				node = list.item(i);
+				if (node.getNodeType() != Node.ELEMENT_NODE) {
+					continue;
+				}
+
+				element = (Element)node;
+				arrTemplates.add(element.getTextContent());
+			}
+
+			templates.put("host", arrTemplates);
+
+			Request getRequest = RequestBuilder.newBuilder().method("template.get").paramEntry("output", "templateid")
+					.paramEntry("filter", templates).build();
+			List<String> ids = new ArrayList<String>();
+
+			try {
+				JSONObject getResponse = this.doRequest(getRequest);
+				checkResponse(getResponse, getRequest);
+				for (Object template : getResponse.getJSONArray("result")) {
+					ids.add(((JSONObject)template).getString("templateid"));
+				}
+			} catch (Exception e) {
+				logger.error("Failed to get template's IDs from Zabbix: " + e.getMessage());
+			}
+
+			JSONObject templateids = new JSONObject();
+			templateids.put("templates", ids);
+
+			getRequest = RequestBuilder.newBuilder().method("configuration.export").paramEntry("format", "yaml")
+					.paramEntry("options", templateids).build();
+
+			try {
+				JSONObject getResponse = this.doRequest(getRequest);
+				checkResponse(getResponse, getRequest);
+				exchange.getIn().setBody(getResponse.getString("result"));
+			} catch (Exception e) {
+				logger.error("Failed to export templates from Zabbix: " + e.getMessage());
+			}
+		}
+	}
+
+	public void importTemplate(String configuration, Exchange exchange) throws zabbixAuthException, zabbixResponseException {
+
+		exchange.setProperty("xmlTemplate", configuration);
 
 		JSONObject rules = new JSONObject();
 
@@ -119,12 +197,14 @@ public class ZabbixService extends DefaultZabbixApi {
 				put("createMissing", true);
 			}
 		});
-		rules.put("applications", new HashMap<String, Object>() {
-			{
-				put("createMissing", true);
-				put("deleteMissing", true);
-			}
-		});
+		if (this.version <= 5.2f) {
+			rules.put("applications", new HashMap<String, Object>() {
+				{
+					put("createMissing", true);
+					put("deleteMissing", true);
+				}
+			});
+		}
 		rules.put("discoveryRules", new HashMap<String, Object>() {
 			{
 				put("createMissing", true);
@@ -161,8 +241,15 @@ public class ZabbixService extends DefaultZabbixApi {
 					put("updateExisting", true);
 				}
 			});
-		} else {
+		} else if (this.version == 5.2f) {
 			rules.put("screens", new HashMap<String, Object>() {
+				{
+					put("createMissing", true);
+					put("updateExisting", true);
+				}
+			});
+		} else if (this.version > 5.2f) {
+			rules.put("templateDashboards", new HashMap<String, Object>() {
 				{
 					put("createMissing", true);
 					put("updateExisting", true);
