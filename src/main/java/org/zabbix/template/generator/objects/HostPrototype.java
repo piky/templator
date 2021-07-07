@@ -63,6 +63,11 @@ public class HostPrototype {
     private ArrayList<String> groupPrototypes = new ArrayList<String>();
     private ArrayList<String> templates = new ArrayList<String>();
 
+	@JsonAlias("custom_interfaces")
+	private String customInterfaces;
+
+    private TreeSet<HostPrototypeInterface> interfaces = new TreeSet<>();
+
     public ArrayList<TemplateClass> getGroups() {
 		return groups;
 	}
@@ -86,7 +91,7 @@ public class HostPrototype {
 	public void setGroupPrototypes(ArrayList<String> groupPrototypes) {
 		this.groupPrototypes = groupPrototypes;
     }
-    
+
     public ArrayList<String> getTemplates() {
 		return templates;
 	}
@@ -94,7 +99,7 @@ public class HostPrototype {
 	public void setTemplates(ArrayList<String> templates) {
 		this.templates = templates;
 	}
-    
+
     public Status getStatus() {
 		return status;
 	}
@@ -126,5 +131,21 @@ public class HostPrototype {
 	public void setDiscover(Discover discover) {
 		this.discover = discover;
 	}
+
+	public String getCustomInterfaces() {
+		return customInterfaces;
+	}
+
+	public void setCustomInterfaces(String customInterfaces) {
+		this.customInterfaces = customInterfaces;
+	}
+
+    public TreeSet<HostPrototypeInterface> getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(TreeSet<HostPrototypeInterface> interfaces) {
+		this.interfaces = interfaces;
+    }
 
 }

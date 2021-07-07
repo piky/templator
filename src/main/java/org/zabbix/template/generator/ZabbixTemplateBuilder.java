@@ -8,10 +8,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
+// import org.apache.logging.log4j.LogManager;
+// import org.apache.logging.log4j.Logger;
+// import org.apache.logging.log4j.Marker;
+// import org.apache.logging.log4j.MarkerManager;
 import org.springframework.stereotype.Component;
 import org.zabbix.template.generator.kie.RuleChecker;
 import org.zabbix.template.generator.objects.*;
@@ -19,8 +19,8 @@ import org.zabbix.template.generator.objects.*;
 @Component
 public class ZabbixTemplateBuilder extends RouteBuilder {
 
-	private static final Logger logger = LogManager.getLogger(ZabbixTemplateBuilder.class.getName());
-	private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("TEMPLATE_GEN");
+	// private static final Logger logger = LogManager.getLogger(ZabbixTemplateBuilder.class.getName());
+	// private static final Marker TEMPLATE_GEN = MarkerManager.getMarker("TEMPLATE_GEN");
 
 	@Override
 	public void configure() throws Exception {
@@ -64,7 +64,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 
 		/* STEP 2: MULTICAST TO ENGLISH and RUSSIAN */
 		from("direct:lang").multicast()
-				//disabled parallel for better logs in output 
+				//disabled parallel for better logs in output
 				//.parallelProcessing()
 				.to(
 					"direct:EN"
@@ -116,7 +116,7 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		// 	}
 		// })
 		// .to("direct:zbx3.2", "direct:zbx3.4", "direct:zbx4.0", "direct:zbx4.2", "direct:zbx4.4", "direct:zbx5.0", "direct:zbx5.2");
-		.to("direct:zbx5.0", "direct:zbx5.2");
+		.to("direct:zbx5.0", "direct:zbx5.2", "direct:zbx5.4");
 
 		// from("direct:zbx3.2")
 		// 		.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
@@ -150,6 +150,10 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
 						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("5.2")) <= 0)))
 				.setHeader("zbx_ver", simple("5.2", String.class)).to("direct:multicaster_snmp");
+		from("direct:zbx5.4")
+				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getTemplates().stream()
+						.anyMatch((t) -> (t.getZbxVer().compareTo(new Version("5.4")) <= 0)))
+				.setHeader("zbx_ver", simple("5.4", String.class)).to("direct:multicaster_snmp");
 		/* STEP 6: multicast to different SNMP versions (and ICMP) */
 		from("direct:multicaster_snmp").to("log:result?level=DEBUG").multicast().parallelProcessing()
 				.to("direct:snmpv1", "direct:snmpv2", "direct:other", "direct:zabbix_active"
@@ -159,13 +163,16 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV1))
 				.choice()
-					.when(header("zbx_ver").isEqualTo("4.4"))	
+					.when(header("zbx_ver").isEqualTo("4.4"))
 						.setHeader("default_item_type", simple("SNMPV1", String.class))
 						.setHeader("template_suffix", simple("SNMPv1", String.class))
-					.when(header("zbx_ver").isEqualTo("5.0"))	
+					.when(header("zbx_ver").isEqualTo("5.0"))
 						.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 						.setHeader("template_suffix", simple("SNMP", String.class))
-					.when(header("zbx_ver").isEqualTo("5.2"))	
+					.when(header("zbx_ver").isEqualTo("5.2"))
+						.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
+						.setHeader("template_suffix", simple("SNMP", String.class))
+					.when(header("zbx_ver").isEqualTo("5.4"))
 						.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 						.setHeader("template_suffix", simple("SNMP", String.class))
 					.otherwise()
@@ -181,13 +188,16 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.filter(exchange -> ((InputJSON) exchange.getIn().getBody()).getUniqueTemplateClasses()
 						.contains(TemplateClass.SNMPV2))
 				.choice()
-						.when(header("zbx_ver").isEqualTo("4.4"))	
+						.when(header("zbx_ver").isEqualTo("4.4"))
 							.setHeader("default_item_type", simple("SNMPV2", String.class))
 							.setHeader("template_suffix", simple("SNMPv2", String.class))
-						.when(header("zbx_ver").isEqualTo("5.0"))	
+						.when(header("zbx_ver").isEqualTo("5.0"))
 							.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 							.setHeader("template_suffix", simple("SNMP", String.class))
-						.when(header("zbx_ver").isEqualTo("5.2"))	
+						.when(header("zbx_ver").isEqualTo("5.2"))
+							.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
+							.setHeader("template_suffix", simple("SNMP", String.class))
+						.when(header("zbx_ver").isEqualTo("5.4"))
 							.setHeader("default_item_type", simple("SNMP_AGENT", String.class))
 							.setHeader("template_suffix", simple("SNMP", String.class))
 						.otherwise()
@@ -204,11 +214,13 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 				.anyMatch((a) -> a.equals(TemplateClass.SNMPV1) || a.equals(TemplateClass.SNMPV2)
 						|| a.equals(TemplateClass.SNMPV3)) == false)
 				.choice()
-					.when(header("zbx_ver").isEqualTo("4.4"))	
+					.when(header("zbx_ver").isEqualTo("4.4"))
 						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
-					.when(header("zbx_ver").isEqualTo("5.0"))	
+					.when(header("zbx_ver").isEqualTo("5.0"))
 						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
-					.when(header("zbx_ver").isEqualTo("5.2"))	
+					.when(header("zbx_ver").isEqualTo("5.2"))
+						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
+					.when(header("zbx_ver").isEqualTo("5.4"))
 						.setHeader("default_item_type", simple("ZABBIX_PASSIVE", String.class))
 					.otherwise()
 						.setHeader("default_item_type", simple("0", String.class))
@@ -227,6 +239,8 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 					.when(header("zbx_ver").isEqualTo("5.0"))
 						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
 					.when(header("zbx_ver").isEqualTo("5.2"))
+						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
+					.when(header("zbx_ver").isEqualTo("5.4"))
 						.setHeader("default_item_type", simple("ZABBIX_ACTIVE", String.class))
 					.otherwise()
 						.setHeader("default_item_type", simple("7", String.class))
@@ -254,12 +268,14 @@ public class ZabbixTemplateBuilder extends RouteBuilder {
 		/* STEP 7(FINAL): export to XML, using freemarker */
 		from("direct:zabbix_export")
 				.choice()
-					.when(header("zbx_ver").isEqualTo("4.4"))	
+					.when(header("zbx_ver").isEqualTo("4.4"))
 						.to("freemarker:ftl/to_zabbix_template_4.4.ftl?contentCache=false")
-					.when(header("zbx_ver").isEqualTo("5.0"))	
+					.when(header("zbx_ver").isEqualTo("5.0"))
 						.to("freemarker:ftl/to_zabbix_template_5.0.ftl?contentCache=false")
-					.when(header("zbx_ver").isEqualTo("5.2"))	
+					.when(header("zbx_ver").isEqualTo("5.2"))
 						.to("freemarker:ftl/to_zabbix_template_5.2.ftl?contentCache=false")
+					.when(header("zbx_ver").isEqualTo("5.4"))
+						.to("freemarker:ftl/to_zabbix_template_5.4.ftl?contentCache=false")
 					.otherwise()
 						.to("freemarker:ftl/to_zabbix_template.ftl?contentCache=false")
 				.end()

@@ -239,7 +239,7 @@
                     ${xml_wrap(m.retrieveMode!'','retrieve_mode','BODY')}
                     ${xml_wrap(m.requestMethod!'','request_method','GET')}
                     <@master_item m 'master_item'/>
-                    
+
                     <#-- inline trigggers -->
                     <#assign triggers = []>
                     <#if m.discoveryRule??>
@@ -459,7 +459,7 @@
 		<#local recovery_mode = 'RECOVERY_EXPRESSION'>
 	<#elseif tr.recoveryMode??>
 		<#local recovery_mode = tr.recoveryMode>
-	<#else>	
+	<#else>
 		<#local recovery_mode = 'EXPRESSION'>
 	</#if>
 	${xml_wrap(recovery_mode,'recovery_mode','EXPRESSION')}
