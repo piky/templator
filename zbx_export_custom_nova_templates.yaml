@@ -589,12 +589,12 @@ zabbix_export:
           description: 'Discovers OpenStack Nova instances.'
           item_prototypes:
             - uuid: 0d5ee0f14f984cc9985c5d750ace1970
-              name: 'Instance [{#SERVER_NAME}]: Status'
+              name: '{#SERVER_NAME}'
               type: HTTP_AGENT
               key: 'openstack.nova.instance.name[{#SERVER_ID}]'
               history: 7d
               value_type: TEXT
-              description: 'Name of the instance'
+              description: 'Status of the instance'
               preprocessing:
                 - type: JSONPATH
                   parameters:
