@@ -573,6 +573,55 @@ zabbix_export:
             - type: DISCARD_UNCHANGED_HEARTBEAT
               parameters:
                 - 1h
+
+        - uuid: 2ab088a7f1d54bfaa60c8730586f2286
+          name: 'Nova: Instances discovery'
+          type: DEPENDENT
+          key: openstack.nova.instance.discovery
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SERVER_NAME}'
+                value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.MATCHES}'
+              - macro: '{#SERVER_NAME}'
+                value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+          description: 'Discovers OpenStack Nova instances.'
+          item_prototypes:
+            - uuid: 0d5ee0f14f984cc9985c5d750ace1970
+              name: 'Instance [{#SERVER_NAME}]: Status'
+              type: HTTP_AGENT
+              key: 'openstack.nova.instance.name[{#SERVER_ID}]'
+              history: 7d
+              value_type: TEXT
+              description: 'Name of the instance'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - $.server.status
+              timeout: 10s
+              url: '{$OPENSTACK.NOVA.SERVICE.URL}/servers/{#SERVER_ID}'
+              http_proxy: '{$OPENSTACK.HTTP.PROXY}'
+              headers:
+                - name: X-Auth-Token
+                  value: '{$OPENSTACK.TOKEN}'
+              tags:
+                - tag: component
+                  value: application
+                - tag: component
+                  value: instance
+          master_item:
+            key: openstack.nova.servers.get
+          lld_macro_paths:
+            - lld_macro: '{#SERVER_ID}'
+              path: $.id
+            - lld_macro: '{#SERVER_NAME}'
+              path: $.name
+          preprocessing:
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+
         - uuid: 4af40cd615d74e54a3759041470995fe
           name: 'Nova: Compute services discovery'
           type: DEPENDENT
