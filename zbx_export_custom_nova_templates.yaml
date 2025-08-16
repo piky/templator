@@ -471,7 +471,7 @@ zabbix_export:
               parameters:
                 - 1h
         - uuid: b38111e1499f414cbe662fada0d40b10
-          name: 'Nova: Servers discovery'
+          name: 'Nova: Instances discovery'
           type: DEPENDENT
           key: openstack.nova.server.discovery
           filter:
@@ -489,7 +489,7 @@ zabbix_export:
               type: HTTP_AGENT
               key: 'openstack.nova.server.status.get[{#SERVER_ID}]'
               delay: '{$OPENSTACK.NOVA.INTERVAL.SERVERS}'
-              description: 'Server status.'
+              description: 'Instance status.'
               valuemap:
                 name: 'Server status'
               preprocessing:
@@ -497,7 +497,7 @@ zabbix_export:
                   parameters:
                     - $.server.status
                   error_handler: CUSTOM_ERROR
-                  error_handler_params: 'Could not parse the detailed server report'
+                  error_handler_params: 'Could not parse the detailed instance report'
                 - type: JAVASCRIPT
                   parameters:
                     - |
