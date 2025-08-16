@@ -471,7 +471,7 @@ zabbix_export:
               parameters:
                 - 1h
         - uuid: b38111e1499f414cbe662fada0d40b10
-          name: 'Nova: Instances discovery'
+          name: 'Nova: Servers discovery'
           type: DEPENDENT
           key: openstack.nova.server.discovery
           filter:
