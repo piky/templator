@@ -590,7 +590,7 @@ zabbix_export:
           host_prototypes:
             - uuid: 263720514c364a2682cacfdcbf280be0
               host: '{#SERVER_NAME}'
-              name: 'Discovered host {#SERVER_NAME}'
+              name: '{#SERVER_NAME}'
               group_links:
                 - group:
                     name: "Instances"
