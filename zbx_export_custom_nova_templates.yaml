@@ -470,115 +470,11 @@ zabbix_export:
             - type: DISCARD_UNCHANGED_HEARTBEAT
               parameters:
                 - 1h
-        # - uuid: b38111e1499f414cbe662fada0d40b10
-        #   name: 'Nova: Servers discovery'
-        #   type: DEPENDENT
-        #   key: openstack.nova.server.discovery
-        #   filter:
-        #     evaltype: AND
-        #     conditions:
-        #       - macro: '{#SERVER_NAME}'
-        #         value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.MATCHES}'
-        #       - macro: '{#SERVER_NAME}'
-        #         value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.NOT_MATCHES}'
-        #         operator: NOT_MATCHES_REGEX
-        #   description: 'Discovers OpenStack Nova servers.'
-        #   item_prototypes:
-        #     - uuid: 84fd4be0c5f84744ac6bd93d4d4e8f0e
-        #       name: 'Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status'
-        #       type: HTTP_AGENT
-        #       key: 'openstack.nova.server.status.get[{#SERVER_ID}]'
-        #       delay: '{$OPENSTACK.NOVA.INTERVAL.SERVERS}'
-        #       description: 'Instance status.'
-        #       valuemap:
-        #         name: 'Server status'
-        #       preprocessing:
-        #         - type: JSONPATH
-        #           parameters:
-        #             - $.server.status
-        #           error_handler: CUSTOM_ERROR
-        #           error_handler_params: 'Could not parse the detailed instance report'
-        #         - type: JAVASCRIPT
-        #           parameters:
-        #             - |
-        #               const idx = [
-        #               	'SHUTOFF',
-        #               	'ACTIVE',
-        #               	'PAUSED',
-        #               	'BUILD',
-        #               	'DELETED',
-        #               	'ERROR',
-        #               	'HARD_REBOOT',
-        #               	'MIGRATING',
-        #               	'PASSWORD',
-        #               	'REBOOT',
-        #               	'REBUILD',
-        #               	'RESCUE',
-        #               	'RESIZE',
-        #               	'REVERT_RESIZE',
-        #               	'SHELVED',
-        #               	'SHELVED_OFFLOADED',
-        #               	'SOFT_DELETED',
-        #               	'SUSPENDED',
-        #               	'UNKNOWN',
-        #               	'VERIFY_RESIZE',
-        #               ].indexOf(value);
-        #               return idx !== -1 ? idx : 30;
-        #         - type: DISCARD_UNCHANGED_HEARTBEAT
-        #           parameters:
-        #             - 1h
-        #       timeout: 10s
-        #       url: '{$OPENSTACK.NOVA.SERVICE.URL}/servers/{#SERVER_ID}'
-        #       http_proxy: '{$OPENSTACK.HTTP.PROXY}'
-        #       headers:
-        #         - name: X-Auth-Token
-        #           value: '{$OPENSTACK.TOKEN}'
-        #       tags:
-        #         - tag: component
-        #           value: application
-        #         - tag: component
-        #           value: server
-        #       trigger_prototypes:
-        #         - uuid: 490262a25fb842c9a9b83a2e0be83654
-        #           expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])<>last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}],#2) and length(last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}]))>0'
-        #           name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status has changed'
-        #           opdata: 'Current status: {ITEM.LASTVALUE}'
-        #           priority: INFO
-        #           description: 'Status of the instance has changed. Acknowledge to close the problem manually.'
-        #           manual_close: 'YES'
-        #           dependencies:
-        #             - name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status is "ERROR"'
-        #               expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])=5'
-        #           tags:
-        #             - tag: scope
-        #               value: availability
-        #         - uuid: 7d2ca81f24154099b3857aeaadef114f
-        #           expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])=5'
-        #           name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status is "ERROR"'
-        #           opdata: 'Current status: {ITEM.LASTVALUE}'
-        #           priority: HIGH
-        #           description: 'Instance is in "ERROR" status.'
-        #           manual_close: 'YES'
-        #           tags:
-        #             - tag: scope
-        #               value: availability
-        #   master_item:
-        #     key: openstack.nova.servers.get
-        #   lld_macro_paths:
-        #     - lld_macro: '{#SERVER_ID}'
-        #       path: $.id
-        #     - lld_macro: '{#SERVER_NAME}'
-        #       path: $.name
-        #   preprocessing:
-        #     - type: DISCARD_UNCHANGED_HEARTBEAT
-        #       parameters:
-        #         - 1h
-
-        - uuid: 2ab088a7f1d54bfaa60c8730586f2286
-          name: 'Nova: Instances discovery'
+                
+        - uuid: b38111e1499f414cbe662fada0d40b10
+          name: 'Nova: Servers discovery'
           type: DEPENDENT
-          key: openstack.nova.instance.discovery
-          description: 'Discovers OpenStack Nova instances.'
+          key: openstack.nova.server.discovery
           filter:
             evaltype: AND
             conditions:
@@ -587,26 +483,59 @@ zabbix_export:
               - macro: '{#SERVER_NAME}'
                 value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.NOT_MATCHES}'
                 operator: NOT_MATCHES_REGEX
+          description: 'Discovers OpenStack Nova servers.'
           host_prototypes:
             - uuid: 263720514c364a2682cacfdcbf280be0
               host: '{#SERVER_NAME}'
               name: '{#SERVER_NAME}'
               group_links:
                 - group:
-                    name: "Instances"
+                    name: "Instances"          
           item_prototypes:
-            - uuid: 0d5ee0f14f984cc9985c5d750ace1970
+            - uuid: 84fd4be0c5f84744ac6bd93d4d4e8f0e
               name: '{#SERVER_NAME}'
               type: HTTP_AGENT
-              key: 'openstack.nova.instance.name[{#SERVER_ID}]'
-              history: 7d
-              value_type: TEXT
-              description: 'Status of the instance'
+              key: 'openstack.nova.server.status.get[{#SERVER_ID}]'
+              delay: '{$OPENSTACK.NOVA.INTERVAL.SERVERS}'
+              description: 'Instance status.'
+              valuemap:
+                name: 'Server status'
               preprocessing:
                 - type: JSONPATH
                   parameters:
                     - $.server.status
-              timeout: 10s
+                  error_handler: CUSTOM_ERROR
+                  error_handler_params: 'Could not parse the detailed instance report'
+                - type: JAVASCRIPT
+                  parameters:
+                    - |
+                      const idx = [
+                      	'SHUTOFF',
+                      	'ACTIVE',
+                      	'PAUSED',
+                      	'BUILD',
+                      	'DELETED',
+                      	'ERROR',
+                      	'HARD_REBOOT',
+                      	'MIGRATING',
+                      	'PASSWORD',
+                      	'REBOOT',
+                      	'REBUILD',
+                      	'RESCUE',
+                      	'RESIZE',
+                      	'REVERT_RESIZE',
+                      	'SHELVED',
+                      	'SHELVED_OFFLOADED',
+                      	'SOFT_DELETED',
+                      	'SUSPENDED',
+                      	'UNKNOWN',
+                      	'VERIFY_RESIZE',
+                      ].indexOf(value);
+                      return idx !== -1 ? idx : 30;
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1h
+              timeout: 30s
               url: '{$OPENSTACK.NOVA.SERVICE.URL}/servers/{#SERVER_ID}'
               http_proxy: '{$OPENSTACK.HTTP.PROXY}'
               headers:
@@ -616,7 +545,31 @@ zabbix_export:
                 - tag: component
                   value: application
                 - tag: component
-                  value: instance
+                  value: server
+              trigger_prototypes:
+                - uuid: 490262a25fb842c9a9b83a2e0be83654
+                  expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])<>last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}],#2) and length(last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}]))>0'
+                  name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status has changed'
+                  opdata: 'Current status: {ITEM.LASTVALUE}'
+                  priority: INFO
+                  description: 'Status of the instance has changed. Acknowledge to close the problem manually.'
+                  manual_close: 'YES'
+                  dependencies:
+                    - name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status is "ERROR"'
+                      expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])=5'
+                  tags:
+                    - tag: scope
+                      value: availability
+                - uuid: 7d2ca81f24154099b3857aeaadef114f
+                  expression: 'last(/Custom OpenStack Nova by HTTP/openstack.nova.server.status.get[{#SERVER_ID}])=5'
+                  name: 'OpenStack Nova: Instance [{#SERVER_ID}]:[{#SERVER_NAME}]: Status is "ERROR"'
+                  opdata: 'Current status: {ITEM.LASTVALUE}'
+                  priority: HIGH
+                  description: 'Instance is in "ERROR" status.'
+                  manual_close: 'YES'
+                  tags:
+                    - tag: scope
+                      value: availability
           master_item:
             key: openstack.nova.servers.get
           lld_macro_paths:
