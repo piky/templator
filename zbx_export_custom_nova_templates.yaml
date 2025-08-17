@@ -578,6 +578,7 @@ zabbix_export:
           name: 'Nova: Instances discovery'
           type: DEPENDENT
           key: openstack.nova.instance.discovery
+          description: 'Discovers OpenStack Nova instances.'
           filter:
             evaltype: AND
             conditions:
@@ -586,7 +587,13 @@ zabbix_export:
               - macro: '{#SERVER_NAME}'
                 value: '{$OPENSTACK.SERVER.DISCOVERY.NAME.NOT_MATCHES}'
                 operator: NOT_MATCHES_REGEX
-          description: 'Discovers OpenStack Nova instances.'
+          host_prototypes:
+            - uuid: 263720514c364a2682cacfdcbf280be0
+              host: '{#SERVER_NAME}'
+              name: 'Discovered host {#SERVER_NAME}'
+              group_links:
+                - group:
+                    name: "Instances"
           item_prototypes:
             - uuid: 0d5ee0f14f984cc9985c5d750ace1970
               name: '{#SERVER_NAME}'
