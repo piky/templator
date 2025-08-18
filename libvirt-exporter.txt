@@ -1,12 +1,12 @@
 # HELP go_gc_duration_seconds A summary of the GC invocation durations.
 # TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 3.6707e-05
-go_gc_duration_seconds{quantile="0.25"} 3.6707e-05
-go_gc_duration_seconds{quantile="0.5"} 3.6707e-05
-go_gc_duration_seconds{quantile="0.75"} 3.6707e-05
-go_gc_duration_seconds{quantile="1"} 3.6707e-05
-go_gc_duration_seconds_sum 3.6707e-05
-go_gc_duration_seconds_count 1
+go_gc_duration_seconds{quantile="0"} 8.9986e-05
+go_gc_duration_seconds{quantile="0.25"} 0.000146659
+go_gc_duration_seconds{quantile="0.5"} 0.000219382
+go_gc_duration_seconds{quantile="0.75"} 0.000287145
+go_gc_duration_seconds{quantile="1"} 0.000976527
+go_gc_duration_seconds_sum 0.011752278
+go_gc_duration_seconds_count 47
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
 go_goroutines 8
@@ -15,49 +15,49 @@ go_goroutines 8
 go_info{version="go1.20.5"} 1
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
-go_memstats_alloc_bytes 3.469208e+06
+go_memstats_alloc_bytes 2.775792e+06
 # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
 # TYPE go_memstats_alloc_bytes_total counter
-go_memstats_alloc_bytes_total 5.573016e+06
+go_memstats_alloc_bytes_total 5.8991488e+07
 # HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
 # TYPE go_memstats_buck_hash_sys_bytes gauge
 go_memstats_buck_hash_sys_bytes 3981
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
-go_memstats_frees_total 33269
+go_memstats_frees_total 93378
 # HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
 # TYPE go_memstats_gc_cpu_fraction gauge
-go_memstats_gc_cpu_fraction 3.048276098220178e-07
+go_memstats_gc_cpu_fraction 3.2652909059325094e-06
 # HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
 # TYPE go_memstats_gc_sys_bytes gauge
-go_memstats_gc_sys_bytes 8.056928e+06
+go_memstats_gc_sys_bytes 7.95824e+06
 # HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
 # TYPE go_memstats_heap_alloc_bytes gauge
-go_memstats_heap_alloc_bytes 3.469208e+06
+go_memstats_heap_alloc_bytes 2.775792e+06
 # HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
 # TYPE go_memstats_heap_idle_bytes gauge
-go_memstats_heap_idle_bytes 3.342336e+06
+go_memstats_heap_idle_bytes 4.104192e+06
 # HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
 # TYPE go_memstats_heap_inuse_bytes gauge
-go_memstats_heap_inuse_bytes 4.554752e+06
+go_memstats_heap_inuse_bytes 3.661824e+06
 # HELP go_memstats_heap_objects Number of allocated objects.
 # TYPE go_memstats_heap_objects gauge
-go_memstats_heap_objects 9289
+go_memstats_heap_objects 12351
 # HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
 # TYPE go_memstats_heap_released_bytes gauge
-go_memstats_heap_released_bytes 2.121728e+06
+go_memstats_heap_released_bytes 3.325952e+06
 # HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
 # TYPE go_memstats_heap_sys_bytes gauge
-go_memstats_heap_sys_bytes 7.897088e+06
+go_memstats_heap_sys_bytes 7.766016e+06
 # HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
 # TYPE go_memstats_last_gc_time_seconds gauge
-go_memstats_last_gc_time_seconds 1.7554845562430596e+09
+go_memstats_last_gc_time_seconds 1.7554995486962903e+09
 # HELP go_memstats_lookups_total Total number of pointer lookups.
 # TYPE go_memstats_lookups_total counter
 go_memstats_lookups_total 0
 # HELP go_memstats_mallocs_total Total number of mallocs.
 # TYPE go_memstats_mallocs_total counter
-go_memstats_mallocs_total 42558
+go_memstats_mallocs_total 105729
 # HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
 # TYPE go_memstats_mcache_inuse_bytes gauge
 go_memstats_mcache_inuse_bytes 4800
@@ -66,243 +66,323 @@ go_memstats_mcache_inuse_bytes 4800
 go_memstats_mcache_sys_bytes 15600
 # HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
 # TYPE go_memstats_mspan_inuse_bytes gauge
-go_memstats_mspan_inuse_bytes 84480
+go_memstats_mspan_inuse_bytes 68960
 # HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
 # TYPE go_memstats_mspan_sys_bytes gauge
-go_memstats_mspan_sys_bytes 97920
+go_memstats_mspan_sys_bytes 81600
 # HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
 # TYPE go_memstats_next_gc_bytes gauge
-go_memstats_next_gc_bytes 4.309704e+06
+go_memstats_next_gc_bytes 4.42392e+06
 # HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
 # TYPE go_memstats_other_sys_bytes gauge
-go_memstats_other_sys_bytes 508083
+go_memstats_other_sys_bytes 852467
 # HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
 # TYPE go_memstats_stack_inuse_bytes gauge
-go_memstats_stack_inuse_bytes 458752
+go_memstats_stack_inuse_bytes 622592
 # HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
 # TYPE go_memstats_stack_sys_bytes gauge
-go_memstats_stack_sys_bytes 458752
+go_memstats_stack_sys_bytes 622592
 # HELP go_memstats_sys_bytes Number of bytes obtained from system.
 # TYPE go_memstats_sys_bytes gauge
-go_memstats_sys_bytes 1.7038352e+07
+go_memstats_sys_bytes 1.7300496e+07
 # HELP go_threads Number of OS threads created.
 # TYPE go_threads gauge
-go_threads 9
+go_threads 10
 # HELP libvirt_domain_block_meta Block device metadata info. Device name, source file, serial.
 # TYPE libvirt_domain_block_meta gauge
-libvirt_domain_block_meta{bus="virtio",cache="none",discard="",disk_type="block",domain="instance-00000004",driver_type="raw",serial="f19f0b8e-ebc2-4917-86e7-af6fcbd145e3",source_file="/dev/sdb",target_device="vda"} 1
-libvirt_domain_block_meta{bus="virtio",cache="none",discard="",disk_type="block",domain="instance-00000005",driver_type="raw",serial="1d2c6858-119a-457c-b633-348fe3f233a4",source_file="/dev/sdb",target_device="vda"} 1
+libvirt_domain_block_meta{bus="virtio",cache="none",discard="",disk_type="block",domain="instance-00000001",driver_type="raw",serial="ce725c60-6f1c-4c76-b994-da31092747b9",source_file="/dev/sdb",target_device="vda"} 1
+libvirt_domain_block_meta{bus="virtio",cache="none",discard="",disk_type="block",domain="instance-00000002",driver_type="raw",serial="d918a922-5517-475d-b3e1-2041196f504b",source_file="/dev/sdc",target_device="vda"} 1
+libvirt_domain_block_meta{bus="virtio",cache="none",discard="",disk_type="block",domain="instance-00000003",driver_type="raw",serial="7152005a-33b5-434b-8bba-2ee0fe1989dd",source_file="/dev/sdd",target_device="vda"} 1
 # HELP libvirt_domain_block_stats_allocation Offset of the highest written sector on a block device.
 # TYPE libvirt_domain_block_stats_allocation gauge
-libvirt_domain_block_stats_allocation{domain="instance-00000004",target_device="vda"} 2.84454912e+08
-libvirt_domain_block_stats_allocation{domain="instance-00000005",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_allocation{domain="instance-00000001",target_device="vda"} 1.1425792e+08
+libvirt_domain_block_stats_allocation{domain="instance-00000002",target_device="vda"} 1.1425792e+08
+libvirt_domain_block_stats_allocation{domain="instance-00000003",target_device="vda"} 1.1425792e+08
 # HELP libvirt_domain_block_stats_capacity_bytes Logical size in bytes of the block device	backing image.
 # TYPE libvirt_domain_block_stats_capacity_bytes gauge
-libvirt_domain_block_stats_capacity_bytes{domain="instance-00000004",target_device="vda"} 1.073741824e+09
-libvirt_domain_block_stats_capacity_bytes{domain="instance-00000005",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_capacity_bytes{domain="instance-00000001",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_capacity_bytes{domain="instance-00000002",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_capacity_bytes{domain="instance-00000003",target_device="vda"} 1.073741824e+09
 # HELP libvirt_domain_block_stats_flush_requests_total Total flush requests from a block device.
 # TYPE libvirt_domain_block_stats_flush_requests_total counter
-libvirt_domain_block_stats_flush_requests_total{domain="instance-00000004",target_device="vda"} 17
+libvirt_domain_block_stats_flush_requests_total{domain="instance-00000001",target_device="vda"} 19
+libvirt_domain_block_stats_flush_requests_total{domain="instance-00000002",target_device="vda"} 19
+libvirt_domain_block_stats_flush_requests_total{domain="instance-00000003",target_device="vda"} 17
 # HELP libvirt_domain_block_stats_flush_time_seconds_total Total time in seconds spent on cache flushing to a block device
 # TYPE libvirt_domain_block_stats_flush_time_seconds_total counter
-libvirt_domain_block_stats_flush_time_seconds_total{domain="instance-00000004",target_device="vda"} 0.034115775
+libvirt_domain_block_stats_flush_time_seconds_total{domain="instance-00000001",target_device="vda"} 0.070045422
+libvirt_domain_block_stats_flush_time_seconds_total{domain="instance-00000002",target_device="vda"} 0.066141882
+libvirt_domain_block_stats_flush_time_seconds_total{domain="instance-00000003",target_device="vda"} 0.062786376
 # HELP libvirt_domain_block_stats_limit_burst_length_read_requests_seconds Read requests per second burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_length_read_requests_seconds gauge
-libvirt_domain_block_stats_limit_burst_length_read_requests_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_length_read_requests_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_read_requests_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_read_requests_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_read_requests_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_length_total_requests_seconds Total requests per second burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_length_total_requests_seconds gauge
-libvirt_domain_block_stats_limit_burst_length_total_requests_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_length_total_requests_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_total_requests_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_total_requests_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_total_requests_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_length_write_requests_seconds Write requests per second burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_length_write_requests_seconds gauge
-libvirt_domain_block_stats_limit_burst_length_write_requests_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_length_write_requests_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_write_requests_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_write_requests_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_length_write_requests_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_read_bytes Read throughput burst limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_burst_read_bytes gauge
-libvirt_domain_block_stats_limit_burst_read_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_read_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds Read throughput burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds gauge
-libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_bytes_length_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_read_requests Read requests per second burst limit
 # TYPE libvirt_domain_block_stats_limit_burst_read_requests gauge
-libvirt_domain_block_stats_limit_burst_read_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_read_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_read_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_total_bytes Total throughput burst limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_burst_total_bytes gauge
-libvirt_domain_block_stats_limit_burst_total_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_total_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds Total throughput burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds gauge
-libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_bytes_length_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_total_requests Total requests per second burst limit
 # TYPE libvirt_domain_block_stats_limit_burst_total_requests gauge
-libvirt_domain_block_stats_limit_burst_total_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_total_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_total_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_write_bytes Write throughput burst limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_burst_write_bytes gauge
-libvirt_domain_block_stats_limit_burst_write_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_write_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds Write throughput burst time in seconds
 # TYPE libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds gauge
-libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_bytes_length_seconds{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_burst_write_requests Write requests per second burst limit
 # TYPE libvirt_domain_block_stats_limit_burst_write_requests gauge
-libvirt_domain_block_stats_limit_burst_write_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_burst_write_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_burst_write_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_read_bytes Read throughput limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_read_bytes gauge
-libvirt_domain_block_stats_limit_read_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_read_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_read_requests Read requests per second limit
 # TYPE libvirt_domain_block_stats_limit_read_requests gauge
-libvirt_domain_block_stats_limit_read_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_read_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_read_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_total_bytes Total throughput limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_total_bytes gauge
-libvirt_domain_block_stats_limit_total_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_total_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_total_requests Total requests per second limit
 # TYPE libvirt_domain_block_stats_limit_total_requests gauge
-libvirt_domain_block_stats_limit_total_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_total_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_total_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_write_bytes Write throughput limit in bytes per second
 # TYPE libvirt_domain_block_stats_limit_write_bytes gauge
-libvirt_domain_block_stats_limit_write_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_write_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_limit_write_requests Write requests per second limit
 # TYPE libvirt_domain_block_stats_limit_write_requests gauge
-libvirt_domain_block_stats_limit_write_requests{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_limit_write_requests{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_requests{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_requests{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_limit_write_requests{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_physicalsize_bytes Physical size in bytes of the container of the backing image.
 # TYPE libvirt_domain_block_stats_physicalsize_bytes gauge
-libvirt_domain_block_stats_physicalsize_bytes{domain="instance-00000004",target_device="vda"} 1.073741824e+09
-libvirt_domain_block_stats_physicalsize_bytes{domain="instance-00000005",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_physicalsize_bytes{domain="instance-00000001",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_physicalsize_bytes{domain="instance-00000002",target_device="vda"} 1.073741824e+09
+libvirt_domain_block_stats_physicalsize_bytes{domain="instance-00000003",target_device="vda"} 1.073741824e+09
 # HELP libvirt_domain_block_stats_read_bytes_total Number of bytes read from a block device, in bytes.
 # TYPE libvirt_domain_block_stats_read_bytes_total counter
-libvirt_domain_block_stats_read_bytes_total{domain="instance-00000004",target_device="vda"} 3.5724288e+07
+libvirt_domain_block_stats_read_bytes_total{domain="instance-00000001",target_device="vda"} 2.6914816e+07
+libvirt_domain_block_stats_read_bytes_total{domain="instance-00000002",target_device="vda"} 2.6914816e+07
+libvirt_domain_block_stats_read_bytes_total{domain="instance-00000003",target_device="vda"} 2.6914816e+07
 # HELP libvirt_domain_block_stats_read_requests_total Number of read requests from a block device.
 # TYPE libvirt_domain_block_stats_read_requests_total counter
-libvirt_domain_block_stats_read_requests_total{domain="instance-00000004",target_device="vda"} 1305
+libvirt_domain_block_stats_read_requests_total{domain="instance-00000001",target_device="vda"} 921
+libvirt_domain_block_stats_read_requests_total{domain="instance-00000002",target_device="vda"} 921
+libvirt_domain_block_stats_read_requests_total{domain="instance-00000003",target_device="vda"} 921
 # HELP libvirt_domain_block_stats_read_time_seconds_total Total time spent on reads from a block device, in seconds.
 # TYPE libvirt_domain_block_stats_read_time_seconds_total counter
-libvirt_domain_block_stats_read_time_seconds_total{domain="instance-00000004",target_device="vda"} 1.855082781
+libvirt_domain_block_stats_read_time_seconds_total{domain="instance-00000001",target_device="vda"} 1.57935583
+libvirt_domain_block_stats_read_time_seconds_total{domain="instance-00000002",target_device="vda"} 1.342828481
+libvirt_domain_block_stats_read_time_seconds_total{domain="instance-00000003",target_device="vda"} 1.370057154
 # HELP libvirt_domain_block_stats_size_iops_bytes The size of IO operations per second permitted through a block device
 # TYPE libvirt_domain_block_stats_size_iops_bytes gauge
-libvirt_domain_block_stats_size_iops_bytes{domain="instance-00000004",target_device="vda"} 0
-libvirt_domain_block_stats_size_iops_bytes{domain="instance-00000005",target_device="vda"} 0
+libvirt_domain_block_stats_size_iops_bytes{domain="instance-00000001",target_device="vda"} 0
+libvirt_domain_block_stats_size_iops_bytes{domain="instance-00000002",target_device="vda"} 0
+libvirt_domain_block_stats_size_iops_bytes{domain="instance-00000003",target_device="vda"} 0
 # HELP libvirt_domain_block_stats_write_bytes_total Number of bytes written to a block device, in bytes.
 # TYPE libvirt_domain_block_stats_write_bytes_total counter
-libvirt_domain_block_stats_write_bytes_total{domain="instance-00000004",target_device="vda"} 1.036288e+06
+libvirt_domain_block_stats_write_bytes_total{domain="instance-00000001",target_device="vda"} 2.6599424e+07
+libvirt_domain_block_stats_write_bytes_total{domain="instance-00000002",target_device="vda"} 2.6611712e+07
+libvirt_domain_block_stats_write_bytes_total{domain="instance-00000003",target_device="vda"} 2.646016e+07
 # HELP libvirt_domain_block_stats_write_requests_total Number of write requests to a block device.
 # TYPE libvirt_domain_block_stats_write_requests_total counter
-libvirt_domain_block_stats_write_requests_total{domain="instance-00000004",target_device="vda"} 78
+libvirt_domain_block_stats_write_requests_total{domain="instance-00000001",target_device="vda"} 271
+libvirt_domain_block_stats_write_requests_total{domain="instance-00000002",target_device="vda"} 276
+libvirt_domain_block_stats_write_requests_total{domain="instance-00000003",target_device="vda"} 348
 # HELP libvirt_domain_block_stats_write_time_seconds_total Total time spent on writes on a block device, in seconds
 # TYPE libvirt_domain_block_stats_write_time_seconds_total counter
-libvirt_domain_block_stats_write_time_seconds_total{domain="instance-00000004",target_device="vda"} 0.161256385
+libvirt_domain_block_stats_write_time_seconds_total{domain="instance-00000001",target_device="vda"} 1.24456846
+libvirt_domain_block_stats_write_time_seconds_total{domain="instance-00000002",target_device="vda"} 0.975837635
+libvirt_domain_block_stats_write_time_seconds_total{domain="instance-00000003",target_device="vda"} 1.218887171
 # HELP libvirt_domain_info_cpu_time_seconds_total Amount of CPU time used by the domain, in seconds.
 # TYPE libvirt_domain_info_cpu_time_seconds_total counter
-libvirt_domain_info_cpu_time_seconds_total{domain="instance-00000004"} 66.22
-libvirt_domain_info_cpu_time_seconds_total{domain="instance-00000005"} 0
+libvirt_domain_info_cpu_time_seconds_total{domain="instance-00000001"} 32.9
+libvirt_domain_info_cpu_time_seconds_total{domain="instance-00000002"} 31.95
+libvirt_domain_info_cpu_time_seconds_total{domain="instance-00000003"} 29.6
 # HELP libvirt_domain_info_maximum_memory_bytes Maximum allowed memory of the domain, in bytes.
 # TYPE libvirt_domain_info_maximum_memory_bytes gauge
-libvirt_domain_info_maximum_memory_bytes{domain="instance-00000004"} 2.68435456e+08
-libvirt_domain_info_maximum_memory_bytes{domain="instance-00000005"} 2.68435456e+08
+libvirt_domain_info_maximum_memory_bytes{domain="instance-00000001"} 2.68435456e+08
+libvirt_domain_info_maximum_memory_bytes{domain="instance-00000002"} 2.68435456e+08
+libvirt_domain_info_maximum_memory_bytes{domain="instance-00000003"} 2.68435456e+08
 # HELP libvirt_domain_info_memory_usage_bytes Memory usage of the domain, in bytes.
 # TYPE libvirt_domain_info_memory_usage_bytes gauge
-libvirt_domain_info_memory_usage_bytes{domain="instance-00000004"} 2.68435456e+08
-libvirt_domain_info_memory_usage_bytes{domain="instance-00000005"} 2.68435456e+08
+libvirt_domain_info_memory_usage_bytes{domain="instance-00000001"} 2.68435456e+08
+libvirt_domain_info_memory_usage_bytes{domain="instance-00000002"} 2.68435456e+08
+libvirt_domain_info_memory_usage_bytes{domain="instance-00000003"} 2.68435456e+08
 # HELP libvirt_domain_info_meta Domain metadata
 # TYPE libvirt_domain_info_meta gauge
-libvirt_domain_info_meta{domain="instance-00000004",flavor="cirros256",instance_name="cirros-test-instance-01",project_name="demo",project_uuid="a00cdfc74571495686a1850b70693f90",root_type="volume",root_uuid="",user_name="admin",user_uuid="0f0b8ff716974f9fab67094e90f9bb2f",uuid="e0ba87f2-1c77-4ca4-ac3a-d78fa659607e"} 1
-libvirt_domain_info_meta{domain="instance-00000005",flavor="cirros256",instance_name="cirros-test-instance-02",project_name="demo",project_uuid="a00cdfc74571495686a1850b70693f90",root_type="volume",root_uuid="",user_name="admin",user_uuid="0f0b8ff716974f9fab67094e90f9bb2f",uuid="6b3c3b9a-c611-4fcd-84cf-51bd011952ae"} 1
+libvirt_domain_info_meta{domain="instance-00000001",flavor="cirros256",instance_name="cirros-test-instance-01",project_name="demo",project_uuid="9b12ec93e87c469a9f09bbd30a989c44",root_type="volume",root_uuid="",user_name="admin",user_uuid="ed92bc32c2a74b5eb14e04c3dd1677d1",uuid="c367b222-7bc2-4d4b-87f7-2cf47466fdea"} 1
+libvirt_domain_info_meta{domain="instance-00000002",flavor="cirros256",instance_name="cirros-test-instance-02",project_name="demo",project_uuid="9b12ec93e87c469a9f09bbd30a989c44",root_type="volume",root_uuid="",user_name="admin",user_uuid="ed92bc32c2a74b5eb14e04c3dd1677d1",uuid="7d363241-13df-49d3-8c36-5d295b2dec9c"} 1
+libvirt_domain_info_meta{domain="instance-00000003",flavor="cirros256",instance_name="cirros-test-instance-03",project_name="demo",project_uuid="9b12ec93e87c469a9f09bbd30a989c44",root_type="volume",root_uuid="",user_name="admin",user_uuid="ed92bc32c2a74b5eb14e04c3dd1677d1",uuid="ff02c5e7-a71a-4136-9870-1f8cfc3d0fb2"} 1
 # HELP libvirt_domain_info_virtual_cpus Number of virtual CPUs for the domain.
 # TYPE libvirt_domain_info_virtual_cpus gauge
-libvirt_domain_info_virtual_cpus{domain="instance-00000004"} 1
-libvirt_domain_info_virtual_cpus{domain="instance-00000005"} 1
+libvirt_domain_info_virtual_cpus{domain="instance-00000001"} 1
+libvirt_domain_info_virtual_cpus{domain="instance-00000002"} 1
+libvirt_domain_info_virtual_cpus{domain="instance-00000003"} 1
 # HELP libvirt_domain_info_vstate Virtual domain state. 0: no state, 1: the domain is running, 2: the domain is blocked on resource, 3: the domain is paused by user, 4: the domain is being shut down, 5: the domain is shut off,6: the domain is crashed, 7: the domain is suspended by guest power management
 # TYPE libvirt_domain_info_vstate gauge
-libvirt_domain_info_vstate{domain="instance-00000004"} 1
-libvirt_domain_info_vstate{domain="instance-00000005"} 5
+libvirt_domain_info_vstate{domain="instance-00000001"} 1
+libvirt_domain_info_vstate{domain="instance-00000002"} 1
+libvirt_domain_info_vstate{domain="instance-00000003"} 1
 # HELP libvirt_domain_interface_stats_receive_bytes_total Number of bytes received on a network interface, in bytes.
 # TYPE libvirt_domain_interface_stats_receive_bytes_total counter
-libvirt_domain_interface_stats_receive_bytes_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 9087
+libvirt_domain_interface_stats_receive_bytes_total{domain="instance-00000001",target_device="tap453a9064-6a"} 3330
+libvirt_domain_interface_stats_receive_bytes_total{domain="instance-00000002",target_device="tapb049d189-22"} 1612
+libvirt_domain_interface_stats_receive_bytes_total{domain="instance-00000003",target_device="tap30566a39-bf"} 746
 # HELP libvirt_domain_interface_stats_receive_drops_total Number of packet receive drops on a network interface.
 # TYPE libvirt_domain_interface_stats_receive_drops_total counter
-libvirt_domain_interface_stats_receive_drops_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 0
+libvirt_domain_interface_stats_receive_drops_total{domain="instance-00000001",target_device="tap453a9064-6a"} 0
+libvirt_domain_interface_stats_receive_drops_total{domain="instance-00000002",target_device="tapb049d189-22"} 0
+libvirt_domain_interface_stats_receive_drops_total{domain="instance-00000003",target_device="tap30566a39-bf"} 0
 # HELP libvirt_domain_interface_stats_receive_errors_total Number of packet receive errors on a network interface.
 # TYPE libvirt_domain_interface_stats_receive_errors_total counter
-libvirt_domain_interface_stats_receive_errors_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 0
+libvirt_domain_interface_stats_receive_errors_total{domain="instance-00000001",target_device="tap453a9064-6a"} 0
+libvirt_domain_interface_stats_receive_errors_total{domain="instance-00000002",target_device="tapb049d189-22"} 0
+libvirt_domain_interface_stats_receive_errors_total{domain="instance-00000003",target_device="tap30566a39-bf"} 0
 # HELP libvirt_domain_interface_stats_receive_packets_total Number of packets received on a network interface.
 # TYPE libvirt_domain_interface_stats_receive_packets_total counter
-libvirt_domain_interface_stats_receive_packets_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 90
+libvirt_domain_interface_stats_receive_packets_total{domain="instance-00000001",target_device="tap453a9064-6a"} 43
+libvirt_domain_interface_stats_receive_packets_total{domain="instance-00000002",target_device="tapb049d189-22"} 20
+libvirt_domain_interface_stats_receive_packets_total{domain="instance-00000003",target_device="tap30566a39-bf"} 7
 # HELP libvirt_domain_interface_stats_transmit_bytes_total Number of bytes transmitted on a network interface, in bytes.
 # TYPE libvirt_domain_interface_stats_transmit_bytes_total counter
-libvirt_domain_interface_stats_transmit_bytes_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 12662
+libvirt_domain_interface_stats_transmit_bytes_total{domain="instance-00000001",target_device="tap453a9064-6a"} 2778
+libvirt_domain_interface_stats_transmit_bytes_total{domain="instance-00000002",target_device="tapb049d189-22"} 2436
+libvirt_domain_interface_stats_transmit_bytes_total{domain="instance-00000003",target_device="tap30566a39-bf"} 858
 # HELP libvirt_domain_interface_stats_transmit_drops_total Number of packet transmit drops on a network interface.
 # TYPE libvirt_domain_interface_stats_transmit_drops_total counter
-libvirt_domain_interface_stats_transmit_drops_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 0
+libvirt_domain_interface_stats_transmit_drops_total{domain="instance-00000001",target_device="tap453a9064-6a"} 0
+libvirt_domain_interface_stats_transmit_drops_total{domain="instance-00000002",target_device="tapb049d189-22"} 0
+libvirt_domain_interface_stats_transmit_drops_total{domain="instance-00000003",target_device="tap30566a39-bf"} 0
 # HELP libvirt_domain_interface_stats_transmit_errors_total Number of packet transmit errors on a network interface.
 # TYPE libvirt_domain_interface_stats_transmit_errors_total counter
-libvirt_domain_interface_stats_transmit_errors_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 0
+libvirt_domain_interface_stats_transmit_errors_total{domain="instance-00000001",target_device="tap453a9064-6a"} 0
+libvirt_domain_interface_stats_transmit_errors_total{domain="instance-00000002",target_device="tapb049d189-22"} 0
+libvirt_domain_interface_stats_transmit_errors_total{domain="instance-00000003",target_device="tap30566a39-bf"} 0
 # HELP libvirt_domain_interface_stats_transmit_packets_total Number of packets transmitted on a network interface.
 # TYPE libvirt_domain_interface_stats_transmit_packets_total counter
-libvirt_domain_interface_stats_transmit_packets_total{domain="instance-00000004",target_device="tap5e57c3c4-57"} 143
+libvirt_domain_interface_stats_transmit_packets_total{domain="instance-00000001",target_device="tap453a9064-6a"} 15
+libvirt_domain_interface_stats_transmit_packets_total{domain="instance-00000002",target_device="tapb049d189-22"} 14
+libvirt_domain_interface_stats_transmit_packets_total{domain="instance-00000003",target_device="tap30566a39-bf"} 7
 # HELP libvirt_domain_memory_stats_actual_balloon_bytes Current balloon value (in bytes).
 # TYPE libvirt_domain_memory_stats_actual_balloon_bytes gauge
-libvirt_domain_memory_stats_actual_balloon_bytes{domain="instance-00000004"} 2.68435456e+08
-libvirt_domain_memory_stats_actual_balloon_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_actual_balloon_bytes{domain="instance-00000001"} 2.68435456e+08
+libvirt_domain_memory_stats_actual_balloon_bytes{domain="instance-00000002"} 2.68435456e+08
+libvirt_domain_memory_stats_actual_balloon_bytes{domain="instance-00000003"} 2.68435456e+08
 # HELP libvirt_domain_memory_stats_available_bytes The total amount of usable memory as seen by the domain. This value may be less than the amount of memory assigned to the domain if a balloon driver is in use or if the guest OS does not initialize all assigned pages. This value is expressed in bytes.
 # TYPE libvirt_domain_memory_stats_available_bytes gauge
-libvirt_domain_memory_stats_available_bytes{domain="instance-00000004"} 2.12410368e+08
-libvirt_domain_memory_stats_available_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_available_bytes{domain="instance-00000001"} 2.12410368e+08
+libvirt_domain_memory_stats_available_bytes{domain="instance-00000002"} 2.12410368e+08
+libvirt_domain_memory_stats_available_bytes{domain="instance-00000003"} 2.12410368e+08
 # HELP libvirt_domain_memory_stats_disk_cache_bytes The amount of memory, that can be quickly reclaimed without additional I/O (in bytes).Typically these pages are used for caching files from disk.
 # TYPE libvirt_domain_memory_stats_disk_cache_bytes gauge
-libvirt_domain_memory_stats_disk_cache_bytes{domain="instance-00000004"} 1.4606336e+07
-libvirt_domain_memory_stats_disk_cache_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_disk_cache_bytes{domain="instance-00000001"} 2.9249536e+07
+libvirt_domain_memory_stats_disk_cache_bytes{domain="instance-00000002"} 2.9249536e+07
+libvirt_domain_memory_stats_disk_cache_bytes{domain="instance-00000003"} 2.9229056e+07
 # HELP libvirt_domain_memory_stats_major_fault_total Page faults occur when a process makes a valid access to virtual memory that is not available. When servicing the page fault, if disk IO is required, it is considered a major fault.
 # TYPE libvirt_domain_memory_stats_major_fault_total counter
-libvirt_domain_memory_stats_major_fault_total{domain="instance-00000004"} 55
-libvirt_domain_memory_stats_major_fault_total{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_major_fault_total{domain="instance-00000001"} 0
+libvirt_domain_memory_stats_major_fault_total{domain="instance-00000002"} 0
+libvirt_domain_memory_stats_major_fault_total{domain="instance-00000003"} 0
 # HELP libvirt_domain_memory_stats_minor_fault_total Page faults occur when a process makes a valid access to virtual memory that is not available. When servicing the page not fault, if disk IO is required, it is considered a minor fault.
 # TYPE libvirt_domain_memory_stats_minor_fault_total counter
-libvirt_domain_memory_stats_minor_fault_total{domain="instance-00000004"} 37671
-libvirt_domain_memory_stats_minor_fault_total{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_minor_fault_total{domain="instance-00000001"} 14384
+libvirt_domain_memory_stats_minor_fault_total{domain="instance-00000002"} 14442
+libvirt_domain_memory_stats_minor_fault_total{domain="instance-00000003"} 14374
 # HELP libvirt_domain_memory_stats_rss_bytes Resident Set Size of the process running the domain. This value is in bytes
 # TYPE libvirt_domain_memory_stats_rss_bytes gauge
-libvirt_domain_memory_stats_rss_bytes{domain="instance-00000004"} 0
-libvirt_domain_memory_stats_rss_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_rss_bytes{domain="instance-00000001"} 0
+libvirt_domain_memory_stats_rss_bytes{domain="instance-00000002"} 0
+libvirt_domain_memory_stats_rss_bytes{domain="instance-00000003"} 0
 # HELP libvirt_domain_memory_stats_unused_bytes The amount of memory left completely unused by the system. Memory that is available but used for reclaimable caches should NOT be reported as free. This value is expressed in bytes.
 # TYPE libvirt_domain_memory_stats_unused_bytes gauge
-libvirt_domain_memory_stats_unused_bytes{domain="instance-00000004"} 1.53071616e+08
-libvirt_domain_memory_stats_unused_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_unused_bytes{domain="instance-00000001"} 1.3764608e+08
+libvirt_domain_memory_stats_unused_bytes{domain="instance-00000002"} 1.37703424e+08
+libvirt_domain_memory_stats_unused_bytes{domain="instance-00000003"} 1.37629696e+08
 # HELP libvirt_domain_memory_stats_usable_bytes How much the balloon can be inflated without pushing the guest system to swap, corresponds to 'Available' in /proc/meminfo
 # TYPE libvirt_domain_memory_stats_usable_bytes gauge
-libvirt_domain_memory_stats_usable_bytes{domain="instance-00000004"} 1.68517632e+08
-libvirt_domain_memory_stats_usable_bytes{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_usable_bytes{domain="instance-00000001"} 1.69316352e+08
+libvirt_domain_memory_stats_usable_bytes{domain="instance-00000002"} 1.69385984e+08
+libvirt_domain_memory_stats_usable_bytes{domain="instance-00000003"} 1.69291776e+08
 # HELP libvirt_domain_memory_stats_used_percent The amount of memory in percent, that used by domain.
 # TYPE libvirt_domain_memory_stats_used_percent gauge
-libvirt_domain_memory_stats_used_percent{domain="instance-00000004"} 20.664121254194143
-libvirt_domain_memory_stats_used_percent{domain="instance-00000005"} 0
+libvirt_domain_memory_stats_used_percent{domain="instance-00000001"} 20.288094411662616
+libvirt_domain_memory_stats_used_percent{domain="instance-00000002"} 20.255312584364994
+libvirt_domain_memory_stats_used_percent{domain="instance-00000003"} 20.299664468355893
 # HELP libvirt_domain_vcpu_cpu Real CPU number, or one of the values from virVcpuHostCpuState
 # TYPE libvirt_domain_vcpu_cpu gauge
-libvirt_domain_vcpu_cpu{domain="instance-00000004",vcpu="0"} 3
+libvirt_domain_vcpu_cpu{domain="instance-00000001",vcpu="0"} 2
+libvirt_domain_vcpu_cpu{domain="instance-00000002",vcpu="0"} 1
+libvirt_domain_vcpu_cpu{domain="instance-00000003",vcpu="0"} 0
 # HELP libvirt_domain_vcpu_delay_seconds_total Amount of CPU time used by the domain's VCPU, in seconds. Vcpu's delay metric. Time the vcpu thread was enqueued by the host scheduler, but was waiting in the queue instead of running. Exposed to the VM as a steal time.
 # TYPE libvirt_domain_vcpu_delay_seconds_total counter
-libvirt_domain_vcpu_delay_seconds_total{domain="instance-00000004",vcpu="0"} 0.241409337
+libvirt_domain_vcpu_delay_seconds_total{domain="instance-00000001",vcpu="0"} 0.34671765
+libvirt_domain_vcpu_delay_seconds_total{domain="instance-00000002",vcpu="0"} 1.033113367
+libvirt_domain_vcpu_delay_seconds_total{domain="instance-00000003",vcpu="0"} 0.04279058
 # HELP libvirt_domain_vcpu_state VCPU state. 0: offline, 1: running, 2: blocked
 # TYPE libvirt_domain_vcpu_state gauge
-libvirt_domain_vcpu_state{domain="instance-00000004",vcpu="0"} 1
+libvirt_domain_vcpu_state{domain="instance-00000001",vcpu="0"} 1
+libvirt_domain_vcpu_state{domain="instance-00000002",vcpu="0"} 1
+libvirt_domain_vcpu_state{domain="instance-00000003",vcpu="0"} 1
 # HELP libvirt_domain_vcpu_time_seconds_total Amount of CPU time used by the domain's VCPU, in seconds.
 # TYPE libvirt_domain_vcpu_time_seconds_total counter
-libvirt_domain_vcpu_time_seconds_total{domain="instance-00000004",vcpu="0"} 57.22
+libvirt_domain_vcpu_time_seconds_total{domain="instance-00000001",vcpu="0"} 30.4
+libvirt_domain_vcpu_time_seconds_total{domain="instance-00000002",vcpu="0"} 29.84
+libvirt_domain_vcpu_time_seconds_total{domain="instance-00000003",vcpu="0"} 27.68
 # HELP libvirt_domain_vcpu_wait_seconds_total Vcpu's wait_sum metric. CONFIG_SCHEDSTATS has to be enabled
 # TYPE libvirt_domain_vcpu_wait_seconds_total counter
-libvirt_domain_vcpu_wait_seconds_total{domain="instance-00000004",vcpu="0"} 0
+libvirt_domain_vcpu_wait_seconds_total{domain="instance-00000001",vcpu="0"} 0
+libvirt_domain_vcpu_wait_seconds_total{domain="instance-00000002",vcpu="0"} 0
+libvirt_domain_vcpu_wait_seconds_total{domain="instance-00000003",vcpu="0"} 0
 # HELP libvirt_up Whether scraping libvirt's metrics was successful.
 # TYPE libvirt_up gauge
 libvirt_up 1
@@ -311,22 +391,22 @@ libvirt_up 1
 libvirt_versions_info{hypervisor_running="8.2.2",libvirt_library="4.0.0",libvirtd_running="10.0.0"} 1
 # HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
 # TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total 1.61
+process_cpu_seconds_total 2.43
 # HELP process_max_fds Maximum number of open file descriptors.
 # TYPE process_max_fds gauge
 process_max_fds 2048
 # HELP process_open_fds Number of open file descriptors.
 # TYPE process_open_fds gauge
-process_open_fds 13
+process_open_fds 11
 # HELP process_resident_memory_bytes Resident memory size in bytes.
 # TYPE process_resident_memory_bytes gauge
-process_resident_memory_bytes 2.6710016e+07
+process_resident_memory_bytes 2.0770816e+07
 # HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
 # TYPE process_start_time_seconds gauge
-process_start_time_seconds 1.7554817497e+09
+process_start_time_seconds 1.75549320455e+09
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
-process_virtual_memory_bytes 1.466318848e+09
+process_virtual_memory_bytes 1.542230016e+09
 # HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
 # TYPE process_virtual_memory_max_bytes gauge
 process_virtual_memory_max_bytes -1
@@ -335,6 +415,6 @@ process_virtual_memory_max_bytes -1
 promhttp_metric_handler_requests_in_flight 1
 # HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
 # TYPE promhttp_metric_handler_requests_total counter
-promhttp_metric_handler_requests_total{code="200"} 8
+promhttp_metric_handler_requests_total{code="200"} 107
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0
