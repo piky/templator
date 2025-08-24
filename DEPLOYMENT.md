@@ -1,6 +1,6 @@
 # Deployment of Zabbix components on Ubuntu 24.04 LTS (Noble)
 
-## Gain root-privilege
+## Gain root-privileged access
 
 ```sh
     $ sudo -s
