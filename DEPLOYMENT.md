@@ -123,7 +123,7 @@ AGENT --> FIREWALL --> SERVER
 
 ```sh
     $ vim /etc/zabbix/zabbix_agentd.conf
-Server=::/0,0.0.0.0/0
+Server=0.0.0.0/0,0::0/0
 ServerActive=$SERVER_IP
 Hostname=hostname-of-running-agent
 ```
