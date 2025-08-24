@@ -108,3 +108,22 @@ server_name example.com;
     $ systemctl restart zabbix-server zabbix-agent nginx php8.3-fpm
     $ systemctl enable zabbix-server zabbix-agent nginx php8.3-fpm
 ```
+
+## Allow ingress traffic to Zabbix server
+
+For Active mode where:
+
+AGENT --> FIREWALL --> SERVER
+
+**TCP port 10050** must be allowed.
+
+## Configure Zabbix agent
+
+**For Active mode:**
+
+```sh
+    $ vim /etc/zabbix/zabbix_agentd.conf
+Server=::/0,0.0.0.0/0
+ServerActive=$SERVER_IP
+Hostname=hostname-of-running-agent
+```
