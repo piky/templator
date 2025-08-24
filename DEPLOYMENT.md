@@ -115,7 +115,7 @@ For Active mode where:
 
 AGENT --> FIREWALL --> SERVER
 
-**TCP port 10050** must be allowed.
+**TCP port 10050** must be allowed at server side.
 
 ## Configure Zabbix agent
 
