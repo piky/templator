@@ -83,11 +83,19 @@
 
 ## Configure the database connection strings for Zabbix server
 
+```sh
+    $ vim /etc/zabbix/zabbix_server.conf
+```
+
 ```sh title="/etc/zabbix/zabbix_server.conf"
 DBPassword=$ZABBIX_DB_PASSWD
 ```
 
 ## Configure PHP for Zabbix frontend
+
+```sh
+    $ vim /etc/zabbix/nginx.conf
+```
 
 ```sh title="/etc/zabbix/nginx.conf"
 listen 8080;
